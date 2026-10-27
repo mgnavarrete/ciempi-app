@@ -143,6 +143,15 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
       sesiones.reemplazar(sesionesV2.map(({ cuentaId, ...x }) => ({ ...x, usuarioId: x.usuarioId ?? cuentaId ?? '' })))
     },
   },
+  {
+    // El umbral de ritmo por defecto pasó de 1,5 a 2,5 palabras/s: quien no lo había tocado, toma el nuevo.
+    id: '2026-10-umbral-2-5',
+    aplicar: ({ perfiles }) =>
+      perfiles
+        .todos()
+        .filter((p) => p.ajustes.umbralPalabrasPorSegundo === 1.5)
+        .forEach((p) => perfiles.guardar({ ...p, ajustes: { ...p.ajustes, umbralPalabrasPorSegundo: AJUSTES_POR_DEFECTO.umbralPalabrasPorSegundo } })),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { elegirVoz, generoDeVoz, limpiarParaVoz, tonoPara } from './voz'
+import { elegirVoz, generoDeVoz, idiomaDeVoz, limpiarParaVoz, tonoPara } from './voz'
 
 const v = (lang: string, name = lang, localService = true) => ({ lang, name, localService })
 
@@ -19,6 +19,13 @@ describe('elegirVoz', () => {
 
   it('entre voces de la misma región prefiere la local', () => {
     expect(elegirVoz([v('es-CL', 'red', false), v('es-CL', 'local', true)])?.name).toBe('local')
+  })
+
+  it('reconoce los códigos de tres letras de algunos motores (Samsung)', () => {
+    expect(elegirVoz([v('eng-USA'), v('spa-ESP'), v('spa_MEX')])?.lang).toBe('spa_MEX')
+    expect(idiomaDeVoz('spa-USA')).toBe('es-us')
+    expect(idiomaDeVoz('es_CL')).toBe('es-cl')
+    expect(idiomaDeVoz('spa')).toBe('es')
   })
 
   it('null si no hay español', () => {

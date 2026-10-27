@@ -52,7 +52,7 @@ export const AJUSTES_POR_DEFECTO: AjustesLectura = {
   tamanoLetra: 44,
   modoTranquilo: false,
   velocidadVoz: 1,
-  umbralPalabrasPorSegundo: 1.5,
+  umbralPalabrasPorSegundo: 2.5,
 }
 
 export const LIMITES_AJUSTES = {

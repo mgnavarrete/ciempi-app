@@ -62,7 +62,10 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
             >
               ▶ Probar voz
             </button>
-            <span className="text-sm text-tinta-suave">{!voz.disponible ? 'Este navegador no tiene voz' : (nombreVoz ?? 'Sin voz en español')}</span>
+            <span className="text-sm text-tinta-suave">
+              {!voz.disponible ? 'Este navegador no tiene voz' : (nombreVoz ?? 'Sin voz en español')}
+              {voz.disponible && <span className="block text-xs opacity-70">{voz.resumenVoces}</span>}
+            </span>
           </div>
         </Seccion>
 

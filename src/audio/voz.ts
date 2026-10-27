@@ -26,14 +26,28 @@ export function generoDeVoz(nombre: string): GeneroVoz | null {
 
 type VozMinima = Pick<SpeechSynthesisVoice, 'lang' | 'name' | 'localService'>
 
+const REGIONES_ISO3: Record<string, string> = { usa: 'us', mex: 'mx', esp: 'es', chl: 'cl', arg: 'ar', col: 'co', per: 'pe' }
+
+/**
+ * Idioma de una voz como "es-cl". Algunos motores de Android (Samsung) usan
+ * códigos de tres letras: "spa-USA" o "spa_MEX" → "es-us", "es-mx".
+ */
+export function idiomaDeVoz(lang: string): string {
+  const [idioma = '', region] = lang.toLowerCase().replace(/_/g, '-').split('-')
+  const base = idioma === 'spa' ? 'es' : idioma
+  return region ? `${base}-${REGIONES_ISO3[region] ?? region}` : base
+}
+
+export const esEspanol = (lang: string) => idiomaDeVoz(lang).split('-')[0] === 'es'
+
 /**
  * Elige la voz: primero una del género pedido en la región preferida (o en
  * cualquier español); si no hay, la mejor voz de la región aunque sea del
  * otro género (y el tono se ajusta, ver `tonoPara`).
  */
 export function elegirVoz<V extends VozMinima>(voces: V[], genero: GeneroVoz | null = null): V | null {
-  const idioma = (v: V) => v.lang.toLowerCase().replace('_', '-')
-  const espanol = voces.filter((v) => idioma(v).startsWith('es'))
+  const idioma = (v: V) => idiomaDeVoz(v.lang)
+  const espanol = voces.filter((v) => esEspanol(v.lang))
   const mejor = (lista: V[]) => {
     for (const region of PREFERENCIA_REGIONES) {
       const candidatas = lista.filter((v) => idioma(v) === region)
@@ -102,7 +116,7 @@ function motorWeb(): MotorVoz | null {
     },
     async hayEspanol(voces) {
       // La lista llega vacía mientras el navegador la carga.
-      return voces.length ? voces.some((v) => v.lang.toLowerCase().startsWith('es')) : null
+      return voces.length ? voces.some((v) => esEspanol(v.lang)) : null
     },
     alCambiarVoces(fn) {
       speechSynthesis.addEventListener?.('voiceschanged', fn)
@@ -128,6 +142,8 @@ function motorNativo(): MotorVoz | null {
   // Se carga recién en el teléfono: en la web no se incluye en el arranque.
   const plugin = import('@capacitor-community/text-to-speech').then((m) => m.TextToSpeech)
   let pendientes = 0
+  /** El primer español que acepta el teléfono: se usa si no se pudo elegir una voz. */
+  let espanolDelTelefono: string | null = null
   return {
     async voces() {
       const { voices } = await (await plugin).getSupportedVoices()
@@ -136,8 +152,11 @@ function motorNativo(): MotorVoz | null {
     async hayEspanol() {
       // Sin los datos de voz en español, Android rechaza cada palabra y no suena nada.
       const tts = await plugin
-      for (const lang of ['es-US', 'es-ES', 'es-MX', 'es']) {
-        if ((await tts.isLanguageSupported({ lang })).supported) return true
+      for (const lang of ['es-US', 'es-MX', 'es-ES', 'es']) {
+        if ((await tts.isLanguageSupported({ lang })).supported) {
+          espanolDelTelefono = lang
+          return true
+        }
       }
       return false
     },
@@ -153,7 +172,7 @@ function motorNativo(): MotorVoz | null {
         .then((tts) =>
           tts.speak({
             text: texto,
-            lang: o.voz?.lang ?? 'es-CL',
+            lang: o.voz ? idiomaDeVoz(o.voz.lang) : (espanolDelTelefono ?? 'es-US'),
             voice: o.voz?.indice,
             rate: o.velocidad,
             pitch: o.tono,
@@ -180,6 +199,7 @@ class Voz {
   private genero: GeneroVoz | null = null
   private tono = 1
   private sinEspanol = false
+  private conteo = { total: 0, espanol: 0 }
   private desbloqueada = false
   private alCambiar = new Set<() => void>()
 
@@ -203,6 +223,11 @@ class Voz {
     void instalarVozDelTelefono().catch(() => {})
   }
 
+  /** Para revisar en Ajustes qué encontró la app en el teléfono. */
+  get resumenVoces(): string {
+    return `${this.conteo.total} voces en el equipo, ${this.conteo.espanol} en español`
+  }
+
   get nombreVoz(): string | null {
     return this.voz ? `${this.voz.name} (${this.voz.lang})` : null
   }
@@ -223,6 +248,7 @@ class Voz {
     if (!this.motor) return
     // Android carga las voces de forma asíncrona: al principio la lista viene vacía.
     const voces = await this.motor.voces().catch(() => [])
+    this.conteo = { total: voces.length, espanol: voces.filter((v) => esEspanol(v.lang)).length }
     this.voz = elegirVoz(voces, this.genero)
     this.tono = tonoPara(this.voz, this.genero)
     this.sinEspanol = (await this.motor.hayEspanol(voces).catch(() => null)) === false
