@@ -23,6 +23,7 @@ import {
   type UsuarioSesion,
 } from './auth.ts'
 import { enviarRecuperacion } from './correo.ts'
+import { fuentesDeVoz, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
@@ -209,14 +210,14 @@ export async function crearApp() {
   app.get('/api/salud', async () => ({ ok: true }))
 
   // ── Voz de Ciempi ───────────────────────────────────────────────────────
-  // El audio lo genera el servicio de voz (server/voz, Piper) y se guarda en
-  // audios_voz: las palabras se repiten mucho entre libros y niños.
+  // El audio lo genera Azure (Lorenzo y Paloma) o Piper (server/voz), ver
+  // voz.ts, y se guarda en audios_voz: las palabras se repiten mucho entre libros y niños.
 
-  // Para el diagnóstico de Ajustes: ¿el servicio de voz responde? (lo guardado no cuenta).
+  // Para el diagnóstico de Ajustes: ¿alguna voz responde? (lo guardado no cuenta).
   app.get('/api/voz/estado', conUsuario, async () => {
-    const r = await fetch(`${process.env.VOZ_URL ?? 'http://127.0.0.1:3201'}/salud`, { signal: AbortSignal.timeout(5_000) }).catch(() => null)
-    if (!r?.ok) throw new Problema('el servicio de voz (ciempi-voz) no está funcionando en el servidor', 503)
-    return { ok: true }
+    const proveedor = await vozDisponible()
+    if (!proveedor) throw new Problema('el servicio de voz (ciempi-voz) no está funcionando en el servidor', 503)
+    return { ok: true, proveedor }
   })
 
   app.get('/api/voz', conUsuario, async (req, reply) => {
@@ -224,25 +225,29 @@ export async function crearApp() {
     const dicho = (q.texto ?? '').trim()
     if (!dicho || dicho.length > LARGO_VOZ) throw new Problema('Texto inválido para la voz')
     const voz = q.voz === 'nina' ? 'nina' : 'nino'
-    // Pasos de 0,05 (como el ajuste de la app) para que la caché sirva.
+    // Pasos de 0,05 (como el ajuste de la app) para que lo guardado sirva.
     const velocidad = Math.min(1.5, Math.max(0.5, Math.round((Number(q.velocidad) || 1) * 20) / 20))
-    const clave = `${voz}|${velocidad}|${dicho}`
     const guardar = dicho.length <= LARGO_PALABRA
 
-    let audio: Buffer | undefined
-    if (guardar) {
-      const { rows } = await pool.query<{ audio: Buffer }>('select audio from audios_voz where clave = $1', [clave])
-      audio = rows[0]?.audio
+    // La primera fuente que tenga el audio guardado o lo pueda generar (Azure antes que Piper).
+    for (const fuente of fuentesDeVoz(voz)) {
+      const clave = `${fuente.id}|${velocidad}|${dicho}`
+      if (guardar) {
+        const { rows } = await pool.query<{ audio: Buffer }>('select audio from audios_voz where clave = $1', [clave])
+        if (rows[0]) return enviarAudio(reply, rows[0].audio)
+      }
+      try {
+        const audio = await fuente.generar(dicho, velocidad)
+        if (guardar) await pool.query('insert into audios_voz (clave, audio) values ($1, $2) on conflict do nothing', [clave, audio])
+        return enviarAudio(reply, audio)
+      } catch (e) {
+        req.log.warn({ fuente: fuente.id, error: (e as Error).message }, 'la voz falló; se prueba la siguiente')
+      }
     }
-    if (!audio) {
-      const url = `${process.env.VOZ_URL ?? 'http://127.0.0.1:3201'}/voz?${new URLSearchParams({ texto: dicho, voz, velocidad: String(velocidad) })}`
-      const r = await fetch(url, { signal: AbortSignal.timeout(10_000) }).catch(() => null)
-      if (!r?.ok) throw new Problema('La voz de Ciempi no está disponible', 503)
-      audio = Buffer.from(await r.arrayBuffer())
-      if (guardar) await pool.query('insert into audios_voz (clave, audio) values ($1, $2) on conflict do nothing', [clave, audio])
-    }
-    return reply.type('audio/wav').header('Cache-Control', 'private, max-age=31536000, immutable').send(audio)
+    throw new Problema('La voz de Ciempi no está disponible', 503)
   })
+  const enviarAudio = (reply: FastifyReply, audio: Buffer) =>
+    reply.type('audio/wav').header('Cache-Control', 'private, max-age=31536000, immutable').send(audio)
 
   // ── Sesión ──────────────────────────────────────────────────────────────
 

@@ -15,3 +15,5 @@ android/.gradle/
 server/voz/.venv/
 server/voz/modelos/
 __pycache__/
+# Muestras de voces para elegir (no van en git).
+muestras-voces/

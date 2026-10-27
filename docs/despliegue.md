@@ -119,6 +119,27 @@ Crea `server/voz/.venv`, instala Piper, descarga las dos voces (~130 MB) e insta
 Cada palabra se genera una sola vez y queda guardada en la tabla `audios_voz`. Si el servicio está
 apagado, la app usa la voz del teléfono. Registros: `journalctl -u ciempi-voz -n 30`.
 
+### Voces de Microsoft (Lorenzo y Paloma)
+
+Más naturales que Piper: Lorenzo (Chile) para Ciempi niño y Paloma para Ciempi niña. Piper queda
+de respaldo si Azure falla.
+
+1. En https://portal.azure.com → **Crear un recurso** → buscar **Speech** (Servicios de voz) → Crear.
+   Plan de tarifa **Free F0** (500.000 caracteres al mes; cada palabra se pide una sola vez porque
+   queda guardada). Región: **Brazil South**.
+2. En el recurso → **Claves y punto de conexión**: copiar **CLAVE 1** y la **Ubicación/Región**.
+3. En el servidor, agregar a `server/.env` y reiniciar:
+
+```bash
+nano /var/www/ciempi-app/server/.env
+#   AZURE_SPEECH_KEY=la-clave-1
+#   AZURE_SPEECH_REGION=brazilsouth
+sudo systemctl restart ciempi-api
+```
+
+En la app, Ajustes → Voz debe decir «La voz de Ciempi funciona ✓». La clave es secreta: va solo
+en `server/.env` (que no se sube a GitHub).
+
 ## 7. APK
 
 La APK se conecta a `https://ciempi.minttu.cl` (lo dice `.env.apk`). Se genera en el computador de

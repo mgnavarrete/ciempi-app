@@ -210,4 +210,60 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await voz('/api/voz?texto=otra', N)).statusCode).toBe(503)
     expect((await voz('/api/voz/estado', N)).statusCode).toBe(503)
   })
+
+  it('voz de Ciempi con Azure: Lorenzo y Paloma, sin silencio inicial, y Piper si Azure falla', async () => {
+    // Un WAV de 24 kHz con 0,1 s de silencio, 0,05 s de sonido y 0,1 s de silencio.
+    const wav = (() => {
+      const muestras = new Int16Array(2400 + 1200 + 2400)
+      muestras.fill(8000, 2400, 3600)
+      const datos = Buffer.from(muestras.buffer)
+      const c = Buffer.alloc(44)
+      c.write('RIFF', 0); c.writeUInt32LE(36 + datos.length, 4); c.write('WAVE', 8); c.write('fmt ', 12)
+      c.writeUInt32LE(16, 16); c.writeUInt16LE(1, 20); c.writeUInt16LE(1, 22); c.writeUInt32LE(24000, 24)
+      c.writeUInt32LE(48000, 28); c.writeUInt16LE(2, 32); c.writeUInt16LE(16, 34); c.write('data', 36); c.writeUInt32LE(datos.length, 40)
+      return Buffer.concat([c, datos])
+    })()
+    const recibido: { ssml: string; clave?: string; formato?: string }[] = []
+    let azureCaido = false
+    const azure = createServer((req, res) => {
+      if (azureCaido) return void res.writeHead(500).end()
+      if (req.url === '/cognitiveservices/voices/list') return void res.end('[]')
+      let ssml = ''
+      req.on('data', (d) => (ssml += d))
+      req.on('end', () => {
+        recibido.push({ ssml, clave: req.headers['ocp-apim-subscription-key'] as string, formato: req.headers['x-microsoft-outputformat'] as string })
+        res.writeHead(200, { 'Content-Type': 'audio/wav' }).end(wav)
+      })
+    })
+    const piper = createServer((req, res) => (req.url === '/salud' ? res.end('ok') : res.writeHead(200).end(Buffer.from('RIFF-piper'))))
+    await Promise.all([azure, piper].map((s) => new Promise<void>((ok) => s.listen(0, '127.0.0.1', ok))))
+    const puerto = (s: typeof azure) => (s.address() as { port: number }).port
+    Object.assign(process.env, { AZURE_SPEECH_KEY: 'clave-de-prueba', AZURE_SPEECH_URL: `http://127.0.0.1:${puerto(azure)}`, VOZ_URL: `http://127.0.0.1:${puerto(piper)}` })
+    const voz = (url: string) => app.inject({ method: 'GET', url, headers: { authorization: `Bearer ${N}` } })
+    try {
+      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'azure' })
+
+      const nino = await voz('/api/voz?texto=jard%C3%ADn&voz=nino&velocidad=0.8')
+      expect(nino.statusCode).toBe(200)
+      expect(recibido[0]).toMatchObject({ clave: 'clave-de-prueba', formato: 'riff-24khz-16bit-mono-pcm' })
+      expect(recibido[0].ssml).toContain('<voice name="es-CL-LorenzoNeural"><prosody rate="-20%">jardín</prosody>')
+      // Se quitó el silencio: queda el sonido más 15 ms a cada lado (360 muestras).
+      expect(nino.rawPayload.length).toBe(44 + (1200 + 2 * 360) * 2)
+
+      await voz('/api/voz?texto=a%3Cb&voz=nina')
+      expect(recibido[1].ssml).toContain('<voice name="es-US-PalomaNeural"><prosody rate="0%">a&#60;b</prosody>')
+
+      // Lo ya generado no se vuelve a pedir; si Azure se cae, lo nuevo sale de Piper.
+      azureCaido = true
+      expect((await voz('/api/voz?texto=jard%C3%ADn&voz=nino&velocidad=0.8')).statusCode).toBe(200)
+      const respaldo = await voz('/api/voz?texto=nuevo&voz=nino')
+      expect(respaldo.rawPayload.toString()).toBe('RIFF-piper')
+      expect(recibido).toHaveLength(2)
+      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'piper' })
+    } finally {
+      delete process.env.AZURE_SPEECH_KEY
+      delete process.env.AZURE_SPEECH_URL
+      await Promise.all([azure, piper].map((s) => new Promise((ok) => s.close(ok))))
+    }
+  })
 })

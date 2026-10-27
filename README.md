@@ -132,10 +132,13 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 
 ## Voz de Ciempi
 
-Con cuenta en línea, la voz la genera el servidor con **Piper** (voz neuronal,
-gratuita y sin servicios externos), así suena igual en cualquier teléfono:
-voz de hombre si Ciempi es niño (`es_MX-ald`) y de mujer si es niña
-(`es_MX-claude`); no hay voces chilenas en Piper.
+Con cuenta en línea, la voz la genera el servidor (`server/src/voz.ts`), así
+suena igual en cualquier teléfono:
+
+1. **Microsoft Azure** si hay `AZURE_SPEECH_KEY`: Lorenzo (Chile) para Ciempi
+   niño y Paloma para Ciempi niña. Elegidas escuchando 12 voces.
+2. Si no, o si Azure falla, **Piper** en el propio servidor (gratis, sin
+   internet): `es_MX-ald` (hombre) y `es_MX-claude` (mujer).
 
 - `server/voz/servidor_voz.py`: servicio en Python (127.0.0.1:3201) que
   genera el WAV de una palabra en ~40 ms y le quita el silencio del inicio.
