@@ -1,8 +1,11 @@
 import { Capacitor } from '@capacitor/core'
 import { instalarVozDelTelefono } from '../plataforma/telefono'
+import { VozServidor, type VozCiempi } from './vozServidor'
 
 /**
- * Voz con la Web Speech API. Dice palabras completas (nunca sílabas sueltas).
+ * Voz de Ciempi. Dice palabras completas (nunca sílabas sueltas). Con cuenta
+ * en línea la genera el servidor (vozServidor.ts); si no, la del teléfono o
+ * navegador (Web Speech API o el motor nativo de Android).
  * Es la voz de Ciempi: de hombre si Ciempi es niño, de mujer si es niña.
  * Preferencia de voz: es-CL → español latinoamericano → cualquier español.
  */
@@ -195,9 +198,12 @@ function motorNativo(): MotorVoz | null {
 
 class Voz {
   private motor: MotorVoz | null = motorNativo() ?? motorWeb()
+  /** Voz de Ciempi generada en el servidor; si no está, se usa la del teléfono (`motor`). */
+  private servidor: VozServidor | null = null
   private voz: VozDelMotor | null = null
   private genero: GeneroVoz | null = null
   private tono = 1
+  private velocidadActual = 1
   private sinEspanol = false
   private conteo = { total: 0, espanol: 0 }
   private desbloqueada = false
@@ -209,13 +215,32 @@ class Voz {
     this.motor.alCambiarVoces(() => void this.actualizarVoces())
   }
 
-  get disponible() {
-    return this.motor !== null
+  /** Con cuenta en línea, la voz sale del servidor de Ciempi (ver DatosProvider). */
+  usarServidor(base: string, token: () => string | null) {
+    this.servidor = new VozServidor(base, token, (texto) => this.motor?.hablar(texto, this.opcionesMotor(true)))
+    this.alCambiar.forEach((fn) => fn())
   }
 
-  /** Hay voz, pero no en español: hay que instalarla en el teléfono. */
+  /** Se está usando la voz de Ciempi del servidor (y no la del teléfono). */
+  get conServidor(): boolean {
+    return !!this.servidor?.disponible
+  }
+
+  private get vozCiempi(): VozCiempi {
+    return this.genero === 'femenina' ? 'nina' : 'nino'
+  }
+
+  private opcionesMotor(encolar: boolean): OpcionesHablar {
+    return { voz: this.voz, velocidad: this.velocidadActual, tono: this.tono, encolar }
+  }
+
+  get disponible() {
+    return this.motor !== null || this.servidor !== null
+  }
+
+  /** No hay voz del servidor y el teléfono no tiene español: hay que instalarla. */
   get faltaEspanol(): boolean {
-    return this.sinEspanol
+    return !this.conServidor && this.sinEspanol
   }
 
   /** Abre la descarga de voces del teléfono (solo en la APK de Android). */
@@ -229,6 +254,7 @@ class Voz {
   }
 
   get nombreVoz(): string | null {
+    if (this.conServidor) return `Voz de Ciempi (${this.vozCiempi === 'nina' ? 'niña' : 'niño'})`
     return this.voz ? `${this.voz.name} (${this.voz.lang})` : null
   }
 
@@ -255,8 +281,9 @@ class Voz {
     this.alCambiar.forEach((fn) => fn())
   }
 
-  /** iOS y algunos navegadores solo permiten hablar después de un gesto del usuario. */
+  /** iOS, Android y algunos navegadores solo permiten sonar después de un gesto del usuario. */
   desbloquear() {
+    this.servidor?.desbloquear()
     if (!this.motor || this.desbloqueada) return
     this.desbloqueada = true
     if ('speechSynthesis' in globalThis) {
@@ -266,36 +293,45 @@ class Voz {
     }
   }
 
+  /** Pide de antemano el audio de estas palabras, para que suenen sin demora. */
+  precargar(palabras: string[], velocidad: number) {
+    if (!this.conServidor) return
+    const limpias = palabras.map((p) => limpiarParaVoz(p).toLowerCase()).filter(Boolean)
+    this.servidor!.precargar(limpias, this.vozCiempi, velocidad)
+  }
+
   decir(texto: string, velocidad: number) {
-    if (!this.motor) return
-    const limpio = limpiarParaVoz(texto)
+    const limpio = limpiarParaVoz(texto).toLowerCase()
     if (!limpio) return
+    this.velocidadActual = velocidad
     // Si hay palabras esperando en la cola, el niño va más rápido que la voz:
     // se descarta lo atrasado para que lo que suena coincida con el dedo.
-    const encolar = !this.motor.enCola()
-    this.motor.hablar(limpio.toLowerCase(), { voz: this.voz, velocidad, tono: this.tono, encolar })
+    if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, !this.servidor!.enCola())
+    if (!this.motor) return
+    this.motor.hablar(limpio, this.opcionesMotor(!this.motor.enCola()))
   }
 
   /** Dice una frase completa (para que Ciempi hable). Sin emojis, que la voz leería en voz alta. */
   decirFrase(texto: string, velocidad = 1) {
-    if (!this.motor) return
     const limpio = texto.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/\s+/g, ' ').trim()
     if (!limpio) return
-    this.motor.hablar(limpio, { voz: this.voz, velocidad, tono: this.tono, encolar: false })
+    this.velocidadActual = velocidad
+    if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, false)
+    this.motor?.hablar(limpio, this.opcionesMotor(false))
   }
 
   callar() {
+    this.servidor?.callar()
     this.motor?.callar()
   }
 
   /** Resuelve cuando la voz termina de hablar lo que tiene en cola (o tras `maximoMs`). */
   esperarSilencio(maximoMs = 1500): Promise<void> {
     return new Promise((resolver) => {
-      const motor = this.motor
-      if (!motor) return resolver()
       const inicio = performance.now()
       const revisar = () => {
-        if (!motor.hablando() || performance.now() - inicio > maximoMs) resolver()
+        const hablando = !!this.servidor?.hablando() || !!this.motor?.hablando()
+        if (!hablando || performance.now() - inicio > maximoMs) resolver()
         else setTimeout(revisar, 80)
       }
       revisar()

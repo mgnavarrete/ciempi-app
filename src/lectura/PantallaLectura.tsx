@@ -77,6 +77,12 @@ export function PantallaLectura(props: Props) {
   // Arriba se ve lo que ya leyó (no lo que viene): hasta dos frases del capítulo.
   const yaLeidas = texto.frases.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
   const palabras = useMemo(() => silabearFrase(frase), [frase])
+  // La voz del servidor se pide de antemano (esta frase y la siguiente) para que suene apenas llega el dedo.
+  const fraseQueViene = texto.frases[indice + 1]
+  useEffect(() => {
+    const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
+    voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
+  }, [palabras, fraseQueViene, ajustes.velocidadVoz])
   // La pista se mide en pantalla (dónde quedó cada palabra); mientras, una pareja.
   const [pistaMedida, setPistaMedida] = useState<Pista | null>(null)
   const pista = pistaMedida && pistaMedida.manzanas.length === palabras.length ? pistaMedida : calcularPista(palabras.length)

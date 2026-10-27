@@ -11,3 +11,7 @@ release/
 android/app/build/
 android/.gradle/
 .impeccable/
+# Voz de Ciempi: entorno de Python y modelos de Piper (deploy/instalar-voz.sh los descarga).
+server/voz/.venv/
+server/voz/modelos/
+__pycache__/

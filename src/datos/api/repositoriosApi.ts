@@ -20,7 +20,7 @@ import type { Repositorios } from '../repositorios'
 
 const CLAVE_TOKEN = 'ciempi:token'
 
-function leerToken(): string | null {
+export function leerToken(): string | null {
   try {
     return localStorage.getItem(CLAVE_TOKEN)
   } catch {

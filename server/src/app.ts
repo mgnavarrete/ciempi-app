@@ -146,6 +146,9 @@ const ALFABETO_CODIGO = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 const codigoInvitacion = () => Array.from({ length: 6 }, () => ALFABETO_CODIGO[randomInt(ALFABETO_CODIGO.length)]).join('')
 
 const LIMITE_LIBRO = 8 * 1024 * 1024
+/** La voz dice palabras y frases de Ciempi; las palabras (cortas) se guardan. */
+const LARGO_VOZ = 300
+const LARGO_PALABRA = 40
 
 export async function crearApp() {
   const app = Fastify({
@@ -204,6 +207,35 @@ export async function crearApp() {
   const responderSesion = async (u: UsuarioSesion, tok: string) => ({ token: tok, sesion: await sesionDe(u) })
 
   app.get('/api/salud', async () => ({ ok: true }))
+
+  // ── Voz de Ciempi ───────────────────────────────────────────────────────
+  // El audio lo genera el servicio de voz (server/voz, Piper) y se guarda en
+  // audios_voz: las palabras se repiten mucho entre libros y niños.
+
+  app.get('/api/voz', conUsuario, async (req, reply) => {
+    const q = req.query as Record<string, string | undefined>
+    const dicho = (q.texto ?? '').trim()
+    if (!dicho || dicho.length > LARGO_VOZ) throw new Problema('Texto inválido para la voz')
+    const voz = q.voz === 'nina' ? 'nina' : 'nino'
+    // Pasos de 0,05 (como el ajuste de la app) para que la caché sirva.
+    const velocidad = Math.min(1.5, Math.max(0.5, Math.round((Number(q.velocidad) || 1) * 20) / 20))
+    const clave = `${voz}|${velocidad}|${dicho}`
+    const guardar = dicho.length <= LARGO_PALABRA
+
+    let audio: Buffer | undefined
+    if (guardar) {
+      const { rows } = await pool.query<{ audio: Buffer }>('select audio from audios_voz where clave = $1', [clave])
+      audio = rows[0]?.audio
+    }
+    if (!audio) {
+      const url = `${process.env.VOZ_URL ?? 'http://127.0.0.1:3201'}/voz?${new URLSearchParams({ texto: dicho, voz, velocidad: String(velocidad) })}`
+      const r = await fetch(url, { signal: AbortSignal.timeout(10_000) }).catch(() => null)
+      if (!r?.ok) throw new Problema('La voz de Ciempi no está disponible', 503)
+      audio = Buffer.from(await r.arrayBuffer())
+      if (guardar) await pool.query('insert into audios_voz (clave, audio) values ($1, $2) on conflict do nothing', [clave, audio])
+    }
+    return reply.type('audio/wav').header('Cache-Control', 'private, max-age=31536000, immutable').send(audio)
+  })
 
   // ── Sesión ──────────────────────────────────────────────────────────────
 

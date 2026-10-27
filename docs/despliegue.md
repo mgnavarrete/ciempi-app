@@ -6,8 +6,9 @@ usa su propia base de datos, el puerto interno **3200** y un sitio de Nginx apar
 
 ```
 celular / navegador ──HTTPS──> nginx ─┬─ /        → /var/www/ciempi-app/dist   (la web)
-       (APK incluida)                 └─ /api/    → 127.0.0.1:3200             (server/, systemd)
-                                                         └─ PostgreSQL (base ciempi)
+       (APK incluida)                 └─ /api/    → 127.0.0.1:3200             (server/, ciempi-api)
+                                                         ├─ PostgreSQL (base ciempi)
+                                                         └─ 127.0.0.1:3201  voz de Ciempi (server/voz, ciempi-voz)
 ```
 
 ## 0. Antes de empezar
@@ -100,6 +101,23 @@ sudo certbot --nginx -d ciempi.minttu.cl    # cuando pregunte, elige redirigir H
 
 `nginx -t` revisa la configuración **antes** de recargar, así un error no bota las otras apps.
 Prueba: abre https://ciempi.minttu.cl, crea una cuenta de adulto y un lector.
+
+## 6b. Voz de Ciempi
+
+La voz con que Ciempi lee la genera el servidor con [Piper](https://github.com/OHF-Voice/piper1-gpl)
+(voz neuronal, sin servicios externos): de hombre si Ciempi es niño (`es_MX-ald`) y de mujer si es
+niña (`es_MX-claude`). Así suena igual en todos los teléfonos, aunque no tengan voces en español.
+
+```bash
+cd /var/www/ciempi-app && bash deploy/instalar-voz.sh
+```
+
+Crea `server/voz/.venv`, instala Piper, descarga las dos voces (~130 MB) e instala el servicio
+`ciempi-voz` (solo escucha en 127.0.0.1:3201). Usa unos 400 MB de RAM. Si dice que falta `venv`:
+`sudo apt install python3-venv` y repetir.
+
+Cada palabra se genera una sola vez y queda guardada en la tabla `audios_voz`. Si el servicio está
+apagado, la app usa la voz del teléfono. Registros: `journalctl -u ciempi-voz -n 30`.
 
 ## 7. APK
 

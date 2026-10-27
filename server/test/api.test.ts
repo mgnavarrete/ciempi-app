@@ -5,6 +5,7 @@
  *   npm run test:servidor
  */
 import { randomUUID } from 'node:crypto'
+import { createServer } from 'node:http'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 const HAY_BASE = !!process.env.DATABASE_URL
@@ -177,5 +178,33 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   it('bloquea después de 5 intentos fallidos', async () => {
     for (let i = 0; i < 5; i++) await pedir('POST', '/api/entrar', undefined, { correo: 'extrano@test.cl', clave: 'mala-mala' })
     expect((await pedir('POST', '/api/entrar', undefined, { correo: 'extrano@test.cl', clave: 'clave-segura' })).status).toBe(429)
+  })
+
+  it('voz de Ciempi: pide el audio al servicio de voz, lo guarda y avisa si no está', async () => {
+    // Servicio de voz falso (el real es server/voz, con Piper).
+    const pedidos: string[] = []
+    const falso = createServer((req, res) => {
+      pedidos.push(req.url!)
+      res.writeHead(200, { 'Content-Type': 'audio/wav' }).end(Buffer.from('RIFF-falso'))
+    })
+    await new Promise<void>((ok) => falso.listen(0, '127.0.0.1', ok))
+    process.env.VOZ_URL = `http://127.0.0.1:${(falso.address() as { port: number }).port}`
+    const voz = (url: string, tok?: string) => app.inject({ method: 'GET', url, headers: tok ? { authorization: `Bearer ${tok}` } : {} })
+    try {
+      expect((await voz('/api/voz?texto=hola')).statusCode).toBe(401)
+      const r = await voz('/api/voz?texto=despacio&voz=nina&velocidad=0.93', N)
+      expect(r.statusCode).toBe(200)
+      expect(r.headers['content-type']).toBe('audio/wav')
+      expect(r.rawPayload.toString()).toBe('RIFF-falso')
+      expect(pedidos).toEqual(['/voz?texto=despacio&voz=nina&velocidad=0.95'])
+      // La segunda vez sale de la base, sin volver a generarla.
+      expect((await voz('/api/voz?texto=despacio&voz=nina&velocidad=0.95', N)).statusCode).toBe(200)
+      expect(pedidos).toHaveLength(1)
+      expect((await voz(`/api/voz?texto=${'a'.repeat(301)}`, N)).statusCode).toBe(400)
+    } finally {
+      await new Promise((ok) => falso.close(ok))
+    }
+    // Servicio de voz apagado: la app usa la voz del teléfono.
+    expect((await voz('/api/voz?texto=otra', N)).statusCode).toBe(503)
   })
 })

@@ -64,7 +64,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
             </button>
             <span className="text-sm text-tinta-suave">
               {!voz.disponible ? 'Este navegador no tiene voz' : (nombreVoz ?? 'Sin voz en español')}
-              {voz.disponible && <span className="block text-xs opacity-70">{voz.resumenVoces}</span>}
+              {voz.disponible && !voz.conServidor && <span className="block text-xs opacity-70">{voz.resumenVoces}</span>}
             </span>
           </div>
         </Seccion>

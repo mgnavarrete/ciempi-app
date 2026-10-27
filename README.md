@@ -130,6 +130,26 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 - Es una APK de prueba (firmada con la llave de depuración). Para la Play
   Store hay que generar una firmada con llave propia (`assembleRelease`).
 
+## Voz de Ciempi
+
+Con cuenta en línea, la voz la genera el servidor con **Piper** (voz neuronal,
+gratuita y sin servicios externos), así suena igual en cualquier teléfono:
+voz de hombre si Ciempi es niño (`es_MX-ald`) y de mujer si es niña
+(`es_MX-claude`); no hay voces chilenas en Piper.
+
+- `server/voz/servidor_voz.py`: servicio en Python (127.0.0.1:3201) que
+  genera el WAV de una palabra en ~40 ms y le quita el silencio del inicio.
+- `GET /api/voz?texto=…&voz=nino|nina&velocidad=…` (con sesión): lo pide al
+  servicio y lo guarda en la tabla `audios_voz` (cada palabra se genera una vez).
+- `src/audio/vozServidor.ts`: lo reproduce con Web Audio. La pantalla de
+  lectura precarga las palabras de la frase actual y la siguiente.
+- Si el servicio no responde, la app usa la voz del teléfono (y si este no
+  tiene español, muestra el aviso «Instalar voz»).
+
+En local: `bash deploy/instalar-voz.sh` instala todo, o a mano
+`python3 -m venv server/voz/.venv && server/voz/.venv/bin/pip install -r server/voz/requirements.txt`,
+descargar los modelos en `server/voz/modelos/` y correr `server/voz/.venv/bin/python server/voz/servidor_voz.py`.
+
 ## Servidor (cuentas y sincronización)
 
 Sin configurar nada, la app funciona **sin conexión** (un solo dispositivo,

@@ -1,0 +1,20 @@
+# Servicio systemd de la voz de Ciempi (Piper, server/voz). Lo instala deploy/instalar-voz.sh.
+# Solo escucha en 127.0.0.1:3201; lo usa ciempi-api (GET /api/voz).
+[Unit]
+Description=Voz de Ciempi (Piper)
+After=network.target
+
+[Service]
+Type=simple
+User=mint
+WorkingDirectory=/var/www/ciempi-app/server/voz
+ExecStart=/var/www/ciempi-app/server/voz/.venv/bin/python servidor_voz.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
