@@ -1,4 +1,5 @@
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { AvisoVoz } from '../audio/AvisoVoz'
 import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -43,6 +44,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
         </Seccion>
 
         <Seccion emoji="🔊" titulo="Voz">
+          <AvisoVoz />
           <Deslizador
             etiqueta="Velocidad"
             valor={ajustes.velocidadVoz}

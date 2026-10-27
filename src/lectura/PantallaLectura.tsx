@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { AvisoVoz } from '../audio/AvisoVoz'
 import { desbloquearSonidos, sonarCelebracion, sonarMoneda, sonarTropiezo } from '../audio/sonidos'
 import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
@@ -360,6 +361,7 @@ export function PantallaLectura(props: Props) {
           ))}
       </div>
 
+      <AvisoVoz className="mx-5 mt-1 apaisado:py-1" />
       <p className="mx-5 mt-1 rounded-xl bg-amarillo/25 px-3 py-1 text-center text-sm text-tinta-suave vertical-angosto:block hidden">
         📱 Gira el teléfono: se lee mejor en horizontal
       </p>
@@ -380,7 +382,7 @@ export function PantallaLectura(props: Props) {
       </div>
 
       {/* La frase, y justo debajo el carril de Ciempi: ahí se desliza el dedo. */}
-      <div className="relative px-4 pb-[max(1rem,env(safe-area-inset-bottom))] apaisado:px-[max(1rem,env(safe-area-inset-left))] apaisado:pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <div className="relative px-4 pb-4 apaisado:px-10 apaisado:pb-2">
         {aviso && (
           <div role="alert" className="aparecer absolute inset-x-5 -top-16 z-20 rounded-2xl bg-amarillo px-4 py-3 text-center text-2xl font-bold text-tinta shadow-md">
             {aviso}

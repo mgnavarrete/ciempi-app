@@ -51,7 +51,7 @@ export function BotonIcono(props: { etiqueta: string; icono: NombreIcono; onClic
 /** Barra superior de cada pantalla: volver, título y acciones a la derecha. */
 export function Encabezado({ titulo, alVolver, children }: { titulo?: ReactNode; alVolver?: () => void; children?: ReactNode }) {
   return (
-    <header className="flex items-center gap-2 px-4 pb-1 pt-[max(0.75rem,env(safe-area-inset-top))] apaisado:px-[max(1rem,env(safe-area-inset-left))] apaisado:pt-1.5">
+    <header className="flex items-center gap-2 px-4 pb-1 pt-3 apaisado:px-4 apaisado:pt-1.5">
       {alVolver ? (
         <BotonIcono etiqueta="Volver" icono="atras" onClick={alVolver} />
       ) : (

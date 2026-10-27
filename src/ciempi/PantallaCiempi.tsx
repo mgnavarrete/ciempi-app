@@ -96,8 +96,9 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
         <Monedas cantidad={perfil.monedas} />
       </Encabezado>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 overflow-y-auto px-5 pb-28 pt-2 apaisado:flex-row apaisado:gap-5">
-        <div className="flex flex-col gap-3 apaisado:sticky apaisado:top-0 apaisado:w-2/5">
+      {/* En horizontal: Ciempi fijo a la izquierda; a la derecha las pestañas siempre visibles y la grilla con su propio scroll. */}
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 overflow-y-auto px-5 pb-28 pt-2 apaisado:min-h-0 apaisado:max-w-4xl apaisado:flex-row apaisado:gap-5 apaisado:overflow-hidden apaisado:pb-0 apaisado:pt-1">
+        <div className="flex flex-col gap-3 apaisado:w-[38%] apaisado:shrink-0 apaisado:justify-center apaisado:pb-3">
           <div className="relative h-52 shrink-0 overflow-hidden rounded-3xl shadow-sm apaisado:h-40">
             <FondoTema fondo={probando.fondo} />
             <div className="pointer-events-none absolute inset-x-0 bottom-2 mx-auto w-[min(78%,340px)]">
@@ -146,22 +147,22 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1" role="tablist">
+        <div className="flex min-w-0 flex-1 flex-col gap-3 apaisado:min-h-0 apaisado:gap-2">
+          <div className="-mx-5 flex shrink-0 gap-2 overflow-x-auto px-5 pb-1 apaisado:mx-0 apaisado:px-0" role="tablist">
             {CATEGORIAS.map((c) => (
               <button
                 key={c.id}
                 role="tab"
                 aria-selected={categoria === c.id}
                 onClick={() => setCategoria(c.id)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold ${categoria === c.id ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
+                className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:py-1.5 apaisado:text-sm ${categoria === c.id ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
               >
                 <span aria-hidden>{c.emoji}</span> {c.nombre}
               </button>
             ))}
           </div>
 
-          <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+          <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 apaisado:min-h-0 apaisado:flex-1 apaisado:grid-cols-4 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-1 apaisado:pb-24">
             {items.map((item) => {
               const suyo = loTiene(perfil.inventario, item.id)
               const puesto = perfil.ciempi[item.categoria] === item.id
@@ -188,7 +189,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
       </div>
 
       {porComprar && (
-        <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl items-center gap-3 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl items-center gap-3 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
           <p className="min-w-0 flex-1 text-sm">
             Te estás probando <span className="font-bold">{porComprar.nombre}</span>.
             {perfil.monedas < porComprar.precio && (
@@ -210,7 +211,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
 /** Dibujo chico de cada cosa de la tienda. */
 function Miniatura({ item, base }: { item: ItemCiempi; base: AparienciaCiempi }) {
   const conItem = { ...base, [item.categoria]: item.id }
-  const caja = 'h-16 w-full'
+  const caja = 'h-16 w-full apaisado:h-12'
   switch (item.categoria) {
     case 'paleta': {
       const p = PALETAS[variante(item.id)]

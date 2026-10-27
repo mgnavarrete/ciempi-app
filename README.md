@@ -107,6 +107,16 @@ npm run apk          # → ciempi.apk en la raíz del proyecto
 Para instalarla, pasa `ciempi.apk` al teléfono (cable, Drive, WhatsApp…) y
 ábrela; Android pedirá permitir "instalar apps de origen desconocido".
 
+- **Pantalla completa:** sin barra de estado ni de navegación (aparecen un
+  momento deslizando desde el borde). La app deja espacio para la cámara.
+- **Gesto "atrás":** hace lo mismo que el botón Volver de la pantalla; en la
+  biblioteca deja la app en segundo plano y mientras se lee no hace nada.
+  Además, Android no toma el gesto sobre la pista de lectura. Es código nativo
+  propio: `android/app/src/main/java/cl/ciempi/app/TelefonoPlugin.java`
+  (desde la web se usa con `src/plataforma/telefono.ts`).
+- **Voz:** usa el motor de voz del teléfono. Si no tiene español, la app
+  muestra un aviso con el botón **Instalar voz**, que abre la descarga en
+  "Servicios de voz de Google" (gratis y funciona sin internet).
 - La APK usa `.env.apk`: se conecta a `https://ciempi.minttu.cl`. Si cambia
   el dominio, cámbialo ahí y vuelve a correr `npm run apk`.
 - Íconos y pantalla de inicio se generan desde `assets/` con

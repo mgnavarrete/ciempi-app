@@ -255,5 +255,5 @@ export function App() {
 }
 
 function Marco({ children }: { children: React.ReactNode }) {
-  return <div className="mx-auto flex h-dvh min-h-0 w-full max-w-5xl flex-col apaisado:max-w-none">{children}</div>
+  return <div className="marco-seguro mx-auto flex h-dvh min-h-0 w-full max-w-5xl flex-col apaisado:max-w-none">{children}</div>
 }

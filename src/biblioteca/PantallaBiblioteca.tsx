@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, Id, PerfilNino, Texto } from '../dominio/tipos'
@@ -76,6 +77,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
       </Encabezado>
 
       <div className="mx-auto w-full max-w-3xl flex-1 overflow-y-auto px-5 pb-8 pt-3">
+        <AvisoVoz className="mb-3" />
         <PortadaCiempi perfil={perfil} alPersonalizar={alPersonalizar} />
         <div className="mb-4 flex items-center justify-between gap-3">
           <h1 className="text-2xl font-bold">{modo === 'admin' ? 'Su biblioteca' : 'Mis libros'}</h1>

@@ -1,4 +1,5 @@
 import { Capacitor } from '@capacitor/core'
+import { instalarVozDelTelefono } from '../plataforma/telefono'
 
 /**
  * Voz con la Web Speech API. Dice palabras completas (nunca sílabas sueltas).
@@ -83,6 +84,8 @@ interface OpcionesHablar {
 
 interface MotorVoz {
   voces(): Promise<VozDelMotor[]>
+  /** ¿El teléfono o navegador puede hablar en español? null: todavía no se sabe. */
+  hayEspanol(voces: VozDelMotor[]): Promise<boolean | null>
   alCambiarVoces(fn: () => void): void
   hablar(texto: string, o: OpcionesHablar): void
   callar(): void
@@ -96,6 +99,10 @@ function motorWeb(): MotorVoz | null {
   return {
     async voces() {
       return speechSynthesis.getVoices()
+    },
+    async hayEspanol(voces) {
+      // La lista llega vacía mientras el navegador la carga.
+      return voces.length ? voces.some((v) => v.lang.toLowerCase().startsWith('es')) : null
     },
     alCambiarVoces(fn) {
       speechSynthesis.addEventListener?.('voiceschanged', fn)
@@ -126,7 +133,20 @@ function motorNativo(): MotorVoz | null {
       const { voices } = await (await plugin).getSupportedVoices()
       return voices.map((v, indice) => ({ ...v, indice }))
     },
-    alCambiarVoces() {},
+    async hayEspanol() {
+      // Sin los datos de voz en español, Android rechaza cada palabra y no suena nada.
+      const tts = await plugin
+      for (const lang of ['es-US', 'es-ES', 'es-MX', 'es']) {
+        if ((await tts.isLanguageSupported({ lang })).supported) return true
+      }
+      return false
+    },
+    alCambiarVoces(fn) {
+      // El motor de voz de Android tarda en arrancar: al principio no entrega voces.
+      for (const ms of [500, 1500, 4000]) setTimeout(fn, ms)
+      // Al volver de instalar una voz en los ajustes del teléfono.
+      document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && fn())
+    },
     hablar(texto, o) {
       pendientes = o.encolar ? pendientes + 1 : 1
       void plugin
@@ -159,6 +179,7 @@ class Voz {
   private voz: VozDelMotor | null = null
   private genero: GeneroVoz | null = null
   private tono = 1
+  private sinEspanol = false
   private desbloqueada = false
   private alCambiar = new Set<() => void>()
 
@@ -170,6 +191,16 @@ class Voz {
 
   get disponible() {
     return this.motor !== null
+  }
+
+  /** Hay voz, pero no en español: hay que instalarla en el teléfono. */
+  get faltaEspanol(): boolean {
+    return this.sinEspanol
+  }
+
+  /** Abre la descarga de voces del teléfono (solo en la APK de Android). */
+  instalarEspanol() {
+    void instalarVozDelTelefono().catch(() => {})
   }
 
   get nombreVoz(): string | null {
@@ -191,8 +222,10 @@ class Voz {
   private async actualizarVoces() {
     if (!this.motor) return
     // Android carga las voces de forma asíncrona: al principio la lista viene vacía.
-    this.voz = elegirVoz(await this.motor.voces(), this.genero)
+    const voces = await this.motor.voces().catch(() => [])
+    this.voz = elegirVoz(voces, this.genero)
     this.tono = tonoPara(this.voz, this.genero)
+    this.sinEspanol = (await this.motor.hayEspanol(voces).catch(() => null)) === false
     this.alCambiar.forEach((fn) => fn())
   }
 

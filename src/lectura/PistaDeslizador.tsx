@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, type ReactNode } from 'react'
+import { protegerDelGestoAtras } from '../plataforma/telefono'
 import type { Entrada } from './motor'
 
 interface Props {
@@ -17,6 +18,9 @@ export const PistaDeslizador = forwardRef<HTMLDivElement, Props>(function PistaD
   const zona = useRef<HTMLDivElement>(null)
   const punteroActivo = useRef<number | null>(null)
   useImperativeHandle(ref, () => zona.current!)
+
+  // En Android, deslizar cerca del borde no debe activar el gesto "atrás".
+  useEffect(() => protegerDelGestoAtras(zona.current!), [])
 
   // iOS Safari a veces ignora touch-action: se bloquea el gesto a mano.
   useEffect(() => {

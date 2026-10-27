@@ -72,7 +72,7 @@ export function Presentacion({ perfil, alTerminar }: Props) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex items-center gap-2 px-5 pt-[max(1rem,env(safe-area-inset-top))]">
+      <div className="flex items-center gap-2 px-5 pt-4">
         <div className="flex flex-1 gap-1.5" aria-label={`Paso ${paso + 1} de ${PASOS.length}`}>
           {PASOS.map((p, i) => (
             <span key={p} className={`h-2 flex-1 rounded-full ${i <= paso ? 'bg-petroleo' : 'bg-arena'}`} />

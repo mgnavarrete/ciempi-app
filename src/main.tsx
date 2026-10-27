@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import { DatosProvider } from './datos/DatosProvider'
 import './index.css'
+import { usarGestoAtras } from './plataforma/telefono'
+
+usarGestoAtras()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

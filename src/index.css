@@ -36,6 +36,18 @@ body,
   height: 100%;
 }
 
+/*
+ * Bordes del teléfono: barra de estado, cámara (en horizontal queda a un
+ * costado) y barra de gestos. En la APK, Capacitor entrega los valores en
+ * --safe-area-inset-*; en el navegador vienen en env().
+ */
+.marco-seguro {
+  padding-top: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  padding-right: max(env(safe-area-inset-right, 0px), var(--safe-area-inset-right, 0px));
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  padding-left: max(env(safe-area-inset-left, 0px), var(--safe-area-inset-left, 0px));
+}
+
 body {
   margin: 0;
   background: var(--color-crema);
