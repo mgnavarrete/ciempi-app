@@ -1,0 +1,12 @@
+{
+  "name": "Ciempi",
+  "short_name": "Ciempi",
+  "description": "Lectura asistida para niños: desliza el dedo y Ciempi lee contigo.",
+  "lang": "es-CL",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#fdf8ee",
+  "theme_color": "#fdf8ee",
+  "icons": [{ "src": "/icono-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }]
+}

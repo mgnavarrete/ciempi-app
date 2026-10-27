@@ -1,0 +1,13 @@
+node_modules
+dist
+*.local
+*.tsbuildinfo
+.env
+# Libros con derechos de autor: no se versionan.
+libro/
+ciempi.apk
+android/app/build/
+android/.gradle/
+.impeccable/
+supabase/.temp/
+supabase/.branches/
