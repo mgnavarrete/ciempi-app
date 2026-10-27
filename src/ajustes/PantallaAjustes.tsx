@@ -1,6 +1,6 @@
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { AvisoVoz } from '../audio/AvisoVoz'
-import { voz } from '../audio/voz'
+import { voz, type EleccionVoz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import { LIMITES_AJUSTES, type AjustesLectura, type PerfilNino, type SesionLectura } from '../dominio/tipos'
@@ -24,6 +24,16 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
     (fn) => voz.suscribir(fn),
     () => voz.nombreVoz,
   )
+  const eleccionVoz = useSyncExternalStore(
+    (fn) => voz.suscribir(fn),
+    () => voz.eleccion,
+  )
+  // La lista de voces cambia cuando el teléfono termina de cargarlas.
+  const cantidadVoces = useSyncExternalStore(
+    (fn) => voz.suscribir(fn),
+    () => voz.opciones.length,
+  )
+  const opcionesVoz = useMemo(() => voz.opciones, [cantidadVoces])
   const cambiar = <K extends keyof AjustesLectura>(clave: K, valor: AjustesLectura[K]) => alCambiar({ ...ajustes, [clave]: valor })
 
   return (
@@ -45,6 +55,26 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
 
         <Seccion emoji="🔊" titulo="Voz">
           <AvisoVoz />
+          <label className="flex flex-col gap-1">
+            <span className="font-bold">Voz</span>
+            <select
+              // Una voz elegida en otro momento que ya no está en el equipo: se muestra "Automática".
+              value={opcionesVoz.some((o) => o.id === eleccionVoz) ? eleccionVoz : 'auto'}
+              onChange={(e) => {
+                voz.elegir(e.target.value as EleccionVoz)
+                voz.desbloquear()
+                voz.decirFrase(`Hola, soy ${perfil.ciempi.nombre}.`, ajustes.velocidadVoz)
+              }}
+              className="campo text-base"
+            >
+              {opcionesVoz.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.espanol ? o.nombre : `${o.nombre} (otro idioma)`}
+                </option>
+              ))}
+            </select>
+            <span className="text-xs text-tinta-suave">Se guarda en este dispositivo. Si una voz no suena, prueba otra.</span>
+          </label>
           <Deslizador
             etiqueta="Velocidad"
             valor={ajustes.velocidadVoz}

@@ -90,6 +90,8 @@ export function PantallaLectura(props: Props) {
 
   const [motor, setMotor] = useState<EstadoMotor>(estadoInicial)
   const motorRef = useRef(motor)
+  const dibujoPendiente = useRef(0)
+  useEffect(() => () => cancelAnimationFrame(dibujoPendiente.current), [])
   const [aviso, setAviso] = useState<string | null>(null)
   // Palabras acumuladas hacia la próxima moneda (y un contador para animar cada moneda nueva).
   const [haciaMoneda, setHaciaMoneda] = useState(() => (vistaPrevia ? 0 : leerHaciaMoneda(perfil.id)))
@@ -275,7 +277,12 @@ export function PantallaLectura(props: Props) {
     const { estado, efectos } = paso(motorRef.current, entrada, pista, config)
     if (estado !== motorRef.current) {
       motorRef.current = estado
-      setMotor(estado)
+      // El dedo manda más eventos de los que el teléfono alcanza a dibujar: se
+      // dibuja una vez por cuadro, siempre con la última posición (sin atrasos acumulados).
+      dibujoPendiente.current ||= requestAnimationFrame(() => {
+        dibujoPendiente.current = 0
+        setMotor(motorRef.current)
+      })
     }
     efectos.forEach(ejecutar)
   }

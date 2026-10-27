@@ -58,6 +58,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
 
   const clases = [
     caminando && fase === 'arrastrando' ? 'caminando' : '',
+    fase === 'arrastrando' ? 'arrastrando' : '',
     fase === 'tropiezo' ? 'tropiezo' : '',
     fase === 'completada' ? 'feliz' : '',
     tranquilo ? 'tranquilo' : '',

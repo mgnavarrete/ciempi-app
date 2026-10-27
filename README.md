@@ -145,6 +145,8 @@ voz de hombre si Ciempi es niño (`es_MX-ald`) y de mujer si es niña
   lectura precarga las palabras de la frase actual y la siguiente.
 - Si el servicio no responde, la app usa la voz del teléfono (y si este no
   tiene español, muestra el aviso «Instalar voz»).
+- **Ajustes → Voz:** se puede elegir a mano la voz de Ciempi (niño o niña) o
+  cualquier voz del teléfono, de cualquier idioma. Se guarda en el dispositivo.
 
 En local: `bash deploy/instalar-voz.sh` instala todo, o a mano
 `python3 -m venv server/voz/.venv && server/voz/.venv/bin/pip install -r server/voz/requirements.txt`,

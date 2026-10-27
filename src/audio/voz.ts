@@ -89,6 +89,34 @@ export function limpiarParaVoz(palabra: string): string {
 interface VozDelMotor extends VozMinima {
   /** Índice de la voz en el motor nativo (el plugin las identifica así). */
   indice?: number
+  /** Identificador único de la voz en el motor (el nombre puede repetirse). */
+  voiceURI?: string
+}
+
+/**
+ * Qué voz usar, elegida en Ajustes y guardada en este dispositivo (las voces
+ * del teléfono cambian de un equipo a otro):
+ * - "auto": la voz de Ciempi del servidor y, si no está, la mejor del teléfono;
+ * - "ciempi-nino" / "ciempi-nina": la voz de Ciempi de niño o de niña;
+ * - "equipo:<id>": una voz del teléfono o navegador, de cualquier idioma.
+ */
+export type EleccionVoz = 'auto' | 'ciempi-nino' | 'ciempi-nina' | `equipo:${string}`
+
+export interface OpcionVoz {
+  id: EleccionVoz
+  nombre: string
+  espanol: boolean
+}
+
+const CLAVE_ELECCION = 'ciempi:voz-elegida'
+const idDeVoz = (v: VozDelMotor) => v.voiceURI || `${v.name}|${v.lang}`
+
+function leerEleccion(): EleccionVoz {
+  try {
+    return (localStorage.getItem(CLAVE_ELECCION) as EleccionVoz | null) ?? 'auto'
+  } catch {
+    return 'auto'
+  }
 }
 
 interface OpcionesHablar {
@@ -201,6 +229,8 @@ class Voz {
   /** Voz de Ciempi generada en el servidor; si no está, se usa la del teléfono (`motor`). */
   private servidor: VozServidor | null = null
   private voz: VozDelMotor | null = null
+  private vocesDelEquipo: VozDelMotor[] = []
+  private eleccionActual: EleccionVoz = leerEleccion()
   private genero: GeneroVoz | null = null
   private tono = 1
   private velocidadActual = 1
@@ -223,11 +253,47 @@ class Voz {
 
   /** Se está usando la voz de Ciempi del servidor (y no la del teléfono). */
   get conServidor(): boolean {
-    return !!this.servidor?.disponible
+    return !this.eleccionActual.startsWith('equipo:') && !!this.servidor?.disponible
   }
 
   private get vozCiempi(): VozCiempi {
+    if (this.eleccionActual === 'ciempi-nino') return 'nino'
+    if (this.eleccionActual === 'ciempi-nina') return 'nina'
     return this.genero === 'femenina' ? 'nina' : 'nino'
+  }
+
+  get eleccion(): EleccionVoz {
+    return this.eleccionActual
+  }
+
+  /** Las voces que se pueden elegir en Ajustes: las de Ciempi y todas las del equipo (español primero). */
+  get opciones(): OpcionVoz[] {
+    const ciempi: OpcionVoz[] = this.servidor
+      ? [
+          { id: 'ciempi-nino', nombre: 'Voz de Ciempi: niño', espanol: true },
+          { id: 'ciempi-nina', nombre: 'Voz de Ciempi: niña', espanol: true },
+        ]
+      : []
+    const equipo = this.vocesDelEquipo
+      .map((v) => ({
+        id: `equipo:${idDeVoz(v)}` as EleccionVoz,
+        nombre: v.voiceURI && v.voiceURI !== v.name ? `${v.name} · ${v.voiceURI}` : `${v.name} (${v.lang})`,
+        espanol: esEspanol(v.lang),
+      }))
+      .sort((a, b) => Number(b.espanol) - Number(a.espanol) || a.nombre.localeCompare(b.nombre))
+    return [{ id: 'auto', nombre: 'Automática (recomendada)', espanol: true }, ...ciempi, ...equipo]
+  }
+
+  /** Cambia la voz y la recuerda en este dispositivo. */
+  elegir(eleccion: EleccionVoz) {
+    this.eleccionActual = eleccion
+    try {
+      localStorage.setItem(CLAVE_ELECCION, eleccion)
+    } catch {
+      // Sin almacenamiento: vale mientras la app esté abierta.
+    }
+    this.callar()
+    void this.actualizarVoces()
   }
 
   private opcionesMotor(encolar: boolean): OpcionesHablar {
@@ -238,9 +304,9 @@ class Voz {
     return this.motor !== null || this.servidor !== null
   }
 
-  /** No hay voz del servidor y el teléfono no tiene español: hay que instalarla. */
+  /** No hay voz del servidor y el teléfono no tiene español: hay que instalarla (salvo que se eligiera una voz a mano). */
   get faltaEspanol(): boolean {
-    return !this.conServidor && this.sinEspanol
+    return !this.eleccionActual.startsWith('equipo:') && !this.conServidor && this.sinEspanol
   }
 
   /** Abre la descarga de voces del teléfono (solo en la APK de Android). */
@@ -274,9 +340,12 @@ class Voz {
     if (!this.motor) return
     // Android carga las voces de forma asíncrona: al principio la lista viene vacía.
     const voces = await this.motor.voces().catch(() => [])
+    this.vocesDelEquipo = voces
     this.conteo = { total: voces.length, espanol: voces.filter((v) => esEspanol(v.lang)).length }
-    this.voz = elegirVoz(voces, this.genero)
-    this.tono = tonoPara(this.voz, this.genero)
+    // Una voz del equipo elegida a mano se usa tal cual (sin cambiarle el tono).
+    const elegida = this.eleccionActual.startsWith('equipo:') ? voces.find((v) => `equipo:${idDeVoz(v)}` === this.eleccionActual) : undefined
+    this.voz = elegida ?? elegirVoz(voces, this.genero)
+    this.tono = elegida ? 1 : tonoPara(this.voz, this.genero)
     this.sinEspanol = (await this.motor.hayEspanol(voces).catch(() => null)) === false
     this.alCambiar.forEach((fn) => fn())
   }

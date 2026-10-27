@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { forwardRef, memo, useLayoutEffect, useRef, useState } from 'react'
 import type { AparienciaCiempi } from '../ciempi/catalogo'
 import type { PalabraSilabeada } from '../lenguaje/silabas'
 import { Ciempi } from './Ciempi'
@@ -21,6 +21,7 @@ interface Props {
 /** Espacio a la izquierda para la cabeza de Ciempi: la primera palabra parte a su lado. */
 const MARGEN_IZQ = '3.6rem'
 const MARGEN_DER = '1rem'
+const ESTILO_LINEA = { letterSpacing: '0.04em', columnGap: '0.6em' }
 const LETRA_MINIMA = 16
 
 /**
@@ -76,27 +77,56 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
     return () => obs.disconnect()
   }, [palabras, letra])
 
-  const estiloLinea = { letterSpacing: '0.04em', columnGap: '0.6em' }
   const esperando = motor.fase === 'esperando'
 
   return (
     <PistaDeslizador ref={zona} alEntrar={alEntrar} className="w-full select-none">
       {/* Medidor invisible: el ancho natural de cada palabra con la letra del ajuste */}
-      <span ref={medidor} aria-hidden className="font-lectura invisible absolute left-0 top-0 flex whitespace-nowrap" style={{ ...estiloLinea, fontSize: tamanoLetra }}>
+      <span ref={medidor} aria-hidden className="font-lectura invisible absolute left-0 top-0 flex whitespace-nowrap" style={{ ...ESTILO_LINEA, fontSize: tamanoLetra }}>
         {palabras.map((p, i) => (
           <span key={i}>{p.texto}</span>
         ))}
       </span>
 
+      <FraseEncendida ref={linea} palabras={palabras} palabrasLeidas={motor.palabrasLeidas} letra={letra} tranquilo={tranquilo} />
+
+      {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
+      <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
+        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} />
+        {esperando && motor.progreso === 0 && (
+          <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
+            <span className="pointer-fine:hidden">Pon el dedo en Ciempi y desliza →</span>
+            <span className="hidden pointer-fine:inline">Arrastra a Ciempi con el mouse →</span>
+          </span>
+        )}
+      </div>
+    </PistaDeslizador>
+  )
+}
+
+interface PropsFrase {
+  palabras: PalabraSilabeada[]
+  palabrasLeidas: number
+  letra: number
+  tranquilo: boolean
+}
+
+/**
+ * La frase con las palabras ya leídas encendidas (sílabas de colores). Solo se
+ * vuelve a dibujar cuando se enciende una palabra, no con cada movimiento del dedo.
+ */
+const FraseEncendida = memo(
+  forwardRef<HTMLParagraphElement, PropsFrase>(function FraseEncendida({ palabras, palabrasLeidas, letra, tranquilo }, ref) {
+    return (
       <p
-        ref={linea}
+        ref={ref}
         aria-label={palabras.map((p) => p.texto).join(' ')}
         // Palabras de punta a punta con el mismo espacio entre ellas (una sola: al centro).
         className={`font-lectura flex whitespace-nowrap leading-tight text-tinta ${palabras.length > 1 ? 'justify-between' : 'justify-center'}`}
-        style={{ ...estiloLinea, fontSize: letra, paddingLeft: MARGEN_IZQ, paddingRight: MARGEN_DER }}
+        style={{ ...ESTILO_LINEA, fontSize: letra, paddingLeft: MARGEN_IZQ, paddingRight: MARGEN_DER }}
       >
         {palabras.map((palabra, p) => {
-          const encendida = p < motor.palabrasLeidas
+          const encendida = p < palabrasLeidas
           const color = colorDePalabra(p)
           return (
             <span
@@ -122,17 +152,6 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
           )
         })}
       </p>
-
-      {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
-      <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
-        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} />
-        {esperando && motor.progreso === 0 && (
-          <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
-            <span className="pointer-fine:hidden">Pon el dedo en Ciempi y desliza →</span>
-            <span className="hidden pointer-fine:inline">Arrastra a Ciempi con el mouse →</span>
-          </span>
-        )}
-      </div>
-    </PistaDeslizador>
-  )
-}
+    )
+  }),
+)

@@ -86,6 +86,10 @@ body {
 .ciempi-cabeza {
   transition: transform 90ms linear;
 }
+/* Arrastrando, la cabeza va exactamente bajo el dedo (la animación la dejaba atrás). */
+.arrastrando .ciempi-cabeza {
+  transition: none;
+}
 .ciempi-pata {
   transform-box: fill-box;
   transform-origin: top center;
