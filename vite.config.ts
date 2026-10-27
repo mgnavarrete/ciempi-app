@@ -11,9 +11,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
+    // En desarrollo, /api va al servidor de Ciempi (npm run servidor), igual que con nginx.
+    proxy: { '/api': 'http://127.0.0.1:3200' },
     watch: enWsl ? { usePolling: true, interval: 300 } : undefined,
   },
   test: {
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'server/test/**/*.test.ts'],
   },
 })

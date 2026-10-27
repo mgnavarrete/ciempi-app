@@ -80,7 +80,8 @@ export function App() {
 
   if (error) return <p className="p-6 text-coral">No se pudieron cargar los datos: {error}</p>
   if (sesion === undefined) return null
-  if (pidiendoClave && sesion?.tipo === 'adulto') {
+  // Llegó desde el enlace del correo: puede no tener sesión todavía (la crea al guardar la clave nueva).
+  if (pidiendoClave && sesion?.tipo !== 'nino') {
     return (
       <Marco>
         <PantallaNuevaClave alTerminar={terminarNuevaClave} />

@@ -1,0 +1,17 @@
+# Base de datos para desarrollo local: `npm run db:start`
+name: ciempi
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ciempi
+      POSTGRES_PASSWORD: ciempi
+      POSTGRES_DB: ciempi
+    ports:
+      - '127.0.0.1:5434:5432'
+    volumes:
+      - ciempi-db:/var/lib/postgresql/data
+
+volumes:
+  ciempi-db:

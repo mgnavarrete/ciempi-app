@@ -1,4 +1,3 @@
-import { readdirSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { APARIENCIA_INICIAL, CATALOGO, CATEGORIAS, PALETAS, loTiene, normalizarApariencia, variante } from './catalogo'
 
@@ -14,24 +13,6 @@ describe('catálogo de Ciempi', () => {
     for (const i of CATALOGO.filter((x) => x.categoria === 'paleta')) expect(PALETAS[variante(i.id)]).toBeDefined()
   })
 
-  it('los precios coinciden con la tabla items_tienda de Supabase', () => {
-    const dir = 'supabase/migrations'
-    const sql = readdirSync(dir)
-      .filter((f) => f.endsWith('.sql'))
-      .map((f) => readFileSync(`${dir}/${f}`, 'utf8'))
-      .join('\n')
-    const enSql = new Map([...sql.matchAll(/\('([a-z0-9-]+)', '[^']*', '([a-z]+)', (\d+)\)/g)].map((m) => [m[1], { categoria: m[2], precio: Number(m[3]) }]))
-    // Cambios de precio posteriores: update … set precio = N where id in ('a', 'b').
-    for (const m of sql.matchAll(/set precio = (\d+)\s+where id in \(([^)]*)\)/g)) {
-      for (const id of m[2].match(/[a-z0-9-]+/g) ?? []) enSql.set(id, { ...enSql.get(id)!, precio: Number(m[1]) })
-    }
-    // Los que salieron de la tienda quedan inactivos en la base y fuera del catálogo.
-    for (const m of sql.matchAll(/set activo = false where id in \(([^)]*)\)/g)) {
-      for (const id of m[1].match(/[a-z0-9-]+/g) ?? []) enSql.delete(id)
-    }
-    expect(enSql.size).toBe(CATALOGO.length)
-    for (const i of CATALOGO) expect(enSql.get(i.id)).toEqual({ categoria: i.categoria, precio: i.precio })
-  })
 })
 
 describe('normalizarApariencia', () => {

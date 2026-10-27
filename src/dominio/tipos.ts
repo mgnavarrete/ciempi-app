@@ -3,9 +3,9 @@ import type { AparienciaCiempi } from '../ciempi/catalogo'
 /**
  * Modelo de datos de Ciempi.
  *
- * Pensado para migrar a Supabase (Postgres + RLS): ids uuid, fechas ISO,
- * y todo cuelga de una `cuentaId` (el adulto dueño). Ver supabase/schema.sql.
- * En TypeScript se usa camelCase; el adaptador de Supabase traducirá a snake_case.
+ * Se guarda igual en localStorage y en el PostgreSQL del servidor: ids uuid,
+ * fechas ISO y todo cuelga de una `cuentaId` (el adulto dueño). Ver server/sql.
+ * En TypeScript se usa camelCase; el servidor traduce a snake_case.
  */
 
 export type Id = string
@@ -16,7 +16,7 @@ export type FechaISO = string
 
 export type RolCuenta = 'terapeuta' | 'apoderado'
 
-/** Adulto con correo y contraseña. En Supabase, `id` = `auth.users.id`. */
+/** Adulto con correo y contraseña. */
 export interface Cuenta {
   id: Id
   /** null en la cuenta local de la fase 1 (sin login). */

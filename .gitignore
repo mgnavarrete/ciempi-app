@@ -9,5 +9,3 @@ ciempi.apk
 android/app/build/
 android/.gradle/
 .impeccable/
-supabase/.temp/
-supabase/.branches/

@@ -22,7 +22,7 @@ import type {
 /**
  * Implementación sin conexión: una cuenta local implícita, todo en
  * localStorage de este dispositivo. Útil para probar y para usar en un solo
- * equipo; con Supabase se agregan login y sincronización.
+ * equipo; con el servidor se agregan login y sincronización.
  */
 
 /** Versión del formato guardado. Si cambia, se puede migrar o descartar. */
@@ -79,7 +79,7 @@ interface Tablas {
 
 /**
  * Cambios de datos guardados que se aplican una sola vez por navegador.
- * (En Supabase esto serán migraciones SQL.)
+ * (En el servidor son las migraciones de server/sql.)
  */
 const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
   {
@@ -173,7 +173,7 @@ function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id): Asignacion
   }
 }
 
-const SIN_CONEXION = 'Esta función necesita una cuenta en línea (Supabase).'
+const SIN_CONEXION = 'Esta función necesita una cuenta en línea.'
 
 /** Completa perfiles guardados antes de que existiera la tienda de Ciempi. */
 const completarPerfil = (p: PerfilNino): PerfilNino => ({ ...p, ciempi: normalizarApariencia(p.ciempi), inventario: p.inventario ?? [] })

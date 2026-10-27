@@ -17,7 +17,7 @@ import type {
 /**
  * Contratos de la capa de datos. La UI solo conoce estas interfaces.
  * Hay dos implementaciones: localStorage (sin cuenta, un solo dispositivo)
- * y Supabase (con login y sincronización). Todo es asíncrono.
+ * y la API del servidor de Ciempi (con login y sincronización). Todo es asíncrono.
  */
 
 export interface Autenticacion {
@@ -47,7 +47,7 @@ export interface RepositorioPerfiles {
   /** Un admin cambia la clave del niño (solo en línea). */
   cambiarClave(perfilId: Id, clave: string): Promise<void>
   actualizarAjustes(id: Id, ajustes: AjustesLectura): Promise<PerfilNino>
-  /** Suma (o resta) monedas y devuelve el nuevo saldo. En Supabase: una RPC atómica. */
+  /** Suma (o resta) monedas y devuelve el nuevo saldo. En el servidor: una transacción. */
   sumarMonedas(id: Id, cantidad: number): Promise<number>
   /** Guarda cómo se ve su Ciempi. Solo puede ponerse cosas gratis o compradas. */
   actualizarCiempi(id: Id, apariencia: AparienciaCiempi): Promise<PerfilNino>
@@ -83,7 +83,7 @@ export interface RepositorioSesiones {
 }
 
 export interface Repositorios {
-  /** true con Supabase: hay login, invitaciones y sincronización entre dispositivos. */
+  /** true con el servidor: hay login, invitaciones y sincronización entre dispositivos. */
   enLinea: boolean
   auth: Autenticacion
   perfiles: RepositorioPerfiles

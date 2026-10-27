@@ -1,0 +1,27 @@
+{
+  "name": "ciempi-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Servidor de Ciempi: cuentas de adultos y niños, libros, progreso y tienda en PostgreSQL.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/index.ts",
+    "start": "node --env-file-if-exists=.env src/index.ts",
+    "check": "tsc --noEmit",
+    "cuenta": "node --env-file-if-exists=.env src/cli.ts"
+  },
+  "dependencies": {
+    "fastify": "^5.12.7",
+    "nodemailer": "^7.0.13",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "typescript": "^5.9.3"
+  }
+}

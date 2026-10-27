@@ -1,26 +1,19 @@
-import { createClient } from '@supabase/supabase-js'
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
+import { crearRepositoriosApi } from './api/repositoriosApi'
 import { crearRepositoriosLocales } from './localStorage/repositoriosLocales'
 import type { Repositorios } from './repositorios'
-import { crearRepositoriosSupabase } from './supabase/repositoriosSupabase'
 
 const ContextoDatos = createContext<Repositorios | null>(null)
 
 /**
  * Único punto donde se decide qué implementación de datos usa la app:
- * con VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en .env.local se usa
- * Supabase (login + sincronización); sin ellas, localStorage.
+ * - VITE_API_URL="/" → el servidor de Ciempi en el mismo sitio (la web en nginx);
+ * - VITE_API_URL="https://ciempi.minttu.cl" → ese servidor (la app Android);
+ * - sin VITE_API_URL → sin conexión, todo en este dispositivo (localStorage).
  */
 function repositoriosSegunEntorno(): Repositorios {
-  const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
-  const clave = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
-  if (url && clave) {
-    const alta = () =>
-      createClient(url, clave, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: 'ciempi-alta' } })
-    // Flujo implícito: el enlace de "recuperar contraseña" funciona aunque se abra
-    // en otro dispositivo (p. ej. se pide en el computador y se abre en el celular).
-    return crearRepositoriosSupabase(createClient(url, clave, { auth: { flowType: 'implicit' } }), alta)
-  }
+  const url = (import.meta.env.VITE_API_URL as string | undefined)?.trim()
+  if (url) return crearRepositoriosApi(url === '/' ? '' : url.replace(/\/$/, ''))
   return crearRepositoriosLocales()
 }
 

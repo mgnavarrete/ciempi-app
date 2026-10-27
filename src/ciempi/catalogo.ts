@@ -1,6 +1,6 @@
 /**
- * Catálogo de cosas para personalizar a Ciempi. Los precios deben coincidir
- * con la tabla items_tienda de Supabase (hay un test que lo revisa).
+ * Catálogo de cosas para personalizar a Ciempi. El servidor importa este
+ * mismo archivo para cobrar las compras, así que los precios viven solo aquí.
  * Todo está disponible para todos: no hay cosas "de niño" o "de niña".
  */
 

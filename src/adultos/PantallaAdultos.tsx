@@ -196,7 +196,7 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
           ) : (
             <p className="text-sm text-tinta-suave">
               Modo sin conexión: los datos quedan guardados solo en este dispositivo. Para compartir niños entre la terapeuta y la casa
-              se necesita conectar Supabase (ver README).
+              se necesita conectar la app al servidor de Ciempi (ver README).
             </p>
           )}
         </section>
