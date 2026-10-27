@@ -119,6 +119,10 @@ Instala `espeak-ng` (con `sudo apt`), crea `server/voz/.venv` con Kokoro, descar
 Cada palabra se genera una sola vez y queda guardada en la tabla `audios_voz`. Si el servicio está
 apagado, la app usa la voz del teléfono. Registros: `journalctl -u ciempi-voz -n 30`.
 
+Para **pausar** Kokoro y liberar la memoria (la app usa la voz del teléfono; conviene elegirla en
+Ajustes → Voz): `sudo systemctl disable --now ciempi-voz`. Para volver a usarlo:
+`sudo systemctl enable --now ciempi-voz`. `deploy/actualizar.sh` no lo enciende si está pausado.
+
 Opcionales, de pago (se usan antes que Kokoro si tienen clave):
 
 ### Voces de Microsoft (Lorenzo y Paloma)
