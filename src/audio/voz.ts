@@ -1,4 +1,5 @@
 import { Capacitor } from '@capacitor/core'
+import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { instalarVozDelTelefono } from '../plataforma/telefono'
 import { VozServidor, type VozCiempi } from './vozServidor'
 
@@ -173,8 +174,10 @@ function motorWeb(): MotorVoz | null {
 
 function motorNativo(): MotorVoz | null {
   if (!Capacitor.isNativePlatform()) return null
-  // Se carga recién en el teléfono: en la web no se incluye en el arranque.
-  const plugin = import('@capacitor-community/text-to-speech').then((m) => m.TextToSpeech)
+  // Ojo: el plugin nunca se devuelve desde una promesa (ni con await). Es un Proxy de
+  // Capacitor que "tiene" cualquier método, también then(): la promesa lo confundía con
+  // otra promesa, llamaba a un then() nativo que no existe y la voz del teléfono fallaba siempre.
+  const tts = TextToSpeech
   let pendientes = 0
   let error: string | null = null
   /** El primer español que acepta el teléfono: se usa si no se pudo elegir una voz. */
@@ -185,7 +188,7 @@ function motorNativo(): MotorVoz | null {
   return {
     async voces() {
       try {
-        const { voices } = await (await plugin).getSupportedVoices()
+        const { voices } = await tts.getSupportedVoices()
         return voices.map((v, indice) => ({ ...v, indice }))
       } catch (e) {
         // Antes de que el motor de voz de Android termine de arrancar, falla.
@@ -196,7 +199,6 @@ function motorNativo(): MotorVoz | null {
     async hayEspanol(voces) {
       // Mientras el motor arranca no entrega voces y dice que no hay ningún idioma: todavía no se sabe.
       if (!voces.length) return null
-      const tts = await plugin
       for (const lang of ESPANOLES) {
         if ((await tts.isLanguageSupported({ lang })).supported) {
           espanolDelTelefono = lang
@@ -210,8 +212,8 @@ function motorNativo(): MotorVoz | null {
       // se pregunta cada segundo hasta que entregue voces, por hasta un minuto.
       let intentos = 0
       const esperarMotor = async () => {
-        const listo = await plugin
-          .then((tts) => tts.getSupportedVoices())
+        const listo = await tts
+          .getSupportedVoices()
           .then(({ voices }) => voices.length > 0)
           .catch(() => false)
         if (listo) {
@@ -226,19 +228,18 @@ function motorNativo(): MotorVoz | null {
     },
     hablar(texto, o) {
       pendientes = o.encolar ? pendientes + 1 : 1
-      const decirEn = (tts: Awaited<typeof plugin>, lang: string, conVoz: boolean) =>
+      const decirEn = (lang: string, conVoz: boolean) =>
         tts.speak({ text: texto, lang, voice: conVoz ? o.voz?.indice : undefined, rate: o.velocidad, pitch: o.tono, queueStrategy: o.encolar ? 1 : 0 })
-      void plugin
-        .then(async (tts) => {
+      void (async () => {
           const primero = o.voz ? idiomaDeVoz(o.voz.lang) : (espanolDelTelefono ?? 'es-US')
           try {
-            await decirEn(tts, primero, true)
+            await decirEn(primero, true)
           } catch (e) {
             // El teléfono rechazó ese idioma o esa voz: se prueba con otras variantes de español.
             error = `no pudo decir "${texto}" en ${primero}: ${mensaje(e)}`
             for (const lang of ESPANOLES.filter((l) => l !== primero)) {
               try {
-                await decirEn(tts, lang, false)
+                await decirEn(lang, false)
                 espanolDelTelefono = lang
                 return
               } catch {
@@ -246,14 +247,13 @@ function motorNativo(): MotorVoz | null {
               }
             }
           }
-        })
-        .finally(() => {
+        })().finally(() => {
           pendientes = Math.max(0, pendientes - 1)
         })
     },
     callar() {
       pendientes = 0
-      void plugin.then((tts) => tts.stop()).catch(() => {})
+      void tts.stop().catch(() => {})
     },
     hablando: () => pendientes > 0,
     enCola: () => pendientes > 1,
