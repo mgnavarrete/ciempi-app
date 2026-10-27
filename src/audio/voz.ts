@@ -137,6 +137,8 @@ interface MotorVoz {
   hablando(): boolean
   /** Hay palabras esperando que todavía no empiezan a sonar. */
   enCola(): boolean
+  /** Lo último que falló (para mostrarlo en Ajustes), o null. */
+  ultimoError(): string | null
 }
 
 function motorWeb(): MotorVoz | null {
@@ -165,6 +167,7 @@ function motorWeb(): MotorVoz | null {
     callar: () => speechSynthesis.cancel(),
     hablando: () => speechSynthesis.speaking || speechSynthesis.pending,
     enCola: () => speechSynthesis.pending,
+    ultimoError: () => null,
   }
 }
 
@@ -173,17 +176,28 @@ function motorNativo(): MotorVoz | null {
   // Se carga recién en el teléfono: en la web no se incluye en el arranque.
   const plugin = import('@capacitor-community/text-to-speech').then((m) => m.TextToSpeech)
   let pendientes = 0
+  let error: string | null = null
   /** El primer español que acepta el teléfono: se usa si no se pudo elegir una voz. */
   let espanolDelTelefono: string | null = null
+  const ESPANOLES = ['es-US', 'es-MX', 'es-ES', 'es']
+  const mensaje = (e: unknown) => (e instanceof Error ? e.message : String(e))
+
   return {
     async voces() {
-      const { voices } = await (await plugin).getSupportedVoices()
-      return voices.map((v, indice) => ({ ...v, indice }))
+      try {
+        const { voices } = await (await plugin).getSupportedVoices()
+        return voices.map((v, indice) => ({ ...v, indice }))
+      } catch (e) {
+        // Antes de que el motor de voz de Android termine de arrancar, falla.
+        error = `el motor de voz todavía no responde (${mensaje(e)})`
+        return []
+      }
     },
-    async hayEspanol() {
-      // Sin los datos de voz en español, Android rechaza cada palabra y no suena nada.
+    async hayEspanol(voces) {
+      // Mientras el motor arranca no entrega voces y dice que no hay ningún idioma: todavía no se sabe.
+      if (!voces.length) return null
       const tts = await plugin
-      for (const lang of ['es-US', 'es-MX', 'es-ES', 'es']) {
+      for (const lang of ESPANOLES) {
         if ((await tts.isLanguageSupported({ lang })).supported) {
           espanolDelTelefono = lang
           return true
@@ -192,25 +206,47 @@ function motorNativo(): MotorVoz | null {
       return false
     },
     alCambiarVoces(fn) {
-      // El motor de voz de Android tarda en arrancar: al principio no entrega voces.
-      for (const ms of [500, 1500, 4000]) setTimeout(fn, ms)
+      // El motor de voz de Android tarda en arrancar (a veces varios segundos):
+      // se pregunta cada segundo hasta que entregue voces, por hasta un minuto.
+      let intentos = 0
+      const esperarMotor = async () => {
+        const listo = await plugin
+          .then((tts) => tts.getSupportedVoices())
+          .then(({ voices }) => voices.length > 0)
+          .catch(() => false)
+        if (listo) {
+          error = null
+          return fn()
+        }
+        if (++intentos < 60) setTimeout(() => void esperarMotor(), 1000)
+      }
+      void esperarMotor()
       // Al volver de instalar una voz en los ajustes del teléfono.
       document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && fn())
     },
     hablar(texto, o) {
       pendientes = o.encolar ? pendientes + 1 : 1
+      const decirEn = (tts: Awaited<typeof plugin>, lang: string, conVoz: boolean) =>
+        tts.speak({ text: texto, lang, voice: conVoz ? o.voz?.indice : undefined, rate: o.velocidad, pitch: o.tono, queueStrategy: o.encolar ? 1 : 0 })
       void plugin
-        .then((tts) =>
-          tts.speak({
-            text: texto,
-            lang: o.voz ? idiomaDeVoz(o.voz.lang) : (espanolDelTelefono ?? 'es-US'),
-            voice: o.voz?.indice,
-            rate: o.velocidad,
-            pitch: o.tono,
-            queueStrategy: o.encolar ? 1 : 0,
-          }),
-        )
-        .catch(() => {})
+        .then(async (tts) => {
+          const primero = o.voz ? idiomaDeVoz(o.voz.lang) : (espanolDelTelefono ?? 'es-US')
+          try {
+            await decirEn(tts, primero, true)
+          } catch (e) {
+            // El teléfono rechazó ese idioma o esa voz: se prueba con otras variantes de español.
+            error = `no pudo decir "${texto}" en ${primero}: ${mensaje(e)}`
+            for (const lang of ESPANOLES.filter((l) => l !== primero)) {
+              try {
+                await decirEn(tts, lang, false)
+                espanolDelTelefono = lang
+                return
+              } catch {
+                // Sigue con la próxima.
+              }
+            }
+          }
+        })
         .finally(() => {
           pendientes = Math.max(0, pendientes - 1)
         })
@@ -221,6 +257,7 @@ function motorNativo(): MotorVoz | null {
     },
     hablando: () => pendientes > 0,
     enCola: () => pendientes > 1,
+    ultimoError: () => error,
   }
 }
 
@@ -322,9 +359,10 @@ class Voz {
     void instalarVozDelTelefono().catch(() => {})
   }
 
-  /** Para revisar en Ajustes qué encontró la app en el teléfono. */
+  /** Para revisar en Ajustes qué encontró la app en el teléfono (y lo último que falló). */
   get resumenVoces(): string {
-    return `${this.conteo.total} voces en el equipo, ${this.conteo.espanol} en español`
+    const error = this.motor?.ultimoError()
+    return `${this.conteo.total} voces en el equipo, ${this.conteo.espanol} en español${error ? `. Último error: ${error}` : ''}`
   }
 
   get nombreVoz(): string | null {

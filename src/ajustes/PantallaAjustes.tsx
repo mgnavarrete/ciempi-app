@@ -36,6 +36,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
   const opcionesVoz = useMemo(() => voz.opciones, [cantidadVoces])
   // Estado real de la voz de Ciempi: undefined = sin servidor, null = funciona, texto = qué falla.
   const [estadoVozCiempi, setEstadoVozCiempi] = useState<string | null | undefined>(undefined)
+  const [, setRevision] = useState(0)
   useEffect(() => {
     void voz.diagnosticarServidor().then(setEstadoVozCiempi)
   }, [eleccionVoz])
@@ -97,6 +98,11 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
               onClick={() => {
                 voz.desbloquear()
                 voz.decirFrase(`Hola, soy ${perfil.ciempi.nombre}. ¡Vamos a leer!`, ajustes.velocidadVoz)
+                // Vuelve a mirar el estado de la voz cuando ya se intentó hablar.
+                setTimeout(() => {
+                  setRevision((r) => r + 1)
+                  void voz.diagnosticarServidor().then(setEstadoVozCiempi)
+                }, 2500)
               }}
               className="rounded-full border-2 border-petroleo px-4 py-1.5 font-bold text-petroleo"
             >
@@ -104,7 +110,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
             </button>
             <span className="text-sm text-tinta-suave">
               {!voz.disponible ? 'Este navegador no tiene voz' : (nombreVoz ?? 'Sin voz en español')}
-              {voz.disponible && !voz.conServidor && <span className="block text-xs opacity-70">{voz.resumenVoces}</span>}
+              {voz.disponible && <span className="block text-xs opacity-70">Teléfono: {voz.resumenVoces}</span>}
             </span>
           </div>
         </Seccion>
