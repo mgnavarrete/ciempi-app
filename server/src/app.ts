@@ -212,6 +212,13 @@ export async function crearApp() {
   // El audio lo genera el servicio de voz (server/voz, Piper) y se guarda en
   // audios_voz: las palabras se repiten mucho entre libros y niños.
 
+  // Para el diagnóstico de Ajustes: ¿el servicio de voz responde? (lo guardado no cuenta).
+  app.get('/api/voz/estado', conUsuario, async () => {
+    const r = await fetch(`${process.env.VOZ_URL ?? 'http://127.0.0.1:3201'}/salud`, { signal: AbortSignal.timeout(5_000) }).catch(() => null)
+    if (!r?.ok) throw new Problema('el servicio de voz (ciempi-voz) no está funcionando en el servidor', 503)
+    return { ok: true }
+  })
+
   app.get('/api/voz', conUsuario, async (req, reply) => {
     const q = req.query as Record<string, string | undefined>
     const dicho = (q.texto ?? '').trim()

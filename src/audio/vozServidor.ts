@@ -71,6 +71,36 @@ export class VozServidor {
     return audio
   }
 
+  /**
+   * Prueba la voz de punta a punta (para Ajustes): devuelve null si funciona,
+   * o qué falla, para poder arreglarlo.
+   */
+  async diagnosticar(voz: VozCiempi): Promise<string | null> {
+    if (typeof AudioContext === 'undefined') return 'este equipo no puede reproducir audio'
+    if (!this.token()) return 'no hay sesión iniciada'
+    const pedir = (ruta: string) => fetch(`${this.base}${ruta}`, { headers: { Authorization: `Bearer ${this.token()}` } })
+    const problema = async (r: Response) => {
+      const datos = (await r.json().catch(() => null)) as { error?: string } | null
+      return `el servidor respondió ${r.status}${datos?.error ? `: ${datos.error}` : ''}`
+    }
+    let r: Response
+    try {
+      const estado = await pedir('/api/voz/estado')
+      if (!estado.ok) return await problema(estado)
+      r = await pedir(`/api/voz?${new URLSearchParams({ texto: 'hola', voz, velocidad: '1' })}`)
+    } catch {
+      return 'no hay conexión con el servidor'
+    }
+    if (!r.ok) return await problema(r)
+    try {
+      await this.ctx().decodeAudioData(await r.arrayBuffer())
+    } catch {
+      return 'el audio llegó, pero este equipo no lo pudo leer'
+    }
+    this.fallandoHasta = 0
+    return null
+  }
+
   /** Pide de antemano el audio de estas palabras. */
   precargar(textos: string[], voz: VozCiempi, velocidad: number) {
     if (!this.disponible) return

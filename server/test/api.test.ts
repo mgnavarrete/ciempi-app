@@ -184,6 +184,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     // Servicio de voz falso (el real es server/voz, con Piper).
     const pedidos: string[] = []
     const falso = createServer((req, res) => {
+      if (req.url === '/salud') return void res.end('ok')
       pedidos.push(req.url!)
       res.writeHead(200, { 'Content-Type': 'audio/wav' }).end(Buffer.from('RIFF-falso'))
     })
@@ -192,6 +193,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     const voz = (url: string, tok?: string) => app.inject({ method: 'GET', url, headers: tok ? { authorization: `Bearer ${tok}` } : {} })
     try {
       expect((await voz('/api/voz?texto=hola')).statusCode).toBe(401)
+      expect((await voz('/api/voz/estado', N)).statusCode).toBe(200)
       const r = await voz('/api/voz?texto=despacio&voz=nina&velocidad=0.93', N)
       expect(r.statusCode).toBe(200)
       expect(r.headers['content-type']).toBe('audio/wav')
@@ -206,5 +208,6 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     }
     // Servicio de voz apagado: la app usa la voz del teléfono.
     expect((await voz('/api/voz?texto=otra', N)).statusCode).toBe(503)
+    expect((await voz('/api/voz/estado', N)).statusCode).toBe(503)
   })
 })

@@ -34,6 +34,11 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
     () => voz.opciones.length,
   )
   const opcionesVoz = useMemo(() => voz.opciones, [cantidadVoces])
+  // Estado real de la voz de Ciempi: undefined = sin servidor, null = funciona, texto = qué falla.
+  const [estadoVozCiempi, setEstadoVozCiempi] = useState<string | null | undefined>(undefined)
+  useEffect(() => {
+    void voz.diagnosticarServidor().then(setEstadoVozCiempi)
+  }, [eleccionVoz])
   const cambiar = <K extends keyof AjustesLectura>(clave: K, valor: AjustesLectura[K]) => alCambiar({ ...ajustes, [clave]: valor })
 
   return (
@@ -74,6 +79,11 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
               ))}
             </select>
             <span className="text-xs text-tinta-suave">Se guarda en este dispositivo. Si una voz no suena, prueba otra.</span>
+            {estadoVozCiempi !== undefined && (
+              <span className={`text-xs font-bold ${estadoVozCiempi ? 'text-coral' : 'text-verde'}`}>
+                {estadoVozCiempi ? `La voz de Ciempi no funciona: ${estadoVozCiempi}.` : 'La voz de Ciempi funciona ✓'}
+              </span>
+            )}
           </label>
           <Deslizador
             etiqueta="Velocidad"

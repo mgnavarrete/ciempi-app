@@ -284,6 +284,14 @@ class Voz {
     return [{ id: 'auto', nombre: 'Automática (recomendada)', espanol: true }, ...ciempi, ...equipo]
   }
 
+  /** Revisa si la voz de Ciempi del servidor funciona (null) o qué falla. undefined: no hay servidor. */
+  async diagnosticarServidor(): Promise<string | null | undefined> {
+    if (!this.servidor) return undefined
+    const resultado = await this.servidor.diagnosticar(this.vozCiempi)
+    this.alCambiar.forEach((fn) => fn())
+    return resultado
+  }
+
   /** Cambia la voz y la recuerda en este dispositivo. */
   elegir(eleccion: EleccionVoz) {
     this.eleccionActual = eleccion
