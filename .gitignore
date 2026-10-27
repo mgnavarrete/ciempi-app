@@ -6,6 +6,8 @@ dist
 # Libros con derechos de autor: no se versionan.
 libro/
 ciempi.apk
+# APK generadas (npm run apk): se comparten a mano, no van en git.
+release/
 android/app/build/
 android/.gradle/
 .impeccable/

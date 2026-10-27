@@ -101,10 +101,16 @@ Requisitos (una vez): JDK 21 y Android SDK con `platforms;android-36` y
 `build-tools;36.0.0`. En este equipo quedaron en `~/jdk` y `~/android-sdk`.
 
 ```bash
-npm run apk          # → ciempi.apk en la raíz del proyecto
+npm run apk                                  # → release/CIEMPI-<versión>.apk
+npm version patch --no-git-tag-version       # antes de una APK nueva: 0.1.0 → 0.1.1
 ```
 
-Para instalarla, pasa `ciempi.apk` al teléfono (cable, Drive, WhatsApp…) y
+La versión sale de `package.json` y es la misma que muestra Android en la
+información de la app (`versionCode` = 0.1.1 → 101, debe subir para que se
+instale encima). Usa `minor` en vez de `patch` para cambios grandes (0.2.0).
+La carpeta `release/` no va en git.
+
+Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 ábrela; Android pedirá permitir "instalar apps de origen desconocido".
 
 - **Pantalla completa:** sin barra de estado ni de navegación (aparecen un

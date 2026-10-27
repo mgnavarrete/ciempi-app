@@ -10,7 +10,7 @@
     "preview": "vite preview --host",
     "test": "vitest run",
     "test:watch": "vitest",
-    "apk": "vite build --mode apk && cap sync android && cd android && JAVA_HOME=${JAVA_HOME:-$HOME/jdk} ANDROID_HOME=${ANDROID_HOME:-$HOME/android-sdk} bash ./gradlew assembleDebug && cp app/build/outputs/apk/debug/app-debug.apk ../ciempi.apk",
+    "apk": "vite build --mode apk && cap sync android && cd android && JAVA_HOME=${JAVA_HOME:-$HOME/jdk} ANDROID_HOME=${ANDROID_HOME:-$HOME/android-sdk} bash ./gradlew assembleDebug && cd .. && mkdir -p release && cp android/app/build/outputs/apk/debug/app-debug.apk release/CIEMPI-$npm_package_version.apk && echo \"→ release/CIEMPI-$npm_package_version.apk\"",
     "test:servidor": "DATABASE_URL=postgres://ciempi:ciempi@localhost:5434/ciempi_test vitest run server/test",
     "db:start": "docker compose up -d db",
     "db:stop": "docker compose stop db",
