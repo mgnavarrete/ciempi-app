@@ -140,6 +140,20 @@ sudo systemctl restart ciempi-api
 En la app, Ajustes → Voz debe decir «La voz de Ciempi funciona ✓». La clave es secreta: va solo
 en `server/.env` (que no se sube a GitHub).
 
+### Voces de xAI (alternativa a Azure)
+
+Con una clave de API de xAI (https://console.x.ai → API Keys; se paga por uso, aparte de la
+suscripción a Grok): Leo para Ciempi niño y Ara para Ciempi niña, en español de México.
+
+```bash
+nano /var/www/ciempi-app/server/.env
+#   XAI_API_KEY=xai-...
+sudo systemctl restart ciempi-api
+```
+
+Si hay clave de Azure y de xAI, se usa Azure. Para probar otras voces de xAI (eve, ara, leo,
+rex, sal): `XAI_VOZ_NINO=` y `XAI_VOZ_NINA=` en el mismo archivo.
+
 ## 7. APK
 
 La APK se conecta a `https://ciempi.minttu.cl` (lo dice `.env.apk`). Se genera en el computador de

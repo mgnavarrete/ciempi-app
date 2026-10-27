@@ -266,4 +266,32 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       await Promise.all([azure, piper].map((s) => new Promise((ok) => s.close(ok))))
     }
   })
+
+  it('voz de Ciempi con xAI: Leo y Ara en español de México', async () => {
+    const recibido: { cuerpo: Record<string, unknown>; auth?: string }[] = []
+    const xai = createServer((req, res) => {
+      if (req.url === '/v1/tts/voices') return void res.end('{"voices":[]}')
+      let cuerpo = ''
+      req.on('data', (d) => (cuerpo += d))
+      req.on('end', () => {
+        recibido.push({ cuerpo: JSON.parse(cuerpo), auth: req.headers.authorization })
+        res.writeHead(200, { 'Content-Type': 'audio/wav' }).end(Buffer.from('RIFF-xai'))
+      })
+    })
+    await new Promise<void>((ok) => xai.listen(0, '127.0.0.1', ok))
+    Object.assign(process.env, { XAI_API_KEY: 'xai-prueba', XAI_URL: `http://127.0.0.1:${(xai.address() as { port: number }).port}` })
+    const voz = (url: string) => app.inject({ method: 'GET', url, headers: { authorization: `Bearer ${N}` } })
+    try {
+      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'xai' })
+      expect((await voz('/api/voz?texto=mariposa&voz=nino&velocidad=0.6')).rawPayload.toString()).toBe('RIFF-xai')
+      await voz('/api/voz?texto=mariposa&voz=nina')
+      expect(recibido[0].auth).toBe('Bearer xai-prueba')
+      expect(recibido[0].cuerpo).toMatchObject({ text: 'mariposa', voice_id: 'leo', language: 'es-MX', speed: 0.7, output_format: { codec: 'wav' } })
+      expect(recibido[1].cuerpo).toMatchObject({ voice_id: 'ara', speed: 1 })
+    } finally {
+      delete process.env.XAI_API_KEY
+      delete process.env.XAI_URL
+      await new Promise((ok) => xai.close(ok))
+    }
+  })
 })

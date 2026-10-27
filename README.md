@@ -137,7 +137,8 @@ suena igual en cualquier teléfono:
 
 1. **Microsoft Azure** si hay `AZURE_SPEECH_KEY`: Lorenzo (Chile) para Ciempi
    niño y Paloma para Ciempi niña. Elegidas escuchando 12 voces.
-2. Si no, o si Azure falla, **Piper** en el propio servidor (gratis, sin
+2. **xAI** si hay `XAI_API_KEY`: Leo (niño) y Ara (niña), en español de México.
+3. Si no hay claves, o si fallan, **Piper** en el propio servidor (gratis, sin
    internet): `es_MX-ald` (hombre) y `es_MX-claude` (mujer).
 
 - `server/voz/servidor_voz.py`: servicio en Python (127.0.0.1:3201) que
