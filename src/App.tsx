@@ -137,6 +137,7 @@ export function App() {
             usuarioId={sesion.usuarioId}
             texto={texto}
             asignacion={asignacion}
+            nivel={asignacion.nivel ?? 1}
             vistaPrevia={vista.vistaPrevia}
             leyendoConAdulto={esAdmin && !vista.vistaPrevia}
             alCambiarAjustes={(a) => cambiarAjustes(perfil.id, a)}
@@ -235,6 +236,7 @@ export function App() {
         alAgregarLibro={esAdmin ? undefined : () => setVista({ tipo: 'agregarLibro', perfilId })}
         alPersonalizar={esAdmin ? undefined : () => setVista({ tipo: 'ciempi', perfilId })}
         alVolver={esNino ? undefined : esAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}
+        ninosDelAdulto={esAdmin ? perfiles! : undefined}
       />
     )
   }

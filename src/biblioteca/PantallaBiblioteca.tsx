@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
+import { DialogoCompartir, DialogoNivel } from '../adultos/LectoresDelLibro'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, Id, PerfilNino, Texto } from '../dominio/tipos'
+import { NIVELES } from '../lenguaje/unidades'
 import { BarraProgreso, BotonIcono, Encabezado, Icono, Monedas, Portada } from '../ui/comunes'
 import { resumirProgreso } from './progreso'
 
@@ -28,12 +30,17 @@ interface Props {
   alPersonalizar?: () => void
   /** Volver (admin o sin conexión). En la app del niño no hay: salir está en Ajustes. */
   alVolver?: () => void
+  /** Modo admin: los niños del adulto, para compartirles un libro. */
+  ninosDelAdulto?: PerfilNino[]
 }
 
 /** Los libros y textos del niño, con su avance. */
-export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alPersonalizar, alVolver }: Props) {
+export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alPersonalizar, alVolver, ninosDelAdulto = [] }: Props) {
   const repos = useRepositorios()
   const [libros, setLibros] = useState<LibroEnBiblioteca[] | null>(null)
+  // Adulto: cambiar el nivel de un libro o compartirlo con otro niño.
+  const [cambiandoNivel, setCambiandoNivel] = useState<LibroEnBiblioteca | null>(null)
+  const [compartiendo, setCompartiendo] = useState<Texto | null>(null)
 
   const cargar = useCallback(async () => {
     const asignaciones = await repos.asignaciones.listarPorPerfil(perfil.id)
@@ -114,7 +121,12 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                   <span className="flex min-w-0 flex-1 flex-col gap-1 py-1 pr-8">
                     <span className="line-clamp-2 text-lg font-bold leading-tight">{libro.texto.titulo}</span>
                     {libro.texto.autor && <span className="truncate text-sm text-tinta-suave">{libro.texto.autor}</span>}
-                    <span className="mt-auto text-sm text-tinta-suave">{resumen.etiqueta}</span>
+                    <span className="mt-auto flex flex-wrap items-center gap-x-2 text-sm text-tinta-suave">
+                      <span className="rounded-full bg-amarillo/40 px-2 font-bold text-tinta">
+                        Nivel {libro.asignacion.nivel} · {NIVELES[libro.asignacion.nivel - 1].nombre}
+                      </span>
+                      {resumen.etiqueta}
+                    </span>
                     <BarraProgreso valor={resumen.fraccion} />
                     <span className="mt-1 self-start rounded-full bg-petroleo px-4 py-1.5 font-bold text-white">
                       {modo === 'admin' ? `Leer con ${perfil.apodo}` : resumen.accion} →
@@ -122,12 +134,19 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                   </span>
                 </button>
                 {modo === 'admin' && (
-                  <button
-                    onClick={() => alLeer(libro, true)}
-                    className="mt-1 w-full text-center text-sm font-bold text-tinta-suave underline underline-offset-4"
-                  >
-                    Solo mirar (no cambia su avance)
-                  </button>
+                  <div className="mt-1 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm font-bold">
+                    <button onClick={() => setCambiandoNivel(libro)} className="text-petroleo underline underline-offset-4">
+                      Cambiar nivel
+                    </button>
+                    {ninosDelAdulto.length > 1 && (
+                      <button onClick={() => setCompartiendo(libro.texto)} className="text-petroleo underline underline-offset-4">
+                        Compartir con otro niño
+                      </button>
+                    )}
+                    <button onClick={() => alLeer(libro, true)} className="text-tinta-suave underline underline-offset-4">
+                      Solo mirar
+                    </button>
+                  </div>
                 )}
                 {puedeQuitar(libro) && (
                   <button
@@ -143,6 +162,26 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
           })}
         </ul>
       </div>
+      {cambiandoNivel && (
+        <DialogoNivel
+          texto={cambiandoNivel.texto}
+          perfil={perfil}
+          asignacion={cambiandoNivel.asignacion}
+          alCerrar={() => setCambiandoNivel(null)}
+          alCambiar={() => {
+            setCambiandoNivel(null)
+            void cargar().then(setLibros)
+          }}
+        />
+      )}
+      {compartiendo && (
+        <DialogoCompartir
+          texto={compartiendo}
+          perfiles={ninosDelAdulto}
+          alCerrar={() => setCompartiendo(null)}
+          alCambiar={() => void cargar().then(setLibros)}
+        />
+      )}
     </div>
   )
 }

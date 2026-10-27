@@ -141,6 +141,7 @@ export function PantallaLectura(props: Props) {
       textoId: texto.id,
       asignacionId: asignacion.id,
       modo,
+      nivel,
       iniciadaEn: new Date().toISOString(),
       duracionSegundos: 0,
       frasesCompletadas: 0,

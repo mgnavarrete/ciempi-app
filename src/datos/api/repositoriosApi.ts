@@ -183,8 +183,11 @@ export function crearRepositoriosApi(base: string): Repositorios {
     },
 
     asignaciones: {
-      listarPorPerfil: (perfilId) => pedir<Asignacion[]>('GET', `/api/perfiles/${perfilId}/asignaciones`),
-      asignar: (perfilId, textoId, modo = 'coro') => pedir<Asignacion>('POST', `/api/perfiles/${perfilId}/asignaciones`, { textoId, modo }),
+      // Un servidor anterior a los niveles no manda `nivel`: es el 1.
+      listarPorPerfil: (perfilId) =>
+        pedir<Asignacion[]>('GET', `/api/perfiles/${perfilId}/asignaciones`).then((l) => l.map((a) => ({ ...a, nivel: a.nivel ?? 1 }))),
+      asignar: (perfilId, textoId, nivel = 1) => pedir<Asignacion>('POST', `/api/perfiles/${perfilId}/asignaciones`, { textoId, nivel }),
+      cambiarNivel: (id, nivel) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/nivel`, { nivel }),
       guardarProgreso: (id, progreso) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/progreso`, progreso),
       async quitar(id) {
         await pedir('DELETE', `/api/asignaciones/${id}`)

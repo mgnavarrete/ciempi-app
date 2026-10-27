@@ -1,4 +1,4 @@
-import type { Capitulo, Texto } from '../dominio/tipos'
+import type { Capitulo, NivelLectura, Texto } from '../dominio/tipos'
 import { contarPalabras } from '../lectura/monedas'
 
 /**
@@ -7,7 +7,7 @@ import { contarPalabras } from '../lectura/monedas'
  * oraciones, una página varios párrafos. Por eso el avance se guarda siempre
  * como índice de frase y se puede cambiar de nivel sin perder el lugar.
  */
-export type NivelLectura = 1 | 2 | 3 | 4
+export type { NivelLectura }
 
 /** `unidad`: lo que se lee de una vez («Frase 3 de 40»). */
 export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; descripcion: string }[] = [

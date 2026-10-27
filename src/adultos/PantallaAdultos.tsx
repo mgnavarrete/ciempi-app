@@ -5,6 +5,7 @@ import type { Asignacion, Cuenta, InvitacionNino, PerfilNino, SesionLectura, Tex
 import type { IdFuente } from '../fuentes/entradas'
 import { CambiarClave } from '../inicio/CambiarClave'
 import { NuevoPerfil } from '../inicio/PantallaPerfiles'
+import { LectoresDelLibro } from './LectoresDelLibro'
 import { BarraProgreso, BotonPrincipal, BotonSecundario, Encabezado, Icono, MensajeError, Portada } from '../ui/comunes'
 
 interface Props {
@@ -57,7 +58,8 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
     }
   }
 
-  const propios = textos.filter((t) => t.subidoPor === cuenta.id)
+  // Primero los que subió este adulto; después los de sus niños (o de otro adulto), que también se pueden compartir.
+  const libros = [...textos.filter((t) => t.subidoPor === cuenta.id), ...textos.filter((t) => t.subidoPor !== cuenta.id)]
   const [creando, setCreando] = useState(false)
   const [cambiandoClave, setCambiandoClave] = useState(false)
   const [avisoCuenta, setAvisoCuenta] = useState<string | null>(null)
@@ -113,10 +115,12 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
               <BotonSecundario onClick={() => alAgregarTexto('pegar')}>Pegar texto</BotonSecundario>
             </div>
           </div>
-          <p className="-mt-2 text-sm text-tinta-suave">Los que subiste tú. Toca un lector para agregarlo o quitarlo de su biblioteca.</p>
-          {propios.length === 0 && <p className="text-tinta-suave">Aún no hay textos. Sube un PDF o pega un texto.</p>}
+          <p className="-mt-2 text-sm text-tinta-suave">
+            Toca un lector para darle el libro en un nivel, cambiárselo o quitárselo. Así se comparte un libro entre niños sin volver a subirlo.
+          </p>
+          {libros.length === 0 && <p className="text-tinta-suave">Aún no hay textos. Sube un PDF o pega un texto.</p>}
           <ul className="flex flex-col gap-3">
-            {propios.map((t) => (
+            {libros.map((t) => (
               <li key={t.id} className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm">
                 <Portada titulo={t.titulo} portada={t.portada} className="h-24 w-18 shrink-0 text-2xl" />
                 <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -127,35 +131,24 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
                         {t.autor ? `${t.autor} · ` : ''}
                         {t.capitulos.length > 1 ? `${t.capitulos.length} capítulos · ` : ''}
                         {t.frases.length} frases
+                        {t.subidoPor !== cuenta.id && ' · lo subió otra cuenta'}
                       </p>
                     </div>
-                    <button
-                      onClick={() => {
-                        if (confirm(`¿Eliminar «${t.titulo}»? También se quita de la biblioteca de los niños y se pierde su avance.`)) {
-                          void accion(() => repos.textos.eliminar(t.id))
-                        }
-                      }}
-                      aria-label={`Eliminar ${t.titulo}`}
-                      className="shrink-0 rounded-full p-2 text-tinta-suave hover:text-coral"
-                    >
-                      <Icono nombre="basura" className="h-5 w-5" />
-                    </button>
+                    {t.subidoPor === cuenta.id && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`¿Eliminar «${t.titulo}»? También se quita de la biblioteca de los niños y se pierde su avance.`)) {
+                            void accion(() => repos.textos.eliminar(t.id))
+                          }
+                        }}
+                        aria-label={`Eliminar ${t.titulo}`}
+                        className="shrink-0 rounded-full p-2 text-tinta-suave hover:text-coral"
+                      >
+                        <Icono nombre="basura" className="h-5 w-5" />
+                      </button>
+                    )}
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {perfiles.map((p) => {
-                      const asignada = asignaciones.find((a) => a.perfilId === p.id && a.textoId === t.id)
-                      return (
-                        <button
-                          key={p.id}
-                          aria-pressed={!!asignada}
-                          onClick={() => void accion(() => (asignada ? repos.asignaciones.quitar(asignada.id) : repos.asignaciones.asignar(p.id, t.id)))}
-                          className={`rounded-full px-3 py-1 text-sm font-bold ${asignada ? 'bg-petroleo text-white' : 'bg-crema text-tinta-suave'}`}
-                        >
-                          {p.icono} {p.apodo} {asignada ? '✓' : '+'}
-                        </button>
-                      )
-                    })}
-                  </div>
+                  <LectoresDelLibro texto={t} perfiles={perfiles} asignaciones={asignaciones} alCambiar={() => void recargar()} />
                 </div>
               </li>
             ))}

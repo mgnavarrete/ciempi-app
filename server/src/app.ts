@@ -52,6 +52,11 @@ const entero = (v: unknown, campo: string): number => {
   if (typeof v !== 'number' || !Number.isInteger(v)) throw new Problema(`${campo} debe ser un número entero`)
   return v
 }
+const nivelValido = (v: unknown): number => {
+  if (v === undefined) return 1
+  if (typeof v !== 'number' || !Number.isInteger(v) || v < 1 || v > 4) throw new Problema('El nivel debe ser 1, 2, 3 o 4')
+  return v
+}
 const objeto = (v: unknown, campo: string): Fila => {
   if (!v || typeof v !== 'object' || Array.isArray(v)) throw new Problema(`${campo} debe ser un objeto`)
   return v as Fila
@@ -98,6 +103,7 @@ const aAsignacion = (f: Fila) => ({
   perfilId: f.perfil_id,
   textoId: f.texto_id,
   modo: f.modo,
+  nivel: f.nivel,
   estado: f.estado,
   fraseActual: f.frase_actual,
   fraseMaxima: f.frase_maxima,
@@ -113,6 +119,7 @@ const aSesionLectura = (f: Fila) => ({
   textoId: f.texto_id ?? null,
   asignacionId: f.asignacion_id ?? null,
   modo: f.modo,
+  nivel: f.nivel,
   iniciadaEn: f.iniciada_en,
   duracionSegundos: f.duracion_segundos,
   frasesCompletadas: f.frases_completadas,
@@ -536,12 +543,12 @@ export async function crearApp() {
     await exigirVerNino(yo(req), perfilId)
     if (!(await puedeVerTexto(yo(req), textoId))) throw new Prohibido('No tienes acceso a este texto')
     const modo = ['coro', 'eco', 'solo'].includes(b.modo as string) ? b.modo : 'coro'
-    await pool.query('insert into asignaciones (asignada_por, perfil_id, texto_id, modo) values ($1, $2, $3, $4) on conflict (perfil_id, texto_id) do nothing', [
-      yo(req).id,
-      perfilId,
-      textoId,
-      modo,
-    ])
+    // El nivel lo elige un adulto del niño; si el niño agrega un libro, parte en el 1.
+    const nivel = (await esAdminDe(yo(req), perfilId)) ? nivelValido(b.nivel) : 1
+    await pool.query(
+      'insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel) values ($1, $2, $3, $4, $5) on conflict (perfil_id, texto_id) do nothing',
+      [yo(req).id, perfilId, textoId, modo, nivel],
+    )
     const { rows } = await pool.query('select * from asignaciones where perfil_id = $1 and texto_id = $2', [perfilId, textoId])
     return aAsignacion(rows[0])
   })
@@ -551,6 +558,16 @@ export async function crearApp() {
     if (!rows[0]) throw new Problema('No existe', 404)
     return rows[0]
   }
+
+  app.put('/api/asignaciones/:id/nivel', conAdulto, async (req) => {
+    const a = await asignacionPorId(param(req, 'id'))
+    await exigirAdminDe(yo(req), a.perfil_id)
+    const { rows } = await pool.query('update asignaciones set nivel = $1, actualizada_en = now() where id = $2 returning *', [
+      nivelValido(cuerpo(req).nivel),
+      param(req, 'id'),
+    ])
+    return aAsignacion(rows[0])
+  })
 
   app.put('/api/asignaciones/:id/progreso', conUsuario, async (req) => {
     const a = await asignacionPorId(param(req, 'id'))
@@ -590,8 +607,8 @@ export async function crearApp() {
     const n = (v: unknown) => Math.max(0, Math.min(1_000_000, Math.round(Number(v) || 0)))
     const { rows } = await pool.query(
       `insert into sesiones_lectura (id, usuario_id, perfil_id, texto_id, asignacion_id, modo, iniciada_en, duracion_segundos,
-         frases_completadas, frases_muy_rapido, silabas_leidas, monedas_ganadas)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+         frases_completadas, frases_muy_rapido, silabas_leidas, monedas_ganadas, nivel)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
        on conflict (id) do update set duracion_segundos = excluded.duracion_segundos, frases_completadas = excluded.frases_completadas,
          frases_muy_rapido = excluded.frases_muy_rapido, silabas_leidas = excluded.silabas_leidas, monedas_ganadas = excluded.monedas_ganadas
        returning *`,
@@ -608,6 +625,8 @@ export async function crearApp() {
         n(b.frasesMuyRapido),
         n(b.silabasLeidas),
         n(b.monedasGanadas),
+        // Sesiones de una app anterior a los niveles: nivel 1.
+        [1, 2, 3, 4].includes(b.nivel as number) ? b.nivel : 1,
       ],
     )
     return aSesionLectura(rows[0])

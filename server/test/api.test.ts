@@ -294,4 +294,34 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       await new Promise((ok) => xai.close(ok))
     }
   })
+
+  it('niveles: el adulto elige el nivel del libro para cada niño; el niño no lo cambia', async () => {
+    const libro = randomUUID()
+    await pedir('PUT', `/api/textos/${libro}`, T, { titulo: 'Poemas', textoOriginal: 'x', frases: ['Uno.', 'Dos.'], capitulos: [], origen: 'pegado' })
+    const a = await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, T, { textoId: libro, nivel: 2 })
+    expect(a.body).toMatchObject({ textoId: libro, nivel: 2 })
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, T, { textoId: libro, nivel: 7 })).status).toBe(400)
+    // El niño no puede cambiar el nivel; un adulto suyo sí.
+    expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, N, { nivel: 1 })).status).toBe(403)
+    expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, X, { nivel: 1 })).status).toBe(403)
+    expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, T, { nivel: 3 })).body.nivel).toBe(3)
+    // Si el niño agrega un libro, queda en nivel 1 aunque pida otro.
+    const suyo = randomUUID()
+    await pedir('PUT', `/api/textos/${suyo}`, N, { titulo: 'Mi guía', textoOriginal: 'x', frases: ['Hola.'], capitulos: [], origen: 'pdf' })
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, N, { textoId: suyo, nivel: 4 })).body.nivel).toBe(1)
+    // La sesión guarda el nivel; una app vieja que no lo manda queda en 1.
+    const s = await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId, nivel: 3, iniciadaEn: new Date().toISOString() })
+    expect(s.body.nivel).toBe(3)
+    expect((await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId })).body.nivel).toBe(1)
+  })
+
+  it('compartir: un adulto pasa a otro niño un libro que subió un niño suyo', async () => {
+    const otro = await pedir('POST', '/api/perfiles', T, { apodo: 'Ana', icono: '🐼' })
+    const guiaDeTomi = randomUUID()
+    await pedir('PUT', `/api/textos/${guiaDeTomi}`, N, { titulo: 'Guía de Tomi', textoOriginal: 'x', frases: ['Hola.'], capitulos: [], origen: 'pdf' })
+    await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, N, { textoId: guiaDeTomi })
+    const r = await pedir('POST', `/api/perfiles/${otro.body.id}/asignaciones`, T, { textoId: guiaDeTomi, nivel: 2 })
+    expect(r.status).toBe(200)
+    expect(r.body).toMatchObject({ perfilId: otro.body.id, nivel: 2 })
+  })
 })

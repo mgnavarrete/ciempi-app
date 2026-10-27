@@ -170,6 +170,12 @@ export type ModoLectura = 'coro' | 'eco' | 'solo'
 export type EstadoAsignacion = 'pendiente' | 'en_curso' | 'completada' | 'archivada'
 
 /** Un texto en la biblioteca de un niño, con su progreso. */
+/**
+ * Nivel de lectura de un libro para un niño: 1 palabra, 2 oración, 3 párrafo,
+ * 4 libre. Ver lenguaje/unidades.ts.
+ */
+export type NivelLectura = 1 | 2 | 3 | 4
+
 export interface Asignacion {
   id: Id
   /** Usuario que lo agregó a la biblioteca (un adulto o el propio niño). */
@@ -177,6 +183,8 @@ export interface Asignacion {
   perfilId: Id
   textoId: Id
   modo: ModoLectura
+  /** Lo elige un adulto; el mismo libro puede estar en otro nivel para otro niño. */
+  nivel: NivelLectura
   estado: EstadoAsignacion
   /** Índice de la próxima frase a leer, para retomar. */
   fraseActual: number
@@ -200,6 +208,8 @@ export interface SesionLectura {
   textoId: Id | null
   asignacionId: Id | null
   modo: ModoLectura
+  /** Nivel en que se leyó (las sesiones antiguas no lo tienen: nivel 1). */
+  nivel?: NivelLectura
   iniciadaEn: FechaISO
   duracionSegundos: number
   frasesCompletadas: number

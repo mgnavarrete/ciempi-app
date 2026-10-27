@@ -182,6 +182,7 @@ function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id): Asignacion
     perfilId,
     textoId,
     modo: 'coro',
+    nivel: 1,
     estado: 'pendiente',
     fraseActual: 0,
     fraseMaxima: 0,
@@ -334,12 +335,18 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       return asignaciones
         .todos()
         .filter((a) => a.perfilId === perfilId)
+        .map((a) => ({ ...a, nivel: a.nivel ?? 1 }))
         .sort((a, b) => b.actualizadaEn.localeCompare(a.actualizadaEn))
     },
-    async asignar(perfilId, textoId, modo = 'coro') {
+    async asignar(perfilId, textoId, nivel = 1) {
       const existente = asignaciones.todos().find((a) => a.perfilId === perfilId && a.textoId === textoId)
       if (existente) return existente
-      return asignaciones.guardar({ ...nuevaAsignacion(perfilId, textoId, cuentaLocal().id), modo })
+      return asignaciones.guardar({ ...nuevaAsignacion(perfilId, textoId, cuentaLocal().id), nivel })
+    },
+    async cambiarNivel(id, nivel) {
+      const a = asignaciones.obtener(id)
+      if (!a) throw new Error(`Asignación ${id} no existe`)
+      return asignaciones.guardar({ ...a, nivel, actualizadaEn: ahora() })
     },
     async guardarProgreso(id, { fraseActual, fraseMaxima, estado }) {
       const a = asignaciones.obtener(id)

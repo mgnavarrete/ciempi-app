@@ -6,7 +6,7 @@ import type {
   EstadoAsignacion,
   Id,
   InvitacionNino,
-  ModoLectura,
+  NivelLectura,
   PerfilNino,
   RolCuenta,
   Sesion,
@@ -70,8 +70,10 @@ export interface RepositorioTextos {
 
 export interface RepositorioAsignaciones {
   listarPorPerfil(perfilId: Id): Promise<Asignacion[]>
-  /** Agrega el texto a la biblioteca del niño (si ya estaba, la devuelve). */
-  asignar(perfilId: Id, textoId: Id, modo?: ModoLectura): Promise<Asignacion>
+  /** Agrega el texto a la biblioteca del niño en ese nivel (si ya estaba, la devuelve). */
+  asignar(perfilId: Id, textoId: Id, nivel?: NivelLectura): Promise<Asignacion>
+  /** Solo un adulto del niño: en qué nivel lee ese libro. */
+  cambiarNivel(id: Id, nivel: NivelLectura): Promise<Asignacion>
   guardarProgreso(id: Id, progreso: { fraseActual: number; fraseMaxima: number; estado: EstadoAsignacion }): Promise<Asignacion>
   quitar(id: Id): Promise<void>
 }
