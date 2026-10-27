@@ -148,6 +148,11 @@ export interface Texto {
   /** Frases ya revisadas por el adulto, en orden de lectura. */
   frases: string[]
   capitulos: Capitulo[]
+  /**
+   * Frases donde empieza un párrafo o una estrofa (para el nivel 3). Los libros
+   * subidos antes no lo tienen: ahí los párrafos se arman por largo.
+   */
+  parrafos?: number[]
   /** Miniatura de la portada (data URL JPEG) o null. */
   portada: string | null
   origen: OrigenTexto

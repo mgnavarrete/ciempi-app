@@ -9,6 +9,7 @@ import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, PerfilNino, Sesi
 import { quitarGuiones } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
+import { NIVELES, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS } from './modos'
 import { PALABRAS_POR_MONEDA, acumularPalabras, contarPalabras, guardarHaciaMoneda, leerHaciaMoneda } from './monedas'
@@ -41,6 +42,8 @@ interface Props {
   leyendoConAdulto?: boolean
   texto: Texto
   asignacion: Asignacion
+  /** Nivel de lectura de este libro para este niño (1 si no se dice). */
+  nivel?: NivelLectura
   alGanarMonedas: (cantidad: number) => void
   /** Se llama después de cada frase y al saltar: el progreso queda guardado aunque se cierre la app. */
   alProgreso: (progreso: Progreso) => void
@@ -49,7 +52,7 @@ interface Props {
 }
 
 export function PantallaLectura(props: Props) {
-  const { perfil, usuarioId, texto, asignacion, vistaPrevia = false, alVolver, alAjustes } = props
+  const { perfil, usuarioId, texto, asignacion, vistaPrevia = false, nivel = 1, alVolver, alAjustes } = props
   // En vista previa no se registra nada: ni progreso, ni monedas, ni sesión.
   const alGanarMonedas = vistaPrevia ? () => {} : props.alGanarMonedas
   const alProgreso = vistaPrevia ? () => {} : props.alProgreso
@@ -58,31 +61,39 @@ export function PantallaLectura(props: Props) {
   const modo = asignacion.modo
   const definicionModo = MODOS[modo]
   const tranquilo = ajustes.modoTranquilo
-  const total = texto.frases.length
   useVozDeCiempi(perfil.ciempi.genero)
 
+  // Lo que se lee de una vez depende del nivel (frase, oración, párrafo, página).
+  // El avance se guarda siempre en frases (las del nivel 1): ver lenguaje/unidades.ts.
+  const vista = useMemo(() => vistaPorNivel(texto, nivel), [texto, nivel])
+  const { unidades, capitulos } = vista
+  const total = unidades.length
+  const totalFrases = texto.frases.length
+  const aUnidad = (frase: number) => (frase >= totalFrases ? total : unidadDeFrase(vista, frase))
+  const nombreUnidad = NIVELES[nivel - 1].unidad
+
   // Retoma donde quedó; un libro terminado parte de nuevo.
-  const [indice, setIndice] = useState(() => (asignacion.estado === 'completada' ? 0 : Math.min(asignacion.fraseActual, Math.max(0, total - 1))))
-  // Hasta dónde llegó alguna vez: solo las frases nuevas dan monedas.
-  const maximaRef = useRef(Math.max(asignacion.fraseMaxima ?? 0, asignacion.fraseActual))
+  const [indice, setIndice] = useState(() => (asignacion.estado === 'completada' ? 0 : Math.min(aUnidad(asignacion.fraseActual), Math.max(0, total - 1))))
+  // Hasta dónde llegó alguna vez: solo las unidades nuevas dan monedas.
+  const maximaRef = useRef(aUnidad(Math.max(asignacion.fraseMaxima ?? 0, asignacion.fraseActual)))
   const [maxima, setMaxima] = useState(maximaRef.current)
   const yaTerminoLibro = useRef(asignacion.completadaEn != null || asignacion.estado === 'completada')
 
   const [pausa, setPausa] = useState<{ tipo: 'capitulo' | 'libro'; titulo: string; premio: number; siguiente: number } | null>(null)
   const [indiceAbierto, setIndiceAbierto] = useState(false)
   // Sin rayas ni guiones de diálogo, que confunden al leer.
-  const frase = quitarGuiones(texto.frases[indice] ?? '')
+  const frase = quitarGuiones(unidades[indice] ?? '')
 
-  const conCapitulos = texto.capitulos.length > 1
-  const numCapitulo = capituloDeFrase(texto.capitulos, indice)
-  const capitulo = texto.capitulos[numCapitulo]
-  const finDelCapitulo = texto.capitulos[numCapitulo + 1]?.desdeFrase ?? total
+  const conCapitulos = capitulos.length > 1
+  const numCapitulo = capituloDeFrase(capitulos, indice)
+  const capitulo = capitulos[numCapitulo]
+  const finDelCapitulo = capitulos[numCapitulo + 1]?.desdeFrase ?? total
   const avanceCapitulo = (indice - capitulo.desdeFrase) / Math.max(1, finDelCapitulo - capitulo.desdeFrase)
   // Arriba se ve lo que ya leyó (no lo que viene): hasta dos frases del capítulo.
-  const yaLeidas = texto.frases.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
+  const yaLeidas = unidades.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
   const palabras = useMemo(() => silabearFrase(frase), [frase])
   // La voz del servidor se pide de antemano (esta frase y la siguiente) para que suene apenas llega el dedo.
-  const fraseQueViene = texto.frases[indice + 1]
+  const fraseQueViene = unidades[indice + 1]
   useEffect(() => {
     const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
     if (ajustes.conVoz) voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
@@ -142,8 +153,8 @@ export function PantallaLectura(props: Props) {
   }
 
   // ── Movimiento por el libro ───────────────────────────────────────────
-  const guardarProgreso = (fraseActual: number, estado: EstadoAsignacion = 'en_curso') =>
-    alProgreso({ fraseActual, fraseMaxima: maximaRef.current, estado })
+  const guardarProgreso = (unidad: number, estado: EstadoAsignacion = 'en_curso') =>
+    alProgreso({ fraseActual: fraseDeUnidad(vista, unidad, totalFrases), fraseMaxima: fraseDeUnidad(vista, maximaRef.current, totalFrases), estado })
 
   const reiniciarMotor = () => {
     motorRef.current = estadoInicial()
@@ -298,7 +309,7 @@ export function PantallaLectura(props: Props) {
         <span className="flex flex-col leading-tight">
           <span className="truncate">{conCapitulos ? capitulo.titulo : texto.titulo}</span>
           <span className="truncate text-sm font-normal text-tinta-suave apaisado:text-xs">
-            {conCapitulos ? texto.titulo : `Frase ${indice + 1} de ${total}`}
+            {conCapitulos ? texto.titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
           </span>
         </span>
       }
@@ -320,7 +331,7 @@ export function PantallaLectura(props: Props) {
 
   const panelIndice = indiceAbierto && (
     <PanelIndice
-      texto={texto}
+      texto={{ ...texto, frases: unidades, capitulos }}
       indice={indice}
       maxima={maxima}
       alSaltar={saltarA}

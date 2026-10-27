@@ -47,14 +47,14 @@ describe('calcularPista', () => {
     for (const d of distancias) expect(d).toBeCloseTo(distancias[0])
   })
 
-  it('una palabra sola queda al lado de Ciempi', () => {
-    expect(calcularPista(1).manzanas).toEqual([INICIO_PISTA])
+  it('una palabra sola: su manzana va al borde derecho', () => {
+    expect(calcularPista(1).manzanas).toEqual([FIN_PISTA])
     expect(calcularPista(0).manzanas).toEqual([])
   })
 })
 
 describe('pistaDesdePalabras', () => {
-  it('pone la manzana al comienzo de cada palabra y termina en la última manzana', () => {
+  it('pone la manzana al comienzo de cada palabra y la última en el borde derecho', () => {
     const p = pistaDesdePalabras([
       { inicio: 0.1, fin: 0.3 },
       { inicio: 0.35, fin: 0.5 },
@@ -62,7 +62,8 @@ describe('pistaDesdePalabras', () => {
     ])
     expect(p.manzanas[0]).toBeCloseTo(0.12)
     expect(p.manzanas[1]).toBeCloseTo(0.37)
-    expect(p.fin).toBeCloseTo(0.57)
+    expect(p.manzanas[2]).toBeCloseTo(FIN_PISTA)
+    expect(p.fin).toBeCloseTo(FIN_PISTA)
   })
 
   it('las palabras se leen donde están: la manzana sigue a la palabra, aunque sean de distinto largo', () => {
@@ -155,15 +156,23 @@ describe('motor de lectura por palabras', () => {
     const una = calcularPista(1)
     const antes = correr(deslizar(0, 0.1, 500), estadoInicial(), una)
     expect(antes.estado.fase).toBe('arrastrando')
-    const r = correr(deslizar(0.1, 0.5, 1500, 600), antes.estado, una)
+    const r = correr(deslizar(0.1, FIN_PISTA + 0.01, 1500, 600), antes.estado, una)
     expect(decir(r.efectos)).toHaveLength(1)
     expect(r.estado.fase).toBe('completada')
   })
 
-  it('la frase termina al comer la última manzana, sin tener que seguir hasta el borde', () => {
-    const pista = calcularPista(3)
-    const r = correr(deslizar(0, pista.manzanas[2] + 0.001, 3000), estadoInicial(), pista)
-    expect(decir(r.efectos)).toHaveLength(3)
+  it('la frase termina al llegar al borde derecho, donde está la última manzana', () => {
+    const pista = pistaDesdePalabras([
+      { inicio: 0.1, fin: 0.3 },
+      { inicio: 0.35, fin: 0.5 },
+      { inicio: 0.55, fin: 0.7 },
+    ])
+    // Pasar por encima de la última palabra no basta: hay que llegar al borde.
+    const antes = correr(deslizar(0, 0.8, 3000), estadoInicial(), pista)
+    expect(decir(antes.efectos)).toHaveLength(2)
+    expect(antes.estado.fase).toBe('arrastrando')
+    const r = correr(deslizar(0.8, FIN_PISTA + 0.001, 800, 3100), antes.estado, pista)
+    expect(decir(r.efectos)).toHaveLength(1)
     expect(r.estado.fase).toBe('completada')
   })
 })
