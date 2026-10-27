@@ -46,8 +46,12 @@ export interface AjustesLectura {
   velocidadVoz: number
   /** Palabras por segundo sobre las cuales se considera "demasiado rápido". */
   umbralPalabrasPorSegundo: number
-  /** false: se lee sin voz (por ejemplo, con la profesora leyendo en voz alta). */
-  conVoz: boolean
+  /**
+   * Cómo acompaña la voz, elegido por el niño: coro (dice cada palabra al
+   * pasar), eco (lee la unidad antes) o solo (sin voz). Sin elegir: según el
+   * nivel del libro (ver MODO_POR_NIVEL en lectura/modos.ts).
+   */
+  modoVoz?: ModoLectura
 }
 
 /** Máximo del umbral de ritmo (palabras/s); es también el valor por defecto. */
@@ -59,7 +63,6 @@ export const AJUSTES_POR_DEFECTO: AjustesLectura = {
   velocidadVoz: 1,
   // El máximo: «Más despacito» solo con un zarpazo.
   umbralPalabrasPorSegundo: LIMITE_MAXIMO_RITMO,
-  conVoz: true,
 }
 
 export const LIMITES_AJUSTES = {
@@ -72,9 +75,11 @@ export const LIMITES_AJUSTES = {
  * Completa y actualiza ajustes guardados con versiones anteriores. Antes el
  * umbral era en sílabas por segundo; una palabra tiene ~2 sílabas.
  */
-export function normalizarAjustes(guardados: Partial<AjustesLectura> & { umbralSilabasPorSegundo?: number }): AjustesLectura {
-  const { umbralSilabasPorSegundo, ...resto } = guardados
-  const ajustes = { ...AJUSTES_POR_DEFECTO, ...resto }
+export function normalizarAjustes(guardados: Partial<AjustesLectura> & { umbralSilabasPorSegundo?: number; conVoz?: boolean }): AjustesLectura {
+  const { umbralSilabasPorSegundo, conVoz, ...resto } = guardados
+  const ajustes: AjustesLectura = { ...AJUSTES_POR_DEFECTO, ...resto }
+  // Antes había solo «leer con voz» sí/no: no equivale a leer sin voz.
+  if (conVoz === false && !ajustes.modoVoz) ajustes.modoVoz = 'solo'
   if (guardados.umbralPalabrasPorSegundo === undefined && umbralSilabasPorSegundo !== undefined) {
     const { min, max, paso } = LIMITES_AJUSTES.umbralPalabrasPorSegundo
     ajustes.umbralPalabrasPorSegundo = Math.min(max, Math.max(min, Math.round(umbralSilabasPorSegundo / 2 / paso) * paso))

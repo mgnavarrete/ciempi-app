@@ -16,6 +16,8 @@ interface Props {
   tranquilo: boolean
   apariencia: AparienciaCiempi
   alEntrar: (entrada: Entrada) => void
+  /** Tocar una palabra (sin deslizar): la app la dice. */
+  alTocarPalabra?: (indice: number) => void
 }
 
 /** Espacio a la izquierda para la cabeza de Ciempi: la primera palabra parte a su lado. */
@@ -30,7 +32,7 @@ const LETRA_MINIMA = 16
  * palabra. El niño desliza el dedo por debajo de las palabras (como cuando
  * se lee siguiendo con el dedo) y Ciempi lo sigue.
  */
-export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar }: Props) {
+export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
   const zona = useRef<HTMLDivElement>(null)
   const linea = useRef<HTMLParagraphElement>(null)
   const medidor = useRef<HTMLSpanElement>(null)
@@ -88,7 +90,7 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
         ))}
       </span>
 
-      <FraseEncendida ref={linea} palabras={palabras} palabrasLeidas={motor.palabrasLeidas} letra={letra} tranquilo={tranquilo} />
+      <FraseEncendida ref={linea} palabras={palabras} palabrasLeidas={motor.palabrasLeidas} letra={letra} tranquilo={tranquilo} alTocarPalabra={alTocarPalabra} />
 
       {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
       <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
@@ -109,6 +111,7 @@ interface PropsFrase {
   palabrasLeidas: number
   letra: number
   tranquilo: boolean
+  alTocarPalabra?: (indice: number) => void
 }
 
 /**
@@ -116,7 +119,7 @@ interface PropsFrase {
  * vuelve a dibujar cuando se enciende una palabra, no con cada movimiento del dedo.
  */
 const FraseEncendida = memo(
-  forwardRef<HTMLParagraphElement, PropsFrase>(function FraseEncendida({ palabras, palabrasLeidas, letra, tranquilo }, ref) {
+  forwardRef<HTMLParagraphElement, PropsFrase>(function FraseEncendida({ palabras, palabrasLeidas, letra, tranquilo, alTocarPalabra }, ref) {
     return (
       <p
         ref={ref}
@@ -133,6 +136,12 @@ const FraseEncendida = memo(
               key={p}
               data-palabra
               aria-hidden
+              // Tocar la palabra la dice; no empieza a deslizar (eso es en el carril de Ciempi).
+              onPointerDown={(e) => {
+                if (!alTocarPalabra) return
+                e.stopPropagation()
+                alTocarPalabra(p)
+              }}
               className={['palabra inline-flex rounded-[0.22em]', encendida ? `encendida ${color.texto}` : '', tranquilo ? 'tranquilo' : ''].join(' ')}
             >
               {palabra.silabas.map((silaba, s) => (

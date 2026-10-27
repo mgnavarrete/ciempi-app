@@ -130,6 +130,31 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 - Es una APK de prueba (firmada con la llave de depuración). Para la Play
   Store hay que generar una firmada con llave propia (`assembleRelease`).
 
+## Niveles de lectura (camino a la 1.0.0)
+
+El nivel es **del libro asignado a cada niño** (el mismo libro puede estar en
+otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia.
+
+| Nivel | Se lee de una vez | Voz si el niño no eligió |
+|---|---|---|
+| 1 Palabra | frase corta, una manzana por palabra | lee contigo |
+| 2 Oración | la oración completa | escuchar primero |
+| 3 Párrafo | párrafo o estrofa | sin voz |
+| 4 Libre | una página | sin voz |
+
+- Todas las unidades se arman con las frases del nivel 1
+  (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
+  cambiar de nivel sin perder el lugar. Se leen las mismas palabras en
+  cualquier nivel: las monedas cuestan lo mismo (1 cada 20 palabras).
+- La última manzana va siempre al borde derecho de la pista.
+- **Compartir:** en el panel del adulto, cada libro (también los que subieron
+  sus niños) tiene un botón por niño para dárselo en un nivel, cambiarlo o
+  quitarlo; en la biblioteca de un niño, «Cambiar nivel» y «Compartir con otro niño».
+- **Voz:** el niño elige (botón de voz al leer, o Ajustes): «Leer conmigo»,
+  «Escuchar primero» (eco) o «Sin voz». Tocar una palabra siempre la dice.
+- Hoy están listos el nivel 1, el nivel por libro, compartir y la voz; los
+  niveles 2 a 4 aparecen como «Pronto». Plan completo: fases 4 a 8.
+
 ## Voz de Ciempi
 
 La app lee con la **voz del teléfono o navegador** (Ajustes → Voz: «Automática»

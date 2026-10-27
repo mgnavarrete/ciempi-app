@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { voz, type EleccionVoz } from '../audio/voz'
+import { MODOS } from '../lectura/modos'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import { LIMITES_AJUSTES, type AjustesLectura, type PerfilNino, type SesionLectura } from '../dominio/tipos'
@@ -62,13 +63,30 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
         </Seccion>
 
         <Seccion emoji="🔊" titulo="Voz">
-          <label className="flex cursor-pointer items-center justify-between gap-4">
-            <span>
-              <span className="block font-bold">Leer con voz</span>
-              <span className="text-sm text-tinta-suave">Apágala para leer sin que Ciempi diga las palabras (también desde el botón 🔊 al leer).</span>
-            </span>
-            <input type="checkbox" checked={ajustes.conVoz} onChange={(e) => cambiar('conVoz', e.target.checked)} className="h-7 w-7 shrink-0 accent-petroleo" />
-          </label>
+          <fieldset className="flex flex-col gap-1.5">
+            <legend className="mb-1 font-bold">Cómo ayuda Ciempi al leer</legend>
+            {(
+              [
+                [undefined, 'Según el nivel del libro', 'Nivel 1: lee contigo · nivel 2: escuchas primero · niveles 3 y 4: sin voz.'],
+                ...(['coro', 'eco', 'solo'] as const).map((m) => [m, MODOS[m].nombre, MODOS[m].descripcion] as const),
+              ] as const
+            ).map(([m, nombre, descripcion]) => (
+              <label key={m ?? 'nivel'} className="flex cursor-pointer items-start gap-3 rounded-xl bg-crema px-3 py-2">
+                <input
+                  type="radio"
+                  name="modoVoz"
+                  checked={ajustes.modoVoz === m}
+                  onChange={() => alCambiar({ ...ajustes, modoVoz: m })}
+                  className="mt-1 h-5 w-5 shrink-0 accent-petroleo"
+                />
+                <span>
+                  <span className="block font-bold">{nombre}</span>
+                  <span className="text-sm text-tinta-suave">{descripcion}</span>
+                </span>
+              </label>
+            ))}
+            <span className="text-xs text-tinta-suave">En cualquier modo, tocar una palabra hace que Ciempi la diga.</span>
+          </fieldset>
           <AvisoVoz />
           <label className="flex flex-col gap-1">
             <span className="font-bold">Voz</span>

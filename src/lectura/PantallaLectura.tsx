@@ -5,13 +5,13 @@ import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import { nuevoId } from '../dominio/ids'
-import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
+import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, ModoLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
 import { quitarGuiones } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
 import { NIVELES, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
-import { MODOS } from './modos'
+import { MODOS, MODO_POR_NIVEL } from './modos'
 import { PALABRAS_POR_MONEDA, acumularPalabras, contarPalabras, guardarHaciaMoneda, leerHaciaMoneda } from './monedas'
 import { CONFIG_MOTOR_BASE, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { TiraDeLectura } from './TiraDeLectura'
@@ -58,8 +58,10 @@ export function PantallaLectura(props: Props) {
   const alProgreso = vistaPrevia ? () => {} : props.alProgreso
   const repos = useRepositorios()
   const { ajustes } = perfil
-  const modo = asignacion.modo
+  // La voz: la que eligió el niño o, si no eligió, la que corresponde al nivel.
+  const modo: ModoLectura = ajustes.modoVoz ?? MODO_POR_NIVEL[nivel]
   const definicionModo = MODOS[modo]
+  const [menuVoz, setMenuVoz] = useState(false)
   const tranquilo = ajustes.modoTranquilo
   useVozDeCiempi(perfil.ciempi.genero)
 
@@ -96,8 +98,8 @@ export function PantallaLectura(props: Props) {
   const fraseQueViene = unidades[indice + 1]
   useEffect(() => {
     const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
-    if (ajustes.conVoz) voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
-  }, [palabras, fraseQueViene, ajustes.velocidadVoz, ajustes.conVoz])
+    if (modo !== 'solo') voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
+  }, [palabras, fraseQueViene, ajustes.velocidadVoz, modo])
   // La pista se mide en pantalla (dónde quedó cada palabra); mientras, una pareja.
   const [pistaMedida, setPistaMedida] = useState<Pista | null>(null)
   const pista = pistaMedida && pistaMedida.manzanas.length === palabras.length ? pistaMedida : calcularPista(palabras.length)
@@ -260,7 +262,7 @@ export function PantallaLectura(props: Props) {
   const ejecutar = (efecto: Efecto) => {
     switch (efecto.tipo) {
       case 'decir':
-        if (definicionModo.vozAlDeslizar && ajustes.conVoz) voz.decir(palabras[efecto.palabra].texto, ajustes.velocidadVoz)
+        if (definicionModo.vozAlDeslizar) voz.decir(palabras[efecto.palabra].texto, ajustes.velocidadVoz)
         break
       case 'tropiezo':
         voz.callar()
@@ -286,6 +288,8 @@ export function PantallaLectura(props: Props) {
       // El primer toque habilita el audio (requisito de iOS y Chrome).
       voz.desbloquear()
       desbloquearSonidos()
+      // En eco, si empieza a leer mientras Ciempi todavía habla, Ciempi se calla.
+      if (definicionModo.leerFraseAntes && motorRef.current.fase === 'esperando') voz.callar()
     }
     if (entrada.tipo === 'tocar' || entrada.tipo === 'mover') registrarActividad(entrada.t)
 
@@ -317,18 +321,36 @@ export function PantallaLectura(props: Props) {
     >
       <Monedas cantidad={perfil.monedas} />
       <BotonIcono
-        etiqueta={ajustes.conVoz ? 'Apagar la voz' : 'Encender la voz'}
-        icono={ajustes.conVoz ? 'vozSi' : 'vozNo'}
-        activo={!ajustes.conVoz}
-        onClick={() => {
-          if (ajustes.conVoz) voz.callar()
-          props.alCambiarAjustes({ ...ajustes, conVoz: !ajustes.conVoz })
-        }}
+        etiqueta={`Voz: ${definicionModo.nombre}`}
+        icono={modo === 'solo' ? 'vozNo' : 'vozSi'}
+        activo={modo === 'solo'}
+        onClick={() => setMenuVoz(true)}
       />
       <BotonIcono etiqueta="Índice: volver atrás o repetir" icono="indice" onClick={() => setIndiceAbierto(true)} />
       <BotonIcono etiqueta="Ajustes de lectura" icono="ajustes" onClick={alAjustes} />
     </Encabezado>
   )
+
+  const elegirVoz = (m: ModoLectura) => {
+    setMenuVoz(false)
+    voz.callar()
+    props.alCambiarAjustes({ ...ajustes, modoVoz: m })
+  }
+  const panelVoz = menuVoz && <MenuVoz actual={modo} alElegir={elegirVoz} alCerrar={() => setMenuVoz(false)} />
+
+  // Eco: al aparecer cada frase (u oración, párrafo…), Ciempi la lee entera antes.
+  useEffect(() => {
+    if (!definicionModo.leerFraseAntes || pausa || !frase) return
+    const t = window.setTimeout(() => voz.decirFrase(frase, ajustes.velocidadVoz), 400)
+    return () => window.clearTimeout(t)
+  }, [indice, pausa, modo])
+
+  /** Tocar una palabra la dice, en cualquier modo: es la ayuda cuando no sale. */
+  const decirPalabra = (i: number) => {
+    voz.desbloquear()
+    voz.callar()
+    if (palabras[i]) voz.decir(palabras[i].texto, ajustes.velocidadVoz)
+  }
 
   const panelIndice = indiceAbierto && (
     <PanelIndice
@@ -346,6 +368,7 @@ export function PantallaLectura(props: Props) {
       <>
         {encabezado}
         {panelIndice}
+        {panelVoz}
         <Pausa
           titulo={esLibro ? '¡Leíste todo!' : '¡Terminaste un capítulo!'}
           subtitulo={pausa.titulo}
@@ -373,6 +396,7 @@ export function PantallaLectura(props: Props) {
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       {encabezado}
       {panelIndice}
+      {panelVoz}
       {vistaPrevia && (
         <div className="mx-5 rounded-xl bg-petroleo-claro px-3 py-1 text-center text-sm text-petroleo">
           Vista previa: no cambia el avance ni las monedas de {perfil.apodo}
@@ -441,9 +465,42 @@ export function PantallaLectura(props: Props) {
             tranquilo={tranquilo}
             apariencia={perfil.ciempi}
             alEntrar={entrar}
+            alTocarPalabra={decirPalabra}
           />
         </div>
       </div>
+      </div>
+    </div>
+  )
+}
+
+/** Elegir cómo acompaña la voz: con cada palabra, la frase antes, o sin voz. */
+function MenuVoz({ actual, alElegir, alCerrar }: { actual: ModoLectura; alElegir: (m: ModoLectura) => void; alCerrar: () => void }) {
+  return (
+    <div className="fixed inset-0 z-40 flex items-end justify-center bg-tinta/30 sm:items-center" onClick={alCerrar}>
+      <div
+        role="dialog"
+        aria-label="Voz"
+        onClick={(e) => e.stopPropagation()}
+        className="aparecer flex w-full max-w-md flex-col gap-2 rounded-t-3xl bg-crema p-4 shadow-xl sm:rounded-3xl"
+      >
+        <p className="text-center text-lg font-bold">¿Cómo te ayuda Ciempi?</p>
+        {(['coro', 'eco', 'solo'] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => alElegir(m)}
+            aria-pressed={m === actual}
+            className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 text-left ${m === actual ? 'bg-petroleo text-white' : 'bg-white'}`}
+          >
+            <span className="text-2xl" aria-hidden>
+              {m === 'coro' ? '🗣️' : m === 'eco' ? '👂' : '🤫'}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-bold">{MODOS[m].nombre}</span>
+              <span className={`block text-sm ${m === actual ? 'text-white/85' : 'text-tinta-suave'}`}>{MODOS[m].descripcion}</span>
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import type { ModoLectura } from '../dominio/tipos'
+import type { ModoLectura, NivelLectura } from '../dominio/tipos'
 
 /**
  * Comportamiento de cada modo de lectura. La pantalla de lectura consulta
@@ -18,26 +18,29 @@ export interface DefinicionModo {
 export const MODOS: Record<ModoLectura, DefinicionModo> = {
   coro: {
     id: 'coro',
-    nombre: 'A coro',
-    descripcion: 'El niño desliza y la app lee junto con él.',
+    nombre: 'Leer conmigo',
+    descripcion: 'Ciempi dice cada palabra cuando llegas a ella.',
     disponible: true,
     vozAlDeslizar: true,
     leerFraseAntes: false,
   },
   eco: {
     id: 'eco',
-    nombre: 'Eco',
-    descripcion: 'La app lee la frase y luego el niño la repite.',
-    disponible: false,
+    nombre: 'Escuchar primero',
+    descripcion: 'Ciempi lee la frase entera y después la lees tú.',
+    disponible: true,
     vozAlDeslizar: false,
     leerFraseAntes: true,
   },
   solo: {
     id: 'solo',
-    nombre: 'Solo',
-    descripcion: 'Solo se iluminan las sílabas, sin voz.',
-    disponible: false,
+    nombre: 'Sin voz',
+    descripcion: 'Lees tú solo. Toca una palabra si necesitas ayuda.',
+    disponible: true,
     vozAlDeslizar: false,
     leerFraseAntes: false,
   },
 }
+
+/** Cómo acompaña la voz si el niño no eligió: más ayuda en los niveles bajos. */
+export const MODO_POR_NIVEL: Record<NivelLectura, ModoLectura> = { 1: 'coro', 2: 'eco', 3: 'solo', 4: 'solo' }
