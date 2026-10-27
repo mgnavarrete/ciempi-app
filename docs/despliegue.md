@@ -107,7 +107,7 @@ La APK se conecta a `https://ciempi.minttu.cl` (lo dice `.env.apk`). Se genera e
 desarrollo, no en el servidor:
 
 ```bash
-npm run apk                           # → ciempi.apk
+npm run apk                           # → release/CIEMPI-<versión>.apk
 ```
 
 Instálala en el teléfono **después** de que el paso 6 funcione (la APK solo habla HTTPS).
