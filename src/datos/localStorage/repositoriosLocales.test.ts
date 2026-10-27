@@ -121,8 +121,8 @@ describe('migraciones', () => {
     const perfil = await repos.perfiles.obtener('p1')
     expect(perfil).toMatchObject({ creadoPor: 'c1', monedas: 7, usuario: null, tieneCuenta: false })
     expect(perfil?.ajustes.velocidadVoz).toBe(1)
-    // 3 sílabas/s → 1,5 palabras/s, que era el valor por defecto anterior → 2,5.
-    expect(perfil?.ajustes.umbralPalabrasPorSegundo).toBe(2.5)
+    // 3 sílabas/s → 1,5 palabras/s → 2,5 → 4 (cada vez que cambió el valor por defecto).
+    expect(perfil?.ajustes.umbralPalabrasPorSegundo).toBe(4)
     expect(perfil?.ajustes).not.toHaveProperty('umbralSilabasPorSegundo')
     expect(await repos.textos.obtener('t1')).toMatchObject({ subidoPor: 'c1', autor: null, portada: null, capitulos: [{ titulo: 'Cuento', desdeFrase: 0 }] })
     expect(await repos.asignaciones.listarPorPerfil('p1')).toMatchObject([{ textoId: 't1', fraseActual: 0 }])

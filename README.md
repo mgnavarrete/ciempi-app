@@ -384,8 +384,8 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
 
 ### Decisiones tomadas (se pueden cambiar)
 
-- Umbral de ritmo por defecto: **2,5 palabras/s** (configurable entre 0,5 y 4).
-  Los perfiles que tenían el valor anterior (1,5) se actualizan solos una vez.
+- Umbral de ritmo por defecto: **4 palabras/s**, el máximo (configurable entre 0,5 y 4).
+  Los perfiles que tenían un valor por defecto anterior (1,5 o 2,5) se actualizan solos una vez.
   Los perfiles que tenían el umbral en sílabas/s se convierten solos (÷ 2).
 - Velocidad de voz por defecto: **1,0×** (entre 0,5 y 1,5). Los perfiles
   que tenían el valor anterior (0,85) se actualizan solos una vez.

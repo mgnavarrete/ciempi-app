@@ -50,18 +50,22 @@ export interface AjustesLectura {
   conVoz: boolean
 }
 
+/** Máximo del umbral de ritmo (palabras/s); es también el valor por defecto. */
+const LIMITE_MAXIMO_RITMO = 4
+
 export const AJUSTES_POR_DEFECTO: AjustesLectura = {
   tamanoLetra: 44,
   modoTranquilo: false,
   velocidadVoz: 1,
-  umbralPalabrasPorSegundo: 2.5,
+  // El máximo: «Más despacito» solo con un zarpazo.
+  umbralPalabrasPorSegundo: LIMITE_MAXIMO_RITMO,
   conVoz: true,
 }
 
 export const LIMITES_AJUSTES = {
   tamanoLetra: { min: 28, max: 72, paso: 2 },
   velocidadVoz: { min: 0.5, max: 1.5, paso: 0.05 },
-  umbralPalabrasPorSegundo: { min: 0.5, max: 4, paso: 0.25 },
+  umbralPalabrasPorSegundo: { min: 0.5, max: LIMITE_MAXIMO_RITMO, paso: 0.25 },
 } as const
 
 /**

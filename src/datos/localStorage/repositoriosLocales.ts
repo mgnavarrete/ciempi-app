@@ -152,6 +152,15 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
         .filter((p) => p.ajustes.umbralPalabrasPorSegundo === 1.5)
         .forEach((p) => perfiles.guardar({ ...p, ajustes: { ...p.ajustes, umbralPalabrasPorSegundo: AJUSTES_POR_DEFECTO.umbralPalabrasPorSegundo } })),
   },
+  {
+    // El umbral de ritmo por defecto pasó de 2,5 al máximo (4 palabras/s): quien no lo había tocado, toma el nuevo.
+    id: '2026-10-umbral-maximo',
+    aplicar: ({ perfiles }) =>
+      perfiles
+        .todos()
+        .filter((p) => p.ajustes.umbralPalabrasPorSegundo === 2.5)
+        .forEach((p) => perfiles.guardar({ ...p, ajustes: { ...p.ajustes, umbralPalabrasPorSegundo: AJUSTES_POR_DEFECTO.umbralPalabrasPorSegundo } })),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
