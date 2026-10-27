@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
-import { voz } from '../audio/voz'
-import { crearRepositoriosApi, leerToken } from './api/repositoriosApi'
+import { crearRepositoriosApi } from './api/repositoriosApi'
 import { crearRepositoriosLocales } from './localStorage/repositoriosLocales'
 import type { Repositorios } from './repositorios'
 
@@ -15,10 +14,9 @@ const ContextoDatos = createContext<Repositorios | null>(null)
 function repositoriosSegunEntorno(): Repositorios {
   const url = (import.meta.env.VITE_API_URL as string | undefined)?.trim()
   if (url) {
-    const base = url === '/' ? '' : url.replace(/\/$/, '')
-    // Con cuenta en línea, la voz de Ciempi también viene del servidor.
-    voz.usarServidor(base, leerToken)
-    return crearRepositoriosApi(base)
+    // La voz es la del teléfono o navegador. Para volver a usar la del servidor
+    // (Kokoro, server/voz): voz.usarServidor(base, leerToken) aquí.
+    return crearRepositoriosApi(url === '/' ? '' : url.replace(/\/$/, ''))
   }
   return crearRepositoriosLocales()
 }

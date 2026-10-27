@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 /** Íconos de trazo (24×24) para los controles de adultos. */
 const TRAZOS = {
   atras: <path d="M15 5l-7 7 7 7" />,
+  vozSi: <path d="M4 9h4l5-4v14l-5-4H4z M16.5 9a4 4 0 0 1 0 6 M19 6.5a7.5 7.5 0 0 1 0 11" />,
+  vozNo: <path d="M4 9h4l5-4v14l-5-4H4z M17 9.5l5 5 M22 9.5l-5 5" />,
   lapiz: <path d="M4 20h4L19 9l-4-4L4 16v4Z M13.5 6.5l4 4" />,
   ajustes: (
     <>

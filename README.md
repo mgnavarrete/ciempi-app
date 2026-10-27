@@ -132,6 +132,15 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 
 ## Voz de Ciempi
 
+La app lee con la **voz del teléfono o navegador** (Ajustes → Voz: «Automática»
+elige la mejor en español, o se elige una a mano). Se puede **apagar la voz**
+(botón 🔊 al leer, o Ajustes → «Leer con voz»), por niño, para leer sin que
+Ciempi diga las palabras.
+
+La voz generada en el servidor (Kokoro, Azure o xAI, descrita abajo) quedó
+desactivada en la app; para volver a usarla, ver `src/datos/DatosProvider.tsx`.
+
+
 Con cuenta en línea, la voz la genera el servidor, así suena igual en
 cualquier teléfono y en la web:
 
@@ -258,7 +267,7 @@ Ver [`docs/despliegue.md`](docs/despliegue.md).
    Toca "Empezar" o "Continuar".
 4. **Lectura:** pon el dedo en el círculo amarillo y desliza despacio. Al
    tocar el inicio de una palabra ("des…") se ilumina y suena entera
-   ("despacio"). La frase termina al recorrer la mitad de la última palabra.
+   ("despacio"). La frase termina al comer la última manzana.
 5. **Progreso:** lee una frase, vuelve atrás o recarga la página y entra de
    nuevo al libro: retoma en la frase siguiente. Al terminar un capítulo
    aparece "¡Terminaste un capítulo!" con la opción de descansar.

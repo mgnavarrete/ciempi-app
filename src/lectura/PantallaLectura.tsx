@@ -5,7 +5,7 @@ import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import { nuevoId } from '../dominio/ids'
-import type { Asignacion, EstadoAsignacion, Id, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
+import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
 import { quitarGuiones } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
@@ -35,6 +35,8 @@ interface Props {
   usuarioId: Id
   /** Un adulto mirando el libro del niño: no mueve su avance ni le da monedas. */
   vistaPrevia?: boolean
+  /** Guarda un cambio de ajustes (el botón de la voz). */
+  alCambiarAjustes: (ajustes: AjustesLectura) => void
   /** Un adulto lee junto al niño desde su cuenta: todo cuenta para el niño. */
   leyendoConAdulto?: boolean
   texto: Texto
@@ -83,8 +85,8 @@ export function PantallaLectura(props: Props) {
   const fraseQueViene = texto.frases[indice + 1]
   useEffect(() => {
     const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
-    voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
-  }, [palabras, fraseQueViene, ajustes.velocidadVoz])
+    if (ajustes.conVoz) voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
+  }, [palabras, fraseQueViene, ajustes.velocidadVoz, ajustes.conVoz])
   // La pista se mide en pantalla (dónde quedó cada palabra); mientras, una pareja.
   const [pistaMedida, setPistaMedida] = useState<Pista | null>(null)
   const pista = pistaMedida && pistaMedida.manzanas.length === palabras.length ? pistaMedida : calcularPista(palabras.length)
@@ -246,7 +248,7 @@ export function PantallaLectura(props: Props) {
   const ejecutar = (efecto: Efecto) => {
     switch (efecto.tipo) {
       case 'decir':
-        if (definicionModo.vozAlDeslizar) voz.decir(palabras[efecto.palabra].texto, ajustes.velocidadVoz)
+        if (definicionModo.vozAlDeslizar && ajustes.conVoz) voz.decir(palabras[efecto.palabra].texto, ajustes.velocidadVoz)
         break
       case 'tropiezo':
         voz.callar()
@@ -302,6 +304,15 @@ export function PantallaLectura(props: Props) {
       }
     >
       <Monedas cantidad={perfil.monedas} />
+      <BotonIcono
+        etiqueta={ajustes.conVoz ? 'Apagar la voz' : 'Encender la voz'}
+        icono={ajustes.conVoz ? 'vozSi' : 'vozNo'}
+        activo={!ajustes.conVoz}
+        onClick={() => {
+          if (ajustes.conVoz) voz.callar()
+          props.alCambiarAjustes({ ...ajustes, conVoz: !ajustes.conVoz })
+        }}
+      />
       <BotonIcono etiqueta="Índice: volver atrás o repetir" icono="indice" onClick={() => setIndiceAbierto(true)} />
       <BotonIcono etiqueta="Ajustes de lectura" icono="ajustes" onClick={alAjustes} />
     </Encabezado>

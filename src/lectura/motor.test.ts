@@ -54,7 +54,7 @@ describe('calcularPista', () => {
 })
 
 describe('pistaDesdePalabras', () => {
-  it('pone la manzana al comienzo de cada palabra y termina a la mitad de la última', () => {
+  it('pone la manzana al comienzo de cada palabra y termina en la última manzana', () => {
     const p = pistaDesdePalabras([
       { inicio: 0.1, fin: 0.3 },
       { inicio: 0.35, fin: 0.5 },
@@ -62,7 +62,7 @@ describe('pistaDesdePalabras', () => {
     ])
     expect(p.manzanas[0]).toBeCloseTo(0.12)
     expect(p.manzanas[1]).toBeCloseTo(0.37)
-    expect(p.fin).toBeCloseTo(0.75)
+    expect(p.fin).toBeCloseTo(0.57)
   })
 
   it('las palabras se leen donde están: la manzana sigue a la palabra, aunque sean de distinto largo', () => {
@@ -151,11 +151,19 @@ describe('motor de lectura por palabras', () => {
     expect(decir(efectos)).toHaveLength(2)
   })
 
-  it('con una sola palabra, se dice al llegar a su manzana y termina al llegar al borde', () => {
+  it('con una sola palabra, se dice y termina al comerse su manzana', () => {
     const una = calcularPista(1)
-    const r = correr(deslizar(0, 0.5, 1500), estadoInicial(), una)
+    const antes = correr(deslizar(0, 0.1, 500), estadoInicial(), una)
+    expect(antes.estado.fase).toBe('arrastrando')
+    const r = correr(deslizar(0.1, 0.5, 1500, 600), antes.estado, una)
     expect(decir(r.efectos)).toHaveLength(1)
-    expect(r.estado.fase).toBe('arrastrando')
-    expect(correr(deslizar(0.5, 1, 1500, 2000), r.estado, una).estado.fase).toBe('completada')
+    expect(r.estado.fase).toBe('completada')
+  })
+
+  it('la frase termina al comer la última manzana, sin tener que seguir hasta el borde', () => {
+    const pista = calcularPista(3)
+    const r = correr(deslizar(0, pista.manzanas[2] + 0.001, 3000), estadoInicial(), pista)
+    expect(decir(r.efectos)).toHaveLength(3)
+    expect(r.estado.fase).toBe('completada')
   })
 })

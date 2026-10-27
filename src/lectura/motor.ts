@@ -6,8 +6,8 @@
  *
  * Todo va por palabras: cada palabra tiene una manzana en la pista, justo
  * debajo de ella. Cuando el dedo (y la cabeza de Ciempi) llega a una
- * manzana, la palabra se enciende y se dice. La frase termina al recorrer la
- * mitad de la última palabra.
+ * manzana, la palabra se enciende y se dice. La frase termina al comer la
+ * última manzana (la pantalla espera a que la voz termine antes de seguir).
  */
 
 /** Para pistas repartidas parejo (sin medir la pantalla): primera y última manzana. */
@@ -67,7 +67,7 @@ export function estadoInicial(): EstadoMotor {
 /** Manzanas repartidas parejo entre INICIO_PISTA y FIN_PISTA (cuando no se puede medir la pantalla). */
 export function calcularPista(cantidadPalabras: number): Pista {
   if (cantidadPalabras <= 0) return { manzanas: [], fin: FIN_PISTA }
-  if (cantidadPalabras === 1) return { manzanas: [INICIO_PISTA], fin: FIN_PISTA }
+  if (cantidadPalabras === 1) return { manzanas: [INICIO_PISTA], fin: INICIO_PISTA }
   const paso = (FIN_PISTA - INICIO_PISTA) / (cantidadPalabras - 1)
   return { manzanas: Array.from({ length: cantidadPalabras }, (_, i) => INICIO_PISTA + i * paso), fin: FIN_PISTA }
 }
@@ -75,19 +75,19 @@ export function calcularPista(cantidadPalabras: number): Pista {
 /**
  * Pista a partir de dónde está cada palabra en pantalla (inicio y fin, 0..1):
  * la manzana va al comienzo de la palabra (un poco adentro) y la frase termina
- * a la mitad de la última palabra.
+ * en la última manzana.
  */
 export function pistaDesdePalabras(palabras: { inicio: number; fin: number }[]): Pista {
   if (palabras.length === 0) return { manzanas: [], fin: 1 }
   const manzanas = palabras.map((p) => p.inicio + Math.min(0.2 * (p.fin - p.inicio), 0.02))
-  const ultima = palabras[palabras.length - 1]
-  return { manzanas, fin: Math.max(manzanas[manzanas.length - 1], (ultima.inicio + ultima.fin) / 2) }
+  return { manzanas, fin: manzanas[manzanas.length - 1] }
 }
 
 /** Distancia (en la pista) que equivale a "una palabra": la distancia promedio entre manzanas. */
 function largoPalabra(pista: Pista): number {
   const m = pista.manzanas
-  return m.length > 1 ? (m[m.length - 1] - m[0]) / (m.length - 1) : Math.max(0.1, pista.fin - (m[0] ?? 0))
+  // Con una sola palabra no hay distancia entre manzanas: se toma lo que queda de pista.
+  return m.length > 1 ? (m[m.length - 1] - m[0]) / (m.length - 1) : Math.max(0.1, 1 - (m[0] ?? 0))
 }
 
 function contarEncendidas(pista: Pista, pos: number): number {
@@ -142,7 +142,7 @@ function avanzarHasta(estado: EstadoMotor, progreso: number, pista: Pista): { es
   const efectos: Efecto[] = []
   for (let p = estado.palabrasLeidas; p < palabrasLeidas; p++) efectos.push({ tipo: 'decir', palabra: p })
 
-  // Termina con todas las palabras dichas y el dedo pasado la mitad de la última.
+  // Termina al comer la última manzana: todas las palabras dichas.
   const total = pista.manzanas.length
   const completa = total > 0 && palabrasLeidas === total && progreso >= pista.fin - 1e-9
   if (completa) efectos.push({ tipo: 'completada', aBuenRitmo: !estado.tuvoTropiezo })

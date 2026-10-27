@@ -62,6 +62,13 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
         </Seccion>
 
         <Seccion emoji="🔊" titulo="Voz">
+          <label className="flex cursor-pointer items-center justify-between gap-4">
+            <span>
+              <span className="block font-bold">Leer con voz</span>
+              <span className="text-sm text-tinta-suave">Apágala para leer sin que Ciempi diga las palabras (también desde el botón 🔊 al leer).</span>
+            </span>
+            <input type="checkbox" checked={ajustes.conVoz} onChange={(e) => cambiar('conVoz', e.target.checked)} className="h-7 w-7 shrink-0 accent-petroleo" />
+          </label>
           <AvisoVoz />
           <label className="flex flex-col gap-1">
             <span className="font-bold">Voz</span>

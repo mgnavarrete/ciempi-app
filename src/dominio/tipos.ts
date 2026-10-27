@@ -46,6 +46,8 @@ export interface AjustesLectura {
   velocidadVoz: number
   /** Palabras por segundo sobre las cuales se considera "demasiado rápido". */
   umbralPalabrasPorSegundo: number
+  /** false: se lee sin voz (por ejemplo, con la profesora leyendo en voz alta). */
+  conVoz: boolean
 }
 
 export const AJUSTES_POR_DEFECTO: AjustesLectura = {
@@ -53,6 +55,7 @@ export const AJUSTES_POR_DEFECTO: AjustesLectura = {
   modoTranquilo: false,
   velocidadVoz: 1,
   umbralPalabrasPorSegundo: 2.5,
+  conVoz: true,
 }
 
 export const LIMITES_AJUSTES = {

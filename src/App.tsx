@@ -139,6 +139,7 @@ export function App() {
             asignacion={asignacion}
             vistaPrevia={vista.vistaPrevia}
             leyendoConAdulto={esAdmin && !vista.vistaPrevia}
+            alCambiarAjustes={(a) => cambiarAjustes(perfil.id, a)}
             alGanarMonedas={(n) => void ganarMonedas(perfil.id, n)}
             alProgreso={(progreso) => void repos.asignaciones.guardarProgreso(asignacion.id, progreso)}
             alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })}
