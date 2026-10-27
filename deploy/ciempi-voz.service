@@ -1,7 +1,7 @@
-# Servicio systemd de la voz de Ciempi (Piper, server/voz). Lo instala deploy/instalar-voz.sh.
+# Servicio systemd de la voz de Ciempi (Kokoro, server/voz). Lo instala deploy/instalar-voz.sh.
 # Solo escucha en 127.0.0.1:3201; lo usa ciempi-api (GET /api/voz).
 [Unit]
-Description=Voz de Ciempi (Piper)
+Description=Voz de Ciempi (Kokoro)
 After=network.target
 
 [Service]

@@ -210,7 +210,7 @@ export async function crearApp() {
   app.get('/api/salud', async () => ({ ok: true }))
 
   // ── Voz de Ciempi ───────────────────────────────────────────────────────
-  // El audio lo genera Azure (Lorenzo y Paloma) o Piper (server/voz), ver
+  // El audio lo genera Azure, xAI o Kokoro en este servidor (server/voz), ver
   // voz.ts, y se guarda en audios_voz: las palabras se repiten mucho entre libros y niños.
 
   // Para el diagnóstico de Ajustes: ¿alguna voz responde? (lo guardado no cuenta).
@@ -229,7 +229,7 @@ export async function crearApp() {
     const velocidad = Math.min(1.5, Math.max(0.5, Math.round((Number(q.velocidad) || 1) * 20) / 20))
     const guardar = dicho.length <= LARGO_PALABRA
 
-    // La primera fuente que tenga el audio guardado o lo pueda generar (Azure antes que Piper).
+    // La primera fuente que tenga el audio guardado o lo pueda generar (las de pago, si hay clave, antes que Kokoro).
     for (const fuente of fuentesDeVoz(voz)) {
       const clave = `${fuente.id}|${velocidad}|${dicho}`
       if (guardar) {

@@ -132,29 +132,25 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
 
 ## Voz de Ciempi
 
-Con cuenta en línea, la voz la genera el servidor (`server/src/voz.ts`), así
-suena igual en cualquier teléfono:
+Con cuenta en línea, la voz la genera el servidor, así suena igual en
+cualquier teléfono y en la web:
 
-1. **Microsoft Azure** si hay `AZURE_SPEECH_KEY`: Lorenzo (Chile) para Ciempi
-   niño y Paloma para Ciempi niña. Elegidas escuchando 12 voces.
-2. **xAI** si hay `XAI_API_KEY`: Leo (niño) y Ara (niña), en español de México.
-3. Si no hay claves, o si fallan, **Piper** en el propio servidor (gratis, sin
-   internet): `es_MX-ald` (hombre) y `es_MX-claude` (mujer).
-
-- `server/voz/servidor_voz.py`: servicio en Python (127.0.0.1:3201) que
-  genera el WAV de una palabra en ~40 ms y le quita el silencio del inicio.
-- `GET /api/voz?texto=…&voz=nino|nina&velocidad=…` (con sesión): lo pide al
-  servicio y lo guarda en la tabla `audios_voz` (cada palabra se genera una vez).
-- `src/audio/vozServidor.ts`: lo reproduce con Web Audio. La pantalla de
+- **Kokoro** en el propio servidor (gratis, sin internet ni cuentas):
+  **Alex** para Ciempi niño y **Dora** para Ciempi niña, elegidas escuchando
+  muestras de 15 voces. `server/voz/servidor_voz.py` (127.0.0.1:3201) genera el
+  WAV de una palabra en ~120 ms y le quita el silencio del inicio.
+- Opcional, de pago: si hay `AZURE_SPEECH_KEY` (Lorenzo y Paloma) o
+  `XAI_API_KEY` (Leo y Ara), se usan antes que Kokoro (`server/src/voz.ts`).
+- `GET /api/voz?texto=…&voz=nino|nina&velocidad=…` (con sesión) guarda cada
+  palabra en la tabla `audios_voz`: se genera una sola vez.
+- `src/audio/vozServidor.ts` la reproduce con Web Audio; la pantalla de
   lectura precarga las palabras de la frase actual y la siguiente.
-- Si el servicio no responde, la app usa la voz del teléfono (y si este no
-  tiene español, muestra el aviso «Instalar voz»).
+- Si la voz del servidor no responde, la app usa la del teléfono.
 - **Ajustes → Voz:** se puede elegir a mano la voz de Ciempi (niño o niña) o
-  cualquier voz del teléfono, de cualquier idioma. Se guarda en el dispositivo.
+  cualquier voz del teléfono. Se guarda en el dispositivo, y debajo se ve si la
+  voz de Ciempi funciona o qué falla.
 
-En local: `bash deploy/instalar-voz.sh` instala todo, o a mano
-`python3 -m venv server/voz/.venv && server/voz/.venv/bin/pip install -r server/voz/requirements.txt`,
-descargar los modelos en `server/voz/modelos/` y correr `server/voz/.venv/bin/python server/voz/servidor_voz.py`.
+En local: `bash deploy/instalar-voz.sh` (necesita `espeak-ng` del sistema).
 
 ## Servidor (cuentas y sincronización)
 

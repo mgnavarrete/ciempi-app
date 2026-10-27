@@ -181,7 +181,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   it('voz de Ciempi: pide el audio al servicio de voz, lo guarda y avisa si no está', async () => {
-    // Servicio de voz falso (el real es server/voz, con Piper).
+    // Servicio de voz falso (el real es server/voz, con Kokoro).
     const pedidos: string[] = []
     const falso = createServer((req, res) => {
       if (req.url === '/salud') return void res.end('ok')
@@ -211,7 +211,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await voz('/api/voz/estado', N)).statusCode).toBe(503)
   })
 
-  it('voz de Ciempi con Azure: Lorenzo y Paloma, sin silencio inicial, y Piper si Azure falla', async () => {
+  it('voz de Ciempi con Azure: Lorenzo y Paloma, sin silencio inicial, y Kokoro si Azure falla', async () => {
     // Un WAV de 24 kHz con 0,1 s de silencio, 0,05 s de sonido y 0,1 s de silencio.
     const wav = (() => {
       const muestras = new Int16Array(2400 + 1200 + 2400)
@@ -235,10 +235,10 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
         res.writeHead(200, { 'Content-Type': 'audio/wav' }).end(wav)
       })
     })
-    const piper = createServer((req, res) => (req.url === '/salud' ? res.end('ok') : res.writeHead(200).end(Buffer.from('RIFF-piper'))))
-    await Promise.all([azure, piper].map((s) => new Promise<void>((ok) => s.listen(0, '127.0.0.1', ok))))
+    const local = createServer((req, res) => (req.url === '/salud' ? res.end('ok') : res.writeHead(200).end(Buffer.from('RIFF-local'))))
+    await Promise.all([azure, local].map((s) => new Promise<void>((ok) => s.listen(0, '127.0.0.1', ok))))
     const puerto = (s: typeof azure) => (s.address() as { port: number }).port
-    Object.assign(process.env, { AZURE_SPEECH_KEY: 'clave-de-prueba', AZURE_SPEECH_URL: `http://127.0.0.1:${puerto(azure)}`, VOZ_URL: `http://127.0.0.1:${puerto(piper)}` })
+    Object.assign(process.env, { AZURE_SPEECH_KEY: 'clave-de-prueba', AZURE_SPEECH_URL: `http://127.0.0.1:${puerto(azure)}`, VOZ_URL: `http://127.0.0.1:${puerto(local)}` })
     const voz = (url: string) => app.inject({ method: 'GET', url, headers: { authorization: `Bearer ${N}` } })
     try {
       expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'azure' })
@@ -253,17 +253,17 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       await voz('/api/voz?texto=a%3Cb&voz=nina')
       expect(recibido[1].ssml).toContain('<voice name="es-US-PalomaNeural"><prosody rate="0%">a&#60;b</prosody>')
 
-      // Lo ya generado no se vuelve a pedir; si Azure se cae, lo nuevo sale de Piper.
+      // Lo ya generado no se vuelve a pedir; si Azure se cae, lo nuevo sale de Kokoro.
       azureCaido = true
       expect((await voz('/api/voz?texto=jard%C3%ADn&voz=nino&velocidad=0.8')).statusCode).toBe(200)
       const respaldo = await voz('/api/voz?texto=nuevo&voz=nino')
-      expect(respaldo.rawPayload.toString()).toBe('RIFF-piper')
+      expect(respaldo.rawPayload.toString()).toBe('RIFF-local')
       expect(recibido).toHaveLength(2)
-      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'piper' })
+      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'kokoro' })
     } finally {
       delete process.env.AZURE_SPEECH_KEY
       delete process.env.AZURE_SPEECH_URL
-      await Promise.all([azure, piper].map((s) => new Promise((ok) => s.close(ok))))
+      await Promise.all([azure, local].map((s) => new Promise((ok) => s.close(ok))))
     }
   })
 

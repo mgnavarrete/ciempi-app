@@ -104,25 +104,26 @@ Prueba: abre https://ciempi.minttu.cl, crea una cuenta de adulto y un lector.
 
 ## 6b. Voz de Ciempi
 
-La voz con que Ciempi lee la genera el servidor con [Piper](https://github.com/OHF-Voice/piper1-gpl)
-(voz neuronal, sin servicios externos): de hombre si Ciempi es niño (`es_MX-ald`) y de mujer si es
-niña (`es_MX-claude`). Así suena igual en todos los teléfonos, aunque no tengan voces en español.
+La voz con que Ciempi lee la genera el servidor con **Kokoro** (voz neuronal, gratis, sin
+internet ni cuentas): **Alex** si Ciempi es niño y **Dora** si es niña. Así suena igual en todos
+los teléfonos, aunque no tengan voces en español.
 
 ```bash
 cd /var/www/ciempi-app && bash deploy/instalar-voz.sh
 ```
 
-Crea `server/voz/.venv`, instala Piper, descarga las dos voces (~130 MB) e instala el servicio
-`ciempi-voz` (solo escucha en 127.0.0.1:3201). Usa unos 400 MB de RAM. Si dice que falta `venv`:
-`sudo apt install python3-venv` y repetir.
+Instala `espeak-ng` (con `sudo apt`), crea `server/voz/.venv` con Kokoro, descarga el modelo
+(~350 MB) e instala el servicio `ciempi-voz` (solo escucha en 127.0.0.1:3201). Usa alrededor de
+1 GB de RAM. Si dice que falta `venv`: `sudo apt install python3-venv` y repetir.
 
 Cada palabra se genera una sola vez y queda guardada en la tabla `audios_voz`. Si el servicio está
 apagado, la app usa la voz del teléfono. Registros: `journalctl -u ciempi-voz -n 30`.
 
+Opcionales, de pago (se usan antes que Kokoro si tienen clave):
+
 ### Voces de Microsoft (Lorenzo y Paloma)
 
-Más naturales que Piper: Lorenzo (Chile) para Ciempi niño y Paloma para Ciempi niña. Piper queda
-de respaldo si Azure falla.
+Lorenzo (Chile) para Ciempi niño y Paloma para Ciempi niña. Kokoro queda de respaldo si Azure falla.
 
 1. En https://portal.azure.com → **Crear un recurso** → buscar **Speech** (Servicios de voz) → Crear.
    Plan de tarifa **Free F0** (500.000 caracteres al mes; cada palabra se pide una sola vez porque

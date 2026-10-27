@@ -4,7 +4,8 @@
  * - Con AZURE_SPEECH_KEY: voces neuronales de Microsoft (Lorenzo, de Chile,
  *   para Ciempi niño; Paloma para Ciempi niña).
  * - Con XAI_API_KEY: voces de xAI (Leo para niño, Ara para niña) en español de México.
- * - Si no hay ninguna, o si fallan: Piper en este mismo servidor (server/voz).
+ * - Si no hay ninguna, o si fallan: Kokoro en este mismo servidor (server/voz),
+ *   gratis y sin internet: Alex para niño y Dora para niña.
  *
  * El servidor guarda cada audio generado (tabla audios_voz), así que a los
  * servicios de pago se les pide cada palabra una sola vez.
@@ -20,7 +21,7 @@ export interface FuenteVoz {
 
 const TIEMPO_MAXIMO = 10_000
 
-const urlPiper = () => process.env.VOZ_URL ?? 'http://127.0.0.1:3201'
+const urlLocal = () => process.env.VOZ_URL ?? 'http://127.0.0.1:3201'
 const xaiConfigurado = () => !!process.env.XAI_API_KEY
 /** https://api.x.ai (XAI_URL solo para pruebas). */
 const urlXai = () => process.env.XAI_URL ?? 'https://api.x.ai'
@@ -85,22 +86,22 @@ function fuenteXai(voz: VozCiempi): FuenteVoz {
   }
 }
 
-function fuentePiper(voz: VozCiempi): FuenteVoz {
+function fuenteLocal(voz: VozCiempi): FuenteVoz {
   return {
-    id: `piper:${voz}`,
+    id: `kokoro:${voz}`,
     async generar(texto, velocidad) {
-      const r = await fetch(`${urlPiper()}/voz?${new URLSearchParams({ texto, voz, velocidad: String(velocidad) })}`, {
+      const r = await fetch(`${urlLocal()}/voz?${new URLSearchParams({ texto, voz, velocidad: String(velocidad) })}`, {
         signal: AbortSignal.timeout(TIEMPO_MAXIMO),
       })
-      if (!r.ok) throw new Error(`Piper respondió ${r.status}`)
+      if (!r.ok) throw new Error(`La voz local respondió ${r.status}`)
       return Buffer.from(await r.arrayBuffer())
     },
   }
 }
 
-/** En orden de preferencia: Azure y xAI (las que tengan clave) y después Piper. */
+/** En orden de preferencia: Azure y xAI (las que tengan clave) y después Kokoro en este servidor. */
 export function fuentesDeVoz(voz: VozCiempi): FuenteVoz[] {
-  return [...(azureConfigurado() ? [fuenteAzure(voz)] : []), ...(xaiConfigurado() ? [fuenteXai(voz)] : []), fuentePiper(voz)]
+  return [...(azureConfigurado() ? [fuenteAzure(voz)] : []), ...(xaiConfigurado() ? [fuenteXai(voz)] : []), fuenteLocal(voz)]
 }
 
 /** ¿Hay alguna voz funcionando? Devuelve cuál, o null. */
@@ -115,7 +116,7 @@ export async function vozDisponible(): Promise<string | null> {
   if (xaiConfigurado() && (await responde(`${urlXai()}/v1/tts/voices`, { headers: { Authorization: `Bearer ${process.env.XAI_API_KEY}` } }))) {
     return 'xai'
   }
-  return (await responde(`${urlPiper()}/salud`)) ? 'piper' : null
+  return (await responde(`${urlLocal()}/salud`)) ? 'kokoro' : null
 }
 
 /**
