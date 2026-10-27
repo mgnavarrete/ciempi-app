@@ -1,6 +1,7 @@
 # Servicio systemd del servidor de Ciempi.
 # Copiar a /etc/systemd/system/ciempi-api.service. Ajustar User si la carpeta
-# no es de `mint` y la ruta de node si `which node` no es /usr/bin/node.
+# no es de `mint` y ExecStart con la ruta de `which node` (en este servidor,
+# Node viene de nvm, dentro de /home/mint).
 [Unit]
 Description=Ciempi API
 After=network.target postgresql.service
@@ -9,14 +10,15 @@ After=network.target postgresql.service
 Type=simple
 User=mint
 WorkingDirectory=/var/www/ciempi-app/server
-ExecStart=/usr/bin/node --env-file=.env src/index.ts
+ExecStart=/home/mint/.nvm/versions/node/v22.22.3/bin/node --env-file=.env src/index.ts
 Restart=on-failure
 RestartSec=3
 Environment=NODE_ENV=production
 # Endurecimiento: el proceso no puede escribir fuera de lo necesario.
 NoNewPrivileges=true
 ProtectSystem=strict
-ProtectHome=true
+# Solo lectura (no true): node está en /home/mint/.nvm.
+ProtectHome=read-only
 PrivateTmp=true
 
 [Install]

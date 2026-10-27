@@ -79,8 +79,8 @@ npm --prefix server ci --omit=dev --no-audit --no-fund
 ## 5. Servicio (que el servidor arranque solo)
 
 ```bash
-which node                            # si no es /usr/bin/node, corregir ExecStart
-sudo cp deploy/ciempi-api.service /etc/systemd/system/
+# Copia el servicio con la ruta real de node (aquí viene de nvm)
+sed "s|^ExecStart=[^ ]*|ExecStart=$(which node)|" deploy/ciempi-api.service | sudo tee /etc/systemd/system/ciempi-api.service > /dev/null
 sudo systemctl daemon-reload
 sudo systemctl enable --now ciempi-api
 curl http://127.0.0.1:3200/api/salud  # → {"ok":true}
@@ -95,6 +95,7 @@ sudo cp deploy/nginx-ciempi.conf /etc/nginx/sites-available/ciempi.minttu.cl
 sudo ln -s /etc/nginx/sites-available/ciempi.minttu.cl /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 sudo certbot --nginx -d ciempi.minttu.cl    # cuando pregunte, elige redirigir HTTP → HTTPS
+# Si dice "Another instance of Certbot is already running": espera un minuto y repite.
 ```
 
 `nginx -t` revisa la configuración **antes** de recargar, así un error no bota las otras apps.
