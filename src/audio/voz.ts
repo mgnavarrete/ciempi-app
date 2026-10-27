@@ -329,6 +329,11 @@ class Voz {
     return resultado
   }
 
+  /** Vuelve a pedir las voces del equipo (al abrir Ajustes, como Kuentu: el motor ya está listo). */
+  refrescarVoces() {
+    void this.actualizarVoces()
+  }
+
   /** Cambia la voz y la recuerda en este dispositivo. */
   elegir(eleccion: EleccionVoz) {
     this.eleccionActual = eleccion
@@ -386,6 +391,8 @@ class Voz {
     if (!this.motor) return
     // Android carga las voces de forma asíncrona: al principio la lista viene vacía.
     const voces = await this.motor.voces().catch(() => [])
+    // El motor puede responder vacío un momento (por ejemplo al volver a la app): no se pierde lo ya encontrado.
+    if (!voces.length && this.vocesDelEquipo.length) return
     this.vocesDelEquipo = voces
     this.conteo = { total: voces.length, espanol: voces.filter((v) => esEspanol(v.lang)).length }
     // Una voz del equipo elegida a mano se usa tal cual (sin cambiarle el tono).

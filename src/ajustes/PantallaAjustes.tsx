@@ -40,6 +40,8 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
   useEffect(() => {
     void voz.diagnosticarServidor().then(setEstadoVozCiempi)
   }, [eleccionVoz])
+  // Las voces del teléfono se piden de nuevo al abrir Ajustes: a esta altura el motor de voz ya arrancó.
+  useEffect(() => voz.refrescarVoces(), [])
   const cambiar = <K extends keyof AjustesLectura>(clave: K, valor: AjustesLectura[K]) => alCambiar({ ...ajustes, [clave]: valor })
 
   return (
@@ -80,6 +82,11 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
               ))}
             </select>
             <span className="text-xs text-tinta-suave">Se guarda en este dispositivo. Si una voz no suena, prueba otra.</span>
+            {voz.disponible && !opcionesVoz.some((o) => o.id.startsWith('equipo:')) && (
+              <button type="button" onClick={() => voz.refrescarVoces()} className="self-start text-sm font-bold text-petroleo underline underline-offset-4">
+                No aparecen las voces del teléfono: buscarlas de nuevo
+              </button>
+            )}
             {estadoVozCiempi !== undefined && (
               <span className={`text-xs font-bold ${estadoVozCiempi ? 'text-coral' : 'text-verde'}`}>
                 {estadoVozCiempi ? `La voz de Ciempi no funciona: ${estadoVozCiempi}.` : 'La voz de Ciempi funciona ✓'}
@@ -167,6 +174,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
             </button>
           </Seccion>
         )}
+        <p className="text-center text-xs text-tinta-suave">CIEMPI versión {__VERSION_APP__}</p>
       </div>
     </div>
   )
