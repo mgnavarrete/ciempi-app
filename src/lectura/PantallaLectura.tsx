@@ -332,7 +332,7 @@ export function PantallaLectura(props: Props) {
   }
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col">
+    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       {encabezado}
       {panelIndice}
       {vistaPrevia && (

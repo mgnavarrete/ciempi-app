@@ -12,6 +12,9 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(TelefonoPlugin.class);
         super.onCreate(savedInstanceState);
+        // La letra del sistema no agranda la app (el tamaño de la lectura está en
+        // Ajustes): si no, las pantallas no caben y todo se desplaza.
+        getBridge().getWebView().getSettings().setTextZoom(100);
         pantallaCompleta();
     }
 

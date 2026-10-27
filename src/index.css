@@ -37,6 +37,15 @@ body,
 }
 
 /*
+ * La página nunca se desplaza entera: cada pantalla tiene su zona con scroll
+ * (la lista de libros, la tienda…). Así, al deslizar leyendo, no se va todo.
+ */
+html,
+body {
+  overflow: hidden;
+}
+
+/*
  * Bordes del teléfono: barra de estado, cámara (en horizontal queda a un
  * costado) y barra de gestos. En la APK, Capacitor entrega los valores en
  * --safe-area-inset-*; en el navegador vienen en env().
