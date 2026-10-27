@@ -19,7 +19,8 @@ type Vista =
   /** Depende de quién entró: el niño a sus libros, el adulto a su panel. */
   | { tipo: 'inicio' }
   | { tipo: 'biblioteca'; perfilId: Id }
-  | { tipo: 'leer'; perfilId: Id; libro: LibroEnBiblioteca }
+  /** vistaPrevia: un adulto mira el libro sin mover el avance ni dar monedas. */
+  | { tipo: 'leer'; perfilId: Id; libro: LibroEnBiblioteca; vistaPrevia: boolean }
   | { tipo: 'ajustes'; perfilId: Id; volverA: Vista }
   | { tipo: 'agregarLibro'; perfilId: Id }
   | { tipo: 'ciempi'; perfilId: Id }
@@ -136,7 +137,8 @@ export function App() {
             usuarioId={sesion.usuarioId}
             texto={texto}
             asignacion={asignacion}
-            vistaPrevia={esAdmin}
+            vistaPrevia={vista.vistaPrevia}
+            leyendoConAdulto={esAdmin && !vista.vistaPrevia}
             alGanarMonedas={(n) => void ganarMonedas(perfil.id, n)}
             alProgreso={(progreso) => void repos.asignaciones.guardarProgreso(asignacion.id, progreso)}
             alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })}
@@ -226,7 +228,8 @@ export function App() {
         perfil={perfil}
         usuarioId={sesion!.usuarioId}
         modo={esAdmin ? 'admin' : 'nino'}
-        alLeer={(libro) => setVista({ tipo: 'leer', perfilId, libro })}
+        // Un adulto puede leer junto al niño (cuenta para el niño) o solo mirar (vista previa).
+        alLeer={(libro, vistaPrevia = false) => setVista({ tipo: 'leer', perfilId, libro, vistaPrevia })}
         alAjustes={() => setVista({ tipo: 'ajustes', perfilId, volverA: { tipo: 'biblioteca', perfilId } })}
         alAgregarLibro={esAdmin ? undefined : () => setVista({ tipo: 'agregarLibro', perfilId })}
         alPersonalizar={esAdmin ? undefined : () => setVista({ tipo: 'ciempi', perfilId })}

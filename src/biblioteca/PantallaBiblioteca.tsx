@@ -20,7 +20,8 @@ interface Props {
    * - admin: un adulto mirando los libros del niño (puede quitar cualquiera).
    */
   modo: 'nino' | 'admin'
-  alLeer: (libro: LibroEnBiblioteca) => void
+  /** vistaPrevia: un adulto solo mira (no cambia el avance ni da monedas). */
+  alLeer: (libro: LibroEnBiblioteca, vistaPrevia?: boolean) => void
   alAjustes: () => void
   alAgregarLibro?: () => void
   /** Abrir la tienda/armario de Ciempi (no se ofrece a un adulto mirando). */
@@ -116,10 +117,18 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     <span className="mt-auto text-sm text-tinta-suave">{resumen.etiqueta}</span>
                     <BarraProgreso valor={resumen.fraccion} />
                     <span className="mt-1 self-start rounded-full bg-petroleo px-4 py-1.5 font-bold text-white">
-                      {modo === 'admin' ? 'Ver' : resumen.accion} →
+                      {modo === 'admin' ? `Leer con ${perfil.apodo}` : resumen.accion} →
                     </span>
                   </span>
                 </button>
+                {modo === 'admin' && (
+                  <button
+                    onClick={() => alLeer(libro, true)}
+                    className="mt-1 w-full text-center text-sm font-bold text-tinta-suave underline underline-offset-4"
+                  >
+                    Solo mirar (no cambia su avance)
+                  </button>
+                )}
                 {puedeQuitar(libro) && (
                   <button
                     onClick={() => void quitar(libro)}

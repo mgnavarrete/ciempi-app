@@ -251,7 +251,7 @@ function TarjetaNino(props: {
       </div>
       <div className="flex flex-wrap gap-2">
         <BotonPrincipal onClick={props.alVerLibros} className="px-4 py-1.5 text-base">
-          Ver sus libros
+          Leer con {perfil.apodo}
         </BotonPrincipal>
         <BotonSecundario onClick={props.alAgregarLibro} className="px-3 py-1.5 text-sm">
           Agregar libro

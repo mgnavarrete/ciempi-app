@@ -245,6 +245,7 @@ Ver [`docs/despliegue.md`](docs/despliegue.md).
 | **Biblioteca** del niño con portada, capítulo actual, % de avance y botón Continuar | `src/biblioteca/` |
 | **Libros en PDF**: extracción con pdf.js en el navegador, limpieza, capítulos, rango de páginas y revisión del silabeo antes de guardar | `src/fuentes/pdf.ts`, `src/lenguaje/libro.ts`, `src/textos/PantallaNuevoTexto.tsx` |
 | Progreso guardado después de cada frase; premio al terminar capítulo (+2) y libro (+3) | `PantallaLectura.tsx` |
+| **Leer con el niño** desde la cuenta del adulto (terapeuta o apoderado): en la biblioteca del niño, «Leer con Tomi» guarda el avance, las monedas y la sesión en la cuenta del niño, sin cerrar sesión; «Solo mirar» es la vista previa | `src/biblioteca/PantallaBiblioteca.tsx`, `PantallaLectura.tsx` |
 | **Panel del adulto**: crear lectores con usuario y clave, ver sus libros (vista previa), agregarles libros, avance y resumen de 7 días (minutos, frases, 🐢, sílabas/s), cambiar clave, invitar a otro adulto | `src/adultos/PantallaAdultos.tsx` |
 | Datos en el servidor (o sin conexión en `localStorage`) | `src/datos/` |
 | **Servidor**: login, cuentas de niño, permisos, libros, progreso y tienda en PostgreSQL, con tests de permisos | `server/` |

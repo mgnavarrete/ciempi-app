@@ -35,6 +35,8 @@ interface Props {
   usuarioId: Id
   /** Un adulto mirando el libro del niño: no mueve su avance ni le da monedas. */
   vistaPrevia?: boolean
+  /** Un adulto lee junto al niño desde su cuenta: todo cuenta para el niño. */
+  leyendoConAdulto?: boolean
   texto: Texto
   asignacion: Asignacion
   alGanarMonedas: (cantidad: number) => void
@@ -351,6 +353,11 @@ export function PantallaLectura(props: Props) {
       {vistaPrevia && (
         <div className="mx-5 rounded-xl bg-petroleo-claro px-3 py-1 text-center text-sm text-petroleo">
           Vista previa: no cambia el avance ni las monedas de {perfil.apodo}
+        </div>
+      )}
+      {props.leyendoConAdulto && (
+        <div className="mx-5 rounded-xl bg-verde-claro px-3 py-1 text-center text-sm font-bold text-tinta">
+          Leyendo con {perfil.apodo}: el avance y las monedas quedan en su cuenta
         </div>
       )}
       <div className="flex flex-col gap-1.5 px-5 pt-1 apaisado:flex-row apaisado:items-center apaisado:gap-5 apaisado:pt-0">
