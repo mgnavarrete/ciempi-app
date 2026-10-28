@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <defs>
+    <linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset="1" stop-color="#e04848"/></linearGradient>
+  </defs>
+  <rect width="300" height="400" fill="url(#f)"/>
+  <circle cx="250" cy="60" r="70" fill="#fff" opacity="0.25"/>
+  <circle cx="40" cy="330" r="90" fill="#fff" opacity="0.18"/>
+  <ellipse cx="150" cy="330" rx="140" ry="34" fill="#000" opacity="0.08"/>
+  <g font-family="'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif" text-anchor="middle">
+    <text x="150" y="260" font-size="150">🧺</text>
+    <text x="70" y="110" font-size="72">🍉</text>
+    <text x="235" y="370" font-size="72">🛡️</text>
+  </g>
+</svg>

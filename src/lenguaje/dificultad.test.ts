@@ -21,8 +21,8 @@ describe('nivelSugerido', () => {
 })
 
 describe('cuentos de Ciempi', () => {
-  it('hay cuatro por nivel, con ids únicos', () => {
-    for (const n of [0, 1, 2, 3, 4]) expect(CUENTOS.filter((c) => c.nivel === n)).toHaveLength(4)
+  it('hay ocho por nivel (cuatro de Ciempi y cuatro con personajes), con ids únicos', () => {
+    for (const n of [0, 1, 2, 3, 4]) expect(CUENTOS.filter((c) => c.nivel === n)).toHaveLength(8)
     expect(new Set(CUENTOS.map((c) => c.id)).size).toBe(CUENTOS.length)
   })
 

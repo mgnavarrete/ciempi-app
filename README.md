@@ -198,10 +198,16 @@ libro con capítulos parte desde el comienzo del capítulo donde iba.
 
 ### Cuentos de Ciempi
 
-La app trae 20 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`),
-cada uno con su portada (`public/portadas/`, generadas con `node scripts/portadas.mjs`):
-cuentos con palabras de una o dos sílabas para el nivel 0, de una línea por oración para el nivel 1 y 2, dos poemas y dos
-cuentos en párrafos para el 3 y cuatro cuentos largos para el 4. **Todo
+La app trae 40 cuentos, ocho por nivel (`src/contenido/cuentos.ts`): 20 de
+Ciempi y 20 con personajes conocidos (Spider-Man, Superman, Iron Man, los
+Avengers, Hulk, Thor, Harry Potter y Barbie). **Ojo:** esos personajes son
+marcas registradas (Marvel, DC, Warner, Mattel); sirven para uso privado,
+pero antes de publicar la app en una tienda hay que quitar la lista
+`CUENTOS_DE_PERSONAJES` (y sus portadas 21 a 40) o pedir permiso. Los de Ciempi son
+propios. Cada uno tiene su portada (`public/portadas/`, generadas con
+`node scripts/portadas.mjs`). Por nivel: palabras de una o dos sílabas (0),
+una línea por oración (1 y 2), poemas y cuentos en párrafos (3) y cuentos
+largos (4). **Todo
 lector nuevo los recibe en su biblioteca**, cada uno en su nivel. En el
 servidor no tienen dueño: nadie los borra, pero un adulto puede cambiarles el
 nivel o quitárselos a un niño (en el panel, «Cuentos de Ciempi»). Al arrancar,

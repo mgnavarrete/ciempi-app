@@ -25,7 +25,7 @@ export const AUTOR_CUENTOS = 'Cuentos de Ciempi'
 /** Portada del cuento (generadas con scripts/portadas.mjs, en public/portadas). */
 export const portadaCuento = (id: string) => `/portadas/cuento-${id.slice(-2)}.svg`
 
-export const CUENTOS: Cuento[] = [
+const CUENTOS_DE_CIEMPI: Cuento[] = [
   // ── Nivel 0: sílabas ────────────────────────────────────────────────────
   // Palabras cortas y de sílabas simples (como en el silabario): se leen
   // sílaba por sílaba, «La ca-sa de Juan».
@@ -351,3 +351,314 @@ Arriba, el viento golpeaba los vidrios con fuerza. A Rosa le temblaban las manos
 Una hora después, los tres botes entraron al pequeño puerto de la isla. Los pescadores, mojados y felices, subieron hasta el faro para dar las gracias. Don Julián, desde su sillón, les dijo que esa noche la guardiana del faro había sido otra. Rosa se puso colorada, y Canela ronroneó muy orgullosa.`,
   },
 ]
+
+// ── Cuentos con personajes conocidos ──────────────────────────────────────
+// Cuentos originales con personajes de Marvel, DC, Warner (Harry Potter) y
+// Mattel (Barbie): son marcas registradas. Están bien para uso privado (terapia,
+// alumnos); antes de publicar la app en una tienda hay que quitarlos (borrar
+// esta lista y sus portadas) o pedir permiso.
+export const CUENTOS_DE_PERSONAJES: Cuento[] = [
+  // Nivel 0: sílabas
+  {
+    id: id(21),
+    nivel: 0,
+    titulo: 'Hulk y la bola',
+    texto: `Hulk es muy alto.
+Hulk es verde.
+Hulk ve una bola.
+La bola es roja.
+Hulk da un salto.
+¡Pum! La bola sube.
+Hulk se ríe.
+¡Qué buen día!`,
+  },
+  {
+    id: id(22),
+    nivel: 0,
+    titulo: 'Thor y la lluvia',
+    texto: `Thor es fuerte.
+Thor tiene un mazo.
+El mazo da luz.
+Thor mira el cielo.
+Cae la lluvia.
+Thor sube al techo.
+Thor se moja.
+¡Qué frío, Thor!`,
+  },
+  {
+    id: id(23),
+    nivel: 0,
+    titulo: 'Barbie y su gato',
+    texto: `Barbie tiene un gato.
+El gato se llama Tom.
+Tom toma leche.
+Barbie mima a Tom.
+Tom se sube a la cama.
+Barbie le da un beso.
+Tom se va a dormir.
+¡Buenas noches, Tom!`,
+  },
+  {
+    id: id(24),
+    nivel: 0,
+    titulo: 'Harry y su búho',
+    texto: `Harry tiene un búho.
+El búho es blanco.
+El búho vuela.
+Lleva una carta.
+La carta es de Ron.
+Ron lee la carta.
+Ron se ríe.
+¡Hola, Harry!`,
+  },
+
+  // Nivel 1: palabra
+  {
+    id: id(25),
+    nivel: 1,
+    titulo: 'Spider-Man y el gatito',
+    texto: `Spider-Man vive en la ciudad.
+Tiene un traje rojo y azul.
+Spider-Man lanza su telaraña.
+¡Zas! Sube a un edificio.
+Desde arriba mira la calle.
+Un gatito está en un árbol.
+El gatito tiene miedo.
+Spider-Man lo baja con cuidado.
+La niña abraza a su gatito.
+¡Gracias, Spider-Man!`,
+  },
+  {
+    id: id(26),
+    nivel: 1,
+    titulo: 'Superman y el barco',
+    texto: `Superman tiene una capa roja.
+Superman puede volar.
+Vuela sobre las nubes.
+Vuela sobre el mar.
+Ve un barco chiquito.
+El barco tiene un hoyo.
+Superman empuja el barco.
+El barco llega a la playa.
+Los niños aplauden.
+¡Superman es muy fuerte!`,
+  },
+  {
+    id: id(27),
+    nivel: 1,
+    titulo: 'Barbie va a la playa',
+    texto: `Barbie va a la playa.
+Lleva su sombrero rosado.
+Lleva un balde y una pala.
+Barbie hace un castillo.
+El castillo es muy grande.
+Llega una ola.
+¡Oh, no! El castillo se cae.
+Barbie se ríe.
+Hace otro castillo más lejos.
+¡Ahora sí está seguro!`,
+  },
+  {
+    id: id(28),
+    nivel: 1,
+    titulo: 'Iron Man y su robot',
+    texto: `Iron Man tiene un traje de metal.
+El traje vuela muy alto.
+Iron Man tiene un robot.
+El robot es chiquito.
+El robot quiere ayudar.
+Toma una escoba.
+Barre todo el taller.
+¡Qué limpio quedó!
+Iron Man le da un premio.
+El robot está feliz.`,
+  },
+
+  // Nivel 2: oración
+  {
+    id: id(29),
+    nivel: 2,
+    titulo: 'Los Avengers van de picnic',
+    texto: `Un domingo, los Avengers decidieron ir de picnic al parque.
+Capitán América llevó sándwiches y Thor llevó una sandía gigante.
+Hulk extendió el mantel, pero era demasiado pequeño para él.
+Iron Man llegó volando con jugo para todos.
+De pronto, unas nubes negras taparon el sol.
+Thor levantó su martillo y le pidió a la lluvia que esperara.
+Las nubes se fueron y el sol volvió a brillar.
+Todos comieron, jugaron a la pelota y se rieron mucho.
+Ese día aprendieron que los héroes también necesitan descansar.`,
+  },
+  {
+    id: id(30),
+    nivel: 2,
+    titulo: 'Spider-Man y la tarea',
+    texto: `Peter Parker tenía que hacer una tarea de ciencias para el lunes.
+Pero cada vez que se sentaba a escribir, alguien pedía ayuda.
+Primero rescató a un perrito que se había perdido en el metro.
+Después ayudó a una señora a subir sus bolsas al quinto piso.
+Cuando volvió a casa, ya era de noche y estaba muy cansado.
+Su tía May le preparó una taza de leche con chocolate.
+Peter se sentó, respiró hondo y terminó su tarea.
+El lunes, la profesora le puso un siete.
+Ser héroe es difícil, pero estudiar también es importante.`,
+  },
+  {
+    id: id(31),
+    nivel: 2,
+    titulo: 'Hermione y el libro perdido',
+    texto: `En Hogwarts, Hermione pasaba las tardes en la biblioteca.
+Un día, Harry y Ron no encontraban el libro de pociones.
+Lo buscaron debajo de las mesas y detrás de las velas.
+Hermione cerró los ojos y pensó dónde lo había visto.
+¡Estaba en la sala común, debajo del gato de Hermione!
+El gato dormía sobre el libro como si fuera una almohada.
+Los tres amigos se rieron y despertaron al gato con cariño.
+Esa tarde estudiaron juntos hasta que salieron las estrellas.
+Hermione dijo que leer en compañía es mucho mejor.`,
+  },
+  {
+    id: id(32),
+    nivel: 2,
+    titulo: 'Barbie veterinaria',
+    texto: `Barbie trabaja como veterinaria en un pueblo cerca del bosque.
+Una mañana llegó un niño con un conejo que no quería comer.
+Barbie lo revisó con cuidado y le miró los dientes.
+El conejo tenía un diente muy largo que le dolía.
+Barbie se lo arregló con mucha paciencia y cariño.
+Después le dio una zanahoria pequeña para probar.
+¡El conejo se la comió entera en un minuto!
+El niño abrazó a Barbie y le regaló un dibujo.
+Barbie lo pegó en la pared de su consulta.`,
+  },
+
+  // Nivel 3: párrafo y estrofa
+  {
+    id: id(33),
+    nivel: 3,
+    titulo: 'La canción de Spider-Man',
+    texto: `Por la ciudad va saltando
+un vecino muy amable,
+con su traje rojo y azul
+y una tela muy durable.
+
+Si un gatito tiene miedo
+arriba de un farol,
+Spider-Man lo baja
+antes de que se esconda el sol.
+
+Nunca deja de ayudar,
+aunque esté muy cansado,
+porque sabe que un buen héroe
+siempre está a tu lado.
+
+Y cuando llega la noche
+se sienta en un tejado,
+a mirar las estrellas
+con su gorro colorado.`,
+  },
+  {
+    id: id(34),
+    nivel: 3,
+    titulo: 'Harry y el partido de quidditch',
+    texto: `Era el primer partido de quidditch del año y Harry estaba muy nervioso. Desde su escoba veía las tribunas llenas de estudiantes con bufandas rojas y amarillas. Ron le gritaba desde abajo que no se preocupara, porque él volaba mejor que nadie.
+
+El partido empezó y la pelota dorada, llamada snitch, desapareció entre las nubes. Harry voló de un lado a otro buscándola, mientras el viento frío le despeinaba el pelo y le empañaba los anteojos.
+
+De pronto vio un brillo cerca de la torre más alta del castillo. Harry se inclinó sobre su escoba y voló tan rápido como pudo, esquivando a dos jugadores del otro equipo que también la habían visto.
+
+Con la punta de los dedos atrapó la snitch y todo el estadio gritó de alegría. Esa noche, en la sala común, Hermione le dijo que lo mejor no había sido ganar, sino no rendirse nunca.`,
+  },
+  {
+    id: id(35),
+    nivel: 3,
+    titulo: 'Superman y el globo rojo',
+    texto: `En la ciudad de Metrópolis había una feria llena de juegos, música y algodón de azúcar. Sofía tenía un globo rojo atado a su muñeca y no lo soltaba por nada del mundo.
+
+De pronto, una ráfaga de viento desató el globo y lo llevó hacia el cielo. Sofía lo vio subir y subir, más alto que los árboles y más alto que los edificios, y se puso a llorar.
+
+En ese momento, algo pasó volando como un rayo azul y rojo. Era Superman, que había escuchado el llanto desde muy lejos. Atrapó el globo justo antes de que se perdiera entre las nubes.
+
+Superman bajó despacio y le devolvió el globo a Sofía, amarrándolo con un nudo doble para que no se volviera a escapar. Ella le dio las gracias y le regaló un poco de su algodón de azúcar.`,
+  },
+  {
+    id: id(36),
+    nivel: 3,
+    titulo: 'Barbie y la obra de teatro',
+    texto: `En la escuela de Barbie iban a presentar una obra de teatro sobre el bosque. A Barbie le tocó ser el árbol más alto, aunque ella quería ser la mariposa que bailaba en el centro.
+
+Al principio se sintió un poco triste, pero después pensó que un árbol también podía ser importante. Se hizo un disfraz con hojas de papel verde y ramas de cartón pintadas de café.
+
+El día de la función, la niña que hacía de mariposa se puso muy nerviosa y no quería salir al escenario. Barbie le tomó la mano y le dijo que el árbol la iba a cuidar todo el tiempo.
+
+La mariposa bailó alrededor del árbol y todos aplaudieron de pie. Al final, la profesora dijo que la obra había salido perfecta, porque cada uno había hecho su parte con el corazón.`,
+  },
+
+  // Nivel 4: lectura libre
+  {
+    id: id(37),
+    nivel: 4,
+    titulo: 'Los Avengers y el robot perdido',
+    texto: `Una mañana de primavera, los Avengers recibieron una señal extraña en la torre: algo pedía ayuda desde el fondo del bosque. Iron Man revisó las pantallas y descubrió que era un pequeño robot de limpieza que se había escapado de un laboratorio.
+
+Capitán América organizó al equipo para buscarlo. Thor volaría sobre los árboles, Black Widow revisaría los caminos y Hulk, que era el más fuerte, movería las rocas grandes por si el robot había quedado atrapado debajo de alguna.
+
+Buscaron durante horas, pero el bosque era enorme y el robot no aparecía por ninguna parte. Cuando ya empezaban a cansarse, Hulk escuchó un pitido muy suave que salía de un tronco hueco, cubierto de hojas secas y de musgo.
+
+Adentro estaba el robot, temblando y con una rueda rota. Tenía miedo, porque pensaba que lo iban a regañar por haberse escapado. Hulk lo tomó con mucho cuidado entre sus manos gigantes, como si fuera un pajarito, y le habló con voz suave.
+
+Iron Man le arregló la rueda en un par de minutos y le preguntó por qué se había ido. El robot explicó que en el laboratorio nadie jugaba con él y que solo quería ver los árboles, los pájaros y el cielo de verdad.
+
+Los Avengers se miraron y tuvieron una idea. Desde ese día, el pequeño robot vive en la torre con ellos: barre el piso por las mañanas y, por las tardes, sale a pasear al parque con Hulk, que se convirtió en su mejor amigo, y juntos recogen hojas secas para hacer montañas donde saltar.`,
+  },
+  {
+    id: id(38),
+    nivel: 4,
+    titulo: 'Iron Man aprende a pedir ayuda',
+    texto: `Tony Stark era uno de los inventores más inteligentes del mundo, y por eso pensaba que podía hacerlo todo solo. Cuando construía una armadura nueva, no dejaba que nadie lo ayudara, aunque pasara días enteros sin dormir en su taller. Sus amigos, los Avengers, le ofrecían ayuda muchas veces, pero él siempre respondía que no la necesitaba.
+
+Un día decidió construir la armadura más grande de todas, capaz de volar hasta la luna y volver en una sola tarde. Trabajó semanas enteras, soldando piezas, conectando cables y escribiendo programas en su computador.
+
+Por fin llegó el día de la prueba. Tony se puso la armadura, encendió los motores y despegó con un rugido. Pero apenas pasó las nubes, una alarma empezó a sonar: uno de los motores se había recalentado y la armadura comenzó a caer.
+
+Tony intentó arreglarla en el aire, pero no podía alcanzar el motor de la espalda. Entonces, por primera vez, presionó el botón de emergencia y llamó a sus amigos. En pocos segundos aparecieron Thor, volando con su martillo, y Falcon, con sus alas metálicas.
+
+Entre los dos sujetaron la armadura y la bajaron despacio hasta un campo de trigo. Thor enfrió el motor con una lluvia suave y Falcon le alcanzó a Tony una herramienta que se le había caído en el camino.
+
+Esa noche, en la torre, Tony les dio las gracias y les mostró los planos de su próximo invento. Esta vez, les dijo, quería construirlo con ellos, porque había aprendido que hasta el inventor más inteligente necesita amigos que lo ayuden.`,
+  },
+  {
+    id: id(39),
+    nivel: 4,
+    titulo: 'Harry Potter y el dragón bebé',
+    texto: `Una tarde de otoño, Harry, Ron y Hermione fueron a visitar a Hagrid a su cabaña, al borde del bosque prohibido. Lo encontraron muy emocionado frente a la chimenea, mirando un huevo enorme y negro que se movía solo sobre las brasas.
+
+Hagrid les contó que lo había ganado en un juego de cartas y que pronto nacería un dragón. Hermione se preocupó, porque sabía que estaba prohibido tener dragones en Hogwarts, pero Hagrid estaba tan feliz que nadie se atrevió a decirle que no.
+
+Esa misma noche, el huevo se rompió con un crujido y salió un dragoncito con alas arrugadas y ojos amarillos. Estornudó una chispa que le quemó la barba a Hagrid, y todos se rieron. Hagrid lo llamó Norberto y le dio un balde de leche tibia.
+
+Pasaron los días y Norberto crecía muy rápido. Ya no cabía en la cabaña, mordía los muebles y una noche casi le prende fuego al techo. Harry y sus amigos entendieron que un dragón necesita mucho espacio, montañas y otros dragones para ser feliz.
+
+Ron le escribió a su hermano Charlie, que cuidaba dragones en Rumania. Charlie respondió que sus amigos podían recoger a Norberto en la torre más alta del castillo, a medianoche, sin que nadie se diera cuenta.
+
+Esa noche, los tres amigos subieron la escalera en silencio, cargando una caja enorme que se movía y echaba humo. Los amigos de Charlie llegaron en escobas y se llevaron a Norberto volando bajo la luna. Hagrid lloró un poco, pero sabía que su pequeño dragón por fin tendría un hogar de verdad.`,
+  },
+  {
+    id: id(40),
+    nivel: 4,
+    titulo: 'Barbie astronauta',
+    texto: `Desde que era pequeña, Barbie soñaba con viajar al espacio. Pasaba las noches mirando las estrellas por la ventana de su pieza y dibujaba cohetes en todos sus cuadernos, con ventanas redondas y llamas de colores saliendo por abajo.
+
+Cuando creció, estudió mucho y entrenó todavía más. Aprendió a flotar en piscinas enormes, a manejar computadores complicados y a comer comida que venía en bolsitas. Algunos días eran muy difíciles, pero cada vez que quería rendirse recordaba los cohetes de sus cuadernos.
+
+Por fin llegó el gran día. Barbie se puso su traje blanco, subió al cohete junto a otros dos astronautas y escuchó la cuenta regresiva, desde diez hasta llegar a cero. El cohete tembló, rugió y subió tan rápido que Barbie sintió que el asiento la abrazaba.
+
+Al llegar a la estación espacial, todo flotaba: el pelo, las cucharas y hasta las gotas de jugo, que parecían pequeñas pelotas brillantes. Barbie se rió mucho intentando atrapar una gota con la boca, y sus compañeros grabaron un video para mandarlo a la Tierra.
+
+Su trabajo era cuidar un pequeño huerto en el espacio, para saber si las plantas podían crecer lejos del planeta. Todos los días regaba las lechugas, medía las hojas y anotaba todo en su cuaderno, igual que cuando era niña.
+
+Después de seis meses, las lechugas estaban grandes y verdes. Barbie volvió a la Tierra con una foto de su huerto flotante y fue a visitar su antigua escuela. Les contó a los niños que los sueños grandes se construyen de a poquito, estudiando, practicando y sin dejar de mirar las estrellas.`,
+  },
+]
+
+export const CUENTOS: Cuento[] = [...CUENTOS_DE_CIEMPI, ...CUENTOS_DE_PERSONAJES]

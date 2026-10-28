@@ -45,12 +45,111 @@ export function compose(base, selection) {
  const shoes=zapatos.find(i=>i.id===selection.pies)||zapatos[0]
  const bag=mochilas.find(i=>i.id===selection.espalda)||mochilas[0]
  let svg=base
+ const palette=paletas.find(i=>i.id===selection.paleta)||paletas[0]
+ const colorMap=new Map(paletas[0].colors.map((color,i)=>[color,palette.colors[i]]))
+ svg=svg.replace(/#[0-9a-fA-F]{6}/g,c=>colorMap.get(c)||c)
+ if(palette.id!=='clasica')svg=svg.replaceAll('#e8752b',palette.colors[2])
+ const pattern=patternSvg(selection.textura)
+ if(pattern)svg=svg.replace(/(<g clip-path="url\(#clip-[^)]*\)">)/g,`$1${pattern}`)
+ if(selection.expresion&&selection.expresion!=='alegre'||selection.ojos&&selection.ojos!=='oscuro')svg=replaceGroup(svg,'eyes',eyesSvg(selection.expresion||'alegre',(ojosColores.find(i=>i.id===selection.ojos)||ojosColores[0]).color,palette.colors[1]))
+ if(selection.boca&&selection.boca!=='sonrisa')svg=replaceGroup(svg,'mouth',mouthSvg(selection.boca))
  if(hat.svg!==null)svg=replaceGroup(svg,'jockey',`<g id="jockey">${hat.svg}</g>`)
  // Antenas detrás del gorro: se conservan, excepto dentro del casco cerrado.
  const match=svg.match(/<g id="antennae"[\s\S]*?<\/g>/)
  if(match){svg=replaceGroup(svg,'antennae',''); if(hat.antenna!==false){const antenna=match[0].replace('M649 220','M649 275').replace('M780 208','M780 265');svg=svg.replace('<g id="head"',`${antenna}<g id="head"`)}}
- if(shoes.svg!==null)svg=svg.replace(/(<g transform="rotate\([^\"]* -10 -32\)">)[\s\S]*?<\/g>/g,`$1${shoes.svg}</g>`)
+ if(shoes.svg!==null||shoes.random){
+  const choices=zapatos.filter(i=>!i.random)
+  let seed=(Number(selection.seed)||1)>>>0
+  for(let i=choices.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[choices[i],choices[j]]=[choices[j],choices[i]]}
+  let foot=0
+  svg=svg.replace(/(<g transform="rotate\([^"]* -10 -32\)">)[\s\S]*?<\/g>/g,(full,opening)=>{const piece=shoes.random?choices[foot++%choices.length]:shoes;return piece.svg===null?full:opening+piece.svg+'</g>'})
+ }
+ const clothing=ropas.find(i=>i.id===selection.ropa)||ropas[0]
+ const cape=capas.find(i=>i.id===selection.capa)||capas[0]
+ svg=svg.replace('<g id="legs-and-sneakers"',`<g id="cape">${cape.svg}</g><g id="legs-and-sneakers"`)
+ svg=svg.replace('<g id="head"',`<g id="clothing">${clothing.svg}</g><g id="head"`)
+
  svg=svg.replace('<g id="head"',`<g id="backpack">${bag.svg}</g><g id="head"`)
  svg=svg.replace('<g id="jockey"',`<g id="face-accessory">${face.svg}</g><g id="jockey"`)
  return svg.replace(/<title id="title">[\s\S]*?<\/title>/,'<title id="title">Ciempi · Probador de prendas</title>')
+}
+
+// Colecciones originales: jardín, magia celeste, fiesta rosa y guardianes del cielo.
+const star = 'M0 -24 L7 -8 L24 -7 L12 6 L15 23 L0 15 L-15 23 L-12 6 L-24 -7 L-7 -8Z'
+const heart = 'M0 25 C-52 -6 -29 -42 0 -19 C29 -42 52 -6 0 25Z'
+const badge = (x,y,scale=1,color='#ffe394') => `<path transform="translate(${x} ${y}) scale(${scale})" d="${star}" fill="${color}" stroke-width="4"/>`
+gorros.push(
+ {id:'cabeza-lazo',nombre:'Lazo de fiesta',svg:wrap(`<path d="M626 265 Q695 215 798 243" fill="none" stroke="#ce5c93" stroke-width="15"/><g transform="translate(661 230) rotate(-14)"><path d="M0 0 Q-69 -67 -62 -4 Q-69 40 0 0 M0 0 Q62 -63 66 -7 Q72 41 0 0" fill="#ed83b7"/><path d="M-9 5 l-21 59 22 -6 15 11 6 -53 M11 5 l25 50 12 -18 19 0 -38 -35" fill="#d65b99"/><path d="M-45 -17 l29 11 M42 -16 l-25 10" stroke="#ffc9de" stroke-width="6"/><circle r="14" fill="#ffd96a" stroke-width="5"/></g>`)},
+ {id:'cabeza-tiara',nombre:'Tiara aurora',svg:wrap(`<path d="M627 269 Q705 230 807 245" stroke="#c977a6" stroke-width="13" fill="none"/><path d="M638 258 Q623 215 665 226 Q662 172 710 210 Q752 163 763 216 Q804 195 799 242" fill="#f2c4dc" stroke="#865879" stroke-width="5"/><path d="M711 232 l-15 -25 16 -26 17 25Z" fill="#a2dedc" stroke-width="4"/>${badge(660,242,.35)}${badge(773,229,.35)}`)},
+ {id:'cabeza-sol',nombre:'Sombrero de verano',svg:wrap(`<path d="M626 242 Q623 160 692 163 Q765 155 786 233Z" fill="#f1d49a"/><path d="M628 224 Q702 202 781 216 L786 236 Q699 223 630 245Z" fill="#ef95b0"/><path d="M592 267 Q667 227 800 224 Q884 237 834 268 Q771 286 707 277 Q614 312 590 294 Q564 282 592 267Z" fill="#ffe4ae"/><path d="M610 276 Q688 245 796 242" fill="none" stroke="#d9b87e" stroke-width="4"/><circle cx="775" cy="232" r="18" fill="#ef95b0" stroke-width="4"/><circle cx="775" cy="232" r="7" fill="#ffdc63" stroke-width="3"/>`)},
+ {id:'cabeza-mariposa',nombre:'Mariposa del jardín',svg:wrap(`<path d="M625 270 Q707 221 800 245" fill="none" stroke="#87ad79" stroke-width="14"/><g transform="translate(664 215) rotate(-15)"><path d="M0 5 C-92 -72 -79 56 -8 28 C-66 78 10 75 0 5Z" fill="#a899de"/><path d="M0 5 C92 -72 79 56 8 28 C66 78 -10 75 0 5Z" fill="#f2a4c5"/><path d="M-34 -5 Q-52 12 -24 21 M34 -5 Q52 12 24 21" fill="none" stroke="#ffe8b6" stroke-width="7"/><path d="M0 -3 v41 M0 -3 l-12 -15 M0 -3 l12 -15" fill="none" stroke-width="6"/></g>`)},
+ {id:'cabeza-audifonos',nombre:'Audífonos musicales',svg:wrap(`<path d="M607 337 C585 166 846 156 862 322" fill="none" stroke="#7963ad" stroke-width="25"/><path d="M609 289 C619 192 785 178 833 268" fill="none" stroke="#d4b8e9" stroke-width="7"/><rect x="591" y="301" width="40" height="82" rx="18" fill="#ab8ed0"/><rect x="843" y="286" width="32" height="71" rx="15" fill="#ab8ed0"/>${badge(611,340,.5)}<path d="M852 310 v24" stroke="#ffde8a" stroke-width="5"/>`)},
+ {id:'cabeza-pirata',nombre:'Capitán de cuentos',svg:wrap(`<path d="M605 276 Q560 215 626 217 Q673 135 741 188 Q813 174 845 228 L800 265 Q717 235 605 276Z" fill="#3b596e"/><path d="M600 252 Q716 208 833 231" fill="none" stroke="#e5b664" stroke-width="10"/><path d="M690 213 l17 -32 18 28 -17 17Z" fill="#f5dfaa" stroke-width="4"/><path d="M620 274 l-37 55 30 -8 12 17 23 -63" fill="#df856e"/>`)},
+ {id:'cabeza-guardian',nombre:'Casco guardián',svg:wrap(`<path d="M608 292 Q604 180 701 171 Q798 167 824 257 L791 269 Q751 218 714 250 L679 285Z" fill="#58adb1"/><path d="M686 178 L702 171 L727 249 L711 258Z" fill="#ffdc72"/><path d="M614 248 L579 185 L575 240 L599 282 M808 228 L840 181 L843 232 L824 256" fill="#d4eee1" stroke-width="5"/>${badge(701,211,.6)}`)},
+ {id:'cabeza-unicornio',nombre:'Unicornio de nubes',svg:wrap(`<path d="M627 274 Q711 223 797 243" fill="none" stroke="#dba3cd" stroke-width="16"/><path d="M679 240 L686 119 L724 231Z" fill="#ffe49b"/><path d="M685 212 l26 -10 M685 183 l16 -7 M686 157 l7 -4" stroke="#d3a95d" stroke-width="4"/><path d="M635 255 L619 198 Q655 193 663 242 M750 232 Q759 185 790 191 L783 242" fill="#e7c9ee" stroke-width="5"/><circle cx="656" cy="248" r="15" fill="#eb9fc4" stroke-width="4"/><circle cx="745" cy="232" r="14" fill="#a5dcd0" stroke-width="4"/>`)},
+)
+const lensPair=(shape,color,scale=1)=>wrap(`<path d="M669 335 L625 315 M745 332 Q759 318 778 321" fill="none"/>${[[709,342,1],[811,321,.86]].map(([x,y,s])=>`<g transform="translate(${x} ${y}) scale(${s*scale})"><path d="${shape}" fill="${color}" fill-opacity=".20" stroke="${color}" stroke-width="10"/><path d="${shape}" fill="none" stroke-width="3"/></g>`).join('')}`)
+caras.push(
+ {id:'cara-lentes-corazon',nombre:'Corazones',svg:lensPair(heart,'#db5d91',1.27)},
+ {id:'cara-lentes-estrella',nombre:'Estrellas',svg:lensPair(star,'#e4ac2e',1.95)},
+ {id:'cara-lentes-fuego',nombre:'Llamas',svg:lensPair('M0 38 C-48 39 -48 -12 -26 -34 L-20 -9 Q-8 -27 0 -49 Q12 -28 13 -14 L30 -32 C56 14 39 38 0 38Z','#e8763d',1.08)},
+ {id:'cara-lentes-arcoiris',nombre:'Arcoíris',svg:wrap(`<path d="M665 337 L625 317 M752 329 L774 320" fill="none"/>${[[709,342,1],[811,321,.86]].map(([x,y,s])=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-42 11 A42 42 0 0 1 42 11 L42 25 Q0 41 -42 25Z" fill="#c7e8ec" fill-opacity=".25" stroke-width="4"/>${['#e8789c','#f4bb5c','#a0c777','#5bbac4','#a28ac9'].map((c,i)=>`<path d="M${-42+i*6} 11 A${42-i*6} ${42-i*6} 0 0 1 ${42-i*6} 11" fill="none" stroke="${c}" stroke-width="6"/>`).join('')}</g>`).join('')}`)},
+ {id:'cara-visor',nombre:'Visor cósmico',svg:wrap(`<path d="M655 317 Q748 276 854 289 L856 334 Q757 366 659 361Z" fill="#504f8c"/><path d="M673 323 Q752 292 839 302 L840 322 Q759 347 675 347Z" fill="#77d5db" stroke-width="3"/><path d="M696 318 l-9 22 M716 310 l-9 25" stroke="#e4fcf3" stroke-width="6"/><path d="M655 334 L623 320" fill="none" stroke-width="10"/>`)},
+ {id:'cara-antifaz',nombre:'Antifaz guardián',svg:wrap(`<path d="M657 308 L679 317 Q715 290 749 314 L767 308 Q805 274 843 290 L858 276 L852 344 Q813 362 775 342 L757 352 L740 360 Q696 382 662 354Z M682 331 Q704 312 732 329 L731 350 Q702 367 681 346Z M786 310 Q806 292 832 306 L833 327 Q809 347 788 329Z" fill="#7561a6" fill-rule="evenodd" stroke-width="5"/><path d="M745 313 l13 -13 11 8 -12 22Z" fill="#ffe394" stroke-width="3"/>`)},
+)
+zapatos.push(
+ {id:'pies-patines',nombre:'Patines retro',svg:`<path d="M-29 -46 H5 V-20 Q40 -23 46 0 V12 Q0 23 -40 8Z" fill="#ab8ed0" stroke-width="6"/>${sole}<path d="M-20 -32 h18 M-20 -22 h18" stroke="#ffdf85" stroke-width="5"/><circle cx="-22" cy="25" r="8" fill="#f4a367" stroke-width="4"/><circle cx="28" cy="25" r="8" fill="#f4a367" stroke-width="4"/>`},
+ {id:'pies-bailarina',nombre:'Ballerinas con lazo',svg:`<path d="M-35 -19 Q-19 -36 -3 -17 Q35 -30 46 -2 L46 14 Q1 28 -41 9Z" fill="#dd85ae" stroke-width="6"/>${sole}<path d="M-14 -16 Q-25 -25 -26 -9 Q-17 -2 -14 -16 Q-1 -30 2 -13 Q-4 -3 -14 -16Z" fill="#ffcedd" stroke-width="3"/><path d="M13 -10 Q26 -15 34 -7" fill="none" stroke="#ffc5d9" stroke-width="4"/>`},
+ {id:'pies-espaciales',nombre:'Botas lunares',svg:`<path d="M-29 -43 H6 L8 -18 Q42 -17 46 1 V15 H-41Z" fill="#e2eee7" stroke-width="6"/><path d="M-29 -38 H6 V-26 H-29Z" fill="#5babb2" stroke-width="3"/>${sole}<path d="M-29 -13 h36 M-29 -4 h36" stroke="#9aafba" stroke-width="4"/><circle cx="24" cy="-7" r="6" fill="#e8b74e" stroke-width="3"/>`},
+ {id:'pies-botines',nombre:'Botines de aventura',svg:`<path d="M-30 -43 H7 V-19 Q40 -22 45 0 V14 H-41Z" fill="#c79263" stroke-width="6"/>${sole}<path d="M-30 -41 H7 V-32 H-30Z" fill="#efd5ac" stroke-width="3"/><path d="M-19 -27 h16 M-20 -17 h16 M-21 -7 h16" stroke="#ffe5b2" stroke-width="4"/><path d="M13 -9 Q29 -17 39 -3" fill="none" stroke="#99633e" stroke-width="4"/>`},
+ {id:'pies-aleatorios',nombre:'Un zapato en cada pie',random:true,svg:null},
+)
+mochilas.push(
+ {id:'espalda-cohete',nombre:'Mochila cohete',svg:wrap(`<path d="M516 385 L487 410 L493 360 L516 332 M583 385 L611 410 L606 361 L583 332" fill="#e88c79"/><path d="M513 389 V315 Q528 265 548 252 Q575 271 589 317 V389Z" fill="#d6eee7"/><path d="M523 293 Q548 253 578 296Z" fill="#e88c79" stroke-width="5"/><circle cx="550" cy="331" r="22" fill="#6abdc7" stroke-width="5"/><path d="M540 323 l9 -7" stroke="#e7fff5" stroke-width="5"/><path d="M527 390 l3 27 19 -10 16 10 10 -27" fill="#ffdb72" stroke-width="5"/>`)},
+ {id:'espalda-nube',nombre:'Mochila nube',svg:wrap(`<path d="M533 300 Q527 279 548 278 Q566 278 566 300" fill="none"/><path d="M509 330 Q487 306 516 297 Q527 274 549 294 Q575 276 587 301 Q618 306 596 333 L594 397 Q549 425 505 397Z" fill="#e1ecf1"/><path d="M519 355 Q552 370 581 352 V386 Q550 403 518 386Z" fill="#bdcde9" stroke-width="5"/><circle cx="535" cy="333" r="4" fill="#243e5b" stroke="none"/><circle cx="568" cy="333" r="4" fill="#243e5b" stroke="none"/><path d="M544 342 q9 8 16 -2" fill="none" stroke-width="3"/>`)},
+ {id:'espalda-libro',nombre:'Libro de hechizos',svg:wrap(`<path d="M521 299 Q517 274 541 275 Q561 276 558 301" fill="none"/><path d="M505 303 L586 286 L603 398 L521 419 Q505 416 503 400Z" fill="#7763a6"/><path d="M505 303 L521 419 M524 410 L594 393" stroke="#e5cc94" stroke-width="8"/>${badge(551,351,.9)}<path d="M564 339 l36 -7 3 21 -36 7Z" fill="#d6a761" stroke-width="4"/><circle cx="587" cy="344" r="4" fill="#ffe394" stroke="none"/>`)},
+ {id:'espalda-estrella',nombre:'Bolso estrella',svg:wrap(`<path d="M529 309 Q531 275 555 279 Q577 282 577 310" fill="none" stroke="#d481aa" stroke-width="10"/><path transform="translate(550 355) scale(2.5)" d="${star}" fill="#ef9fc5" stroke-width="3"/><path d="M523 356 Q549 368 577 348" fill="none" stroke="#a9588c" stroke-width="4"/>${badge(550,341,.55,'#ffe5a1')}`)},
+)
+export const ropas=[
+ {id:'ropa-nada',nombre:'Sin ropa',svg:''},
+ {id:'ropa-camisa',nombre:'Camisa de explorador',svg:wrap(`<ellipse cx="558" cy="402" rx="95" ry="97" fill="#e5c792"/><path d="M540 310 L556 351 L581 312 M556 351 L554 496" fill="#fff0cc" stroke-width="5"/><path d="M485 365 h42 v40 h-42Z" fill="#c4a16c" stroke-width="4"/>${[370,401,432,463].map(y=>`<circle cx="556" cy="${y}" r="4" fill="#886643" stroke="none"/>`).join('')}`)},
+ {id:'ropa-poleron',nombre:'Polerón de estrellas',svg:wrap(`<ellipse cx="558" cy="402" rx="95" ry="97" fill="#9179c0"/><path d="M523 312 Q549 365 597 319" fill="#c1a9e0" stroke-width="6"/><path d="M538 339 l-5 36 M573 340 l5 34" stroke="#ffedbe" stroke-width="4"/><path d="M511 438 Q555 422 601 438 L594 468 Q558 481 519 466Z" fill="#ad95d3" stroke-width="4"/>${badge(555,402,.7)}`)},
+ {id:'ropa-falda',nombre:'Falda de fiesta',svg:wrap(`<path d="M477 430 Q555 455 637 429 L656 503 Q565 531 464 505Z" fill="#e99abc"/><path d="M477 430 Q555 455 637 429 L639 444 Q557 470 474 447Z" fill="#bd6197" stroke-width="4"/><path d="M499 454 l-13 43 M532 461 l-3 44 M568 462 l5 46 M604 454 l17 44" fill="none" stroke="#bf6d9e" stroke-width="4"/>${badge(573,477,.4)}`)},
+ {id:'ropa-camiseta',nombre:'Camiseta guardiana',svg:wrap(`<ellipse cx="558" cy="402" rx="95" ry="97" fill="#439da9"/><path d="M527 313 Q553 353 591 318" fill="none" stroke="#b6e2d5" stroke-width="14"/><path d="M513 367 Q550 354 596 370 L586 416 L554 445 L519 420Z" fill="#e9d18c" stroke-width="5"/>${badge(554,397,.7,'#517d9b')}`)},
+]
+// Volumen suave de la tela, debajo del cuello, bolsillos y emblemas.
+for(const item of ropas){
+ if(item.id==='ropa-falda'||item.id==='ropa-nada')continue
+ item.svg=item.svg.replace(/(<ellipse cx="558" cy="402" rx="95" ry="97" fill="[^"]*"\/>)/,`$1<defs><linearGradient id="garment-light" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#243e5b" stop-opacity=".18"/></linearGradient></defs><ellipse cx="558" cy="402" rx="92" ry="94" fill="url(#garment-light)" stroke="none"/>`)
+}
+export const capas=[
+ {id:'capa-nada',nombre:'Sin capa',svg:''},
+ ...[['capa-guardian','Capa guardiana','#468eb4','#90c6d6'],['capa-celeste','Capa de magia celeste','#7163a3','#b2a1d4'],['capa-aurora','Capa aurora','#ce7aaf','#f0bdd9']].map(([id,nombre,c,light])=>({id,nombre,svg:wrap(`<path d="M630 285 Q540 314 445 284 Q389 270 345 319 Q387 354 327 394 Q357 445 316 473 Q391 464 421 506 Q491 484 596 474 Q559 379 630 285Z" fill="${c}"/><path d="M598 312 Q509 354 566 472 M555 315 Q447 327 488 493 M490 307 Q394 333 424 505" stroke="${light}" stroke-width="5" fill="none"/>${id==='capa-aurora'?`<path transform="translate(429 324) scale(.6)" d="${heart}" fill="#ffe3c1" stroke-width="4"/>`:id==='capa-celeste'?'<path d="M448 307 Q421 312 434 334 Q406 330 416 311 Q428 296 448 307Z" fill="#ffe394" stroke-width="3"/>':'<path d="M429 298 L410 324 H424 L419 344 L447 315 H431Z" fill="#ffe394" stroke-width="3"/>'}${badge(487,316,.4)}<path d="M602 304 Q628 319 646 338" fill="none" stroke="#e9cd85" stroke-width="10"/>`)})),
+]
+export const paletas=[
+ {id:'clasica',nombre:'Clásico',colors:['#ffb449','#ff9e32','#f58b2d','#a1dfb2','#83cda4','#64b699','#ffdf57','#ffd137','#f0b32b']},
+ {id:'oceano',nombre:'Océano',colors:['#99e5df','#66c7ce','#40a4bc','#a6d5f0','#83b9dc','#6494bf','#b8efdc','#8bd6c5','#60b6ae']},
+ {id:'rosa',nombre:'Jardín rosa',colors:['#fac4dd','#eea2c7','#da81b2','#dec7f2','#c5a9e4','#a58cca','#fff0a3','#f4d780','#dfb966']},
+ {id:'bosque',nombre:'Bosque',colors:['#c9df91','#a6c96c','#88af51','#b4dfbf','#8dc8a3','#6eae8a','#f8da91','#e8c471','#ccab58']},
+ {id:'noche',nombre:'Noche mágica',colors:['#b5a4e2','#9480c9','#7765ad','#8bb8d8','#709cc3','#527caa','#f6dca1','#e1bc75','#c29b58']},
+]
+export const texturas=[{id:'liso',nombre:'Liso'},{id:'pecas',nombre:'Pecas'},{id:'estrellas',nombre:'Estrellas'},{id:'corazones',nombre:'Corazones'},{id:'escamas',nombre:'Escamas suaves'},{id:'rayas',nombre:'Rayas'}]
+export const expresiones=[{id:'alegre',nombre:'Alegre'},{id:'guino',nombre:'Guiño'},{id:'feliz',nombre:'Ojos felices'},{id:'curioso',nombre:'Curioso'},{id:'dormilon',nombre:'Dormilón'}]
+export const ojosColores=[{id:'oscuro',nombre:'Azul oscuro',color:'#243e5b'},{id:'azul',nombre:'Azules',color:'#4095bf'},{id:'verde',nombre:'Verdes',color:'#589d78'},{id:'miel',nombre:'Miel',color:'#bc883d'},{id:'violeta',nombre:'Violetas',color:'#9870b4'}]
+export const bocas=[{id:'sonrisa',nombre:'Sonrisa'},{id:'risa',nombre:'Risa'},{id:'sorpresa',nombre:'Sorpresa'},{id:'beso',nombre:'Besito'}]
+export function patternSvg(id){
+ if(id==='pecas')return '<g fill="#fff9dc" opacity=".65"><circle cx="-35" cy="-10" r="9"/><circle cx="5" cy="15" r="8"/><circle cx="38" cy="-15" r="10"/><circle cx="-28" cy="40" r="7"/></g>'
+ if(id==='estrellas')return wrap(badge(0,10,1.1))
+ if(id==='corazones')return `<path transform="translate(0 8) scale(.8)" d="${heart}" fill="#f2b4c1" stroke="#a05e78" stroke-width="3"/>`
+ if(id==='rayas')return '<path d="M-40 -90 V90 M0 -90 V90 M40 -90 V90" stroke="#fff9dc" stroke-opacity=".25" stroke-width="16"/>'
+ if(id==='escamas')return `<g stroke="#fff9dc" stroke-opacity=".5" stroke-width="4" fill="none">${[-30,0,30].map(y=>[-45,-15,15,45].map(x=>`<path d="M${x-14} ${y} q14 26 28 0"/>`).join('')).join('')}</g>`
+ return ''
+}
+export function eyesSvg(expression,color,skin){
+ const eye=(x,y,s,wink)=>`<g transform="translate(${x} ${y}) scale(${s})">${wink?'<path d="M-25 0 Q0 -25 25 0" fill="none" stroke="#243e5b" stroke-width="8" stroke-linecap="round"/>':`<ellipse rx="32" ry="39" fill="#fffdf6"/><ellipse cx="5" cy="3" rx="22" ry="27" fill="${color}"/><ellipse cx="7" cy="4" rx="12" ry="19" fill="#243e5b"/><circle cx="8" cy="-10" r="8" fill="white"/>${expression==='dormilon'?`<path d="M-32 0 A32 39 0 0 1 32 0Z" fill="${skin}" stroke="#243e5b" stroke-width="3"/>`:''}`}</g>`
+ return `<g id="eyes">${eye(708,342,1,expression==='feliz')}${eye(808,320,.86,expression==='feliz'||expression==='guino')}<path d="M682 293 Q697 ${expression==='curioso'?270:280} 711 285 M791 270 Q806 265 818 276" fill="none" stroke="#243e5b" stroke-width="8" stroke-linecap="round"/></g>`
+}
+export function mouthSvg(id){
+ const d=id==='risa'?'<path d="M723 385 Q771 402 809 374 Q809 446 767 437 Q734 432 723 385Z" fill="#243e5b"/><path d="M746 422 Q767 405 790 422 Q772 446 746 422Z" fill="#f58b78"/>':id==='sorpresa'?'<ellipse cx="768" cy="405" rx="19" ry="25" fill="#243e5b"/><ellipse cx="770" cy="418" rx="10" ry="5" fill="#f58b78"/>':'<path d="M749 390 Q777 378 786 392 L771 402 L786 409 Q764 424 751 410" fill="#e98c91" stroke="#243e5b" stroke-width="4" stroke-linejoin="round"/>'
+ return `<g id="mouth">${d}</g>`
 }

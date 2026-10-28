@@ -38,7 +38,7 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" vie
  <linearGradient id="yellow" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#ffdf57"/><stop offset=".6" stop-color="#ffd137"/><stop offset="1" stop-color="#f0b32b"/></linearGradient>
  <linearGradient id="shoe" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#4fbab8"/><stop offset="1" stop-color="#26949d"/></linearGradient>
  <linearGradient id="cap" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4dc60"/><stop offset="1" stop-color="#85bb43"/></linearGradient>
- <clipPath id="face"><path d="M616 285 C633 238 716 216 779 239 C846 260 879 323 861 386 C847 446 789 475 725 467 C655 460 608 419 607 358 C606 329 610 304 616 285Z"/></clipPath>
+ <clipPath id="face"><circle cx="736" cy="340" r="130"/></clipPath>
 </defs>
 <ellipse cx="493" cy="574" rx="393" ry="20" fill="#243e5b" opacity=".08"/>
 ${feet.map(({ x, y }) => `<ellipse cx="${x + 3}" cy="574" rx="${45 - (550 - y) * .25}" ry="${5 + (550 - y) * .08}" fill="#243e5b" opacity="${.12 - (550 - y) * .0025}"/>`).join('')}
@@ -51,9 +51,9 @@ ${segment('orange-middle',477,402,76,89,'orange')}
 ${segment('mint-front',558,402,95,97,'mint')}
 </g>
 <g id="head" stroke-linecap="round" stroke-linejoin="round">
- <path d="M616 285 C633 238 716 216 779 239 C846 260 879 323 861 386 C847 446 789 475 725 467 C655 460 608 419 607 358 C606 329 610 304 616 285Z" fill="url(#orange)"/>
+ <circle cx="736" cy="340" r="130" fill="url(#orange)"/>
  <g clip-path="url(#face)"><path d="M638 259 C599 382 686 463 797 440 C836 431 862 408 877 382 L889 496 L588 499 L580 240Z" fill="#e8752b" opacity=".48"/><path d="M638 313 Q634 291 657 276" fill="none" stroke="#ffe09a" stroke-width="12" opacity=".6"/></g>
- <path d="M616 285 C633 238 716 216 779 239 C846 260 879 323 861 386 C847 446 789 475 725 467 C655 460 608 419 607 358 C606 329 610 304 616 285Z" fill="none" stroke="${navy}" stroke-width="7"/>
+ <circle cx="736" cy="340" r="130" fill="none" stroke="${navy}" stroke-width="7"/>
  <g id="eyes">
  <ellipse cx="708" cy="342" rx="33" ry="39" fill="#fffdf6" transform="rotate(-10 708 342)"/>
  <ellipse cx="808" cy="320" rx="27" ry="35" fill="#fffdf6" transform="rotate(-12 808 320)"/>
@@ -63,8 +63,8 @@ ${segment('mint-front',558,402,95,97,'mint')}
  <path d="M682 293 Q697 280 711 285 M791 270 Q806 265 818 276" fill="none" stroke="${navy}" stroke-width="8"/>
  </g>
  <ellipse cx="681" cy="389" rx="23" ry="13" fill="#ee724b" transform="rotate(8 681 389)"/><ellipse cx="837" cy="362" rx="18" ry="12" fill="#ee724b" transform="rotate(-13 837 362)"/>
- <path d="M725 387 Q768 406 807 373 C806 413 783 433 759 425 C742 420 731 404 725 387Z" fill="${navy}" stroke="${navy}" stroke-width="5"/>
- <path d="M745 414 Q759 402 776 415 Q781 409 788 413 Q769 432 745 414Z" fill="#f58b78"/>
+ <g id="mouth"><path d="M725 387 Q768 406 807 373 C806 413 783 433 759 425 C742 420 731 404 725 387Z" fill="${navy}" stroke="${navy}" stroke-width="5"/>
+ <path d="M745 414 Q759 402 776 415 Q781 409 788 413 Q769 432 745 414Z" fill="#f58b78"/></g>
 </g>
 <g id="jockey" stroke="${navy}" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
  <path d="M614 302 C593 250 617 179 681 159 C745 141 792 172 810 219 L716 268Z" fill="url(#shoe)"/>

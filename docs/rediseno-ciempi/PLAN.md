@@ -4,6 +4,8 @@ Inicio: 2026-10-28. Alcance inicial: Ciempi; otros personajes después.
 
 ## Estado
 
+Actualización: el usuario aprobó la anatomía ilustrada v2 con piernas más anchas y zapatos en arco. Se creó una [primera colección y probador del armario](armario/index.html), con [revisión completa del catálogo y propuesta de continuidad](armario/PROPUESTA.md). Se conserva la distinción entre exploración visual e integración real: la nueva tienda y sus compras todavía no están implementadas.
+
 - [x] Revisar personaje SVG, catálogo y vestidor actuales.
 - [x] Generar comparación de tres direcciones visuales usando el logo como referencia.
 - [x] Elegir dirección visual con el usuario: opción 01, ilustración.

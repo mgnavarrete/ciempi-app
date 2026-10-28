@@ -1,5 +1,5 @@
 import { PARTES, buscarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
-import { AUTOR_CUENTOS, CUENTOS, portadaCuento } from '../../contenido/cuentos'
+import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { nuevoId } from '../../dominio/ids'
 import {
@@ -186,6 +186,11 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
     // Los cuentos con portada y «Don Ciempiés» en vez de «Ciempi».
     id: '2026-10-cuentos-con-portada',
     aplicar: actualizarCuentos,
+  },
+  {
+    // Llegan los cuentos con personajes conocidos (superhéroes, Harry Potter, Barbie).
+    id: '2026-10-cuentos-de-personajes',
+    aplicar: (tablas) => tablas.perfiles.todos().forEach((p) => darCuentos(tablas, p.id, p.creadoPor, CUENTOS_DE_PERSONAJES)),
   },
 ]
 
