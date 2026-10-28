@@ -145,7 +145,7 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 |---|---|---|---|
 | 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada sílaba al llegar: «La – u – va» (sin tilde: «piés» suelta la voz la deletrea) |
 | 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
-| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración en trozos cortos al ritmo del dedo (máximo 1×, la velocidad normal), sin cortar ni saltarse nada; si el dedo vuelve atrás o se levanta, se corta (`src/lectura/vozAlDedo.ts`) |
+| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración en trozos cortos al ritmo del dedo (máximo 1,2×), sin cortar ni saltarse nada; si el dedo vuelve atrás o se levanta, se corta (`src/lectura/vozAlDedo.ts`) |
 | 3 Párrafo | párrafo o estrofa | una frase por línea, rojo y azul alternados; una manzana por frase, repartidas parejo; la frase se enciende entera | dice la frase entera al llegar a su manzana |
 | 4 Libre | una página (100–160 palabras) | toda a la vista; una manzana por oración; las palabras se encienden al pasar el dedo | igual que el 2, pero oración por oración |
 
@@ -472,7 +472,7 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
 - Umbral de ritmo por defecto: **4 palabras/s**, el máximo (configurable entre 0,5 y 4).
   Los perfiles que tenían un valor por defecto anterior (1,5 o 2,5) se actualizan solos una vez.
   Los perfiles que tenían el umbral en sílabas/s se convierten solos (÷ 2).
-- Velocidad de voz por defecto: **1,0×** (entre 0,5 y 1,5). Los perfiles
+- Velocidad de voz por defecto: **1,0×** (entre 0,5 y 1,2: la voz nunca pasa de 1,2×). Los perfiles
   que tenían el valor anterior (0,85) se actualizan solos una vez.
 - Después de un tropiezo se **sigue desde donde quedó** tras 1,5 s, sin monedas.
 - Para retomar hay que apoyar el dedo cerca de Ciempi (a menos de media distancia entre manzanas).

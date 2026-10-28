@@ -73,7 +73,7 @@ function compose(base, selection) {
 
  svg=svg.replace('<g id="head"',`<g id="backpack">${bag.svg}</g><g id="head"`)
  svg=svg.replace('<g id="jockey"',`<g id="face-accessory">${face.svg}</g><g id="jockey"`)
- return svg.replace(/<title id="title">[\s\S]*?<\/title>/,'<title id="title">Ciempi · Probador de prendas</title>')
+ return svg.replace(/<title id="title">[\s\S]*?<\/title>/,'<title id="title">Ciempi · Probador de prendas</title>').replace(/<desc id="desc">[\s\S]*?<\/desc>/,`<desc id="desc">Ciempi de cabeza redonda: ${[hat.nombre,face.nombre,shoes.nombre,bag.nombre,clothing.nombre,cape.nombre,palette.nombre].join(', ')}.</desc>`)
 }
 
 // Colecciones originales: jardín, magia celeste, fiesta rosa y guardianes del cielo.

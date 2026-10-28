@@ -4,6 +4,8 @@ Inicio: 2026-10-28. Alcance inicial: Ciempi; otros personajes después.
 
 ## Estado
 
+Última entrega: [colección ampliada](armario/COLECCION-AMPLIADA.md), con cabeza circular, 11 categorías, ropa, capas, mezcla de zapatos, paletas, texturas y expresiones estáticas. [Probador actualizado](armario/index.html) y [nueve conjuntos](armario/coleccion-ampliada.png). Continúa siendo un estudio local, pendiente de integración en la aplicación y sus compras.
+
 Actualización: el usuario aprobó la anatomía ilustrada v2 con piernas más anchas y zapatos en arco. Se creó una [primera colección y probador del armario](armario/index.html), con [revisión completa del catálogo y propuesta de continuidad](armario/PROPUESTA.md). Se conserva la distinción entre exploración visual e integración real: la nueva tienda y sus compras todavía no están implementadas.
 
 - [x] Revisar personaje SVG, catálogo y vestidor actuales.

@@ -3,7 +3,7 @@
  * son grupos cortos de palabras de la oración; en el 4, las oraciones de la
  * página. Cuando el dedo entra a un trozo, ese trozo se pone en fila con la
  * velocidad del dedo: si va lento, la voz va lenta; si va rápido, la voz
- * llega como máximo a la velocidad normal (1×) y nunca se corta ni se salta
+ * llega como máximo a 1,2× y nunca se corta ni se salta
  * nada: termina un trozo y sigue con el otro. Si el dedo vuelve atrás o se
  * levanta, la voz se corta (ver PantallaLectura).
  */
@@ -11,8 +11,8 @@
 /** Palabras por segundo que dice la voz a velocidad 1 (aprox., en español). */
 export const PALABRAS_POR_SEGUNDO_VOZ = 2.5
 export const VELOCIDAD_MINIMA = 0.6
-/** La voz nunca va más rápido que lo normal (1×): si el dedo va más rápido, los trozos esperan su turno. */
-export const VELOCIDAD_MAXIMA = 1
+/** La voz nunca va más rápido que 1,2× (igual que en audio/voz.ts): si el dedo va más rápido, los trozos esperan su turno. */
+export const VELOCIDAD_MAXIMA = 1.2
 /** Con tantos trozos esperando, la voz va a la velocidad máxima aunque el dedo vaya más lento. */
 export const TROZOS_DE_ATRASO = 2
 /** Cuánto se apura por cada trozo de atraso. */

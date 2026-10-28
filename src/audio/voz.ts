@@ -11,6 +11,9 @@ import { VozServidor, type VozCiempi } from './vozServidor'
  * Preferencia de voz: es-CL → español latinoamericano → cualquier español.
  */
 
+/** La voz nunca habla más rápido que esto, aunque se pida (en Ajustes o al seguir al dedo): más rápido no se entiende bien. */
+export const VELOCIDAD_MAXIMA_VOZ = 1.2
+
 const PREFERENCIA_REGIONES = ['es-cl', 'es-419', 'es-us', 'es-mx', 'es-ar', 'es-co', 'es-pe']
 
 export type GeneroVoz = 'masculina' | 'femenina'
@@ -428,9 +431,10 @@ class Voz {
     this.servidor!.precargar(limpias, this.vozCiempi, velocidad)
   }
 
-  decir(texto: string, velocidad: number) {
+  decir(texto: string, velocidadPedida: number) {
     const limpio = limpiarParaVoz(texto).toLowerCase()
     if (!limpio) return
+    const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad
     // Si hay palabras esperando en la cola, el niño va más rápido que la voz:
     // se descarta lo atrasado para que lo que suena coincida con el dedo.
@@ -439,11 +443,14 @@ class Voz {
     this.motor.hablar(limpio, this.opcionesMotor(!this.motor.enCola()))
   }
 
-  /** Dice una frase completa (para que Ciempi hable). Sin emojis, que la voz leería en voz alta. */
-  /** Dice un texto de corrido. Con `encolar`, después de lo que esté sonando; si no, lo corta. */
-  decirFrase(texto: string, velocidad = 1, encolar = false) {
+  /**
+   * Dice un texto de corrido (sin emojis, que la voz leería en voz alta). Con
+   * `encolar`, después de lo que esté sonando; si no, lo corta.
+   */
+  decirFrase(texto: string, velocidadPedida = 1, encolar = false) {
     const limpio = texto.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/\s+/g, ' ').trim()
     if (!limpio) return
+    const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad
     if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, encolar)
     this.motor?.hablar(limpio, this.opcionesMotor(encolar))

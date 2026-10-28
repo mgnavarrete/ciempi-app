@@ -67,7 +67,7 @@ export const AJUSTES_POR_DEFECTO: AjustesLectura = {
 
 export const LIMITES_AJUSTES = {
   tamanoLetra: { min: 28, max: 72, paso: 2 },
-  velocidadVoz: { min: 0.5, max: 1.5, paso: 0.05 },
+  velocidadVoz: { min: 0.5, max: 1.2, paso: 0.05 },
   umbralPalabrasPorSegundo: { min: 0.5, max: LIMITE_MAXIMO_RITMO, paso: 0.25 },
 } as const
 

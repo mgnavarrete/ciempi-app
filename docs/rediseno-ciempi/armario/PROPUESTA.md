@@ -1,5 +1,7 @@
 # Armario de Ciempi · Primera colección
 
+Esta página documenta la primera entrega. La versión actual está en [Colección ampliada](COLECCION-AMPLIADA.md), con cabeza redonda y 11 categorías. `index.html` y los SVG numerados muestran ahora esa versión; `coleccion-inicial.png` conserva la lámina anterior.
+
 El personaje ilustrado y su postura curva fueron aprobados por el usuario. Esta entrega desarrolla prendas sobre ese dibujo; no sustituye todavía el renderizador ni el catálogo de compras de la app.
 
 ## Abrir y reproducir
