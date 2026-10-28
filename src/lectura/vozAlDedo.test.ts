@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { VELOCIDAD_MAXIMA, VELOCIDAD_MINIMA, acomodarVoz, velocidadPara } from './vozAlDedo'
+import { VELOCIDAD_MAXIMA, VELOCIDAD_MINIMA, acomodarVoz, encolarOracion, velocidadPara } from './vozAlDedo'
 
 describe('voz al ritmo del dedo', () => {
   it('rápido si el dedo va rápido, lento si va lento', () => {
@@ -35,5 +35,24 @@ describe('voz al ritmo del dedo', () => {
   it('si el dedo se detuvo, la voz sigue desde donde se calló', () => {
     expect(acomodarVoz(null, 7, 2.5, 0, 4)?.desde).toBe(4)
     expect(acomodarVoz(null, 7, 2.5, 0, 4)!.velocidad).toBeGreaterThan(1)
+  })
+})
+
+describe('nivel 4: oración por oración', () => {
+  it('la primera va al ritmo del dedo y queda en fila', () => {
+    const r = encolarOracion([], 10, 2.5, 0)
+    expect(r.velocidad).toBe(1)
+    expect(r.terminan).toEqual([4000])
+  })
+
+  it('las oraciones ya dichas no cuentan como atraso', () => {
+    expect(encolarOracion([1000, 2000], 5, 2.5, 3000).velocidad).toBe(1)
+  })
+
+  it('con dos oraciones esperando, la voz acelera (y no se salta ninguna)', () => {
+    const r = encolarOracion([4000, 8000], 10, 2.5, 1000)
+    expect(r.velocidad).toBeGreaterThan(1)
+    expect(r.terminan).toHaveLength(3)
+    expect(r.terminan[2]).toBeGreaterThan(8000)
   })
 })

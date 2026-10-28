@@ -15,7 +15,7 @@ export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; des
   { nivel: 1, nombre: 'Palabra', unidad: 'Frase', descripcion: 'Frases cortas, una manzana por palabra.' },
   { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa, al ritmo del dedo.' },
   { nivel: 3, nombre: 'Párrafo', unidad: 'Párrafo', descripcion: 'El párrafo o la estrofa, una frase por línea y una manzana por frase.' },
-  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa, una manzana por fragmento.' },
+  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa; Ciempi la lee oración por oración al ritmo del dedo.' },
 ]
 
 export const datosNivel = (nivel: NivelLectura) => NIVELES.find((n) => n.nivel === nivel) ?? NIVELES[1]

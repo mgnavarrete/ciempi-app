@@ -147,7 +147,7 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 | 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
 | 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración al ritmo del dedo, sin saltarse palabras (`src/lectura/vozAlDedo.ts`); al llegar al final espera a la voz 1,5 s como máximo |
 | 3 Párrafo | párrafo o estrofa | una frase por línea, rojo y azul alternados; una manzana por frase, repartidas parejo; la frase se enciende entera | dice la frase entera al llegar a su manzana |
-| 4 Libre | una página (100–160 palabras) | toda a la vista; una manzana por oración; las palabras se encienden al pasar el dedo | sin voz (el niño puede elegir «Leer conmigo») |
+| 4 Libre | una página (100–160 palabras) | toda a la vista; una manzana por oración; las palabras se encienden al pasar el dedo | lee la página oración por oración al ritmo del dedo, sin saltarse ninguna; si va más de 2 oraciones atrás, acelera (`encolarOracion`) |
 
 - Todas las unidades se arman con las frases de los niveles 0 y 1
   (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
@@ -186,8 +186,9 @@ libro con capítulos parte desde el comienzo del capítulo donde iba.
   PDF se detectan por la posición de las líneas (`cortesDePagina` en
   `src/lenguaje/libro.ts`). Los libros subidos antes arman sus párrafos por largo.
 - **Nivel sugerido** (`src/lenguaje/dificultad.ts`): según palabras por oración,
-  sílabas por palabra y largo. Al subir un texto queda en el sugerido, que
-  aparece marcado al cambiar el nivel; si un niño agrega un libro, también.
+  sílabas por palabra y largo. Al agregar un texto o un PDF, el adulto elige
+  el nivel (viene marcado el sugerido); también aparece marcado al cambiar el
+  nivel. Si un niño agrega un libro, queda en el sugerido.
 - **Compartir:** en el panel del adulto, cada libro (también los que subieron
   sus niños) tiene un botón por niño para dárselo en un nivel, cambiarlo o
   quitarlo; en la biblioteca de un niño, «Cambiar nivel» y «Compartir con otro niño».

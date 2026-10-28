@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react'
 import { TEXTO_EJEMPLO } from '../contenido/ejemplo'
 import { useRepositorios } from '../datos/DatosProvider'
 import { crearTexto } from '../datos/inicio'
-import type { PerfilNino, Texto } from '../dominio/tipos'
+import type { NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
 import { FUENTES, type IdFuente } from '../fuentes/entradas'
 import { extraerPdf, tieneTexto, type PdfExtraido } from '../fuentes/pdf'
 import { nivelSugerido } from '../lenguaje/dificultad'
 import { dividirConParrafos } from '../lenguaje/frases'
 import { frasesDelLibro, procesarPaginas } from '../lenguaje/libro'
 import { separarSilabas } from '../lenguaje/silabas'
+import { NIVELES } from '../lenguaje/unidades'
 import { BotonPrincipal, Encabezado, MensajeError, Portada } from '../ui/comunes'
 
 interface Props {
@@ -30,14 +31,16 @@ export function PantallaNuevoTexto({ usuarioId, perfiles, paraPerfilId, fuenteIn
   const [paraNinos, setParaNinos] = useState(() => new Set(paraPerfilId ? [paraPerfilId] : perfiles.map((p) => p.id)))
   const [error, setError] = useState<string | null>(null)
   const [guardando, setGuardando] = useState(false)
+  // El nivel que elige el adulto; si no elige, el sugerido según el texto.
+  const [nivelElegido, setNivelElegido] = useState<NivelLectura | null>(null)
 
   const guardar = async (texto: Texto) => {
     setGuardando(true)
     setError(null)
     try {
       const guardado = await repos.textos.guardar(texto)
-      // Queda en el nivel sugerido; después se puede cambiar por niño.
-      const nivel = nivelSugerido(guardado.frases, guardado.parrafos)
+      // Después se puede cambiar por niño (en su biblioteca, «Cambiar nivel»).
+      const nivel = nivelElegido ?? nivelSugerido(guardado.frases, guardado.parrafos)
       await Promise.all([...paraNinos].map((id) => repos.asignaciones.asignar(id, guardado.id, nivel)))
       alGuardar(guardado)
     } catch (e) {
@@ -45,6 +48,14 @@ export function PantallaNuevoTexto({ usuarioId, perfiles, paraPerfilId, fuenteIn
       setGuardando(false)
     }
   }
+
+  /** Bajo el texto: el nivel (con el sugerido marcado) y a qué niños se les deja. */
+  const pie = (sugerido: NivelLectura | null) => (
+    <>
+      <ElegirNivel elegido={nivelElegido ?? sugerido} sugerido={sugerido} alElegir={setNivelElegido} />
+      {elegirNinos}
+    </>
+  )
 
   const elegirNinos = perfiles.length > 0 && (
     <fieldset className="flex min-w-0 flex-col gap-2">
@@ -94,9 +105,9 @@ export function PantallaNuevoTexto({ usuarioId, perfiles, paraPerfilId, fuenteIn
         </div>
 
         {fuente === 'pdf' ? (
-          <DesdePdf cuentaId={cuentaId} guardando={guardando} alGuardar={guardar} pie={elegirNinos} />
+          <DesdePdf cuentaId={cuentaId} guardando={guardando} alGuardar={guardar} pie={pie} />
         ) : (
-          <DesdeTextoPegado cuentaId={cuentaId} guardando={guardando} alGuardar={guardar} pie={elegirNinos} />
+          <DesdeTextoPegado cuentaId={cuentaId} guardando={guardando} alGuardar={guardar} pie={pie} />
         )}
         <MensajeError error={error} />
       </div>
@@ -108,7 +119,8 @@ interface PropsFuente {
   cuentaId: string
   guardando: boolean
   alGuardar: (texto: Texto) => void
-  pie: React.ReactNode
+  /** Lo que va antes de «Guardar», según el nivel sugerido para el texto (null: todavía no hay texto). */
+  pie: (sugerido: NivelLectura | null) => React.ReactNode
 }
 
 function DesdeTextoPegado({ cuentaId, guardando, alGuardar, pie }: PropsFuente) {
@@ -116,6 +128,7 @@ function DesdeTextoPegado({ cuentaId, guardando, alGuardar, pie }: PropsFuente) 
   const [contenido, setContenido] = useState('')
   // Una línea en blanco separa párrafos (o estrofas, en un poema).
   const { frases, parrafos } = useMemo(() => dividirConParrafos(contenido), [contenido])
+  const sugerido = useMemo(() => (frases.length ? nivelSugerido(frases, parrafos) : null), [frases, parrafos])
 
   return (
     <>
@@ -138,7 +151,7 @@ function DesdeTextoPegado({ cuentaId, guardando, alGuardar, pie }: PropsFuente) 
       </button>
 
       {frases.length > 0 && <VistaFrases titulo={`${frases.length} ${frases.length === 1 ? 'frase' : 'frases'}`} frases={frases} />}
-      {pie}
+      {pie(sugerido)}
       <BotonPrincipal
         disabled={frases.length === 0 || guardando}
         onClick={() => alGuardar(crearTexto(cuentaId, { titulo, textoOriginal: contenido, origen: 'pegado', frases, parrafos }))}
@@ -278,7 +291,7 @@ function RevisarLibro({ pdf, cuentaId, guardando, alGuardar, pie }: PropsFuente 
         {libro.capitulos.length > 60 && <li className="text-sm text-tinta-suave">…y {libro.capitulos.length - 60} capítulos más</li>}
       </ul>
 
-      {pie}
+      {pie(libro.frases.length ? nivelSugerido(libro.frases, libro.parrafos) : null)}
       <BotonPrincipal disabled={libro.frases.length === 0 || guardando} onClick={guardar}>
         Guardar libro
       </BotonPrincipal>
@@ -326,5 +339,41 @@ function VistaFrases({ titulo, frases }: { titulo?: string; frases: string[] }) 
         ))}
       </ol>
     </section>
+  )
+}
+
+/**
+ * El nivel en que lo leerán los niños elegidos. Viene marcado el sugerido
+ * (según el largo de las oraciones y las palabras); el adulto puede elegir otro.
+ */
+function ElegirNivel({ elegido, sugerido, alElegir }: { elegido: NivelLectura | null; sugerido: NivelLectura | null; alElegir: (n: NivelLectura) => void }) {
+  return (
+    <fieldset className="flex min-w-0 flex-col gap-2">
+      <legend className="mb-1 font-bold">Nivel de lectura</legend>
+      <div className="flex flex-col gap-1.5">
+        {NIVELES.map((n) => {
+          const marcado = elegido === n.nivel
+          return (
+            <button
+              key={n.nivel}
+              type="button"
+              aria-pressed={marcado}
+              onClick={() => alElegir(n.nivel)}
+              className={`flex items-center gap-3 rounded-2xl px-3 py-2 text-left ${marcado ? 'bg-petroleo text-white' : 'bg-white'}`}
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-amarillo font-bold text-tinta">{n.nivel}</span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold">{n.nombre}</span>
+                <span className={`block text-sm ${marcado ? 'text-white/85' : 'text-tinta-suave'}`}>{n.descripcion}</span>
+              </span>
+              {n.nivel === sugerido && (
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${marcado ? 'bg-white/20 text-white' : 'bg-verde-claro text-tinta'}`}>Sugerido</span>
+              )}
+            </button>
+          )
+        })}
+      </div>
+      <p className="text-sm text-tinta-suave">Después puedes cambiarlo para cada niño en su biblioteca.</p>
+    </fieldset>
   )
 }

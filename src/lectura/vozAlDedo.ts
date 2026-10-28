@@ -63,3 +63,25 @@ export function acomodarVoz(
   const desde = Math.max(actual.desde, Math.floor(vaEn))
   return { desde, t, velocidad: limitar(palabra > vaEn ? ritmo * ALCANZAR : ritmo / ALCANZAR) }
 }
+
+// ── Nivel 4: la página, oración por oración ─────────────────────────────────
+// Al entrar el dedo a una oración, Ciempi la pone en fila con la velocidad
+// del dedo. Nunca se salta una: si el dedo va muy adelantado, la voz acelera.
+
+/** Cuántas oraciones puede ir atrasada la voz antes de acelerar. */
+export const ORACIONES_DE_ATRASO = 2
+
+/**
+ * Velocidad para una oración nueva de `palabras` palabras. `terminan`: cuándo
+ * se estima que termina cada oración que ya está en fila. Devuelve la
+ * velocidad y la fila con la nueva oración.
+ */
+export function encolarOracion(terminan: number[], palabras: number, palabrasPorSegundo: number | null, t: number): { velocidad: number; terminan: number[] } {
+  const pendientes = terminan.filter((fin) => fin > t)
+  const atraso = pendientes.length
+  const ritmo = velocidadPara(palabrasPorSegundo)
+  const velocidad = limitar(atraso >= ORACIONES_DE_ATRASO ? Math.max(ritmo, 1) * ALCANZAR ** (atraso - 1) : ritmo)
+  const empieza = Math.max(t, pendientes.at(-1) ?? t)
+  const dura = (palabras / (PALABRAS_POR_SEGUNDO_VOZ * velocidad)) * 1000
+  return { velocidad, terminan: [...pendientes, empieza + dura] }
+}
