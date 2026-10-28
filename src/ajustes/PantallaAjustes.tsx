@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { AvisoVoz } from '../audio/AvisoVoz'
+import { silabaParaLaVoz } from '../audio/pronunciacion'
 import { voz, type EleccionVoz } from '../audio/voz'
+import { CUENTOS } from '../contenido/cuentos'
+import { dividirConParrafos } from '../lenguaje/frases'
+import { silabearFrase } from '../lenguaje/silabas'
 import { MODOS } from '../lectura/modos'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -145,6 +149,7 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
               {voz.disponible && <span className="block text-xs opacity-70">Teléfono: {voz.resumenVoces}</span>}
             </span>
           </div>
+          <ProbarSilabas velocidad={ajustes.velocidadVoz} />
         </Seccion>
 
         <Seccion emoji="🐢" titulo="Ritmo">
@@ -261,6 +266,49 @@ function UltimasSesiones({ perfilId }: { perfilId: string }) {
           )
         })}
       </ul>
+    </details>
+  )
+}
+
+/**
+ * Para los adultos: todas las sílabas de los cuentos del nivel 0, para
+ * escuchar cómo las dice la voz de este teléfono (cada voz lee distinto las
+ * sílabas sueltas; ver audio/pronunciacion.ts).
+ */
+function ProbarSilabas({ velocidad }: { velocidad: number }) {
+  const silabas = useMemo(() => {
+    const vistas = new Map<string, { silaba: string; palabra: string; dice: string }>()
+    for (const c of CUENTOS.filter((c) => c.nivel === 0))
+      for (const f of dividirConParrafos(c.texto).frases)
+        for (const p of silabearFrase(f))
+          p.silabas.forEach((s, i) => {
+            const dice = silabaParaLaVoz(s, i, p.texto, p.silabas)
+            const silaba = s.toLowerCase().replace(/[^\p{L}]/gu, '')
+            if (!vistas.has(`${silaba}|${dice}`)) vistas.set(`${silaba}|${dice}`, { silaba, palabra: p.texto.replace(/[^\p{L}-]/gu, ''), dice })
+          })
+    return [...vistas.values()]
+  }, [])
+  return (
+    <details className="rounded-2xl bg-crema p-3">
+      <summary className="cursor-pointer font-bold">Probar las sílabas del nivel 0</summary>
+      <p className="mt-1 text-sm text-tinta-suave">Toca una sílaba para escuchar cómo la dice la voz de este teléfono. Si alguna suena mal, anótala.</p>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {silabas.map((s) => (
+          <button
+            key={`${s.silaba}|${s.dice}`}
+            type="button"
+            title={`de «${s.palabra}»`}
+            onClick={() => {
+              voz.desbloquear()
+              voz.decir(s.dice, velocidad)
+            }}
+            className="rounded-full bg-white px-3 py-1 font-lectura text-lg shadow-sm active:bg-amarillo/50"
+          >
+            {s.silaba}
+            {s.dice !== s.silaba && <span className="ml-1 text-xs text-tinta-suave">({s.palabra})</span>}
+          </button>
+        ))}
+      </div>
     </details>
   )
 }

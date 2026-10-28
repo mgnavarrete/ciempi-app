@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core'
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { instalarVozDelTelefono } from '../plataforma/telefono'
+import { paraLaVoz } from './pronunciacion'
 import { VozServidor, type VozCiempi } from './vozServidor'
 
 /**
@@ -427,12 +428,12 @@ class Voz {
   /** Pide de antemano el audio de estas palabras, para que suenen sin demora. */
   precargar(palabras: string[], velocidad: number) {
     if (!this.conServidor) return
-    const limpias = palabras.map((p) => limpiarParaVoz(p).toLowerCase()).filter(Boolean)
+    const limpias = palabras.map((p) => limpiarParaVoz(paraLaVoz(p)).toLowerCase()).filter(Boolean)
     this.servidor!.precargar(limpias, this.vozCiempi, velocidad)
   }
 
   decir(texto: string, velocidadPedida: number) {
-    const limpio = limpiarParaVoz(texto).toLowerCase()
+    const limpio = limpiarParaVoz(paraLaVoz(texto)).toLowerCase()
     if (!limpio) return
     const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad
@@ -448,7 +449,10 @@ class Voz {
    * `encolar`, después de lo que esté sonando; si no, lo corta.
    */
   decirFrase(texto: string, velocidadPedida = 1, encolar = false) {
-    const limpio = texto.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/\s+/g, ' ').trim()
+    const limpio = paraLaVoz(texto)
+      .replace(/[\p{Extended_Pictographic}️‍]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim()
     if (!limpio) return
     const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad

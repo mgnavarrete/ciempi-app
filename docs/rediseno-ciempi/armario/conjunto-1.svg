@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1000 650" role="img" aria-labelledby="title desc">
-<title id="title">Ciempi · Probador de prendas</title><desc id="desc">Ciempi de cabeza redonda: Sin gorro, Sin lentes, Zapatillas, Sin mochila, Sin ropa, Sin capa, Clásico.</desc>
+<title id="title">Ciempi · Probador de prendas</title><desc id="desc">Ciempi de cabeza redonda: Corona, Sin lentes, Zapatillas, Capa aurora, Clásico.</desc>
 <defs>
  <linearGradient id="orange" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffb449"/><stop offset=".55" stop-color="#ff9e32"/><stop offset="1" stop-color="#f58b2d"/></linearGradient>
  <linearGradient id="mint" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#a1dfb2"/><stop offset=".55" stop-color="#83cda4"/><stop offset="1" stop-color="#64b699"/></linearGradient>
@@ -10,7 +10,7 @@
 </defs>
 <ellipse cx="493" cy="574" rx="393" ry="20" fill="#243e5b" opacity=".08"/>
 <ellipse cx="175" cy="574" rx="38.5" ry="7.08" fill="#243e5b" opacity="0.05499999999999999"/><ellipse cx="279" cy="574" rx="42.75" ry="5.72" fill="#243e5b" opacity="0.0975"/><ellipse cx="378" cy="574" rx="45" ry="5" fill="#243e5b" opacity="0.12"/><ellipse cx="503" cy="574" rx="43.5" ry="5.48" fill="#243e5b" opacity="0.105"/><ellipse cx="628" cy="574" rx="41.75" ry="6.04" fill="#243e5b" opacity="0.0875"/><ellipse cx="783" cy="574" rx="39.25" ry="6.84" fill="#243e5b" opacity="0.06249999999999999"/>
-<g id="cape"></g><g id="legs-and-sneakers"><g transform="translate(172 524)" stroke="#243e5b" stroke-linejoin="round" stroke-linecap="round">
+<g id="legs-and-sneakers"><g transform="translate(172 524)" stroke="#243e5b" stroke-linejoin="round" stroke-linecap="round">
  <path d="M-23 -84 L9 -84 Q5 -53 4 -29 L-24 -29 Q-26 -52 -23 -84Z" fill="#f4ba38" stroke-width="6"/>
  <path d="M-13 -76 Q-15 -53 -15 -38" fill="none" stroke="#ffe18a" stroke-width="6"/>
  <g transform="rotate(-12 -10 -32)">
@@ -112,7 +112,7 @@
  <path d="M649 275 Q638 172 608 161 M780 265 Q790 150 823 134" fill="none"/>
  <circle cx="601" cy="151" r="17" fill="#40b9b7" stroke-width="5"/><circle cx="832" cy="128" r="18" fill="#40b9b7" stroke-width="5"/>
  <path d="M593 147 Q597 140 604 142 M824 123 Q829 116 836 120" fill="none" stroke="#a3e7d5" stroke-width="5"/>
-</g><g id="clothing"></g><g id="backpack"></g><g id="head" stroke-linecap="round" stroke-linejoin="round">
+</g><g id="back-accessory" data-item="capa-aurora"><g stroke="#243e5b" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"><path d="M630 285 Q540 314 445 284 Q389 270 345 319 Q387 354 327 394 Q357 445 316 473 Q391 464 421 506 Q491 484 596 474 Q559 379 630 285Z" fill="#ce7aaf"/><path d="M598 312 Q509 354 566 472 M555 315 Q447 327 488 493 M490 307 Q394 333 424 505" stroke="#f0bdd9" stroke-width="5" fill="none"/><path transform="translate(429 324) scale(.6)" d="M0 25 C-52 -6 -29 -42 0 -19 C29 -42 52 -6 0 25Z" fill="#ffe3c1" stroke-width="4"/><path transform="translate(487 316) scale(0.4)" d="M0 -24 L7 -8 L24 -7 L12 6 L15 23 L0 15 L-15 23 L-12 6 L-24 -7 L-7 -8Z" fill="#ffe394" stroke-width="4"/><path d="M602 304 Q628 319 646 338" fill="none" stroke="#e9cd85" stroke-width="10"/></g></g><g id="head" stroke-linecap="round" stroke-linejoin="round">
  <circle cx="736" cy="340" r="130" fill="url(#orange)"/>
  <g clip-path="url(#face)"><path d="M638 259 C599 382 686 463 797 440 C836 431 862 408 877 382 L889 496 L588 499 L580 240Z" fill="#e8752b" opacity=".48"/><path d="M638 313 Q634 291 657 276" fill="none" stroke="#ffe09a" stroke-width="12" opacity=".6"/></g>
  <circle cx="736" cy="340" r="130" fill="none" stroke="#243e5b" stroke-width="7"/>
@@ -128,6 +128,6 @@
  <g id="mouth"><path d="M725 387 Q768 406 807 373 C806 413 783 433 759 425 C742 420 731 404 725 387Z" fill="#243e5b" stroke="#243e5b" stroke-width="5"/>
  <path d="M745 414 Q759 402 776 415 Q781 409 788 413 Q769 432 745 414Z" fill="#f58b78"/></g>
 </g>
-<g id="face-accessory"></g><g id="jockey"></g>
+<g id="face-accessory"></g><g id="jockey"><g stroke="#243e5b" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"><path d="M622 266 L604 177 L657 208 L685 140 L731 191 L789 151 L804 232Z" fill="#ffcf4c"/><path d="M622 266 L619 244 Q714 212 804 215 L804 241 Q704 242 622 278Z" fill="#efad36"/><path d="M630 218 l-7 -23 30 19 M674 193 l12 -29 18 22" fill="none" stroke="#fff0a2" stroke-width="6"/><path d="M705 216 l12 -19 15 13 -12 20Z" fill="#ef806f" stroke-width="4"/><circle cx="652" cy="239" r="8" fill="#4cb7b6" stroke-width="4"/><circle cx="771" cy="219" r="8" fill="#4cb7b6" stroke-width="4"/></g></g>
 
 </svg>

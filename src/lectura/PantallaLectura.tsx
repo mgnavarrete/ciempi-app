@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { desbloquearSonidos, sonarCelebracion, sonarMoneda, sonarTropiezo } from '../audio/sonidos'
+import { silabaParaLaVoz } from '../audio/pronunciacion'
 import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -138,7 +139,7 @@ export function PantallaLectura(props: Props) {
   const palabras = useMemo(() => (porFragmentos ? fragmentos.flat() : silabearFrase(frase)), [porFragmentos, fragmentos, frase])
   // En el nivel 0 cada sílaba es una manzana: de qué palabra es cada una.
   const silabas = useMemo(
-    () => (porSilaba ? palabras.flatMap((p, i) => p.silabas.map((texto) => ({ palabra: i, texto }))) : []),
+    () => (porSilaba ? palabras.flatMap((p, i) => p.silabas.map((texto, s) => ({ palabra: i, texto, indice: s }))) : []),
     [porSilaba, palabras],
   )
   const manzanasPorLeer = porSilaba ? silabas.length : porFragmentos ? fragmentos.length : palabras.length
@@ -452,9 +453,10 @@ export function PantallaLectura(props: Props) {
       case 'decir': {
         if (!definicionModo.vozAlDeslizar) break
         if (porSilaba) {
-          // Sílaba por sílaba: «La – u – va». Sin tilde: «piés» suelta no es una
-          // palabra y la voz la deletrea; «pies» sí la dice bien.
-          voz.decir(sinTilde(silabas[efecto.palabra]?.texto ?? ''), ajustes.velocidadVoz)
+          // Sílaba por sílaba: «La – u – va», reescrita para que la voz no la
+          // deletree ni la lea en inglés (ver audio/pronunciacion.ts).
+          const s = silabas[efecto.palabra]
+          if (s) voz.decir(silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas), ajustes.velocidadVoz)
         } else if (oracion || pagina) {
           // La voz sigue al dedo por trozos (seguirConLaVoz), no por manzanas.
         } else if (porFragmentos) {
@@ -710,9 +712,6 @@ export function PantallaLectura(props: Props) {
     </div>
   )
 }
-
-/** Sin tildes (á → a), conservando la ñ y la ü. */
-const sinTilde = (t: string) => t.normalize('NFD').replace(/\u0301/g, '').normalize('NFC')
 
 /**
  * Niveles 2 a 4: cuánto del libro lleva (siempre desde el 0 % al abrirlo) y
