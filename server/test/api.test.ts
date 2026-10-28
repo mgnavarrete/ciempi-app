@@ -96,6 +96,15 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect(p.body).toMatchObject({ fraseActual: 0, fraseMaxima: 1 })
   })
 
+  it('lo leído, los hitos premiados y la relectura se guardan y no bajan', async () => {
+    const url = `/api/asignaciones/${asigGuia}/progreso`
+    const p = await pedir('PUT', url, N, { fraseActual: 1, fraseMaxima: 1, estado: 'en_curso', leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
+    expect(p.body).toMatchObject({ leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
+    // Vuelve a empezar desde el comienzo: no se pierde lo ganado.
+    const otra = await pedir('PUT', url, N, { fraseActual: 0, fraseMaxima: 0, estado: 'en_curso', leidoHasta: 0, premioHasta: 0 })
+    expect(otra.body).toMatchObject({ fraseActual: 0, leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
+  })
+
   it('la terapeuta le asigna un libro; el niño lo ve pero no lo borra ni lo edita', async () => {
     libroT = randomUUID()
     expect((await pedir('PUT', `/api/textos/${libroT}`, T, { titulo: 'Libro de la terapeuta', textoOriginal: 'x', frases: ['a'], capitulos: [] })).status).toBe(200)
@@ -327,7 +336,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     const biblioteca = (await pedir('GET', `/api/perfiles/${nuevo.body.id}/asignaciones`, T)).body as { textoId: string; nivel: number }[]
     expect(biblioteca).toHaveLength(CUENTOS.length)
     for (const c of CUENTOS) expect(biblioteca.find((a) => a.textoId === c.id)?.nivel).toBe(c.nivel)
-    const poema = CUENTOS.find((c) => c.titulo === 'Canción de Ciempi')!
+    const poema = CUENTOS.find((c) => c.titulo === 'Canción de Don Ciempiés')!
     const texto = (await pedir('GET', `/api/textos/${poema.id}`, X)).body
     expect(texto).toMatchObject({ subidoPor: null, origen: 'ciempi', autor: 'Cuentos de Ciempi', parrafos: [0, 4, 8, 12] })
     expect((await pedir('GET', '/api/textos', X)).body.filter((t: { origen: string }) => t.origen === 'ciempi')).toHaveLength(CUENTOS.length)

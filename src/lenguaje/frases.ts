@@ -104,3 +104,48 @@ export function dividirConParrafos(texto: string, max = MAX_PALABRAS_POR_FRASE):
   }
   return parrafos.length > 1 ? { frases, parrafos } : { frases }
 }
+
+/** Un fragmento con sentido: ni tan corto que quede suelto, ni tan largo que no se siga. */
+export const FRAGMENTO = { minPalabras: 3, maxPalabras: 12 }
+
+/** Nivel 4: una página tiene muchas comas; ahí cada manzana es una oración (o la mitad de una muy larga). */
+export const FRAGMENTO_PAGINA = { minPalabras: 10, maxPalabras: 22 }
+
+/**
+ * Niveles 3 y 4: el párrafo (o la página) en fragmentos con sentido, uno por
+ * manzana. Se corta en la puntuación (. , ; : ! ?; con `porOracion`, solo en
+ * . ; : ! ?); un trozo muy corto se junta con el que sigue y uno muy largo
+ * se parte en su mejor corte.
+ */
+export function dividirEnFragmentos(texto: string, { porOracion = false } = {}): string[] {
+  if (porOracion) {
+    const { minPalabras, maxPalabras } = FRAGMENTO_PAGINA
+    return juntarCortos(cortarEn(texto, /[^.;:!?…]+[.;:!?…]*["»”’)]*/g), minPalabras, maxPalabras).flatMap((o) =>
+      contarPalabrasDe(o) > maxPalabras ? juntarCortos(dividirEnFragmentos(o), minPalabras, maxPalabras) : [o],
+    )
+  }
+  const juntos = juntarCortos(cortarEn(texto, /[^.,;:!?…]+[.,;:!?…]*["»”’)]*/g), FRAGMENTO.minPalabras, FRAGMENTO.maxPalabras)
+  return juntos.flatMap((f) => (contarPalabrasDe(f) > FRAGMENTO.maxPalabras ? trocearOracion(f, 10) : [f]))
+}
+
+const contarPalabrasDe = (t: string) => t.split(/\s+/).filter(Boolean).length
+
+function cortarEn(texto: string, trozo: RegExp): string[] {
+  return (texto.replace(/\s+/g, ' ').trim().match(trozo) ?? []).map((t) => t.trim()).filter(Boolean)
+}
+
+/** Junta cada trozo de menos de `min` palabras con el que sigue (el último, con el anterior), sin pasar de `max`. */
+function juntarCortos(trozos: string[], min: number, max: number): string[] {
+  const contar = contarPalabrasDe
+  const juntos: string[] = []
+  for (const t of trozos) {
+    const ultimo = juntos.at(-1)
+    if (ultimo !== undefined && contar(ultimo) < min && contar(ultimo) + contar(t) <= max) juntos[juntos.length - 1] = `${ultimo} ${t}`
+    else juntos.push(t)
+  }
+  // El último, si quedó muy corto, va con el anterior.
+  if (juntos.length > 1 && contar(juntos.at(-1)!) < min && contar(juntos.at(-2)!) + contar(juntos.at(-1)!) <= max) {
+    juntos.splice(-2, 2, `${juntos.at(-2)} ${juntos.at(-1)}`)
+  }
+  return juntos
+}

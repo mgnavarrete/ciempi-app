@@ -7,10 +7,12 @@ import { PistaDeslizador } from './PistaDeslizador'
 import { PalabraEncendida } from './TiraDeLectura'
 
 interface Props {
-  /** Las palabras de cada línea (un verso, o un trozo de una oración). */
+  /** Las palabras de cada fragmento (un verso, o un trozo con sentido de una oración). */
   lineas: PalabraSilabeada[][]
+  /** Cuántas palabras ya pasó el dedo (se encienden de corrido). */
+  palabrasEncendidas: number
   motor: EstadoMotor
-  /** Una manzana por palabra del párrafo, repartidas a lo largo del carril. */
+  /** Una manzana por fragmento, donde termina su última palabra. */
   pista: Pista
   tamanoLetra: number
   tranquilo: boolean
@@ -21,16 +23,17 @@ interface Props {
 }
 
 const LETRA_MINIMA = 14
-/** Una línea por frase (como un poema) salvo que el texto corrido permita letra bastante más grande. */
+/** Un fragmento por línea (como un poema) salvo que el texto corrido permita letra bastante más grande. */
 const VENTAJA_TEXTO_CORRIDO = 1.25
 
 /**
- * Nivel 3: el párrafo o la estrofa completa a la vista: una línea por frase
- * (cada verso en su línea) o, si así la letra queda muy chica, de corrido. Abajo, un solo carril para todo el párrafo: al deslizar a Ciempi las
- * palabras se van encendiendo de corrido, como al leer en voz alta, sin
- * levantar el dedo en cada línea. Solo se ve la manzana del final.
+ * Niveles 3 y 4: el párrafo, la estrofa o la página completa a la vista: un
+ * fragmento por línea (cada verso en la suya) o, si así la letra queda muy
+ * chica, de corrido. Abajo, un solo carril con una manzana por fragmento: al
+ * deslizar a Ciempi las palabras se encienden de corrido y, al comer cada
+ * manzana, Ciempi lee ese fragmento (si el niño eligió «Leer conmigo»).
  */
-export function ParrafoCompleto({ lineas, motor, pista, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
+export function ParrafoCompleto({ lineas, palabrasEncendidas, motor, pista, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
   const caja = useRef<HTMLDivElement>(null)
   const contenido = useRef<HTMLDivElement>(null)
 
@@ -90,8 +93,8 @@ export function ParrafoCompleto({ lineas, motor, pista, tamanoLetra, tranquilo, 
                     <PalabraEncendida
                       palabra={palabra}
                       indice={i}
-                      encendida={i < motor.palabrasLeidas}
-                      actual={i === motor.palabrasLeidas && motor.progreso > 0}
+                      encendida={i < palabrasEncendidas}
+                      actual={i === palabrasEncendidas && motor.progreso > 0}
                       tranquilo={tranquilo}
                       onPointerDown={() => alTocarPalabra(i)}
                     />{' '}
@@ -105,7 +108,7 @@ export function ParrafoCompleto({ lineas, motor, pista, tamanoLetra, tranquilo, 
 
       {/* Un solo carril para todo el párrafo: aquí va el dedo. */}
       <PistaDeslizador alEntrar={alEntrar} className="mt-1 shrink-0 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
-        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} soloUltima />
+        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} />
         {esperando && motor.progreso === 0 && (
           <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
             Desliza a Ciempi despacio y lee todo →

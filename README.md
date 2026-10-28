@@ -143,21 +143,44 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 
 | Nivel | Se lee de una vez | En pantalla | Voz si el niño no eligió |
 |---|---|---|---|
-| 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada palabra al terminar sus sílabas |
+| 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada sílaba al llegar: «La – u – va» |
 | 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
-| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final | lee la oración de corrido al empezar a deslizar |
-| 3 Párrafo | párrafo o estrofa | todo a la vista (una línea por verso, o de corrido); un solo carril para todo el párrafo | lee el párrafo de corrido al empezar a deslizar |
-| 4 Libre | una página (100–160 palabras) | la página entera, sin pista; botón «Terminé» | sin voz (tocar una palabra la dice) |
+| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración al ritmo del dedo (`src/lectura/vozAlDedo.ts`) |
+| 3 Párrafo | párrafo o estrofa | todo a la vista; una manzana por fragmento (`dividirEnFragmentos`) | dice cada fragmento al llegar a su manzana |
+| 4 Libre | una página (100–160 palabras) | igual que el 3 | sin voz (el niño puede elegir «Leer conmigo») |
 
 - Todas las unidades se arman con las frases de los niveles 0 y 1
   (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
-  cambiar de nivel sin perder el lugar. Se leen las mismas palabras en
-  cualquier nivel: **las monedas cuestan lo mismo** (1 cada 20 palabras a buen
-  ritmo). En los niveles 0 a 3 se mide el ritmo del dedo (en el 0, en sílabas
-  por segundo). En el 4, si «Terminé» llega antes de palabras ÷ ritmo máximo
-  (4 palabras/s por defecto), la página no da monedas.
+  cambiar de nivel sin perder el lugar.
+- **Ritmo:** en los niveles 0 y 1, si el dedo va muy rápido Ciempi se tropieza
+  («Más despacito 🐢»). Desde el 2 el dedo va libre: si una oración, párrafo o
+  página se hizo más rápido de lo que se puede leer (más de 2 × el ritmo
+  máximo en el 2, más del ritmo máximo en el 3 y el 4), sigue igual pero no
+  suma para las monedas.
 - La manzana va al centro de su palabra (o sílaba), salvo la primera, al
   comienzo, y la última, siempre al borde derecho: hay que llegar al final.
+
+### Avance y monedas
+
+Cada cuento se lee **siempre desde el comienzo** (si no, se pierde el hilo). Un
+libro con capítulos parte desde el comienzo del capítulo donde iba.
+
+| Nivel | Porcentaje al leer | Monedas (`src/lectura/monedas.ts`) |
+|---|---|---|
+| 0 | no | 5 al terminar |
+| 1 | no | 10 al terminar |
+| 2 | sí | 5 al 50 % y 10 al 100 % |
+| 3 | sí | 5 al 25 %, 5 al 50 %, 5 al 75 % y 10 al 100 % |
+| 4 | sí | 5 al 25 %, 10 al 50 %, 10 al 75 % y 15 al 100 % |
+
+- Cada hito paga **una sola vez por libro** (`asignaciones.premio_hasta`). Lo
+  que se guarda aparte del avance es hasta dónde lo leyó de verdad
+  (`leido_hasta`): de corrido desde lo ya leído y con al menos el 80 % de las
+  palabras a buen ritmo. Saltar adelante con el índice no da hitos.
+- **Releer** un libro ya terminado da un quinto del premio de terminarlo
+  (1 a 3 monedas), una vez al día por libro (`relectura_premiada_en`).
+- En la biblioteca, los libros terminados llevan una ⭐, y arriba hay botones
+  para ver **Todos** o **un nivel**.
 - **Párrafos y versos:** al pegar un texto, una línea en blanco separa párrafos
   (en un poema: un verso por línea y una línea en blanco entre estrofas). En un
   PDF se detectan por la posición de las líneas (`cortesDePagina` en
@@ -174,7 +197,8 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 
 ### Cuentos de Ciempi
 
-La app trae 20 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`):
+La app trae 20 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`),
+cada uno con su portada (`public/portadas/`, generadas con `node scripts/portadas.mjs`):
 cuentos con palabras de una o dos sílabas para el nivel 0, de una línea por oración para el nivel 1 y 2, dos poemas y dos
 cuentos en párrafos para el 3 y cuatro cuentos largos para el 4. **Todo
 lector nuevo los recibe en su biblioteca**, cada uno en su nivel. En el
@@ -291,8 +315,8 @@ Ver [`docs/despliegue.md`](docs/despliegue.md).
 | **Lectura continua**: al terminar una frase pasa a la siguiente sin pausa (sube suave como karaoke); la frase anterior y la siguiente se ven chicas y tenues como contexto | `src/lectura/PantallaLectura.tsx` |
 | **Mi Ciempi**: Ciempi animado arriba de «Mis libros» (ondula, pestañea, y cada tanto salta, saluda con una patita o baila; si lo tocas, te saluda por tu nombre) y armario/tienda para personalizarlo con monedas: colores, **forma del cuerpo**, **ojos**, gorros, cara, zapatos, diseños y fondos (75 cosas); nombre y si es niño o niña; probar antes de comprar. Todo el catálogo es para todos | `src/ciempi/` |
 | **Voz de Ciempi** según su género: de hombre si es niño, de mujer si es niña (se reconoce la voz por su nombre; si el teléfono no tiene una, se ajusta el tono) | `src/audio/voz.ts` |
-| Barra de avance del capítulo y **medidor de monedas** («🪙 Te faltan 7 palabras») | `PantallaLectura.tsx`, `src/lectura/monedas.ts` |
-| Monedas: 1 cada 20 palabras leídas a buen ritmo, +2 por capítulo, +3 por libro; lo acumulado hacia la próxima moneda no se pierde al salir | `src/lectura/monedas.ts` + repositorio de perfiles |
+| Barra de avance del cuento con los hitos que dan monedas (niveles 2 a 4) | `PantallaLectura.tsx`, `src/lectura/monedas.ts` |
+| Monedas por hitos de avance, una vez por libro; releer da un premio menor una vez al día (ver «Avance y monedas») | `src/lectura/monedas.ts` + repositorio de asignaciones |
 | Registro de sesiones: duración activa, frases, frases "muy rápido", sílabas, monedas | `PantallaLectura.tsx` + repositorio de sesiones |
 | Separador de sílabas por reglas (diptongos, hiatos con tilde, grupos inseparables, ch/ll/rr, h intermedia, qu/gu, y vocálica) | `src/lenguaje/silabas.ts` |
 | Pegar texto, dividirlo en frases de ≤6 palabras (cortes naturales: comas, incisos de diálogo, sin dejar "y", "me", "porque"… al final) | `src/textos/PantallaNuevoTexto.tsx`, `src/lenguaje/frases.ts` |
@@ -451,12 +475,8 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
 - Frases de hasta **8 palabras**; las más largas se reparten parejo (10 → 5 + 5), cortando de
   preferencia en comas o antes de un inciso de diálogo, y sin dejar "de",
   "y", "me", "porque"… al final de un trozo.
-- Premios: 1 moneda cada **20 palabras** leídas a buen ritmo (las frases con
-  "más despacito" no suman), +2 por capítulo, +3 por libro. Solo dan monedas
-  las frases nuevas (`fraseMaxima`): al volver atrás o repetir se "repasa" sin
-  ganar ni perder monedas, y el premio del libro se da una sola vez. Sin celebración
-  entre frases para no cortar la lectura; la grande queda para el fin de
-  capítulo.
+- Premios por hitos de avance (ver «Avance y monedas»): un aviso corto al
+  pasar un hito y la celebración grande al terminar el libro.
 - Sin conexión, la zona de adultos no tiene protección (es para probar en un
   solo equipo); con el servidor cada uno entra con su cuenta.
 
@@ -470,8 +490,8 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
 - Lo gratis (precio 0) siempre está disponible; lo comprado queda en
   `perfiles_ninos.inventario` y en el historial `compras`. El servidor impide
   ponerse algo no comprado.
-- Precios pensados para el ritmo de monedas (1 cada 20 palabras): un capítulo
-  de un libro de 48 páginas da ~15–20 monedas, y las cosas cuestan entre 6 y 30.
+- Las cosas cuestan entre 6 y 30 monedas; un cuento da entre 5 (nivel 0) y
+  40 (nivel 4) la primera vez que se termina.
 - Límite conocido: como el niño gana monedas desde su propio dispositivo,
   alguien con conocimientos técnicos podría sumarse monedas llamando a la API.
   Para esta app no se consideró un riesgo real.

@@ -22,6 +22,9 @@ const id = (n: number) => `c1e0a000-0000-4000-8000-${String(n).padStart(12, '0')
 
 export const AUTOR_CUENTOS = 'Cuentos de Ciempi'
 
+/** Portada del cuento (generadas con scripts/portadas.mjs, en public/portadas). */
+export const portadaCuento = (id: string) => `/portadas/cuento-${id.slice(-2)}.svg`
+
 export const CUENTOS: Cuento[] = [
   // ── Nivel 0: sílabas ────────────────────────────────────────────────────
   // Palabras cortas y de sílabas simples (como en el silabario): se leen
@@ -68,31 +71,31 @@ El sol se ríe.`,
   {
     id: id(20),
     nivel: 0,
-    titulo: 'Ciempi come fruta',
-    texto: `Ciempi ve una uva.
+    titulo: 'Don Ciempiés come fruta',
+    texto: `Don Ciempiés ve una uva.
 La uva es rica.
-Ciempi come la uva.
-Ciempi ve una pera.
-Ciempi se la come.
+Don Ciempiés come la uva.
+Don Ciempiés ve una pera.
+Don Ciempiés se la come.
 ¡Ñam, ñam!
-Ciempi se toca la panza.
+Don Ciempiés se toca la panza.
 ¡Qué panza tan grande!`,
   },
   // ── Nivel 1: palabra ────────────────────────────────────────────────────
   {
     id: id(1),
     nivel: 1,
-    titulo: 'Ciempi y la manzana',
-    texto: `Ciempi tiene cien pies.
-Ciempi tiene hambre.
+    titulo: 'Don Ciempiés y la manzana',
+    texto: `Don Ciempiés tiene cien pies.
+Don Ciempiés tiene hambre.
 Ve una manzana roja.
 La manzana está en el pasto.
-Ciempi camina despacio.
+Don Ciempiés camina despacio.
 Un pie, dos pies, tres pies.
 ¡Llegó a la manzana!
-Ciempi come un poco.
+Don Ciempiés come un poco.
 ¡Qué rica está!
-Ciempi está feliz.`,
+Don Ciempiés está feliz.`,
   },
   {
     id: id(2),
@@ -146,15 +149,15 @@ Tiene muchos colores.`,
   {
     id: id(5),
     nivel: 2,
-    titulo: 'Ciempi va a la escuela',
-    texto: `Hoy es el primer día de clases y Ciempi está muy nervioso.
+    titulo: 'Don Ciempiés va a la escuela',
+    texto: `Hoy es el primer día de clases y Don Ciempiés está muy nervioso.
 Se puso sus cien zapatos nuevos, uno por uno, con mucho cuidado.
 ¡Se demoró toda la mañana en amarrarse los cordones!
 Cuando llegó a la escuela, la profesora Hormiga lo saludó con una sonrisa.
 En la sala había una mariposa, un caracol y dos chinitas.
 Todos querían conocer al ciempiés de los cien zapatos.
-En el recreo jugaron a la pinta y Ciempi nunca se cansó.
-Al final del día, Ciempi ya tenía muchos amigos nuevos.
+En el recreo jugaron a la pinta y Don Ciempiés nunca se cansó.
+Al final del día, Don Ciempiés ya tenía muchos amigos nuevos.
 Mañana volverá a la escuela, pero con zapatos sin cordones.`,
   },
   {
@@ -204,7 +207,7 @@ Y ya nadie se ríe de Pedro, el pingüino que tenía frío.`,
   {
     id: id(9),
     nivel: 3,
-    titulo: 'Canción de Ciempi',
+    titulo: 'Canción de Don Ciempiés',
     texto: `Cien zapatitos tengo yo,
 cien zapatitos de color,
 camino lento por el jardín
@@ -265,7 +268,7 @@ Desde ese día, Martina visita la biblioteca secreta todos los martes. Ya leyó 
     id: id(12),
     nivel: 3,
     titulo: 'El huemul perdido',
-    texto: `En lo alto de la cordillera, entre bosques de lengas y coigües, vivía un huemul joven llamado Nahuel. Le gustaba explorar, pero su mamá siempre le pedía que no se alejara del arroyo. Un día de niebla, Nahuel siguió a una mariposa y, sin darse cuenta, se perdió.
+    texto: `En lo alto de la cordillera, entre bosques de árboles muy altos, vivía un huemul joven llamado Nahuel. Le gustaba explorar, pero su mamá siempre le pedía que no se alejara del arroyo. Un día de niebla, Nahuel siguió a una mariposa y, sin darse cuenta, se perdió.
 
 Caminó y caminó, pero todos los árboles le parecían iguales. Tenía frío y empezó a tener miedo. Entonces escuchó un ruido sobre una rama. Era un chucao, un pajarito café de cola levantada, que lo miraba con curiosidad.
 
@@ -298,20 +301,20 @@ Desde ese día, el cóndor nunca más se burló de nadie por ser pequeño. Y cua
   {
     id: id(14),
     nivel: 4,
-    titulo: 'El gran viaje de Ciempi',
-    texto: `Ciempi vivía feliz en su jardín, entre las lechugas y las margaritas. Conocía cada piedra, cada hoja y cada gota de rocío. Pero una tarde, mirando el cielo, se preguntó qué habría más allá de la reja verde que rodeaba el jardín.
+    titulo: 'El gran viaje de Don Ciempiés',
+    texto: `Don Ciempiés vivía feliz en su jardín, entre las lechugas y las margaritas. Conocía cada piedra, cada hoja y cada gota de rocío. Pero una tarde, mirando el cielo, se preguntó qué habría más allá de la reja verde que rodeaba el jardín.
 
 A la mañana siguiente se levantó temprano, se lustró los cien zapatos y se despidió de su amiga la abeja. Ella le regaló un frasquito de miel para el camino y le pidió que volviera a contarle todo lo que viera.
 
-El primer día, Ciempi cruzó un camino de tierra tan ancho que le pareció un desierto. Las bicicletas pasaban como truenos y él tuvo que esperar con mucha paciencia hasta que no viniera ninguna. Cuando por fin llegó al otro lado, estaba tan cansado que se durmió debajo de una piedra.
+El primer día, Don Ciempiés cruzó un camino de tierra tan ancho que le pareció un desierto. Las bicicletas pasaban como truenos y él tuvo que esperar con mucha paciencia hasta que no viniera ninguna. Cuando por fin llegó al otro lado, estaba tan cansado que se durmió debajo de una piedra.
 
-El segundo día llegó a una laguna. Nunca había visto tanta agua junta. Una rana muy amable le ofreció llevarlo en su espalda hasta la otra orilla. Ciempi se agarró fuerte con sus cien pies, y la rana saltó de hoja en hoja hasta cruzar.
+El segundo día llegó a una laguna. Nunca había visto tanta agua junta. Una rana muy amable le ofreció llevarlo en su espalda hasta la otra orilla. Don Ciempiés se agarró fuerte con sus cien pies, y la rana saltó de hoja en hoja hasta cruzar.
 
-El tercer día subió a una colina muy alta. Desde arriba se veía todo: el camino, la laguna, los techos de las casas y, muy lejos, un puntito verde. Ciempi entrecerró los ojos y lo reconoció. ¡Era su jardín! Desde allí se veía tan pequeño como una hoja.
+El tercer día subió a una colina muy alta. Desde arriba se veía todo: el camino, la laguna, los techos de las casas y, muy lejos, un puntito verde. Don Ciempiés entrecerró los ojos y lo reconoció. ¡Era su jardín! Desde allí se veía tan pequeño como una hoja.
 
-En ese momento, Ciempi sintió un poco de pena. Había visto cosas maravillosas, pero extrañaba a la abeja, al caracol y a las margaritas. Así que se comió la última gota de miel y emprendió el regreso.
+En ese momento, Don Ciempiés sintió un poco de pena. Había visto cosas maravillosas, pero extrañaba a la abeja, al caracol y a las margaritas. Así que se comió la última gota de miel y emprendió el regreso.
 
-Cuando llegó, sus amigos lo estaban esperando. Esa noche, bajo la luz de la luna, Ciempi les contó su gran viaje. La abeja escuchaba con los ojos muy abiertos, y el caracol, que nunca había salido del jardín, decidió que algún día también iría a ver el mundo. Despacito, claro.`,
+Cuando llegó, sus amigos lo estaban esperando. Esa noche, bajo la luz de la luna, Don Ciempiés les contó su gran viaje. La abeja escuchaba con los ojos muy abiertos, y el caracol, que nunca había salido del jardín, decidió que algún día también iría a ver el mundo. Despacito, claro.`,
   },
   {
     id: id(15),

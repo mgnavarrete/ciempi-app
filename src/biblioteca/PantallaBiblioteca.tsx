@@ -3,8 +3,8 @@ import { DialogoCompartir, DialogoNivel } from '../adultos/LectoresDelLibro'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
-import type { Asignacion, Id, PerfilNino, Texto } from '../dominio/tipos'
-import { datosNivel } from '../lenguaje/unidades'
+import type { Asignacion, Id, NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
+import { NIVELES, datosNivel } from '../lenguaje/unidades'
 import { BarraProgreso, BotonIcono, Encabezado, Icono, Monedas, Portada } from '../ui/comunes'
 import { resumirProgreso } from './progreso'
 
@@ -41,17 +41,22 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
   // Adulto: cambiar el nivel de un libro o compartirlo con otro niño.
   const [cambiandoNivel, setCambiandoNivel] = useState<LibroEnBiblioteca | null>(null)
   const [compartiendo, setCompartiendo] = useState<Texto | null>(null)
+  // Ver todos los libros o solo los de un nivel.
+  const [filtro, setFiltro] = useState<NivelLectura | 'todos'>('todos')
 
   const cargar = useCallback(async () => {
     const asignaciones = await repos.asignaciones.listarPorPerfil(perfil.id)
     const conTexto = await Promise.all(
       asignaciones.filter((a) => a.estado !== 'archivada').map(async (asignacion) => ({ asignacion, texto: await repos.textos.obtener(asignacion.textoId) })),
     )
-    // Primero lo que está leyendo, después lo nuevo (de los niveles más fáciles a los más difíciles) y al final lo terminado.
-    const orden = { en_curso: 0, pendiente: 1, completada: 2, archivada: 3 }
+    // Primero lo que todavía no termina (de los niveles más fáciles a los más difíciles) y al final lo terminado.
     return conTexto
       .filter((l): l is LibroEnBiblioteca => l.texto !== null)
-      .sort((a, b) => orden[a.asignacion.estado] - orden[b.asignacion.estado] || (a.asignacion.nivel ?? 1) - (b.asignacion.nivel ?? 1))
+      .sort(
+        (a, b) =>
+          Number(resumirProgreso(a.asignacion, a.texto).terminado) - Number(resumirProgreso(b.asignacion, b.texto).terminado) ||
+          (a.asignacion.nivel ?? 1) - (b.asignacion.nivel ?? 1),
+      )
   }, [repos, perfil.id])
 
   useEffect(() => {
@@ -112,16 +117,49 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
           </div>
         )}
 
+        {libros && libros.length > 0 && (
+          <div role="group" aria-label="Ver por nivel" className="-mx-1 mb-4 flex flex-wrap gap-2">
+            {(['todos', ...NIVELES.map((n) => n.nivel)] as const).map((f) => {
+              const cuantos = f === 'todos' ? libros.length : libros.filter((l) => l.asignacion.nivel === f).length
+              const elegido = filtro === f
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFiltro(f)}
+                  aria-pressed={elegido}
+                  disabled={cuantos === 0 && !elegido}
+                  className={`rounded-full px-4 py-1.5 font-bold shadow-sm transition active:scale-95 disabled:opacity-40 ${elegido ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
+                >
+                  {f === 'todos' ? 'Todos' : `Nivel ${f}`}
+                  <span className={`ml-1.5 text-sm font-normal ${elegido ? 'text-white/80' : 'text-tinta-suave'}`}>{cuantos}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 apaisado:grid-cols-2">
-          {libros?.map((libro) => {
+          {libros?.filter((l) => filtro === 'todos' || l.asignacion.nivel === filtro).map((libro) => {
             const resumen = resumirProgreso(libro.asignacion, libro.texto)
+            // Niveles 0 y 1: cuentos cortos, sin porcentaje; solo si ya lo terminó.
+            const conAvance = !resumen.terminado && (libro.asignacion.nivel >= 2 || resumen.capitulo !== null)
             return (
               <li key={libro.asignacion.id} className="relative">
                 <button
                   onClick={() => alLeer(libro)}
                   className="flex w-full items-stretch gap-4 rounded-3xl bg-white p-3 text-left shadow-sm transition active:scale-[0.98]"
                 >
-                  <Portada titulo={libro.texto.titulo} portada={libro.texto.portada} className="h-32 w-24 shrink-0" />
+                  <span className="relative shrink-0">
+                    <Portada titulo={libro.texto.titulo} portada={libro.texto.portada} className="h-32 w-24" />
+                    {resumen.terminado && (
+                      <span
+                        title="¡Lo terminaste!"
+                        className="absolute -right-2 -top-2 grid h-9 w-9 place-items-center rounded-full bg-amarillo text-xl shadow-md ring-2 ring-white"
+                      >
+                        ⭐
+                      </span>
+                    )}
+                  </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-1 py-1 pr-8">
                     <span className="line-clamp-2 text-lg font-bold leading-tight">{libro.texto.titulo}</span>
                     {libro.texto.autor && <span className="truncate text-sm text-tinta-suave">{libro.texto.autor}</span>}
@@ -129,9 +167,9 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                       <span className="rounded-full bg-amarillo/40 px-2 font-bold text-tinta">
                         Nivel {libro.asignacion.nivel} · {datosNivel(libro.asignacion.nivel).nombre}
                       </span>
-                      {resumen.etiqueta}
+                      {resumen.terminado ? '¡Terminado!' : conAvance && resumen.fraccion > 0 ? resumen.etiqueta : ''}
                     </span>
-                    <BarraProgreso valor={resumen.fraccion} />
+                    {conAvance && resumen.fraccion > 0 && <BarraProgreso valor={resumen.fraccion} />}
                     <span className="mt-1 self-start rounded-full bg-petroleo px-4 py-1.5 font-bold text-white">
                       {modo === 'admin' ? `Leer con ${perfil.apodo}` : resumen.accion} →
                     </span>

@@ -4,36 +4,34 @@ import { desbloquearSonidos, sonarCelebracion, sonarMoneda, sonarTropiezo } from
 import { voz } from '../audio/voz'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
+import type { ProgresoAsignacion } from '../datos/repositorios'
 import { nuevoId } from '../dominio/ids'
 import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, ModoLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
-import { quitarGuiones } from '../lenguaje/frases'
+import { dividirEnFragmentos, quitarGuiones } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
-import { PALABRAS_POR_MONEDA, acumularPalabras, contarPalabras, guardarHaciaMoneda, leerHaciaMoneda } from './monedas'
-import { CONFIG_MOTOR_BASE, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
+import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
+import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
+import { acomodarVoz, type VozEnCurso } from './vozAlDedo'
 
-export const MONEDAS_POR_CAPITULO = 2
-export const MONEDAS_POR_TEXTO = 3
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
 const MS_PASO_FRASE = 450
-/** Una oración o un párrafo leído de corrido: se espera a que la voz termine (hasta esto). */
-const MS_ESPERA_VOZ_DE_CORRIDO = 20_000
-/** Nivel 3: la primera manzana del carril (las palabras se reparten parejo desde aquí). */
+/** Una oración o un párrafo leído en voz alta: se espera a que la voz termine (hasta esto). */
+const MS_ESPERA_VOZ_LARGA = 20_000
+/** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
 const INICIO_PISTA_PARRAFO = 0.06
+/** Nivel 2: si el dedo se queda quieto este rato, la voz se calla (y sigue cuando el dedo sigue). */
+const MS_DEDO_QUIETO = 650
 /** Pausas más largas que esto no cuentan como tiempo leyendo. */
 const MAX_PAUSA_ACTIVA_MS = 10_000
 
-export interface Progreso {
-  fraseActual: number
-  fraseMaxima: number
-  estado: EstadoAsignacion
-}
+export type Progreso = ProgresoAsignacion
 
 interface Props {
   perfil: PerfilNino
@@ -49,11 +47,27 @@ interface Props {
   asignacion: Asignacion
   /** Nivel de lectura de este libro para este niño (1 si no se dice). */
   nivel?: NivelLectura
+  /**
+   * Frase donde seguir, si el niño no salió del libro (fue a Ajustes y
+   * volvió). Si no, se empieza desde el comienzo (o desde el capítulo).
+   */
+  retomarEn?: number
   alGanarMonedas: (cantidad: number) => void
-  /** Se llama después de cada frase y al saltar: el progreso queda guardado aunque se cierre la app. */
+  /** Se llama después de cada frase y al saltar: lo leído y lo ganado quedan guardados aunque se cierre la app. */
   alProgreso: (progreso: Progreso) => void
   alVolver: () => void
   alAjustes: () => void
+}
+
+/**
+ * Dónde se empieza a leer: un cuento, siempre desde el comienzo (si no, se
+ * pierde el hilo). Un libro con capítulos, desde el comienzo del capítulo
+ * donde iba (sin pasar de lo que ya leyó de verdad).
+ */
+export function fraseDeInicio(texto: Pick<Texto, 'capitulos'>, asignacion: Pick<Asignacion, 'estado' | 'fraseActual' | 'leidoHasta'>): number {
+  if (texto.capitulos.length <= 1 || asignacion.estado === 'completada') return 0
+  const donde = Math.min(asignacion.fraseActual, asignacion.leidoHasta ?? 0)
+  return texto.capitulos[capituloDeFrase(texto.capitulos, donde)].desdeFrase
 }
 
 export function PantallaLectura(props: Props) {
@@ -64,22 +78,20 @@ export function PantallaLectura(props: Props) {
   const repos = useRepositorios()
   const { ajustes } = perfil
   // Cómo se lee en cada nivel (ver lenguaje/unidades.ts):
-  // 0 sílaba por sílaba · 1 palabra por palabra · 2 la oración de un solo
-  // deslizar · 3 el párrafo completo a la vista, de corrido · 4 la página, sin pista.
+  // 0 sílaba por sílaba · 1 palabra por palabra · 2 la oración, al ritmo del
+  // dedo · 3 y 4 el párrafo o la página completa, una manzana por fragmento.
   const porSilaba = nivel === 0
-  const deCorrido = nivel === 2 || nivel === 3
-  const parrafo = nivel === 3
-  const libre = nivel === 4
+  const oracion = nivel === 2
+  const porFragmentos = nivel === 3 || nivel === 4
   // La voz: la que eligió el niño o, si no eligió, la que corresponde al nivel.
-  // En la lectura libre no hay voz (solo al tocar una palabra).
-  const modo: ModoLectura = libre ? 'solo' : (ajustes.modoVoz ?? MODO_POR_NIVEL[nivel])
+  const modo: ModoLectura = ajustes.modoVoz ?? MODO_POR_NIVEL[nivel]
   const definicionModo = MODOS[modo]
   const [menuVoz, setMenuVoz] = useState(false)
   const tranquilo = ajustes.modoTranquilo
   useVozDeCiempi(perfil.ciempi.genero)
 
   // Lo que se lee de una vez depende del nivel (frase, oración, párrafo, página).
-  // El avance se guarda siempre en frases (las del nivel 1): ver lenguaje/unidades.ts.
+  // El avance se guarda siempre en frases (las de los niveles 0 y 1): ver lenguaje/unidades.ts.
   const vista = useMemo(() => vistaPorNivel(texto, nivel), [texto, nivel])
   const { unidades, capitulos } = vista
   const total = unidades.length
@@ -87,69 +99,84 @@ export function PantallaLectura(props: Props) {
   const aUnidad = (frase: number) => (frase >= totalFrases ? total : unidadDeFrase(vista, frase))
   const nombreUnidad = datosNivel(nivel).unidad
 
-  // Retoma donde quedó; un libro terminado parte de nuevo.
-  const [indice, setIndice] = useState(() => (asignacion.estado === 'completada' ? 0 : Math.min(aUnidad(asignacion.fraseActual), Math.max(0, total - 1))))
-  // Hasta dónde llegó alguna vez: solo las unidades nuevas dan monedas.
-  const maximaRef = useRef(aUnidad(Math.max(asignacion.fraseMaxima ?? 0, asignacion.fraseActual)))
-  const [maxima, setMaxima] = useState(maximaRef.current)
-  const yaTerminoLibro = useRef(asignacion.completadaEn != null || asignacion.estado === 'completada')
+  // ── Dónde empieza y lo ya ganado ──────────────────────────────────────
+  const fraseInicial = props.retomarEn ?? fraseDeInicio(texto, asignacion)
+  const [indice, setIndice] = useState(() => Math.min(aUnidad(fraseInicial), Math.max(0, total - 1)))
+  // Lo leído de verdad alguna vez y los hitos ya pagados (no bajan).
+  const leidoHasta = useRef(asignacion.leidoHasta ?? 0)
+  const premioHasta = useRef(asignacion.premioHasta ?? 0)
+  const relecturaPremiadaEn = useRef(asignacion.relecturaPremiadaEn ?? null)
+  // El libro ya estaba premiado entero al abrirlo: terminarlo es una relectura.
+  const yaPremiadoEntero = useRef(premioHasta.current >= 100)
+  // Este tramo de lectura: desde dónde empezó y cuánto se leyó a buen ritmo.
+  const tramo = useRef({ desde: fraseDeUnidad(vista, indice, totalFrases), palabras: 0, aBuenRitmo: 0 })
+  const [premiado, setPremiado] = useState(premioHasta.current)
 
-  const [pausa, setPausa] = useState<{ tipo: 'capitulo' | 'libro'; titulo: string; premio: number; siguiente: number } | null>(null)
+  const [pausa, setPausa] = useState<{ tipo: 'capitulo' | 'libro'; titulo: string; premio: number; mensaje: string; siguiente: number } | null>(null)
   const [indiceAbierto, setIndiceAbierto] = useState(false)
   // Sin rayas ni guiones de diálogo, que confunden al leer.
   const frase = quitarGuiones(unidades[indice] ?? '')
-  const desdeFraseUnidad = vista.desdeFrase[indice] ?? 0
-  const hastaFraseUnidad = vista.desdeFrase[indice + 1] ?? totalFrases
-  // Nivel 3: el párrafo en sus líneas (las frases del nivel 1: versos o trozos de oración).
-  const lineasParrafo = useMemo(
-    () =>
-      parrafo
-        ? texto.frases
-            .slice(desdeFraseUnidad, hastaFraseUnidad)
-            .map((l) => silabearFrase(quitarGuiones(l)))
-            .filter((l) => l.length > 0)
-        : [],
-    [parrafo, texto.frases, desdeFraseUnidad, hastaFraseUnidad],
-  )
 
   const conCapitulos = capitulos.length > 1
   const numCapitulo = capituloDeFrase(capitulos, indice)
   const capitulo = capitulos[numCapitulo]
   const finDelCapitulo = capitulos[numCapitulo + 1]?.desdeFrase ?? total
-  const avanceCapitulo = (indice - capitulo.desdeFrase) / Math.max(1, finDelCapitulo - capitulo.desdeFrase)
   // Arriba se ve lo que ya leyó: hasta dos frases (u oraciones) del capítulo.
-  const yaLeidas = parrafo ? [] : unidades.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
-  const palabras = useMemo(() => (parrafo ? lineasParrafo.flat() : silabearFrase(frase)), [parrafo, lineasParrafo, frase])
-  // En el nivel 0 cada sílaba es una manzana: de qué palabra es cada una y si la termina.
+  const yaLeidas = porFragmentos ? [] : unidades.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
+
+  // Niveles 3 y 4: el párrafo (o la página) en fragmentos con sentido, uno por manzana.
+  const fragmentos = useMemo(
+    () => (porFragmentos ? dividirEnFragmentos(frase, { porOracion: nivel === 4 }).map((f) => silabearFrase(f)).filter((f) => f.length > 0) : []),
+    [porFragmentos, frase, nivel],
+  )
+  const palabras = useMemo(() => (porFragmentos ? fragmentos.flat() : silabearFrase(frase)), [porFragmentos, fragmentos, frase])
+  // En el nivel 0 cada sílaba es una manzana: de qué palabra es cada una.
   const silabas = useMemo(
-    () => (porSilaba ? palabras.flatMap((p, i) => p.silabas.map((_, s) => ({ palabra: i, ultima: s === p.silabas.length - 1 }))) : []),
+    () => (porSilaba ? palabras.flatMap((p, i) => p.silabas.map((texto) => ({ palabra: i, texto }))) : []),
     [porSilaba, palabras],
   )
-  const manzanasPorLeer = porSilaba ? silabas.length : palabras.length
-  // La voz del servidor se pide de antemano (esta frase y la siguiente) para
-  // que suene apenas llega el dedo. Las oraciones y párrafos se piden al leerlos.
+  const manzanasPorLeer = porSilaba ? silabas.length : porFragmentos ? fragmentos.length : palabras.length
+
+  // La voz del servidor se pide de antemano (esta frase y la siguiente) para que suene apenas llega el dedo.
   const fraseQueViene = unidades[indice + 1]
   useEffect(() => {
-    if (modo === 'solo' || deCorrido) return
+    if (modo === 'solo' || nivel >= 2) return
     const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
-    voz.precargar([...palabras, ...proximas].map((p) => p.texto), ajustes.velocidadVoz)
-  }, [palabras, fraseQueViene, ajustes.velocidadVoz, modo, deCorrido])
+    const ahora = porSilaba ? silabas.map((s) => s.texto) : palabras.map((p) => p.texto)
+    voz.precargar([...ahora, ...proximas.map((p) => p.texto)], ajustes.velocidadVoz)
+  }, [palabras, silabas, porSilaba, fraseQueViene, ajustes.velocidadVoz, modo, nivel])
+
   // La pista se mide en pantalla (dónde quedó cada palabra); mientras, una
-  // pareja. En el párrafo, las palabras se reparten parejo a lo largo del carril.
+  // pareja. En los niveles 3 y 4 las palabras se reparten parejo a lo largo del
+  // carril y cada fragmento tiene su manzana donde termina su última palabra.
   const [pistaMedida, setPistaMedida] = useState<Pista | null>(null)
-  const pistaPareja = useMemo(() => calcularPista(manzanasPorLeer, parrafo ? INICIO_PISTA_PARRAFO : undefined), [manzanasPorLeer, parrafo])
-  const pista = !parrafo && pistaMedida && pistaMedida.manzanas.length === manzanasPorLeer ? pistaMedida : pistaPareja
-  const repasando = indice < maxima
+  const posicionesPalabras = useMemo(
+    () => (porFragmentos ? palabras.map((_, i) => INICIO_PISTA_PARRAFO + ((FIN_PISTA - INICIO_PISTA_PARRAFO) * (i + 1)) / palabras.length) : []),
+    [porFragmentos, palabras],
+  )
+  const pistaPareja = useMemo(() => {
+    if (!porFragmentos) return calcularPista(manzanasPorLeer)
+    let fin = -1
+    const manzanas = fragmentos.map((f) => posicionesPalabras[(fin += f.length)])
+    return { manzanas, fin: FIN_PISTA }
+  }, [porFragmentos, manzanasPorLeer, fragmentos, posicionesPalabras])
+  const pista = !porFragmentos && pistaMedida && pistaMedida.manzanas.length === manzanasPorLeer ? pistaMedida : pistaPareja
 
   const [motor, setMotor] = useState<EstadoMotor>(estadoInicial)
   const motorRef = useRef(motor)
   const dibujoPendiente = useRef(0)
   useEffect(() => () => cancelAnimationFrame(dibujoPendiente.current), [])
   const [aviso, setAviso] = useState<string | null>(null)
-  // Palabras acumuladas hacia la próxima moneda (y un contador para animar cada moneda nueva).
-  const [haciaMoneda, setHaciaMoneda] = useState(() => (vistaPrevia ? 0 : leerHaciaMoneda(perfil.id)))
-  const haciaMonedaRef = useRef(haciaMoneda)
-  const [monedasNuevas, setMonedasNuevas] = useState(0)
+  // Un hito alcanzado: «¡Llegaste a la mitad! +5 🪙» por un momento.
+  const [festejo, setFestejo] = useState<string | null>(null)
+
+  // Niveles 3 y 4: palabras encendidas (todas las de los fragmentos comidos, y las que ya pasó el dedo).
+  const palabrasEncendidas = useMemo(() => {
+    if (!porFragmentos) return 0
+    let n = fragmentos.slice(0, motor.palabrasLeidas).reduce((s, f) => s + f.length, 0)
+    while (n < posicionesPalabras.length && posicionesPalabras[n] <= motor.progreso + 1e-9) n++
+    return n
+  }, [porFragmentos, fragmentos, posicionesPalabras, motor.palabrasLeidas, motor.progreso])
 
   const temporizadores = useRef<number[]>([])
   const programar = (fn: () => void, ms: number) => {
@@ -193,14 +220,25 @@ export function PantallaLectura(props: Props) {
 
   // ── Movimiento por el libro ───────────────────────────────────────────
   const guardarProgreso = (unidad: number, estado: EstadoAsignacion = 'en_curso') =>
-    alProgreso({ fraseActual: fraseDeUnidad(vista, unidad, totalFrases), fraseMaxima: fraseDeUnidad(vista, maximaRef.current, totalFrases), estado })
+    alProgreso({
+      fraseActual: fraseDeUnidad(vista, unidad, totalFrases),
+      fraseMaxima: leidoHasta.current,
+      estado,
+      leidoHasta: leidoHasta.current,
+      premioHasta: premioHasta.current,
+      relecturaPremiadaEn: relecturaPremiadaEn.current,
+    })
 
-  // Oración o párrafo: la voz ya empezó a leerlo de corrido (se lee una vez).
-  const vozDeCorrido = useRef(false)
+  // Nivel 2: la voz que acompaña al dedo, y cuándo se movió el dedo por última vez.
+  const vozAlDedo = useRef<VozEnCurso | null>(null)
+  const dedoQuieto = useRef(0)
+  // Cuándo tocó el niño por primera vez esta unidad (para revisar el ritmo al terminar).
+  const inicioUnidad = useRef<number | null>(null)
 
   const reiniciarMotor = () => {
     motorRef.current = estadoInicial()
-    vozDeCorrido.current = false
+    vozAlDedo.current = null
+    inicioUnidad.current = null
     setMotor(motorRef.current)
   }
 
@@ -210,6 +248,7 @@ export function PantallaLectura(props: Props) {
   const irAFrase = (i: number, { callarVoz = true } = {}) => {
     cambiosDeFrase.current++
     cancelarProgramados()
+    window.clearTimeout(dedoQuieto.current)
     if (callarVoz) voz.callar()
     setAviso(null)
     setPausa(null)
@@ -217,11 +256,13 @@ export function PantallaLectura(props: Props) {
     reiniciarMotor()
   }
 
-  /** Saltar a otra frase (volver atrás, repetir un capítulo o el libro). Las monedas no se tocan. */
+  /** Saltar a otra parte (volver atrás, un capítulo o el comienzo): empieza un tramo nuevo. Las monedas no se tocan. */
   const saltarA = (i: number) => {
+    const destino = Math.max(0, Math.min(i, total - 1))
     setIndiceAbierto(false)
-    irAFrase(Math.max(0, Math.min(i, total - 1)))
-    guardarProgreso(Math.max(0, Math.min(i, total - 1)))
+    tramo.current = { desde: fraseDeUnidad(vista, destino, totalFrases), palabras: 0, aBuenRitmo: 0 }
+    irAFrase(destino)
+    guardarProgreso(destino)
   }
 
   const premiar = (monedas: number) => {
@@ -229,130 +270,133 @@ export function PantallaLectura(props: Props) {
     alGanarMonedas(monedas)
     const s = sesion.current
     guardarSesion({ monedasGanadas: (s?.monedasGanadas ?? 0) + monedas })
-    if (!tranquilo) programar(sonarCelebracion, 200)
   }
 
-  const siguienteFrase = (eraNueva: boolean) => {
+  const siguienteFrase = (premioFinal: { monedas: number; mensaje: string }) => {
     const sig = indice + 1
     if (sig >= total) {
       guardarProgreso(total, 'completada')
-      // El premio del libro se da solo la primera vez que se termina.
-      const premio = yaTerminoLibro.current ? 0 : MONEDAS_POR_TEXTO
-      yaTerminoLibro.current = true
-      setPausa({ tipo: 'libro', titulo: texto.titulo, premio, siguiente: 0 })
-      premiar(premio)
+      setPausa({ tipo: 'libro', titulo: texto.titulo, premio: premioFinal.monedas, mensaje: premioFinal.mensaje, siguiente: 0 })
+      if (premioFinal.monedas && !tranquilo) programar(sonarCelebracion, 200)
       return
     }
     guardarProgreso(sig)
     // En un libro, cada capítulo terminado es un buen lugar para descansar.
     if (conCapitulos && sig === finDelCapitulo) {
-      const premio = eraNueva ? MONEDAS_POR_CAPITULO : 0
-      setPausa({ tipo: 'capitulo', titulo: capitulo.titulo, premio, siguiente: sig })
-      premiar(premio)
+      setPausa({ tipo: 'capitulo', titulo: capitulo.titulo, premio: 0, mensaje: '¡Muy bien leído! 📖', siguiente: sig })
       return
     }
     irAFrase(sig, { callarVoz: false })
   }
 
   /**
-   * Frase (u oración, párrafo, página) terminada: sin pausa ni cartel, se
-   * pasa a la siguiente. Las palabras leídas a buen ritmo, en frases nuevas,
-   * suman hacia la próxima moneda: igual en todos los niveles.
+   * Frase (u oración, párrafo, página) terminada: se pasa a la siguiente.
+   * Lo leído de corrido y a buen ritmo avanza `leidoHasta`; al pasar un hito
+   * (25, 50, 75 o 100 %) por primera vez, se pagan sus monedas.
    */
-  const completar = (aBuenRitmo: boolean) => {
-    const eraNueva = indice >= maximaRef.current
-    maximaRef.current = Math.max(maximaRef.current, indice + 1)
-    setMaxima(maximaRef.current)
-
-    let ganadas = 0
-    if (aBuenRitmo && eraNueva && !vistaPrevia) {
-      const r = acumularPalabras(haciaMonedaRef.current, contarPalabras(frase))
-      ganadas = r.monedas
-      haciaMonedaRef.current = r.resto
-      setHaciaMoneda(r.resto)
-      guardarHaciaMoneda(perfil.id, r.resto)
+  const completar = (aBuenRitmoMotor: boolean) => {
+    const n = contarPalabras(frase)
+    // Niveles 2 a 4: el dedo va libre; si la unidad se hizo más rápido de lo que se puede leer, no cuenta.
+    const limite = ajustes.umbralPalabrasPorSegundo * (oracion ? 2 : 1)
+    const segundos = inicioUnidad.current == null ? 0 : (performance.now() - inicioUnidad.current) / 1000
+    const aTiempo = nivel < 2 || segundos >= n / limite
+    const aBuenRitmo = aBuenRitmoMotor && aTiempo
+    if (!aTiempo) {
+      setAviso('Muy rápido 🐢 esto no suma monedas')
+      programar(() => setAviso((a) => (a?.startsWith('Muy rápido') ? null : a)), 1600)
     }
+
+    const t = tramo.current
+    t.palabras += n
+    if (aBuenRitmo) t.aBuenRitmo += n
+    const ritmoBien = t.aBuenRitmo >= MINIMO_A_BUEN_RITMO * t.palabras
+    const fin = fraseDeUnidad(vista, indice + 1, totalFrases)
+    let ganadas = 0
+    let mensajeFinal = '¡Muy bien leído! 📖'
+    if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
+      leidoHasta.current = fin
+      const nuevos = hitosNuevos(nivel, premioHasta.current, porcentajeLeido(fin, totalFrases))
+      if (nuevos.length) {
+        ganadas = nuevos.reduce((s, h) => s + h.monedas, 0)
+        premioHasta.current = nuevos[nuevos.length - 1].porcentaje
+        setPremiado(premioHasta.current)
+        if (premioHasta.current < 100) {
+          setFestejo(`${premioHasta.current === 50 ? '¡Llegaste a la mitad!' : `¡Llegaste al ${premioHasta.current} %!`} +${ganadas} 🪙`)
+          programar(() => setFestejo(null), 2600)
+        }
+      }
+    }
+    // Terminar otra vez un libro ya premiado (leído entero, a buen ritmo): premio menor, una vez al día.
+    const terminaLibro = fin >= totalFrases
+    if (terminaLibro && !vistaPrevia && yaPremiadoEntero.current) {
+      if (!ritmoBien || t.desde > 0) mensajeFinal = 'Para ganar monedas al releer, lee todo a tu ritmo 🐢'
+      else if (relecturaPremiadaEn.current === hoy()) mensajeFinal = 'Hoy ya ganaste monedas releyéndolo. ¡Mañana puedes volver a ganar!'
+      else {
+        ganadas += premioRelectura(nivel)
+        relecturaPremiadaEn.current = hoy()
+      }
+    } else if (terminaLibro && !vistaPrevia && !ritmoBien) mensajeFinal = 'Para ganar monedas, lee a tu ritmo, sin apurarte 🐢'
+
     const s = sesion.current
     guardarSesion({
       frasesCompletadas: (s?.frasesCompletadas ?? 0) + 1,
       frasesMuyRapido: (s?.frasesMuyRapido ?? 0) + (aBuenRitmo ? 0 : 1),
-      silabasLeidas: (s?.silabasLeidas ?? 0) + (aBuenRitmo ? palabras.reduce((n, p) => n + p.silabas.length, 0) : 0),
-      monedasGanadas: (s?.monedasGanadas ?? 0) + ganadas,
+      silabasLeidas: (s?.silabasLeidas ?? 0) + (aBuenRitmo ? palabras.reduce((m, p) => m + p.silabas.length, 0) : 0),
     })
     if (ganadas) {
-      alGanarMonedas(ganadas)
-      setMonedasNuevas((n) => n + 1)
-      if (!tranquilo) programar(sonarMoneda, 120)
+      premiar(ganadas)
+      if (!tranquilo && !terminaLibro) programar(sonarMoneda, 120)
     }
-    // Se pasa a la siguiente frase recién cuando la voz terminó (la última
-    // palabra, o la oración o el párrafo que lee de corrido).
+    // Se pasa a la siguiente recién cuando la voz terminó.
     const cambio = cambiosDeFrase.current
     programar(async () => {
-      await voz.esperarSilencio(deCorrido ? MS_ESPERA_VOZ_DE_CORRIDO : 4000)
+      await voz.esperarSilencio(nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
       if (cambio !== cambiosDeFrase.current) return
-      siguienteFrase(eraNueva)
+      siguienteFrase({ monedas: terminaLibro ? ganadas : 0, mensaje: mensajeFinal })
     }, MS_PASO_FRASE)
   }
-
-  // ── Nivel 4: página libre ─────────────────────────────────────────────
-  // Sin pista: el niño lee y toca «Terminé». Si fue más rápido que el ritmo
-  // máximo (palabras ÷ palabras por segundo), la página no da monedas.
-  const inicioPagina = useRef(Date.now())
-  useEffect(() => {
-    inicioPagina.current = Date.now()
-  }, [indice, pausa])
-  const terminarPagina = () => {
-    voz.desbloquear()
-    voz.callar()
-    const segundos = (Date.now() - inicioPagina.current) / 1000
-    tiempoActivo.current.ms += Math.min(segundos, 600) * 1000
-    const aBuenRitmo = segundos >= contarPalabras(frase) / ajustes.umbralPalabrasPorSegundo
-    if (aBuenRitmo) return completar(true)
-    if (!tranquilo) sonarTropiezo()
-    setAviso('Muy rápido 🐢 Esta página no da monedas')
-    programar(() => completar(false), MS_TROPIEZO)
-  }
-  const parrafosPagina = useMemo(() => {
-    if (!libre) return []
-    // Los párrafos de la página: los del libro o, si no tiene, los del nivel 3.
-    const inicios = new Set(vistaPorNivel(texto, 3).desdeFrase)
-    const parrafos: string[][] = []
-    for (let f = desdeFraseUnidad; f < hastaFraseUnidad; f++) {
-      if (!parrafos.length || inicios.has(f)) parrafos.push([])
-      parrafos[parrafos.length - 1].push(quitarGuiones(texto.frases[f]))
-    }
-    return parrafos.map((p) => p.join(' ')).filter((p) => /\p{L}|\p{N}/u.test(p))
-  }, [libre, texto, desdeFraseUnidad, hastaFraseUnidad])
 
   // Una frase que quedó vacía (era solo una raya) se salta sola.
   useEffect(() => {
     if (palabras.length === 0 && !pausa && total > 0) {
-      const t = window.setTimeout(() => siguienteFrase(indice >= maximaRef.current), 0)
+      const t = window.setTimeout(() => siguienteFrase({ monedas: 0, mensaje: '¡Muy bien leído! 📖' }), 0)
       return () => window.clearTimeout(t)
     }
   }, [indice, palabras.length, pausa])
+
+  /** Nivel 2: a cuántas palabras por segundo va el dedo (con lo que guardó el motor), o null si es muy pronto. */
+  const velocidadDelDedo = (): number | null => {
+    const m = motorRef.current.muestras
+    if (m.length < 2) return null
+    const dt = m[m.length - 1].t - m[0].t
+    const largo = pista.manzanas.length > 1 ? (pista.manzanas[pista.manzanas.length - 1] - pista.manzanas[0]) / (pista.manzanas.length - 1) : 0
+    if (dt < 150 || largo <= 0) return null
+    return (m[m.length - 1].p - m[0].p) / largo / (dt / 1000)
+  }
 
   const ejecutar = (efecto: Efecto) => {
     switch (efecto.tipo) {
       case 'decir': {
         if (!definicionModo.vozAlDeslizar) break
-        if (deCorrido) {
-          // Oración o párrafo: al empezar a deslizar, Ciempi lo lee de corrido
-          // (una vez; después de un tropiezo, desde donde quedó el dedo).
-          if (vozDeCorrido.current) break
-          vozDeCorrido.current = true
-          const resto = efecto.palabra === 0 ? frase : palabras.slice(efecto.palabra).map((p) => p.texto).join(' ')
-          voz.decirFrase(resto, ajustes.velocidadVoz)
-        } else if (porSilaba) {
-          // Sílaba por sílaba: la palabra se dice entera al terminar su última sílaba.
-          const s = silabas[efecto.palabra]
-          if (s?.ultima) voz.decir(palabras[s.palabra].texto, ajustes.velocidadVoz)
+        if (porSilaba) {
+          // Sílaba por sílaba: «La – u – va».
+          voz.decir(silabas[efecto.palabra]?.texto ?? '', ajustes.velocidadVoz)
+        } else if (oracion) {
+          // La oración, de corrido y al ritmo del dedo.
+          const nueva = acomodarVoz(vozAlDedo.current, efecto.palabra, velocidadDelDedo(), performance.now())
+          if (nueva) {
+            vozAlDedo.current = nueva
+            const resto = nueva.desde === 0 ? frase : palabras.slice(nueva.desde).map((p) => p.texto).join(' ')
+            voz.decirFrase(resto, ajustes.velocidadVoz * nueva.velocidad)
+          }
+        } else if (porFragmentos) {
+          // Cada manzana, su fragmento (si el dedo va más rápido, se dicen en orden).
+          voz.decirFrase(fragmentos[efecto.palabra].map((p) => p.texto).join(' '), ajustes.velocidadVoz, true)
         } else voz.decir(palabras[efecto.palabra].texto, ajustes.velocidadVoz)
         break
       }
       case 'tropiezo':
         voz.callar()
-        vozDeCorrido.current = false
         if (!tranquilo) sonarTropiezo()
         setAviso('Más despacito 🐢')
         programar(() => {
@@ -370,17 +414,30 @@ export function PantallaLectura(props: Props) {
     }
   }
 
+  /** Nivel 2: el dedo se detuvo o se levantó: la voz se calla y vuelve a empezar desde el dedo cuando siga. */
+  const pausarVozAlDedo = () => {
+    if (!oracion || !vozAlDedo.current || motorRef.current.fase === 'completada') return
+    vozAlDedo.current = null
+    voz.callar()
+  }
+
   const entrar = (entrada: Entrada) => {
     if (entrada.tipo === 'tocar') {
       // El primer toque habilita el audio (requisito de iOS y Chrome).
       voz.desbloquear()
       desbloquearSonidos()
+      inicioUnidad.current ??= performance.now()
       // En eco, si empieza a leer mientras Ciempi todavía habla, Ciempi se calla.
       if (definicionModo.leerFraseAntes && motorRef.current.fase === 'esperando') voz.callar()
     }
     if (entrada.tipo === 'tocar' || entrada.tipo === 'mover') registrarActividad(entrada.t)
+    if (oracion && definicionModo.vozAlDeslizar) {
+      window.clearTimeout(dedoQuieto.current)
+      if (entrada.tipo === 'soltar') pausarVozAlDedo()
+      else if (entrada.tipo === 'mover') dedoQuieto.current = window.setTimeout(pausarVozAlDedo, MS_DEDO_QUIETO)
+    }
 
-    const config = { ...CONFIG_MOTOR_BASE, umbralPalabrasPorSegundo: ajustes.umbralPalabrasPorSegundo }
+    const config = { ...CONFIG_MOTOR_BASE, umbralPalabrasPorSegundo: ajustes.umbralPalabrasPorSegundo, sinLimite: nivel >= 2 }
     const { estado, efectos } = paso(motorRef.current, entrada, pista, config)
     if (estado !== motorRef.current) {
       motorRef.current = estado
@@ -400,21 +457,21 @@ export function PantallaLectura(props: Props) {
       titulo={
         <span className="flex flex-col leading-tight">
           <span className="truncate">{conCapitulos ? capitulo.titulo : texto.titulo}</span>
-          <span className="truncate text-sm font-normal text-tinta-suave apaisado:text-xs">
-            {conCapitulos ? texto.titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
-          </span>
+          {(conCapitulos || conPorcentaje(nivel)) && (
+            <span className="truncate text-sm font-normal text-tinta-suave apaisado:text-xs">
+              {conCapitulos ? texto.titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
+            </span>
+          )}
         </span>
       }
     >
       <Monedas cantidad={perfil.monedas} />
-      {!libre && (
-        <BotonIcono
-          etiqueta={`Voz: ${definicionModo.nombre}`}
-          icono={modo === 'solo' ? 'vozNo' : 'vozSi'}
-          activo={modo === 'solo'}
-          onClick={() => setMenuVoz(true)}
-        />
-      )}
+      <BotonIcono
+        etiqueta={`Voz: ${definicionModo.nombre}`}
+        icono={modo === 'solo' ? 'vozNo' : 'vozSi'}
+        activo={modo === 'solo'}
+        onClick={() => setMenuVoz(true)}
+      />
       <BotonIcono etiqueta="Índice: volver atrás o repetir" icono="indice" onClick={() => setIndiceAbierto(true)} />
       <BotonIcono etiqueta="Ajustes de lectura" icono="ajustes" onClick={alAjustes} />
     </Encabezado>
@@ -440,17 +497,12 @@ export function PantallaLectura(props: Props) {
     voz.callar()
     if (palabras[i]) voz.decir(palabras[i].texto, ajustes.velocidadVoz)
   }
-  const decirTexto = (t: string) => {
-    voz.desbloquear()
-    voz.callar()
-    if (t) voz.decir(t, ajustes.velocidadVoz)
-  }
 
   const panelIndice = indiceAbierto && (
     <PanelIndice
       texto={{ ...texto, frases: unidades, capitulos }}
       indice={indice}
-      maxima={maxima}
+      maxima={aUnidad(leidoHasta.current)}
       alSaltar={saltarA}
       alCerrar={() => setIndiceAbierto(false)}
     />
@@ -467,6 +519,7 @@ export function PantallaLectura(props: Props) {
           titulo={esLibro ? '¡Leíste todo!' : '¡Terminaste un capítulo!'}
           subtitulo={pausa.titulo}
           premio={pausa.premio}
+          mensaje={pausa.mensaje}
           tranquilo={tranquilo}
           principal={esLibro ? { texto: 'Volver a mis libros', accion: alVolver } : { texto: 'Seguir leyendo', accion: () => irAFrase(pausa.siguiente) }}
           secundaria={
@@ -476,6 +529,7 @@ export function PantallaLectura(props: Props) {
                   accion: () => {
                     sesion.current = null
                     tiempoActivo.current = { ms: 0, ultimo: 0 }
+                    yaPremiadoEntero.current = premioHasta.current >= 100
                     saltarA(0)
                   },
                 }
@@ -485,6 +539,8 @@ export function PantallaLectura(props: Props) {
       </>
     )
   }
+
+  const porcentaje = porcentajeLeido(fraseDeUnidad(vista, indice, totalFrases), totalFrases)
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -498,46 +554,34 @@ export function PantallaLectura(props: Props) {
       )}
       {props.leyendoConAdulto && (
         <div className="mx-5 rounded-xl bg-verde-claro px-3 py-1 text-center text-sm font-bold text-tinta">
-          Leyendo con {perfil.apodo}: el avance y las monedas quedan en su cuenta
+          Leyendo con {perfil.apodo}: las monedas quedan en su cuenta
         </div>
       )}
-      <div className="flex flex-col gap-1.5 px-5 pt-1 apaisado:flex-row apaisado:items-center apaisado:gap-5 apaisado:pt-0">
-        <div className="flex flex-1 items-center gap-2 text-sm text-tinta-suave">
-          <button
-            onClick={() => saltarA(indice - 1)}
-            disabled={indice === 0 || motor.fase === 'arrastrando'}
-            aria-label="Frase anterior"
-            title="Frase anterior"
-            className="-ml-1 grid h-8 w-8 shrink-0 place-items-center rounded-full text-petroleo active:bg-petroleo-claro disabled:text-[#cfc6b4]"
-          >
-            <Icono nombre="anterior" className="h-5 w-5" />
-          </button>
-          <BarraCapitulo valor={avanceCapitulo} tranquilo={tranquilo} />
-        </div>
-        {!vistaPrevia &&
-          (repasando ? (
-            <p className="text-sm text-tinta-suave">📖 Repasando: las monedas siguen desde donde ibas</p>
-          ) : (
-            <MedidorMoneda acumuladas={haciaMoneda} monedasNuevas={monedasNuevas} tranquilo={tranquilo} />
-          ))}
+      <div className="flex items-center gap-2 px-5 pt-1 text-sm text-tinta-suave apaisado:pt-0">
+        <button
+          onClick={() => saltarA(indice - 1)}
+          disabled={indice === 0 || motor.fase === 'arrastrando'}
+          aria-label="Anterior"
+          title="Anterior"
+          className="-ml-1 grid h-8 w-8 shrink-0 place-items-center rounded-full text-petroleo active:bg-petroleo-claro disabled:text-[#cfc6b4]"
+        >
+          <Icono nombre="anterior" className="h-5 w-5" />
+        </button>
+        {/* Niveles 0 y 1: el cuento es corto, sin porcentaje. Desde el 2: cuánto lleva y dónde están las monedas. */}
+        {conPorcentaje(nivel) && <BarraLibro porcentaje={porcentaje} nivel={nivel} premiado={premiado} tranquilo={tranquilo} />}
       </div>
 
       <AvisoVoz className="mx-5 mt-1 apaisado:py-1" />
       <p className="mx-5 mt-1 rounded-xl bg-amarillo/25 px-3 py-1 text-center text-sm text-tinta-suave vertical-angosto:block hidden">
         📱 Gira el teléfono: se lee mejor en horizontal
       </p>
+      {festejo && (
+        <p role="status" className="aparecer absolute inset-x-0 top-24 z-30 mx-auto w-fit rounded-full bg-naranjo px-5 py-2 text-xl font-bold text-white shadow-lg">
+          {festejo}
+        </p>
+      )}
 
-      {libre ? (
-        <PaginaLibre
-          key={indice}
-          parrafos={parrafosPagina}
-          letra={ajustes.tamanoLetra}
-          esUltima={indice === total - 1}
-          aviso={aviso}
-          alTocarPalabra={decirTexto}
-          alTerminar={terminarPagina}
-        />
-      ) : parrafo ? (
+      {porFragmentos ? (
         <div className="relative flex min-h-0 flex-1 flex-col px-4 pb-3 apaisado:px-10 apaisado:pb-2">
           {aviso && (
             <div role="alert" className="aparecer absolute inset-x-5 top-0 z-20 rounded-2xl bg-amarillo px-4 py-3 text-center text-2xl font-bold text-tinta shadow-md">
@@ -546,7 +590,8 @@ export function PantallaLectura(props: Props) {
           )}
           <div key={indice} className={`subir flex min-h-0 flex-1 flex-col ${tranquilo ? 'tranquilo' : ''}`}>
             <ParrafoCompleto
-              lineas={lineasParrafo}
+              lineas={fragmentos}
+              palabrasEncendidas={palabrasEncendidas}
               motor={motor}
               pista={pista}
               tamanoLetra={ajustes.tamanoLetra}
@@ -583,7 +628,7 @@ export function PantallaLectura(props: Props) {
             <div key={indice} className={`subir ${tranquilo ? 'tranquilo' : ''}`}>
               <TiraDeLectura
                 porSilaba={porSilaba}
-                soloUltimaManzana={nivel === 2}
+                soloUltimaManzana={oracion}
                 palabras={palabras}
                 motor={motor}
                 pista={pista}
@@ -603,55 +648,41 @@ export function PantallaLectura(props: Props) {
 }
 
 /**
- * Nivel 4: la página completa, sin pista. Tocar una palabra la dice. Al
- * terminar de leer, el niño toca «Terminé».
+ * Niveles 2 a 4: cuánto del libro lleva (siempre desde el 0 % al abrirlo) y
+ * dónde están los hitos que dan monedas (apagados si ya los ganó).
  */
-function PaginaLibre(props: {
-  parrafos: string[]
-  letra: number
-  esUltima: boolean
-  aviso: string | null
-  alTocarPalabra: (palabra: string) => void
-  alTerminar: () => void
-}) {
-  const [listo, setListo] = useState(false)
+function BarraLibro({ porcentaje, nivel, premiado, tranquilo }: { porcentaje: number; nivel: NivelLectura; premiado: number; tranquilo: boolean }) {
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 px-5 pb-3 pt-1 apaisado:flex-row apaisado:items-end apaisado:px-10">
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-3xl bg-white px-5 py-4 shadow-sm apaisado:self-stretch">
-        {props.parrafos.map((p, i) => (
-          <p
-            key={i}
-            className="font-lectura mb-3 leading-relaxed text-tinta last:mb-0"
-            style={{ fontSize: `min(${Math.round(props.letra * 0.62)}px, 7vw)`, letterSpacing: '0.02em' }}
+    <div className="flex flex-1 items-center gap-2">
+      <div
+        className="relative h-6 flex-1 rounded-full border-2 border-[#d9cdb4] bg-white shadow-inner"
+        role="progressbar"
+        aria-label="Avance del cuento"
+        aria-valuenow={porcentaje}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div className="h-full overflow-hidden rounded-full">
+          <div
+            className={`relative h-full rounded-full bg-gradient-to-r from-[#8eb743] via-[#a9c670] to-[#efc31d] ${tranquilo ? '' : 'transition-[width] duration-500 ease-out'}`}
+            style={{ width: `${Math.max(porcentaje, 4)}%` }}
           >
-            {p.split(/\s+/).map((palabra, j) => (
-              <span key={j}>
-                <span onClick={() => props.alTocarPalabra(palabra.replace(/[^\p{L}\p{N}]/gu, ''))} className="cursor-pointer rounded active:bg-amarillo/50">
-                  {palabra}
-                </span>{' '}
-              </span>
-            ))}
-          </p>
+            <span className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-white/45" />
+          </div>
+        </div>
+        {HITOS[nivel].map((h) => (
+          <span
+            key={h.porcentaje}
+            title={`${h.porcentaje} %: ${h.monedas} monedas`}
+            className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm ${h.porcentaje <= premiado ? 'opacity-35 grayscale' : ''}`}
+            style={{ left: `${Math.min(h.porcentaje, 96)}%` }}
+            aria-hidden
+          >
+            {h.porcentaje === 100 ? '🏁' : '🪙'}
+          </span>
         ))}
       </div>
-      <div className="flex shrink-0 flex-col items-center gap-2 apaisado:w-40">
-        {props.aviso && (
-          <p role="alert" className="aparecer rounded-2xl bg-amarillo px-3 py-2 text-center font-bold text-tinta">
-            {props.aviso}
-          </p>
-        )}
-        <BotonPrincipal
-          disabled={listo}
-          onClick={() => {
-            setListo(true)
-            props.alTerminar()
-          }}
-          className="w-full px-6 py-4 text-xl"
-        >
-          {props.esUltima ? 'Terminé el libro ✓' : 'Terminé ✓'}
-        </BotonPrincipal>
-        <p className="text-center text-xs text-tinta-suave">Toca una palabra para escucharla</p>
-      </div>
+      <span className="shrink-0 rounded-full bg-verde px-2.5 py-0.5 text-sm font-bold text-white tabular-nums shadow-sm">{porcentaje} %</span>
     </div>
   )
 }
@@ -684,57 +715,6 @@ function MenuVoz({ actual, nivel, alElegir, alCerrar }: { actual: ModoLectura; n
           </button>
         ))}
       </div>
-    </div>
-  )
-}
-
-/** Avance del capítulo: barra gruesa con brillo, una meta 🏁 y el porcentaje destacado. */
-function BarraCapitulo({ valor, tranquilo }: { valor: number; tranquilo: boolean }) {
-  const pct = Math.round(Math.min(1, Math.max(0, valor)) * 100)
-  return (
-    <div className="flex flex-1 items-center gap-2">
-      <div
-        className="relative h-6 flex-1 overflow-hidden rounded-full border-2 border-[#d9cdb4] bg-white shadow-inner"
-        role="progressbar"
-        aria-label="Avance del capítulo"
-        aria-valuenow={pct}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <div
-          className={`relative h-full rounded-full bg-gradient-to-r from-[#8eb743] via-[#a9c670] to-[#efc31d] ${tranquilo ? '' : 'transition-[width] duration-500 ease-out'}`}
-          style={{ width: `${Math.max(pct, 4)}%` }}
-        >
-          <span className="absolute inset-x-2 top-1 h-1.5 rounded-full bg-white/45" />
-        </div>
-        <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-sm" aria-hidden>
-          🏁
-        </span>
-      </div>
-      <span className="shrink-0 rounded-full bg-verde px-2.5 py-0.5 text-sm font-bold text-white tabular-nums shadow-sm">{pct} %</span>
-    </div>
-  )
-}
-
-/** "🪙 Te faltan 7 palabras", con una barrita que se llena y un "+1" al ganar. */
-function MedidorMoneda({ acumuladas, monedasNuevas, tranquilo }: { acumuladas: number; monedasNuevas: number; tranquilo: boolean }) {
-  const faltan = PALABRAS_POR_MONEDA - acumuladas
-  return (
-    <div className="relative flex items-center gap-2 text-sm" aria-live="polite">
-      <span key={monedasNuevas} className={`text-lg ${monedasNuevas && !tranquilo ? 'moneda-pop' : ''}`} aria-hidden>
-        🪙
-      </span>
-      <span className="shrink-0 text-tinta-suave">
-        Te {faltan === 1 ? 'falta' : 'faltan'} <span className="font-bold text-naranjo tabular-nums">{faltan}</span> {faltan === 1 ? 'palabra' : 'palabras'}
-      </span>
-      <div className="h-2 w-16 overflow-hidden rounded-full bg-arena apaisado:w-24" aria-hidden>
-        <div className="h-full rounded-full bg-amarillo transition-[width] duration-300" style={{ width: `${(acumuladas / PALABRAS_POR_MONEDA) * 100}%` }} />
-      </div>
-      {monedasNuevas > 0 && (
-        <span key={`+${monedasNuevas}`} className="moneda-sube pointer-events-none absolute -top-6 left-0 font-bold text-naranjo">
-          +1 🪙
-        </span>
-      )}
     </div>
   )
 }
@@ -822,6 +802,8 @@ function Pausa(props: {
   titulo: string
   subtitulo: string
   premio: number
+  /** Si no hay premio: por qué (o un «¡muy bien!»). */
+  mensaje: string
   tranquilo: boolean
   principal: { texto: string; accion: () => void }
   secundaria: { texto: string; accion: () => void }
@@ -837,7 +819,7 @@ function Pausa(props: {
         {props.premio > 0 ? (
           <p className="aparecer text-3xl font-bold text-naranjo">+{props.premio} 🪙 de premio</p>
         ) : (
-          <p className="aparecer text-xl font-bold text-verde">¡Muy bien repasado! 📖</p>
+          <p className="aparecer max-w-md text-xl font-bold text-verde">{props.mensaje}</p>
         )}
         <BotonPrincipal onClick={props.principal.accion} className="px-8 py-4 text-xl">
           {props.principal.texto}

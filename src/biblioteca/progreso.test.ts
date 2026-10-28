@@ -3,30 +3,30 @@ import type { Asignacion, Texto } from '../dominio/tipos'
 import { resumirProgreso } from './progreso'
 
 const libro = {
-  titulo: 'Papelucho',
+  titulo: 'Libro de la terapeuta',
   frases: Array.from({ length: 100 }, (_, i) => `f${i}`),
   capitulos: [
     { titulo: 'Inicio', desdeFrase: 0 },
     { titulo: 'Enero 4', desdeFrase: 40 },
   ],
 } as Texto
-const asignacion = (fraseActual: number, estado: Asignacion['estado'] = 'en_curso') => ({ fraseActual, estado }) as Asignacion
+const cuento = { ...libro, capitulos: [{ titulo: 'Cuento', desdeFrase: 0 }] } as Texto
+const asignacion = (a: Partial<Asignacion>) => ({ fraseActual: 0, estado: 'en_curso', completadaEn: null, ...a }) as Asignacion
 
 describe('resumirProgreso', () => {
   it('sin empezar', () => {
-    expect(resumirProgreso(asignacion(0, 'pendiente'), libro)).toMatchObject({ fraccion: 0, accion: 'Empezar', etiqueta: '2 capítulos' })
+    expect(resumirProgreso(asignacion({ estado: 'pendiente' }), libro)).toMatchObject({ fraccion: 0, accion: 'Leer', etiqueta: '2 capítulos', terminado: false })
   })
 
-  it('a mitad de libro muestra el capítulo y el porcentaje', () => {
-    expect(resumirProgreso(asignacion(42), libro)).toMatchObject({ fraccion: 0.42, accion: 'Continuar', etiqueta: 'Enero 4 · 42 %' })
+  it('un libro con capítulos sigue en el capítulo donde iba', () => {
+    expect(resumirProgreso(asignacion({ fraseActual: 42, leidoHasta: 42 }), libro)).toMatchObject({ fraccion: 0.42, accion: 'Continuar', etiqueta: 'Enero 4 · 42 %' })
   })
 
-  it('terminado', () => {
-    expect(resumirProgreso(asignacion(100, 'completada'), libro)).toMatchObject({ fraccion: 1, accion: 'Leer otra vez' })
+  it('un cuento se lee desde el comienzo: muestra hasta dónde llegó', () => {
+    expect(resumirProgreso(asignacion({ fraseActual: 30, leidoHasta: 25 }), cuento)).toMatchObject({ accion: 'Leer', etiqueta: 'Llegó al 25 %' })
   })
 
-  it('un texto corto (un capítulo) muestra solo el porcentaje', () => {
-    const corto = { ...libro, capitulos: [{ titulo: 'Cuento', desdeFrase: 0 }] } as Texto
-    expect(resumirProgreso(asignacion(25), corto).etiqueta).toBe('25 %')
+  it('terminado alguna vez: estrella, aunque lo esté releyendo', () => {
+    expect(resumirProgreso(asignacion({ fraseActual: 3, completadaEn: '2026-10-01' }), cuento)).toMatchObject({ fraccion: 1, terminado: true, accion: 'Leer otra vez' })
   })
 })

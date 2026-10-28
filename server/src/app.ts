@@ -100,6 +100,10 @@ const aTexto = (f: Fila) => ({
   actualizadoEn: f.actualizado_en,
 })
 
+/** Una columna date como AAAA-MM-DD (pg la entrega como Date a medianoche local). */
+const fechaDia = (d: Date | string) =>
+  typeof d === 'string' ? d.slice(0, 10) : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
 const aAsignacion = (f: Fila) => ({
   id: f.id,
   asignadaPor: f.asignada_por,
@@ -110,6 +114,9 @@ const aAsignacion = (f: Fila) => ({
   estado: f.estado,
   fraseActual: f.frase_actual,
   fraseMaxima: f.frase_maxima,
+  leidoHasta: f.leido_hasta ?? 0,
+  premioHasta: f.premio_hasta ?? 0,
+  relecturaPremiadaEn: f.relectura_premiada_en ? fechaDia(f.relectura_premiada_en as Date | string) : null,
   asignadaEn: f.asignada_en,
   actualizadaEn: f.actualizada_en,
   completadaEn: f.completada_en ?? null,
@@ -590,11 +597,17 @@ export async function crearApp() {
     const fraseActual = Math.max(0, entero(b.fraseActual, 'fraseActual'))
     const fraseMaxima = Math.max(0, entero(b.fraseMaxima ?? fraseActual, 'fraseMaxima'))
     const estado = ['pendiente', 'en_curso', 'completada', 'archivada'].includes(b.estado as string) ? b.estado : 'en_curso'
+    // Lo leído y lo premiado nunca bajan (una app anterior no los manda).
+    const leidoHasta = b.leidoHasta === undefined ? 0 : Math.max(0, entero(b.leidoHasta, 'leidoHasta'))
+    const premioHasta = b.premioHasta === undefined ? 0 : Math.min(100, Math.max(0, entero(b.premioHasta, 'premioHasta')))
+    const relectura = typeof b.relecturaPremiadaEn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b.relecturaPremiadaEn) ? b.relecturaPremiadaEn : null
     const { rows } = await pool.query(
       `update asignaciones set frase_actual = $1, frase_maxima = $2, estado = $3, actualizada_en = now(),
-         completada_en = case when $3 = 'completada' then coalesce(completada_en, now()) else completada_en end
+         completada_en = case when $3 = 'completada' then coalesce(completada_en, now()) else completada_en end,
+         leido_hasta = greatest(leido_hasta, $5), premio_hasta = greatest(premio_hasta, $6),
+         relectura_premiada_en = coalesce($7::date, relectura_premiada_en)
        where id = $4 returning *`,
-      [fraseActual, fraseMaxima, estado, param(req, 'id')],
+      [fraseActual, fraseMaxima, estado, param(req, 'id'), leidoHasta, premioHasta, relectura],
     )
     return aAsignacion(rows[0])
   })

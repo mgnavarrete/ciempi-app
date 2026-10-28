@@ -184,3 +184,19 @@ describe('motor de lectura por palabras', () => {
     expect(r.estado.fase).toBe('completada')
   })
 })
+
+describe('sin límite de velocidad (niveles 2 a 4)', () => {
+  it('un deslizar muy rápido no tropieza: termina igual', () => {
+    const r = correr(deslizar(0, 1, 200), estadoInicial())
+    expect(r.efectos).toContainEqual({ tipo: 'tropiezo' })
+    let estado = estadoInicial()
+    const efectos: Efecto[] = []
+    for (const e of deslizar(0, 1, 200)) {
+      const paso1 = paso(estado, e, pista, { ...config, sinLimite: true })
+      estado = paso1.estado
+      efectos.push(...paso1.efectos)
+    }
+    expect(efectos).not.toContainEqual({ tipo: 'tropiezo' })
+    expect(estado.fase).toBe('completada')
+  })
+})

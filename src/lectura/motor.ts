@@ -26,6 +26,11 @@ export interface ConfigMotor {
   ventanaMs: number
   /** Tiempo mínimo para calcular la velocidad: evita picos por ruido, y atrapa los "zarpazos". */
   dtMinimoMs: number
+  /**
+   * Sin «más despacito»: el dedo va a la velocidad que quiera (niveles 2 a 4;
+   * ahí el ritmo se revisa al terminar la oración o el párrafo, sin detenerlo).
+   */
+  sinLimite?: boolean
 }
 
 export const CONFIG_MOTOR_BASE: Omit<ConfigMotor, 'umbralPalabrasPorSegundo'> = {
@@ -136,7 +141,7 @@ export function paso(estado: EstadoMotor, entrada: Entrada, pista: Pista, config
       const muestras = [...estado.muestras, { t, p: candidato }]
       while (muestras.length > 2 && t - muestras[1].t >= config.ventanaMs) muestras.shift()
 
-      if (candidato > estado.progreso) {
+      if (candidato > estado.progreso && !config.sinLimite) {
         const origen = muestras[0]
         const dt = Math.max(t - origen.t, config.dtMinimoMs) / 1000
         const palabrasPorSegundo = (candidato - origen.p) / largo / dt

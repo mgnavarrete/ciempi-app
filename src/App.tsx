@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { PantallaAdultos } from './adultos/PantallaAdultos'
 import { PantallaAjustes } from './ajustes/PantallaAjustes'
 import { PantallaAgregarLibro } from './biblioteca/PantallaAgregarLibro'
@@ -7,12 +7,12 @@ import { Presentacion } from './ciempi/Presentacion'
 import { PantallaBiblioteca, type LibroEnBiblioteca } from './biblioteca/PantallaBiblioteca'
 import { useRepositorios } from './datos/DatosProvider'
 import { prepararCuentaNueva } from './datos/inicio'
-import type { AjustesLectura, Id, PerfilNino, Sesion } from './dominio/tipos'
+import type { AjustesLectura, Asignacion, Id, PerfilNino, Sesion } from './dominio/tipos'
 import type { IdFuente } from './fuentes/entradas'
 import { PantallaAcceso } from './inicio/PantallaAcceso'
 import { PantallaNuevaClave } from './inicio/CambiarClave'
 import { PantallaPerfiles } from './inicio/PantallaPerfiles'
-import { PantallaLectura } from './lectura/PantallaLectura'
+import { PantallaLectura, type Progreso } from './lectura/PantallaLectura'
 import { PantallaNuevoTexto } from './textos/PantallaNuevoTexto'
 
 type Vista =
@@ -20,7 +20,7 @@ type Vista =
   | { tipo: 'inicio' }
   | { tipo: 'biblioteca'; perfilId: Id }
   /** vistaPrevia: un adulto mira el libro sin mover el avance ni dar monedas. */
-  | { tipo: 'leer'; perfilId: Id; libro: LibroEnBiblioteca; vistaPrevia: boolean }
+  | { tipo: 'leer'; perfilId: Id; libro: LibroEnBiblioteca; vistaPrevia: boolean; retomarEn?: number }
   | { tipo: 'ajustes'; perfilId: Id; volverA: Vista }
   | { tipo: 'agregarLibro'; perfilId: Id }
   | { tipo: 'ciempi'; perfilId: Id }
@@ -30,6 +30,10 @@ type Vista =
 
 export function App() {
   const repos = useRepositorios()
+  // Lo último que se guardó de cada libro en esta sesión de la app: si se
+  // vuelve a abrir (o se vuelve de Ajustes) antes de recargar la biblioteca,
+  // no se pagan dos veces los mismos hitos.
+  const ultimoProgreso = useRef(new Map<Id, Progreso>())
   /** undefined = todavía revisando si hay sesión. */
   const [sesion, setSesion] = useState<Sesion | null | undefined>(undefined)
   const [perfiles, setPerfiles] = useState<PerfilNino[] | null>(null)
@@ -129,7 +133,8 @@ export function App() {
       case 'leer': {
         const perfil = perfilDe(vista.perfilId)
         if (!perfil) return null
-        const { asignacion, texto } = vista.libro
+        const { texto } = vista.libro
+        const asignacion = conProgreso(vista.libro.asignacion, ultimoProgreso.current.get(vista.libro.asignacion.id))
         return (
           <PantallaLectura
             key={asignacion.id}
@@ -137,14 +142,21 @@ export function App() {
             usuarioId={sesion.usuarioId}
             texto={texto}
             asignacion={asignacion}
+            retomarEn={vista.retomarEn}
             nivel={asignacion.nivel ?? 1}
             vistaPrevia={vista.vistaPrevia}
             leyendoConAdulto={esAdmin && !vista.vistaPrevia}
             alCambiarAjustes={(a) => cambiarAjustes(perfil.id, a)}
             alGanarMonedas={(n) => void ganarMonedas(perfil.id, n)}
-            alProgreso={(progreso) => void repos.asignaciones.guardarProgreso(asignacion.id, progreso)}
+            alProgreso={(progreso) => {
+              ultimoProgreso.current.set(asignacion.id, progreso)
+              void repos.asignaciones.guardarProgreso(asignacion.id, progreso)
+            }}
             alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })}
-            alAjustes={() => setVista({ tipo: 'ajustes', perfilId: perfil.id, volverA: vista })}
+            // Ir a Ajustes no es salir del libro: al volver sigue donde iba.
+            alAjustes={() =>
+              setVista({ tipo: 'ajustes', perfilId: perfil.id, volverA: { ...vista, retomarEn: ultimoProgreso.current.get(asignacion.id)?.fraseActual } })
+            }
           />
         )
       }
@@ -262,4 +274,17 @@ export function App() {
 
 function Marco({ children }: { children: React.ReactNode }) {
   return <div className="marco-seguro mx-auto flex h-dvh min-h-0 w-full overflow-hidden max-w-5xl flex-col apaisado:max-w-none">{children}</div>
+}
+
+/** La asignación con lo último guardado en esta sesión (lo leído y lo premiado nunca bajan). */
+function conProgreso(a: Asignacion, p: Progreso | undefined): Asignacion {
+  if (!p) return a
+  return {
+    ...a,
+    estado: p.estado,
+    fraseActual: p.fraseActual,
+    leidoHasta: Math.max(a.leidoHasta ?? 0, p.leidoHasta ?? 0),
+    premioHasta: Math.max(a.premioHasta ?? 0, p.premioHasta ?? 0),
+    relecturaPremiadaEn: p.relecturaPremiadaEn ?? a.relecturaPremiadaEn ?? null,
+  }
 }

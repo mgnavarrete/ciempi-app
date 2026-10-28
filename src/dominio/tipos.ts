@@ -202,6 +202,15 @@ export interface Asignacion {
    * fraseActual retrocede pero esto no: las monedas solo se ganan con frases nuevas.
    */
   fraseMaxima: number
+  /**
+   * Hasta qué frase lo leyó de verdad (de corrido y a buen ritmo), alguna vez.
+   * Con esto se miden los hitos de monedas (ver lectura/monedas.ts).
+   */
+  leidoHasta?: number
+  /** Porcentaje del libro ya premiado (0, 25, 50, 75 o 100): cada hito paga una sola vez. */
+  premioHasta?: number
+  /** Día (AAAA-MM-DD) de la última relectura premiada: se premia una por día. */
+  relecturaPremiadaEn?: string | null
   asignadaEn: FechaISO
   actualizadaEn: FechaISO
   completadaEn: FechaISO | null

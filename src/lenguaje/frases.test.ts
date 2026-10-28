@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dividirConParrafos, dividirEnFrases, dividirEnOraciones, quitarGuiones, trocearOracion } from './frases'
+import { dividirConParrafos, dividirEnFrases, dividirEnOraciones, quitarGuiones, trocearOracion, dividirEnFragmentos } from './frases'
 
 describe('dividirEnOraciones', () => {
   it('corta por puntuación y conserva ¿? ¡!', () => {
@@ -99,5 +99,42 @@ describe('dividirConParrafos', () => {
 
   it('un solo párrafo no marca párrafos', () => {
     expect(dividirConParrafos('Sale el sol. Sale la luna.')).toEqual({ frases: ['Sale el sol.', 'Sale la luna.'] })
+  })
+})
+
+describe('dividirEnFragmentos', () => {
+  it('corta en la puntuación, junta lo muy corto y parte lo muy largo', () => {
+    expect(dividirEnFragmentos('Detrás de la escuela de Martina había una puerta pequeña que nadie abría. Era de madera verde y tenía una manilla con forma de búho. Un martes, mientras todos jugaban en el recreo, Martina vio que la puerta estaba abierta.')).toEqual([
+      'Detrás de la escuela de Martina había',
+      'una puerta pequeña que nadie abría.',
+      'Era de madera verde y tenía una manilla con forma de búho.',
+      'Un martes, mientras todos jugaban en el recreo,',
+      'Martina vio que la puerta estaba abierta.',
+    ])
+  })
+
+  it('en un poema, cada verso es un fragmento', () => {
+    expect(dividirEnFragmentos('Cien zapatitos tengo yo, cien zapatitos de color, camino lento por el jardín saludando a cada flor.')).toEqual([
+      'Cien zapatitos tengo yo,',
+      'cien zapatitos de color,',
+      'camino lento por el jardín saludando a cada flor.',
+    ])
+  })
+
+  it('no pierde palabras', () => {
+    const texto = 'Sí. No, nunca. Bueno, ya: vamos al mar, al cerro y a la plaza grande del pueblo que está más allá del río azul.'
+    expect(dividirEnFragmentos(texto).join(' ')).toBe(texto)
+  })
+})
+
+describe('dividirEnFragmentos en una página (nivel 4)', () => {
+  it('una manzana por oración; una oración larga se parte en sus comas', () => {
+    const pagina =
+      'En una isla pequeña del sur, donde el viento sopla casi todo el año, había un faro blanco con una franja roja. Allí vivía don Julián, el guardián del faro, con su gata Canela. Todas las noches subía la escalera para encender la luz.'
+    const f = dividirEnFragmentos(pagina, { porOracion: true })
+    expect(f.join(' ')).toBe(pagina)
+    expect(f.length).toBeLessThan(dividirEnFragmentos(pagina).length)
+    for (const x of f) expect(x.split(' ').length).toBeLessThanOrEqual(22)
+    expect(f).toContain('Allí vivía don Julián, el guardián del faro, con su gata Canela.')
   })
 })

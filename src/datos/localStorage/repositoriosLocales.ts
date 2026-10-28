@@ -1,5 +1,5 @@
 import { PARTES, buscarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
-import { AUTOR_CUENTOS, CUENTOS } from '../../contenido/cuentos'
+import { AUTOR_CUENTOS, CUENTOS, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { nuevoId } from '../../dominio/ids'
 import {
@@ -182,6 +182,11 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
         ),
       ),
   },
+  {
+    // Los cuentos con portada y «Don Ciempiés» en vez de «Ciempi».
+    id: '2026-10-cuentos-con-portada',
+    aplicar: actualizarCuentos,
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
@@ -199,27 +204,34 @@ function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
  * Deja en la biblioteca del niño los cuentos de Ciempi, cada uno en su nivel
  * (y los textos guardados, al día). Igual que el servidor: ver server/src/cuentos.ts.
  */
-function darCuentos({ textos, asignaciones }: Tablas, perfilId: Id, asignadaPor: Id, cuentos = CUENTOS) {
+function darCuentos(tablas: Tablas, perfilId: Id, asignadaPor: Id, cuentos = CUENTOS) {
+  actualizarCuentos(tablas)
   for (const c of cuentos) {
-    if (textos.obtener(c.id)?.textoOriginal !== c.texto) {
-      const fecha = ahora()
-      textos.guardar({
-        id: c.id,
-        subidoPor: null,
-        titulo: c.titulo,
-        autor: AUTOR_CUENTOS,
-        textoOriginal: c.texto,
-        ...dividirConParrafos(c.texto),
-        capitulos: [{ titulo: c.titulo, desdeFrase: 0 }],
-        portada: null,
-        origen: 'ciempi',
-        creadoEn: fecha,
-        actualizadoEn: fecha,
-      })
+    if (!tablas.asignaciones.todos().some((a) => a.perfilId === perfilId && a.textoId === c.id)) {
+      tablas.asignaciones.guardar(nuevaAsignacion(perfilId, c.id, asignadaPor, c.nivel))
     }
-    if (!asignaciones.todos().some((a) => a.perfilId === perfilId && a.textoId === c.id)) {
-      asignaciones.guardar(nuevaAsignacion(perfilId, c.id, asignadaPor, c.nivel))
-    }
+  }
+}
+
+/** Los textos de los cuentos de Ciempi, al día (si se corrigió uno, o cambió su portada). */
+function actualizarCuentos({ textos }: Tablas) {
+  for (const c of CUENTOS) {
+    const guardado = textos.obtener(c.id)
+    if (guardado?.textoOriginal === c.texto && guardado.titulo === c.titulo && guardado.portada === portadaCuento(c.id)) continue
+    const fecha = ahora()
+    textos.guardar({
+      id: c.id,
+      subidoPor: null,
+      titulo: c.titulo,
+      autor: AUTOR_CUENTOS,
+      textoOriginal: c.texto,
+      ...dividirConParrafos(c.texto),
+      capitulos: [{ titulo: c.titulo, desdeFrase: 0 }],
+      portada: portadaCuento(c.id),
+      origen: 'ciempi',
+      creadoEn: guardado?.creadoEn ?? fecha,
+      actualizadoEn: fecha,
+    })
   }
 }
 
@@ -400,7 +412,7 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       if (!a) throw new Error(`Asignación ${id} no existe`)
       return asignaciones.guardar({ ...a, nivel, actualizadaEn: ahora() })
     },
-    async guardarProgreso(id, { fraseActual, fraseMaxima, estado }) {
+    async guardarProgreso(id, { fraseActual, fraseMaxima, estado, leidoHasta, premioHasta, relecturaPremiadaEn }) {
       const a = asignaciones.obtener(id)
       if (!a) throw new Error(`Asignación ${id} no existe`)
       const fecha = ahora()
@@ -408,6 +420,9 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
         ...a,
         fraseActual,
         fraseMaxima: Math.max(a.fraseMaxima ?? 0, fraseMaxima),
+        leidoHasta: Math.max(a.leidoHasta ?? 0, leidoHasta ?? 0),
+        premioHasta: Math.max(a.premioHasta ?? 0, premioHasta ?? 0),
+        relecturaPremiadaEn: relecturaPremiadaEn ?? a.relecturaPremiadaEn ?? null,
         estado,
         actualizadaEn: fecha,
         // Se recuerda que lo terminó aunque lo esté leyendo de nuevo.

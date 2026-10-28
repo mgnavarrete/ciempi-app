@@ -4,7 +4,7 @@ import { instalarVozDelTelefono } from '../plataforma/telefono'
 import { VozServidor, type VozCiempi } from './vozServidor'
 
 /**
- * Voz de Ciempi. Dice palabras completas (nunca sílabas sueltas). Con cuenta
+ * Voz de Ciempi. Dice palabras, frases y, en el nivel 0, sílabas sueltas. Con cuenta
  * en línea la genera el servidor (vozServidor.ts); si no, la del teléfono o
  * navegador (Web Speech API o el motor nativo de Android).
  * Es la voz de Ciempi: de hombre si Ciempi es niño, de mujer si es niña.
@@ -434,12 +434,18 @@ class Voz {
   }
 
   /** Dice una frase completa (para que Ciempi hable). Sin emojis, que la voz leería en voz alta. */
-  decirFrase(texto: string, velocidad = 1) {
+  /** Dice un texto de corrido. Con `encolar`, después de lo que esté sonando; si no, lo corta. */
+  decirFrase(texto: string, velocidad = 1, encolar = false) {
     const limpio = texto.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/\s+/g, ' ').trim()
     if (!limpio) return
     this.velocidadActual = velocidad
-    if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, false)
-    this.motor?.hablar(limpio, this.opcionesMotor(false))
+    if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, encolar)
+    this.motor?.hablar(limpio, this.opcionesMotor(encolar))
+  }
+
+  /** Hay algo sonando o por sonar. */
+  hablando(): boolean {
+    return !!this.servidor?.hablando() || !!this.motor?.hablando()
   }
 
   callar() {

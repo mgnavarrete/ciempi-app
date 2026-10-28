@@ -68,13 +68,23 @@ export interface RepositorioTextos {
   eliminar(id: Id): Promise<void>
 }
 
+/** Lo que se guarda después de cada frase: dónde va y lo que ya leyó y ganó (no baja). */
+export interface ProgresoAsignacion {
+  fraseActual: number
+  fraseMaxima: number
+  estado: EstadoAsignacion
+  leidoHasta?: number
+  premioHasta?: number
+  relecturaPremiadaEn?: string | null
+}
+
 export interface RepositorioAsignaciones {
   listarPorPerfil(perfilId: Id): Promise<Asignacion[]>
   /** Agrega el texto a la biblioteca del niño en ese nivel (si ya estaba, la devuelve). */
   asignar(perfilId: Id, textoId: Id, nivel?: NivelLectura): Promise<Asignacion>
   /** Solo un adulto del niño: en qué nivel lee ese libro. */
   cambiarNivel(id: Id, nivel: NivelLectura): Promise<Asignacion>
-  guardarProgreso(id: Id, progreso: { fraseActual: number; fraseMaxima: number; estado: EstadoAsignacion }): Promise<Asignacion>
+  guardarProgreso(id: Id, progreso: ProgresoAsignacion): Promise<Asignacion>
   quitar(id: Id): Promise<void>
 }
 

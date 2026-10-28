@@ -1,4 +1,4 @@
-import { AUTOR_CUENTOS, CUENTOS } from '../../src/contenido/cuentos.ts'
+import { AUTOR_CUENTOS, CUENTOS, portadaCuento } from '../../src/contenido/cuentos.ts'
 import { dividirConParrafos } from '../../src/lenguaje/frases.ts'
 import type pg from 'pg'
 import { pool } from './db.ts'
@@ -15,13 +15,14 @@ export async function sembrarCuentos(): Promise<void> {
     const { frases, parrafos } = dividirConParrafos(c.texto)
     const capitulos = [{ titulo: c.titulo, desdeFrase: 0 }]
     const { rows } = await pool.query(
-      `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, parrafos, origen)
-       values ($1, null, $2, $3, $4, $5, $6, $7, 'ciempi')
+      `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, parrafos, portada, origen)
+       values ($1, null, $2, $3, $4, $5, $6, $7, $8, 'ciempi')
        on conflict (id) do update set titulo = excluded.titulo, autor = excluded.autor, texto_original = excluded.texto_original,
-         frases = excluded.frases, capitulos = excluded.capitulos, parrafos = excluded.parrafos, actualizado_en = now()
+         frases = excluded.frases, capitulos = excluded.capitulos, parrafos = excluded.parrafos, portada = excluded.portada, actualizado_en = now()
        where textos.texto_original is distinct from excluded.texto_original or textos.titulo is distinct from excluded.titulo
+         or textos.portada is distinct from excluded.portada
        returning (xmax = 0) as nuevo`,
-      [c.id, c.titulo, AUTOR_CUENTOS, c.texto, frases, JSON.stringify(capitulos), parrafos ?? null],
+      [c.id, c.titulo, AUTOR_CUENTOS, c.texto, frases, JSON.stringify(capitulos), parrafos ?? null, portadaCuento(c.id)],
     )
     if (rows[0]?.nuevo) {
       await pool.query(
