@@ -300,7 +300,7 @@ function ProbarSilabas({ velocidad }: { velocidad: number }) {
             title={`de «${s.palabra}»`}
             onClick={() => {
               voz.desbloquear()
-              voz.decir(s.dice, velocidad)
+              voz.decirSilaba(s.dice, velocidad)
             }}
             className="rounded-full bg-white px-3 py-1 font-lectura text-lg shadow-sm active:bg-amarillo/50"
           >

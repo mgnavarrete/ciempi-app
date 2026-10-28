@@ -76,6 +76,29 @@ export function silabaParaLaVoz(silaba: string, indice: number, palabra: string,
   return SILABAS_EN_INGLES[s] ?? s
 }
 
+/**
+ * Una sílaba (ya pasada por `silabaParaLaVoz`) como se le pide a las voces de
+ * Microsoft. Esas voces toman muchas sílabas sueltas por siglas o por
+ * palabras en inglés: «dra» la deletrean («de erre a»), «je» dicen «jota e»,
+ * «flor» suena «floor». Con tilde la leen como una palabra en español
+ * («drá», «jé», «flór»), y una sílaba sola se dice igual con o sin tilde.
+ * Pero a una vocal sola le dicen «a con acento», y con «ñ» se alarga: esas
+ * van sin tilde. «ll» suena como «y» (y escrita «ll» la deletrean), y la «y»
+ * sola, «i griega»: se escribe «i». Medido con las cuatro voces.
+ */
+/** Sílabas que esas voces ya dicen bien y con tilde suenan exageradas («¡nó!»). */
+const SIN_TILDE = new Set(['no', 'be', 'nu', 'po', 'pu', 'chi', 'do', 'cho', 'chu', 'bi', 'hoy', 'hay', 'voy', 'sep', 'vein'])
+
+export function silabaParaMicrosoft(silaba: string): string {
+  const s = silaba.replace(/^ll/, 'y')
+  if (s === 'y') return 'i'
+  if (/^[aeiouyñ]/.test(s) || /[áéíóú]/.test(s) || SIN_TILDE.has(s)) return s
+  // La vocal fuerte de la sílaba («cuen» → «cuén»); si no hay, la última («fui» → «fuí»).
+  const fuerte = s.search(/[aeo]/)
+  const i = fuerte >= 0 ? fuerte : Math.max(s.lastIndexOf('i'), s.lastIndexOf('u'))
+  return i < 0 ? s : s.slice(0, i) + 'áéíóú'['aeiou'.indexOf(s[i])] + s.slice(i + 1)
+}
+
 /** Quita signos para que la voz no cambie la entonación ("perro," → "perro"). */
 export function limpiarParaVoz(palabra: string): string {
   return palabra.replace(/[^\p{L}\p{N}]/gu, '')

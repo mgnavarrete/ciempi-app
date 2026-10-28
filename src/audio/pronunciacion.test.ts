@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { CUENTOS } from '../contenido/cuentos'
 import { dividirConParrafos } from '../lenguaje/frases'
 import { silabearFrase } from '../lenguaje/silabas'
-import { paraLaVoz, silabaParaLaVoz } from './pronunciacion'
+import { paraLaVoz, silabaParaLaVoz, silabaParaMicrosoft } from './pronunciacion'
 
 const silabaDe = (palabra: string, i: number) => {
   const p = silabearFrase(palabra)[0]
@@ -38,5 +38,29 @@ describe('pronunciación para la voz', () => {
             const dicha = silabaParaLaVoz(s, i, p.texto, p.silabas)
             expect([p.texto, dicha]).not.toEqual([p.texto, expect.stringMatching(/^rr|[^aeiou]y$|^h[^aeiou]|th/)])
           })
+  })
+})
+
+describe('sílabas para las voces de Microsoft', () => {
+  it('con tilde, para que no las deletreen ni las lean en inglés', () => {
+    expect(['dra', 'ble', 'je', 'ba', 'cuen', 'flor', 'tie', 'gui', 'fui'].map(silabaParaMicrosoft)).toEqual([
+      'drá',
+      'blé',
+      'jé',
+      'bá',
+      'cuén',
+      'flór',
+      'tié',
+      'guí',
+      'fuí',
+    ])
+  })
+
+  it('sin tilde las vocales solas, las de «ñ» y las que ya suenan bien', () => {
+    expect(['a', 'au', 'en', 'ña', 'ños', 'no', 'be', 'pié'].map(silabaParaMicrosoft)).toEqual(['a', 'au', 'en', 'ña', 'ños', 'no', 'be', 'pié'])
+  })
+
+  it('«ll» como «y», y la «y» sola como «i»', () => {
+    expect(['lle', 'llu', 'y'].map(silabaParaMicrosoft)).toEqual(['ye', 'yu', 'i'])
   })
 })

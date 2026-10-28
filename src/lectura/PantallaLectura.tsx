@@ -198,7 +198,7 @@ export function PantallaLectura(props: Props) {
   const fraseQueViene = quitarGuiones(unidades[indice + 1] ?? '')
   useEffect(() => {
     if (modo === 'solo') return
-    if (porSilaba) voz.precargar(silabas.map((s) => silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas)))
+    if (porSilaba) voz.precargarSilabas(silabas.map((s) => silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas)))
     else if (nivel === 1) voz.precargar([...palabras, ...silabearFrase(fraseQueViene)].map((p) => p.texto))
     else if (oracion) voz.precargarFrases([frase, fraseQueViene])
     else if (pagina) voz.precargarFrases(trozos.textos)
@@ -533,7 +533,7 @@ export function PantallaLectura(props: Props) {
           // Sílaba por sílaba: «La – u – va», reescrita para que la voz no la
           // deletree ni la lea en inglés (ver audio/pronunciacion.ts).
           const s = silabas[efecto.palabra]
-          if (s) voz.decir(silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas), ajustes.velocidadVoz)
+          if (s) voz.decirSilaba(silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas), ajustes.velocidadVoz)
         } else if (oracion || pagina) {
           // La voz sigue al dedo por trozos (seguirConLaVoz), no por manzanas.
         } else if (porFragmentos) {

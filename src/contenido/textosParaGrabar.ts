@@ -1,4 +1,4 @@
-import { fraseParaLaVoz, palabraParaLaVoz, silabaParaLaVoz } from '../audio/pronunciacion.ts'
+import { fraseParaLaVoz, palabraParaLaVoz, silabaParaLaVoz, silabaParaMicrosoft } from '../audio/pronunciacion.ts'
 import { dividirConParrafos, dividirEnFragmentos, quitarGuiones } from '../lenguaje/frases.ts'
 import { silabearFrase } from '../lenguaje/silabas.ts'
 import { vistaPorNivel } from '../lenguaje/unidades.ts'
@@ -24,7 +24,9 @@ export function textosParaGrabar(cuento: Cuento): { palabras: string[]; frases: 
     for (const p of silabearFrase(quitarGuiones(linea))) {
       // Tocar una palabra la dice, en cualquier nivel.
       palabras.add(palabraParaLaVoz(p.texto))
-      if (cuento.nivel === 0) p.silabas.forEach((s, i) => palabras.add(palabraParaLaVoz(silabaParaLaVoz(s, i, p.texto, p.silabas))))
+      if (cuento.nivel === 0) p.silabas.forEach((s, i) =>
+          palabras.add(silabaParaMicrosoft(palabraParaLaVoz(silabaParaLaVoz(s, i, p.texto, p.silabas)))),
+        )
     }
 
   for (const unidad of vistaPorNivel(texto, cuento.nivel).unidades) {

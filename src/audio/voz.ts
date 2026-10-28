@@ -2,7 +2,7 @@ import { Capacitor } from '@capacitor/core'
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { instalarVozDelTelefono } from '../plataforma/telefono'
 import { dividirEnFragmentos } from '../lenguaje/frases'
-import { fraseParaLaVoz, palabraParaLaVoz } from './pronunciacion'
+import { fraseParaLaVoz, palabraParaLaVoz, silabaParaMicrosoft } from './pronunciacion'
 import { VozServidor } from './vozServidor'
 
 /**
@@ -457,6 +457,12 @@ class Voz {
     this.servidor!.precargar(palabras.map(palabraParaLaVoz).filter(Boolean), this.vozCiempi)
   }
 
+  /** Lo mismo para las sílabas del nivel 0 (ver `decirSilaba`). */
+  precargarSilabas(silabas: string[]) {
+    if (!this.conServidor) return
+    this.servidor!.precargar(silabas.map((s) => silabaParaMicrosoft(palabraParaLaVoz(s))).filter(Boolean), this.vozCiempi)
+  }
+
   /** Lo mismo para frases y oraciones. */
   precargarFrases(frases: string[]) {
     if (!this.conServidor) return
@@ -473,6 +479,14 @@ class Voz {
     if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, !this.servidor!.enCola())
     if (!this.motor) return
     this.motor.hablar(limpio, this.opcionesMotor(!this.motor.enCola()))
+  }
+
+  /**
+   * Una sílaba suelta (nivel 0, ya pasada por `silabaParaLaVoz`). La voz de
+   * Ciempi la pide escrita para que no la deletree (ver `silabaParaMicrosoft`).
+   */
+  decirSilaba(silaba: string, velocidadPedida: number) {
+    this.decir(this.conServidor ? silabaParaMicrosoft(palabraParaLaVoz(silaba)) : silaba, velocidadPedida)
   }
 
   /**
