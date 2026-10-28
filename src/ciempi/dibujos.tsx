@@ -13,6 +13,7 @@ export const CONTORNO = '#223d5d'
 
 export function Cabeza({ apariencia }: { apariencia: AparienciaCiempi }) {
   const color = paletaDe(apariencia).cabeza
+  const recorte = useId()
   const { cabeza, cara, ojos } = apariencia
   return (
     <g>
@@ -21,14 +22,21 @@ export function Cabeza({ apariencia }: { apariencia: AparienciaCiempi }) {
       {cabeza === 'cabeza-orejas-gato' && <OrejasGato color={color} />}
       {cabeza === 'cabeza-audifonos' && <rect x={-23} y={-8} width={7} height={13} rx={3} fill="#ea6444" stroke={CONTORNO} strokeWidth={2} />}
 
-      <circle r={20} fill={color} stroke={CONTORNO} strokeWidth={3} />
-      {/* Brillo y mejilla: le dan volumen */}
-      <ellipse cx={-8} cy={-10} rx={7} ry={4} fill="#fff" opacity={0.3} transform="rotate(-25 -8 -10)" />
-      <circle cx={11.5} cy={8.5} r={4} fill="#ea6444" opacity={0.5} />
+      <defs><clipPath id={recorte}><circle r={20} /></clipPath></defs>
+      <circle r={20} fill={color} />
+      <g clipPath={`url(#${recorte})`}>
+        {/* Sombras ilustradas: el color base sigue siendo personalizable. */}
+        <path d="M-18 -12 C-24 9 -5 26 16 10 L24 27 L-27 27 L-27 -18Z" fill={CONTORNO} opacity={0.14} />
+        <path d="M-15 -8 Q-12 -17 -3 -17" fill="none" stroke="#fff" strokeOpacity={0.48} strokeWidth={3} strokeLinecap="round" />
+        <ellipse cx={-7.5} cy={7} rx={4} ry={2.5} fill="#ea6444" opacity={0.65} transform="rotate(15 -7.5 7)" />
+        <ellipse cx={16} cy={7} rx={3} ry={2.3} fill="#ea6444" opacity={0.65} />
+      </g>
+      <circle r={20} fill="none" stroke={CONTORNO} strokeWidth={2.6} />
 
       <Ojos ojos={ojos} colorCabeza={color} />
-      <path d="M3 7.5 Q9.5 15 16 6.5 Q9.5 10 3 7.5Z" fill="#9b2f22" stroke={CONTORNO} strokeWidth={2} strokeLinejoin="round" />
-      <path d="M7 10.6 Q9.5 12.4 12.5 10.2" stroke="#ea6444" strokeWidth={1.6} fill="none" strokeLinecap="round" />
+      <path d="M-2 -11 Q1 -13 3 -11 M10 -11 Q13 -13 15 -11" fill="none" stroke={CONTORNO} strokeWidth={1.6} strokeLinecap="round" />
+      <path d="M1 8 Q8 11 16 7 C14 17 4 18 1 8Z" fill={CONTORNO} stroke={CONTORNO} strokeWidth={1.4} strokeLinejoin="round" />
+      <path d="M5 13 Q9 10.5 12 13 Q9 16 5 13Z" fill="#f48780" />
 
       <Cara cara={cara} />
       <Gorro cabeza={cabeza} />
@@ -113,8 +121,9 @@ function Antenas() {
     <g stroke={CONTORNO} strokeWidth={2.5} strokeLinecap="round" fill="none">
       <path d="M-6 -17 Q-10 -30 -15 -34" />
       <path d="M5 -18 Q7 -31 11 -36" />
-      <circle cx={-15} cy={-35} r={3.5} fill="#efc31d" strokeWidth={1.5} />
-      <circle cx={11} cy={-37} r={3.5} fill="#efc31d" strokeWidth={1.5} />
+      <circle cx={-15} cy={-35} r={3.5} fill="#3a9fb1" strokeWidth={1.5} />
+      <circle cx={11} cy={-37} r={3.5} fill="#3a9fb1" strokeWidth={1.5} />
+      <path d="M-16 -36 l1 -1 M10 -38 l1 -1" stroke="#fff" strokeOpacity={0.65} strokeWidth={1.3} />
     </g>
   )
 }
@@ -187,7 +196,10 @@ function Gorro({ cabeza }: { cabeza: string }) {
       return (
         <g {...trazo}>
           <path d="M-18.5 -7 C-19 -27 15 -29 18.5 -9 C6 -12 -8 -11 -18.5 -7Z" fill="#8eb743" strokeWidth={3} />
+          <path d="M-18 -8 Q-20 -22 -5 -24 Q-12 -20 -9 -10Z" fill="#3a9fb1" strokeWidth={1.5} />
+          <path d="M-4 -23 Q5 -20 7 -11" fill="none" stroke="#62954c" strokeWidth={1.2} />
           <path d="M12 -10.5 C21 -16 31 -14 31 -9.5 C25 -7 17 -7 12 -8.5Z" fill="#247586" />
+          <path d="M17 -11 Q23 -13 28 -11" fill="none" stroke="#73bfcc" strokeWidth={1.2} strokeLinecap="round" />
           <circle cx={-1} cy={-23.5} r={2.6} fill="#247586" strokeWidth={1.5} />
         </g>
       )
@@ -219,10 +231,13 @@ function Gorro({ cabeza }: { cabeza: string }) {
     case 'cabeza-gorro-lana':
       return (
         <g {...trazo}>
-          <path d="M-19.5 -6 C-20 -31 20 -31 19.5 -6 Z" fill="#ea6444" />
-          <path d="M-19.5 -6 C-12 -10 12 -10 19.5 -6 L19.5 -11 C12 -15 -12 -15 -19.5 -11 Z" fill="#fff" strokeWidth={1.8} />
-          <path d="M-8 -21 L-8 -26 M0 -21 L0 -27 M8 -21 L8 -26" stroke="#fff" strokeWidth={2} strokeLinecap="round" />
-          <circle cx={0} cy={-30} r={5} fill="#fff" strokeWidth={1.8} />
+          <path d="M-20 -10 C-23 -24 -13 -33 -3 -31 C9 -31 18 -22 19 -12 Z" fill="#3a9fb1" />
+          <path d="M-13 -15 Q-17 -24 -10 -29 M-6 -15 Q-9 -25 -5 -30 M2 -15 Q2 -24 -2 -29 M10 -15 Q10 -23 3 -28" fill="none" stroke="#247586" strokeWidth={1.3} />
+          <path d="M-20 -13 Q-1 -19 20 -13 L20 -7 Q0 -12 -20 -6Z" fill="#73bfcc" strokeWidth={2} />
+          {[-15, -10, -5, 0, 5, 10, 15].map((x) => <path key={x} d={`M${x} ${-13 - (1 - Math.abs(x) / 20) * 2} v4`} stroke="#247586" strokeWidth={1} />)}
+          <circle cx={-6} cy={-34} r={5.5} fill="#73bfcc" strokeWidth={1.8} />
+          <path d="M-9 -37 l2 3 M-4 -38 l-1 4 M-2 -34 l-3 1 M-8 -31 l2 -2" stroke="#247586" strokeWidth={1} strokeLinecap="round" />
+          <rect x={9} y={-12} width={4} height={4} rx={0.8} fill="#fff3ce" strokeWidth={0.9} />
         </g>
       )
     case 'cabeza-vaquero':
@@ -387,9 +402,9 @@ export function Segmento({ x, y, r, color, indice, apariencia, className = '', s
       <FormaSegmento forma={apariencia.forma} x={x} y={y} r={r} fill={color} />
       {/* Diseño y brillo recortados dentro de la forma */}
       <g clipPath={`url(#${recorte})`}>
+        <path d={`M${x - r} ${y - r * 0.45} Q${x - r * 0.65} ${y + r * 0.95} ${x + r} ${y + r * 0.2} V${y + r * 1.3} H${x - r * 1.3} V${y - r}Z`} fill={CONTORNO} opacity={0.14} />
         <Diseno x={x} y={y} r={r} diseno={apariencia.diseno} indice={indice} />
-        <ellipse cx={x - r * 0.3} cy={y - r * 0.45} rx={r * 0.42} ry={r * 0.22} fill="#fff" opacity={0.42} />
-        <ellipse cx={x + r * 0.15} cy={y + r * 0.95} rx={r * 0.95} ry={r * 0.35} fill={CONTORNO} opacity={0.12} />
+        <path d={`M${x - r * 0.66} ${y - r * 0.25} Q${x - r * 0.5} ${y - r * 0.72} ${x - r * 0.08} ${y - r * 0.7}`} stroke="#fff" strokeOpacity={0.55} strokeWidth={r * 0.16} strokeLinecap="round" fill="none" />
       </g>
       <FormaSegmento forma={apariencia.forma} x={x} y={y} r={r} fill="none" stroke={CONTORNO} strokeWidth={2.5} strokeLinejoin="round" />
     </g>
@@ -401,9 +416,11 @@ function Zapato({ x, y, pies, par }: { x: number; y: number; pies: string; par: 
   switch (pies) {
     case 'pies-zapatillas':
       return (
-        <g {...borde}>
-          <path d={`M${x - 3} ${y - 2.5} h5 a2.5 2.5 0 0 1 2.5 2.5 v1 h-7.5 z`} fill="#ea6444" />
-          <path d={`M${x - 3} ${y + 1} h7.5`} stroke="#fff" strokeWidth={1.4} />
+        <g {...borde} transform={`translate(${x} ${y})`}>
+          <path d="M-3.5 -4 L0 -4 L1.5 -2 Q5 -2 5.5 0.5 L5.5 2 L-4 2 L-4 -1Z" fill="#3a9fb1" />
+          <path d="M-4 0.5 Q0 1.5 5.5 0.5 L5.5 2.5 L-4 2.5Z" fill="#fff8e8" strokeWidth={0.8} />
+          <path d="M2 -1.5 Q5 -1.5 5 0.4 L1.5 0.4Z" fill="#fff8e8" strokeWidth={0.65} />
+          <path d="M-1.8 -2.5 l2 0.5 M-2 -1 l2 0.5" stroke="#fff8e8" strokeWidth={0.9} strokeLinecap="round" />
         </g>
       )
     case 'pies-botas':
@@ -637,7 +654,7 @@ export function FondoTema({ fondo, className = '' }: { fondo: string; className?
 }
 
 function Escena({ fondo }: { fondo: string }) {
-  const id = `g-${fondo}`
+  const id = useId()
   const degradado = (arriba: string, abajo: string) => (
     <defs>
       <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">

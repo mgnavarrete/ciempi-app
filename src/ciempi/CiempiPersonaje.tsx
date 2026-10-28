@@ -21,8 +21,9 @@ const ALTO = 104
 /** Ciempi completo (cabeza + cuerpo), para la portada de la biblioteca y la tienda. */
 export function CiempiPersonaje({ apariencia, segmentos = 5, ancho, animado = true, className = '' }: Props) {
   const colores = paletaDe(apariencia).cuerpo
-  const anchoVista = R_CUERPO + segmentos * SEPARACION + R_CABEZA * 1.9
-  const xCabeza = anchoVista - R_CABEZA * 1.25
+  // Reservar espacio para la visera y el casco, incluso en previews SVG sin CSS.
+  const xCabeza = R_CUERPO + segmentos * SEPARACION + R_CABEZA * 0.65
+  const anchoVista = xCabeza + R_CABEZA * 1.85
   return (
     <svg
       width={ancho}

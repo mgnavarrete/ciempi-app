@@ -138,16 +138,17 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
           </div>
         )}
 
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 apaisado:grid-cols-2">
+        {/* Todas las tarjetas del mismo ancho y alto (la fila más alta manda), para que se vea ordenado. */}
+        <ul className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 apaisado:grid-cols-2">
           {libros?.filter((l) => filtro === 'todos' || l.asignacion.nivel === filtro).map((libro) => {
             const resumen = resumirProgreso(libro.asignacion, libro.texto)
             // Niveles 0 y 1: cuentos cortos, sin porcentaje; solo si ya lo terminó.
             const conAvance = !resumen.terminado && (libro.asignacion.nivel >= 2 || resumen.capitulo !== null)
             return (
-              <li key={libro.asignacion.id} className="relative">
+              <li key={libro.asignacion.id} className="relative flex flex-col">
                 <button
                   onClick={() => alLeer(libro)}
-                  className="flex w-full items-stretch gap-4 rounded-3xl bg-white p-3 text-left shadow-sm transition active:scale-[0.98]"
+                  className="flex w-full flex-1 items-stretch gap-4 rounded-3xl bg-white p-3 text-left shadow-sm transition active:scale-[0.98]"
                 >
                   <span className="relative shrink-0">
                     <Portada titulo={libro.texto.titulo} portada={libro.texto.portada} className="h-32 w-24" />

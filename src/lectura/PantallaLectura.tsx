@@ -7,7 +7,7 @@ import { useRepositorios } from '../datos/DatosProvider'
 import type { ProgresoAsignacion } from '../datos/repositorios'
 import { nuevoId } from '../dominio/ids'
 import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, ModoLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
-import { dividirEnFragmentos, quitarGuiones } from '../lenguaje/frases'
+import { dividirEnFragmentos, quitarGuiones, trocearOracion } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
@@ -17,19 +17,19 @@ import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos,
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
-import { acomodarVoz, encolarOracion, palabraDeLaVoz, type VozEnCurso } from './vozAlDedo'
+import { encolarTrozo, trozoEn } from './vozAlDedo'
 
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
 const MS_PASO_FRASE = 450
-/** Un párrafo o una página leídos en voz alta, fragmento por fragmento: se espera a que la voz termine (hasta esto). */
+/** Desde el nivel 2 la voz no se corta al llegar al final: se espera a que termine (hasta esto). */
 const MS_ESPERA_VOZ_LARGA = 20_000
-/** Nivel 2: al llegar el dedo al final, la voz tiene este rato para terminar la oración; después se corta. */
-const MS_ESPERA_VOZ_ORACION = 1500
+/** Niveles 2 y 4: cuánto tiene que volver atrás el dedo para que la voz se corte. */
+const RETROCESO = 0.04
+/** Nivel 2: la voz va en trozos de hasta tantas palabras (cortos, para que se apure de a poco). */
+const PALABRAS_POR_TROZO = 3
 /** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
 const INICIO_PISTA_PARRAFO = 0.06
-/** Nivel 2: si el dedo se queda quieto este rato, la voz se calla (y sigue cuando el dedo sigue). */
-const MS_DEDO_QUIETO = 650
 /** Pausas más largas que esto no cuentan como tiempo leyendo. */
 const MAX_PAUSA_ACTIVA_MS = 10_000
 
@@ -173,6 +173,30 @@ export function PantallaLectura(props: Props) {
   }, [porFragmentos, porFrase, manzanasPorLeer, fragmentos, posicionesPalabras])
   const pista = !porFragmentos && pistaMedida && pistaMedida.manzanas.length === manzanasPorLeer ? pistaMedida : pistaPareja
 
+  // Niveles 2 y 4: los trozos que dice la voz, y dónde empieza cada uno en el carril.
+  // En el 2, grupos cortos de palabras (empiezan en la manzana de su primera
+  // palabra); en el 4, las oraciones (empiezan donde termina la anterior).
+  const trozos = useMemo(() => {
+    if (oracion) {
+      const grupos = trocearOracion(frase, PALABRAS_POR_TROZO)
+      let palabra = 0
+      const inicios = grupos.map((g) => {
+        const desde = palabra
+        palabra += g.split(/\s+/).filter(Boolean).length
+        return desde === 0 ? 0 : Math.max(0, (pista.manzanas[desde] ?? 1) - 0.02)
+      })
+      return { textos: grupos, palabras: grupos.map((g) => g.split(/\s+/).filter(Boolean).length), inicios }
+    }
+    if (pagina) {
+      return {
+        textos: fragmentos.map((f) => f.map((p) => p.texto).join(' ')),
+        palabras: fragmentos.map((f) => f.length),
+        inicios: fragmentos.map((_, k) => (k === 0 ? 0 : pista.manzanas[k - 1])),
+      }
+    }
+    return { textos: [], palabras: [], inicios: [] }
+  }, [oracion, pagina, frase, fragmentos, pista])
+
   const [motor, setMotor] = useState<EstadoMotor>(estadoInicial)
   const motorRef = useRef(motor)
   const dibujoPendiente = useRef(0)
@@ -241,23 +265,19 @@ export function PantallaLectura(props: Props) {
       relecturaPremiadaEn: relecturaPremiadaEn.current,
     })
 
-  // Nivel 2: la voz que acompaña al dedo, y cuándo se movió el dedo por última vez.
-  const vozAlDedo = useRef<VozEnCurso | null>(null)
-  // Dónde se calló la voz cuando el dedo se detuvo: sigue desde ahí (no se salta palabras).
-  const vozPausadaEn = useRef<number | null>(null)
-  // Nivel 4: la próxima oración por leer y cuándo se estima que termina cada una de la fila.
-  const oracionesEnFila = useRef<number[]>([])
-  const proximaOracion = useRef(0)
-  const dedoQuieto = useRef(0)
+  // Niveles 2 y 4: la voz en fila (cuándo se estima que termina cada trozo),
+  // el próximo trozo por decir y dónde iba el dedo (para notar si vuelve atrás).
+  const filaVoz = useRef<number[]>([])
+  const proximoTrozo = useRef(0)
+  const ultimaPos = useRef(0)
   // Cuándo tocó el niño por primera vez esta unidad (para revisar el ritmo al terminar).
   const inicioUnidad = useRef<number | null>(null)
 
   const reiniciarMotor = () => {
     motorRef.current = estadoInicial()
-    vozAlDedo.current = null
-    vozPausadaEn.current = null
-    oracionesEnFila.current = []
-    proximaOracion.current = 0
+    filaVoz.current = []
+    proximoTrozo.current = 0
+    ultimaPos.current = 0
     inicioUnidad.current = null
     setMotor(motorRef.current)
   }
@@ -268,7 +288,6 @@ export function PantallaLectura(props: Props) {
   const irAFrase = (i: number, { callarVoz = true } = {}) => {
     cambiosDeFrase.current++
     cancelarProgramados()
-    window.clearTimeout(dedoQuieto.current)
     if (callarVoz) voz.callar()
     setAviso(null)
     setPausa(null)
@@ -370,10 +389,8 @@ export function PantallaLectura(props: Props) {
     // Se pasa a la siguiente recién cuando la voz terminó.
     const cambio = cambiosDeFrase.current
     programar(async () => {
-      await voz.esperarSilencio(oracion ? MS_ESPERA_VOZ_ORACION : nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
+      await voz.esperarSilencio(nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
       if (cambio !== cambiosDeFrase.current) return
-      // Nivel 2: el dedo ya llegó al final; lo que le faltaba a la voz se corta.
-      if (oracion) voz.callar()
       siguienteFrase({ monedas: terminaLibro ? ganadas : 0, mensaje: mensajeFinal })
     }, MS_PASO_FRASE)
   }
@@ -402,16 +419,31 @@ export function PantallaLectura(props: Props) {
   }
 
   /**
-   * Nivel 4: pone en fila la oración `k` al ritmo del dedo (y las anteriores
-   * que falten: nunca se salta una). Si la voz va muy atrasada, acelera.
+   * Niveles 2 y 4: la voz acompaña al dedo trozo por trozo (ver vozAlDedo.ts).
+   * Al entrar el dedo a un trozo, se pone en fila (y los anteriores que falten:
+   * nunca se salta uno). Si el dedo vuelve atrás, la voz se corta y sigue desde ahí.
    */
-  const leerOracion = (k: number) => {
-    while (proximaOracion.current <= k && proximaOracion.current < fragmentos.length) {
-      const o = fragmentos[proximaOracion.current++]
-      const fila = encolarOracion(oracionesEnFila.current, o.length, velocidadDelDedo(), performance.now())
-      oracionesEnFila.current = fila.terminan
-      voz.decirFrase(o.map((p) => p.texto).join(' '), ajustes.velocidadVoz * fila.velocidad, true)
+  const seguirConLaVoz = (pos: number) => {
+    // Volviendo atrás: se corta y no se dice nada hasta que el dedo vuelva a avanzar.
+    if (pos < ultimaPos.current - RETROCESO) {
+      ultimaPos.current = pos
+      cortarVoz()
+      return
     }
+    ultimaPos.current = Math.max(ultimaPos.current, pos)
+    const hasta = trozoEn(trozos.inicios, pos)
+    while (proximoTrozo.current <= hasta && proximoTrozo.current < trozos.textos.length) {
+      const k = proximoTrozo.current++
+      const fila = encolarTrozo(filaVoz.current, trozos.palabras[k], velocidadDelDedo(), performance.now())
+      filaVoz.current = fila.terminan
+      voz.decirFrase(trozos.textos[k], ajustes.velocidadVoz * fila.velocidad, true)
+    }
+  }
+  /** El dedo volvió atrás o se levantó: se corta la voz; al seguir, vuelve a leer el trozo donde esté. */
+  const cortarVoz = () => {
+    voz.callar()
+    filaVoz.current = []
+    proximoTrozo.current = trozoEn(trozos.inicios, ultimaPos.current)
   }
 
   const ejecutar = (efecto: Efecto) => {
@@ -422,18 +454,8 @@ export function PantallaLectura(props: Props) {
           // Sílaba por sílaba: «La – u – va». Sin tilde: «piés» suelta no es una
           // palabra y la voz la deletrea; «pies» sí la dice bien.
           voz.decir(sinTilde(silabas[efecto.palabra]?.texto ?? ''), ajustes.velocidadVoz)
-        } else if (oracion) {
-          // La oración, de corrido y al ritmo del dedo.
-          const nueva = acomodarVoz(vozAlDedo.current, efecto.palabra, velocidadDelDedo(), performance.now(), vozPausadaEn.current)
-          if (nueva) {
-            vozAlDedo.current = nueva
-            vozPausadaEn.current = null
-            const resto = nueva.desde === 0 ? frase : palabras.slice(nueva.desde).map((p) => p.texto).join(' ')
-            voz.decirFrase(resto, ajustes.velocidadVoz * nueva.velocidad)
-          }
-        } else if (pagina) {
-          // Terminó una oración: entra a la siguiente, que se pone en fila.
-          leerOracion(efecto.palabra + 1)
+        } else if (oracion || pagina) {
+          // La voz sigue al dedo por trozos (seguirConLaVoz), no por manzanas.
         } else if (porFragmentos) {
           // Cada manzana, su fragmento (si el dedo va más rápido, se dicen en orden).
           voz.decirFrase(fragmentos[efecto.palabra].map((p) => p.texto).join(' '), ajustes.velocidadVoz, true)
@@ -459,34 +481,26 @@ export function PantallaLectura(props: Props) {
     }
   }
 
-  /** Nivel 2: el dedo se detuvo o se levantó: la voz se calla y vuelve a empezar desde el dedo cuando siga. */
-  const pausarVozAlDedo = () => {
-    if (!oracion || !vozAlDedo.current || motorRef.current.fase === 'completada') return
-    vozPausadaEn.current = Math.floor(palabraDeLaVoz(vozAlDedo.current, performance.now()))
-    vozAlDedo.current = null
-    voz.callar()
-  }
-
   const entrar = (entrada: Entrada) => {
     if (entrada.tipo === 'tocar') {
       // El primer toque habilita el audio (requisito de iOS y Chrome).
       voz.desbloquear()
       desbloquearSonidos()
       inicioUnidad.current ??= performance.now()
-      // Nivel 4: al poner el dedo empieza la primera oración.
-      if (pagina && definicionModo.vozAlDeslizar) leerOracion(0)
       // En eco, si empieza a leer mientras Ciempi todavía habla, Ciempi se calla.
       if (definicionModo.leerFraseAntes && motorRef.current.fase === 'esperando') voz.callar()
     }
     if (entrada.tipo === 'tocar' || entrada.tipo === 'mover') registrarActividad(entrada.t)
-    if (oracion && definicionModo.vozAlDeslizar) {
-      window.clearTimeout(dedoQuieto.current)
-      if (entrada.tipo === 'soltar') pausarVozAlDedo()
-      else if (entrada.tipo === 'mover') dedoQuieto.current = window.setTimeout(pausarVozAlDedo, MS_DEDO_QUIETO)
-    }
 
     const config = { ...CONFIG_MOTOR_BASE, umbralPalabrasPorSegundo: ajustes.umbralPalabrasPorSegundo, sinLimite: nivel >= 2 }
     const { estado, efectos } = paso(motorRef.current, entrada, pista, config)
+    // Niveles 2 y 4: la voz va donde va el dedo (si el motor lo dejó avanzar), y
+    // se corta si el dedo se levanta antes de llegar al final.
+    if ((oracion || pagina) && definicionModo.vozAlDeslizar) {
+      if ((entrada.tipo === 'tocar' || entrada.tipo === 'mover') && estado.fase !== 'esperando' && estado.fase !== 'tropiezo') {
+        seguirConLaVoz(Math.min(Math.max(entrada.pos, 0), estado.progreso))
+      } else if (entrada.tipo === 'soltar' && motorRef.current.fase === 'arrastrando') cortarVoz()
+    }
     if (estado !== motorRef.current) {
       motorRef.current = estado
       // El dedo manda más eventos de los que el teléfono alcanza a dibujar: se
