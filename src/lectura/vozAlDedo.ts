@@ -2,18 +2,18 @@
  * Niveles 2 y 4: la voz acompaña al dedo trozo por trozo. En el 2 los trozos
  * son grupos cortos de palabras de la oración; en el 4, las oraciones de la
  * página. Cuando el dedo entra a un trozo, ese trozo se pone en fila con la
- * velocidad del dedo (como máximo 1,5×): si el dedo va rápido la voz se
- * apura, pero nunca se corta ni se salta nada; si va demasiado rápido, la
- * voz termina un trozo y sigue con el otro. Si el dedo vuelve atrás o se
+ * velocidad del dedo: si va lento, la voz va lenta; si va rápido, la voz
+ * llega como máximo a la velocidad normal (1×) y nunca se corta ni se salta
+ * nada: termina un trozo y sigue con el otro. Si el dedo vuelve atrás o se
  * levanta, la voz se corta (ver PantallaLectura).
  */
 
 /** Palabras por segundo que dice la voz a velocidad 1 (aprox., en español). */
 export const PALABRAS_POR_SEGUNDO_VOZ = 2.5
 export const VELOCIDAD_MINIMA = 0.6
-/** Más rápido que esto la voz ya no se entiende bien. */
-export const VELOCIDAD_MAXIMA = 1.5
-/** Con tantos trozos esperando, la voz se apura un poco más (sin pasar del máximo). */
+/** La voz nunca va más rápido que lo normal (1×): si el dedo va más rápido, los trozos esperan su turno. */
+export const VELOCIDAD_MAXIMA = 1
+/** Con tantos trozos esperando, la voz va a la velocidad máxima aunque el dedo vaya más lento. */
 export const TROZOS_DE_ATRASO = 2
 /** Cuánto se apura por cada trozo de atraso. */
 const APURAR = 1.2

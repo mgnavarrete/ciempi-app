@@ -17,7 +17,7 @@ import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos,
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
-import { encolarTrozo, trozoEn } from './vozAlDedo'
+import { VELOCIDAD_MAXIMA, encolarTrozo, trozoEn } from './vozAlDedo'
 
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
@@ -436,7 +436,8 @@ export function PantallaLectura(props: Props) {
       const k = proximoTrozo.current++
       const fila = encolarTrozo(filaVoz.current, trozos.palabras[k], velocidadDelDedo(), performance.now())
       filaVoz.current = fila.terminan
-      voz.decirFrase(trozos.textos[k], ajustes.velocidadVoz * fila.velocidad, true)
+      // Nunca más rápido que lo normal, aunque en Ajustes la voz esté más rápida.
+      voz.decirFrase(trozos.textos[k], Math.min(VELOCIDAD_MAXIMA, ajustes.velocidadVoz * fila.velocidad), true)
     }
   }
   /** El dedo volvió atrás o se levantó: se corta la voz; al seguir, vuelve a leer el trozo donde esté. */

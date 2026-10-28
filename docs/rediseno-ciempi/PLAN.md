@@ -26,6 +26,8 @@ Entrega v2: [comparación visual](comparacion-v2.html), [SVG editable](ciempi-il
 
 Cambios: anatomía nueva, cabeza grande y asimétrica, ojos separados, segmentos superpuestos, paleta menta/amarillo/naranja, jockey inclinado y seis zapatillas de silueta definida. Grupos identificados para cuerpo, cabeza, ojos, jockey, antenas y piernas/calzado.
 
+Corrección de postura: después de verificar las uniones con todas las suelas alineadas, el usuario pidió piernas algo más anchas y una disposición curva como en la referencia. Las piernas pasan de 24 a 32 unidades de ancho en su origen y de 24 a 28 en el tobillo. Las zapatillas siguen un arco suave con alturas y giros distintos, pivotando sobre el tobillo; algunas se levantan como durante un paso. Cada pierna empieza dentro del cuerpo y termina dentro del calzado. Las sombras se atenúan bajo los pies elevados. Se revisó visualmente el PNG regenerado.
+
 Estado: propuesta estática para revisión, no integrada en la app. Todavía no es un sistema de piezas animables: las piernas se agrupan por debajo del cuerpo y deberán vincularse a los segmentos; los anclajes de lentes y otros accesorios deben recalcularse. La primera implementación en la app no representa el objetivo final. Falta revisión del usuario antes de extender esta nueva anatomía al catálogo.
 
 [Comparación de estilos](exploracion-visual-v1.png): ilustración, juguete suave y plastilina. Generada con la herramienta integrada de imágenes a partir de `logo/ciempi-app-logo.jpg`. Ver el prompt completo en `PROMPT.md`.

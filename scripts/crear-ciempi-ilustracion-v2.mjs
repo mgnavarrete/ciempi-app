@@ -4,15 +4,25 @@ import sharp from 'sharp'
 const dir = 'docs/rediseno-ciempi'
 mkdirSync(dir, { recursive: true })
 const navy = '#243e5b'
-const shoe = (x,y,s=1) => `<g transform="translate(${x} ${y}) scale(${s})" stroke="${navy}" stroke-linejoin="round" stroke-linecap="round">
- <path d="M-19 -64 L9 -61 L7 -30 L-22 -29Z" fill="#f4ba38" stroke-width="6"/><path d="M-14 -59 L-7 -57 L-10 -37" fill="none" stroke="#ffe18a" stroke-width="5"/>
+// Arco suave de paso: las piernas nacen dentro del cuerpo y los zapatos giran
+// alrededor del tobillo, para levantar la punta sin desconectar la unión.
+const feet = [{ x: 172, y: 524, angle: -12, anchorY: 440 },
+  { x: 276, y: 541, angle: -6, anchorY: 465 },
+  { x: 375, y: 550, angle: 0, anchorY: 465 },
+  { x: 500, y: 544, angle: 7, anchorY: 455 },
+  { x: 625, y: 537, angle: -5, anchorY: 435 },
+  { x: 780, y: 527, angle: -12, anchorY: 425 }]
+const shoe = ({ x, y, angle, anchorY }) => `<g transform="translate(${x} ${y})" stroke="${navy}" stroke-linejoin="round" stroke-linecap="round">
+ <path d="M-23 ${anchorY - y} L9 ${anchorY - y} Q5 -53 4 -29 L-24 -29 Q-26 -52 -23 ${anchorY - y}Z" fill="#f4ba38" stroke-width="6"/>
+ <path d="M-13 ${anchorY - y + 8} Q-15 -53 -15 -38" fill="none" stroke="#ffe18a" stroke-width="6"/>
+ <g transform="rotate(${angle} -10 -32)">
  <path d="M-26 -35 Q-14 -44 0 -35 L10 -20 Q34 -23 45 -4 L47 13 Q20 27 -41 10 Q-45 1 -37 -17Z" fill="url(#shoe)" stroke-width="6"/>
  <path d="M-35 -15 Q-28 -28 -22 -29 L-23 1 L-38 -1Z" fill="#247887" stroke="none"/>
  <path d="M5 -14 Q27 -24 40 -9 L44 2 Q23 10 0 2 Q-2 -8 5 -14Z" fill="#fff9e9" stroke-width="4"/>
  <path d="M-41 2 Q-5 17 46 5 L46 15 Q17 31 -40 15 Q-46 12 -41 2Z" fill="#fff9e9" stroke-width="5"/>
  <path d="M-32 13 Q3 26 34 17" fill="none" stroke="#d8e4da" stroke-width="3"/>
  <path d="M-15 -29 l18 4 M-20 -19 l18 4" stroke="#fff8dc" stroke-width="7"/><path d="M-28 -10 l-3 6" stroke="#c5efdf" stroke-width="4"/>
- </g>`
+ </g></g>`
 const segment=(id,x,y,rx,ry,color)=>`<g id="${id}" transform="translate(${x} ${y})">
  <defs><clipPath id="clip-${id}"><ellipse rx="${rx}" ry="${ry}"/></clipPath></defs>
  <ellipse rx="${rx}" ry="${ry}" fill="url(#${color})"/>
@@ -30,8 +40,9 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" vie
  <linearGradient id="cap" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4dc60"/><stop offset="1" stop-color="#85bb43"/></linearGradient>
  <clipPath id="face"><path d="M616 285 C633 238 716 216 779 239 C846 260 879 323 861 386 C847 446 789 475 725 467 C655 460 608 419 607 358 C606 329 610 304 616 285Z"/></clipPath>
 </defs>
-<ellipse cx="493" cy="548" rx="393" ry="23" fill="#243e5b" opacity=".10"/>
-<g id="legs-and-sneakers">${shoe(172,499,.9)}${shoe(276,520,.94)}${shoe(375,525,.97)}${shoe(500,524,1)}${shoe(644,525,1.04)}${shoe(793,518,1.04)}</g>
+<ellipse cx="493" cy="574" rx="393" ry="20" fill="#243e5b" opacity=".08"/>
+${feet.map(({ x, y }) => `<ellipse cx="${x + 3}" cy="574" rx="${45 - (550 - y) * .25}" ry="${5 + (550 - y) * .08}" fill="#243e5b" opacity="${.12 - (550 - y) * .0025}"/>`).join('')}
+<g id="legs-and-sneakers">${feet.map(shoe).join('')}</g>
 <g id="body">
 ${segment('tail',187,386,88,85,'orange')}
 ${segment('mint-back',289,410,88,85,'mint')}

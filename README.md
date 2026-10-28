@@ -145,7 +145,7 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 |---|---|---|---|
 | 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada sílaba al llegar: «La – u – va» (sin tilde: «piés» suelta la voz la deletrea) |
 | 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
-| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración en trozos cortos al ritmo del dedo (máximo 1,5×), sin cortar ni saltarse nada; si el dedo vuelve atrás o se levanta, se corta (`src/lectura/vozAlDedo.ts`) |
+| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración en trozos cortos al ritmo del dedo (máximo 1×, la velocidad normal), sin cortar ni saltarse nada; si el dedo vuelve atrás o se levanta, se corta (`src/lectura/vozAlDedo.ts`) |
 | 3 Párrafo | párrafo o estrofa | una frase por línea, rojo y azul alternados; una manzana por frase, repartidas parejo; la frase se enciende entera | dice la frase entera al llegar a su manzana |
 | 4 Libre | una página (100–160 palabras) | toda a la vista; una manzana por oración; las palabras se encienden al pasar el dedo | igual que el 2, pero oración por oración |
 
