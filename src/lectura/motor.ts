@@ -15,6 +15,8 @@
 export const INICIO_PISTA = 0.14
 /** La última manzana: en el borde derecho de la pista (dejando lugar a la cabeza de Ciempi). */
 export const FIN_PISTA = 0.96
+/** Siempre se puede retomar tocando hasta esto más adelante (el ancho de la cabeza de Ciempi). */
+const RETOMAR_MINIMO = 0.04
 
 export interface ConfigMotor {
   umbralPalabrasPorSegundo: number
@@ -66,22 +68,26 @@ export function estadoInicial(): EstadoMotor {
   return { fase: 'esperando', progreso: 0, palabrasLeidas: 0, tuvoTropiezo: false, muestras: [] }
 }
 
-/** Manzanas repartidas parejo entre INICIO_PISTA y FIN_PISTA (cuando no se puede medir la pantalla). */
-export function calcularPista(cantidadPalabras: number): Pista {
+/**
+ * Manzanas repartidas parejo entre `inicio` y FIN_PISTA (cuando no se puede
+ * medir la pantalla, o en un párrafo: una manzana por palabra a lo largo de la pista).
+ */
+export function calcularPista(cantidadPalabras: number, inicio = INICIO_PISTA): Pista {
   if (cantidadPalabras <= 0) return { manzanas: [], fin: FIN_PISTA }
   if (cantidadPalabras === 1) return { manzanas: [FIN_PISTA], fin: FIN_PISTA }
-  const paso = (FIN_PISTA - INICIO_PISTA) / (cantidadPalabras - 1)
-  return { manzanas: Array.from({ length: cantidadPalabras }, (_, i) => INICIO_PISTA + i * paso), fin: FIN_PISTA }
+  const paso = (FIN_PISTA - inicio) / (cantidadPalabras - 1)
+  return { manzanas: Array.from({ length: cantidadPalabras }, (_, i) => inicio + i * paso), fin: FIN_PISTA }
 }
 
 /**
- * Pista a partir de dónde está cada palabra en pantalla (inicio y fin, 0..1):
- * la manzana va al comienzo de la palabra (un poco adentro), salvo la de la
- * última palabra, que va al borde derecho: ahí termina la frase.
+ * Pista a partir de dónde está cada palabra (o sílaba) en pantalla (inicio y
+ * fin, 0..1): la manzana va al centro de la palabra, salvo la primera, que va
+ * al comienzo (un poco adentro), y la última, que va al borde derecho: ahí
+ * termina la frase.
  */
 export function pistaDesdePalabras(palabras: { inicio: number; fin: number }[]): Pista {
   if (palabras.length === 0) return { manzanas: [], fin: 1 }
-  const manzanas = palabras.map((p) => p.inicio + Math.min(0.2 * (p.fin - p.inicio), 0.02))
+  const manzanas = palabras.map((p, i) => (i === 0 ? p.inicio + Math.min(0.2 * (p.fin - p.inicio), 0.02) : (p.inicio + p.fin) / 2))
   manzanas[manzanas.length - 1] = Math.max(manzanas[manzanas.length - 1], FIN_PISTA)
   return { manzanas, fin: manzanas[manzanas.length - 1] }
 }
@@ -115,7 +121,8 @@ export function paso(estado: EstadoMotor, entrada: Entrada, pista: Pista, config
     case 'tocar': {
       if (estado.fase !== 'esperando') return sinCambio
       const pos = limitar(entrada.pos)
-      if ((pos - estado.progreso) / largo > config.toleranciaRetomar) return { estado, efectos: [{ tipo: 'lejos' }] }
+      // Con muchas manzanas juntas (un párrafo) basta con tocar la cabeza de Ciempi.
+      if (pos - estado.progreso > Math.max(config.toleranciaRetomar * largo, RETOMAR_MINIMO)) return { estado, efectos: [{ tipo: 'lejos' }] }
       // El punto donde se apoya el dedo es la línea base: ese pequeño adelanto no cuenta como velocidad.
       const base = Math.max(estado.progreso, pos)
       const tocado = { ...estado, fase: 'arrastrando' as const, muestras: [{ t: entrada.t, p: base }] }

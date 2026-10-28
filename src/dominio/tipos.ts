@@ -180,10 +180,10 @@ export type EstadoAsignacion = 'pendiente' | 'en_curso' | 'completada' | 'archiv
 
 /** Un texto en la biblioteca de un niño, con su progreso. */
 /**
- * Nivel de lectura de un libro para un niño: 1 palabra, 2 oración, 3 párrafo,
- * 4 libre. Ver lenguaje/unidades.ts.
+ * Nivel de lectura de un libro para un niño: 0 sílabas, 1 palabra, 2 oración,
+ * 3 párrafo, 4 libre. Ver lenguaje/unidades.ts.
  */
-export type NivelLectura = 1 | 2 | 3 | 4
+export type NivelLectura = 0 | 1 | 2 | 3 | 4
 
 export interface Asignacion {
   id: Id

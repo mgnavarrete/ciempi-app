@@ -54,14 +54,14 @@ describe('calcularPista', () => {
 })
 
 describe('pistaDesdePalabras', () => {
-  it('pone la manzana al comienzo de cada palabra y la última en el borde derecho', () => {
+  it('la primera manzana al comienzo de su palabra, las del medio al centro y la última en el borde derecho', () => {
     const p = pistaDesdePalabras([
       { inicio: 0.1, fin: 0.3 },
       { inicio: 0.35, fin: 0.5 },
       { inicio: 0.55, fin: 0.95 },
     ])
     expect(p.manzanas[0]).toBeCloseTo(0.12)
-    expect(p.manzanas[1]).toBeCloseTo(0.37)
+    expect(p.manzanas[1]).toBeCloseTo(0.425)
     expect(p.manzanas[2]).toBeCloseTo(FIN_PISTA)
     expect(p.fin).toBeCloseTo(FIN_PISTA)
   })
@@ -140,6 +140,14 @@ describe('motor de lectura por palabras', () => {
     const { estado, efectos } = correr([{ tipo: 'tocar', pos: 0.9, t: 0 }])
     expect(efectos).toEqual([{ tipo: 'lejos' }])
     expect(estado.progreso).toBe(0)
+  })
+
+  it('en un párrafo (manzanas muy juntas) se retoma tocando la cabeza de Ciempi', () => {
+    const parrafo = calcularPista(50, 0.06)
+    const leido = correr(deslizar(0, 0.3, 12000), estadoInicial(), parrafo).estado
+    const { estado, efectos } = correr([{ tipo: 'soltar' }, { tipo: 'tocar', pos: 0.33, t: 13000 }], leido, parrafo)
+    expect(efectos).not.toContainEqual({ tipo: 'lejos' })
+    expect(estado.fase).toBe('arrastrando')
   })
 
   it('volver atrás no borra lo leído ni repite palabras', () => {

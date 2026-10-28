@@ -143,19 +143,21 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 
 | Nivel | Se lee de una vez | En pantalla | Voz si el niño no eligió |
 |---|---|---|---|
-| 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | lee contigo |
-| 2 Oración | la oración completa (≤ 16 palabras) | línea por línea, una manzana al final de cada línea | escuchar primero |
-| 3 Párrafo | párrafo o estrofa | igual que el 2; arriba lo leído, abajo lo que viene | sin voz |
-| 4 Libre | una página (100–160 palabras) | la página entera, sin pista; botón «Terminé» | sin voz |
+| 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada palabra al terminar sus sílabas |
+| 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
+| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final | lee la oración de corrido al empezar a deslizar |
+| 3 Párrafo | párrafo o estrofa | todo a la vista (una línea por verso, o de corrido); un solo carril para todo el párrafo | lee el párrafo de corrido al empezar a deslizar |
+| 4 Libre | una página (100–160 palabras) | la página entera, sin pista; botón «Terminé» | sin voz (tocar una palabra la dice) |
 
-- Todas las unidades se arman con las frases del nivel 1
+- Todas las unidades se arman con las frases de los niveles 0 y 1
   (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
   cambiar de nivel sin perder el lugar. Se leen las mismas palabras en
   cualquier nivel: **las monedas cuestan lo mismo** (1 cada 20 palabras a buen
-  ritmo). En los niveles 2 y 3 se mide el ritmo en cada línea igual que en el
-  1. En el 4, si «Terminé» llega antes de palabras ÷ ritmo máximo (4 palabras/s
-  por defecto), la página no da monedas.
-- La última manzana va siempre al borde derecho de la pista: hay que llegar al final.
+  ritmo). En los niveles 0 a 3 se mide el ritmo del dedo (en el 0, en sílabas
+  por segundo). En el 4, si «Terminé» llega antes de palabras ÷ ritmo máximo
+  (4 palabras/s por defecto), la página no da monedas.
+- La manzana va al centro de su palabra (o sílaba), salvo la primera, al
+  comienzo, y la última, siempre al borde derecho: hay que llegar al final.
 - **Párrafos y versos:** al pegar un texto, una línea en blanco separa párrafos
   (en un poema: un verso por línea y una línea en blanco entre estrofas). En un
   PDF se detectan por la posición de las líneas (`cortesDePagina` en
@@ -167,12 +169,13 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
   sus niños) tiene un botón por niño para dárselo en un nivel, cambiarlo o
   quitarlo; en la biblioteca de un niño, «Cambiar nivel» y «Compartir con otro niño».
 - **Voz:** el niño elige (botón de voz al leer, o Ajustes): «Leer conmigo»,
-  «Escuchar primero» (eco) o «Sin voz». Tocar una palabra siempre la dice.
+  «Escuchar primero» (eco) o «Sin voz». Tocar una palabra siempre la dice. En
+  el nivel 4 no hay voz: se lee en silencio.
 
 ### Cuentos de Ciempi
 
-La app trae 16 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`):
-cuentos de una línea por oración para el nivel 1 y 2, dos poemas y dos
+La app trae 20 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`):
+cuentos con palabras de una o dos sílabas para el nivel 0, de una línea por oración para el nivel 1 y 2, dos poemas y dos
 cuentos en párrafos para el 3 y cuatro cuentos largos para el 4. **Todo
 lector nuevo los recibe en su biblioteca**, cada uno en su nivel. En el
 servidor no tienen dueño: nadie los borra, pero un adulto puede cambiarles el

@@ -56,7 +56,7 @@ const entero = (v: unknown, campo: string): number => {
 }
 const nivelValido = (v: unknown): number => {
   if (v === undefined) return 1
-  if (typeof v !== 'number' || !Number.isInteger(v) || v < 1 || v > 4) throw new Problema('El nivel debe ser 1, 2, 3 o 4')
+  if (typeof v !== 'number' || !Number.isInteger(v) || v < 0 || v > 4) throw new Problema('El nivel debe ser 0, 1, 2, 3 o 4')
   return v
 }
 const objeto = (v: unknown, campo: string): Fila => {
@@ -640,7 +640,7 @@ export async function crearApp() {
         n(b.silabasLeidas),
         n(b.monedasGanadas),
         // Sesiones de una app anterior a los niveles: nivel 1.
-        [1, 2, 3, 4].includes(b.nivel as number) ? b.nivel : 1,
+        [0, 1, 2, 3, 4].includes(b.nivel as number) ? b.nivel : 1,
       ],
     )
     return aSesionLectura(rows[0])

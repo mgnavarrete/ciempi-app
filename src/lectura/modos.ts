@@ -43,4 +43,13 @@ export const MODOS: Record<ModoLectura, DefinicionModo> = {
 }
 
 /** Cómo acompaña la voz si el niño no eligió: más ayuda en los niveles bajos. */
-export const MODO_POR_NIVEL: Record<NivelLectura, ModoLectura> = { 1: 'coro', 2: 'eco', 3: 'solo', 4: 'solo' }
+export const MODO_POR_NIVEL: Record<NivelLectura, ModoLectura> = { 0: 'coro', 1: 'coro', 2: 'coro', 3: 'coro', 4: 'solo' }
+
+/** «Leer conmigo» cambia con el nivel: palabra a palabra, o la oración o el párrafo de corrido. */
+export function descripcionModo(modo: ModoLectura, nivel: NivelLectura): string {
+  if (modo === 'coro' && nivel === 0) return 'Ciempi dice cada palabra cuando terminas sus sílabas.'
+  if (modo === 'coro' && nivel === 2) return 'Ciempi lee la oración contigo cuando empiezas a deslizar.'
+  if (modo === 'coro' && nivel === 3) return 'Ciempi lee el párrafo contigo cuando empiezas a deslizar.'
+  if (modo === 'eco' && nivel >= 2) return `Ciempi lee ${nivel === 2 ? 'la oración' : 'el párrafo'} y después lo lees tú.`
+  return MODOS[modo].descripcion
+}

@@ -30,7 +30,7 @@ describe('repositorios en localStorage', () => {
     const biblioteca = await otraVez.asignaciones.listarPorPerfil(perfil.id)
     expect(biblioteca).toHaveLength(CUENTOS.length)
     for (const c of CUENTOS) expect(biblioteca.find((a) => a.textoId === c.id)?.nivel).toBe(c.nivel)
-    const texto = await otraVez.textos.obtener(CUENTOS[8].id)
+    const texto = await otraVez.textos.obtener(CUENTOS.find((c) => c.titulo === 'Canción de Ciempi')!.id)
     expect(texto).toMatchObject({ subidoPor: null, origen: 'ciempi', parrafos: [0, 4, 8, 12] })
     expect(texto?.capitulos).toEqual([{ titulo: texto?.titulo, desdeFrase: 0 }])
   })

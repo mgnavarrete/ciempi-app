@@ -18,8 +18,13 @@ interface Props {
   alEntrar: (entrada: Entrada) => void
   /** Tocar una palabra (sin deslizar): la app la dice. */
   alTocarPalabra?: (indice: number) => void
-  /** Solo la comida del final de la línea (niveles 2 y 3). */
+  /** Solo la comida del final de la línea (nivel 2). */
   soloUltimaManzana?: boolean
+  /**
+   * Nivel 0: cada sílaba es una unidad, con su manzana (el motor las cuenta
+   * como palabras). Las sílabas de una palabra van separadas por un guion.
+   */
+  porSilaba?: boolean
 }
 
 /** Espacio a la izquierda para la cabeza de Ciempi: la primera palabra parte a su lado. */
@@ -34,7 +39,7 @@ const LETRA_MINIMA = 16
  * palabra. El niño desliza el dedo por debajo de las palabras (como cuando
  * se lee siguiendo con el dedo) y Ciempi lo sigue.
  */
-export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra, soloUltimaManzana }: Props) {
+export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra, soloUltimaManzana, porSilaba = false }: Props) {
   const zona = useRef<HTMLDivElement>(null)
   const linea = useRef<HTMLParagraphElement>(null)
   const medidor = useRef<HTMLSpanElement>(null)
@@ -60,7 +65,7 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
     if (linea.current) obs.observe(linea.current)
     void document.fonts?.ready.then(ajustar)
     return () => obs.disconnect()
-  }, [palabras, tamanoLetra])
+  }, [palabras, tamanoLetra, porSilaba])
 
   // 2) Dónde quedó cada palabra, en proporción al ancho de la zona del dedo.
   useLayoutEffect(() => {
@@ -79,7 +84,7 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
     const obs = new ResizeObserver(medir)
     if (zona.current) obs.observe(zona.current)
     return () => obs.disconnect()
-  }, [palabras, letra])
+  }, [palabras, letra, porSilaba])
 
   const esperando = motor.fase === 'esperando'
 
@@ -88,11 +93,19 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
       {/* Medidor invisible: el ancho natural de cada palabra con la letra del ajuste */}
       <span ref={medidor} aria-hidden className="font-lectura invisible absolute left-0 top-0 flex whitespace-nowrap" style={{ ...ESTILO_LINEA, fontSize: tamanoLetra }}>
         {palabras.map((p, i) => (
-          <span key={i}>{p.texto}</span>
+          <span key={i}>{porSilaba ? p.silabas.join('-') : p.texto}</span>
         ))}
       </span>
 
-      <FraseEncendida ref={linea} palabras={palabras} palabrasLeidas={motor.palabrasLeidas} letra={letra} tranquilo={tranquilo} alTocarPalabra={alTocarPalabra} />
+      <FraseEncendida
+        ref={linea}
+        palabras={palabras}
+        leidas={motor.palabrasLeidas}
+        porSilaba={porSilaba}
+        letra={letra}
+        tranquilo={tranquilo}
+        alTocarPalabra={alTocarPalabra}
+      />
 
       {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
       <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
@@ -110,18 +123,21 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
 
 interface PropsFrase {
   palabras: PalabraSilabeada[]
-  palabrasLeidas: number
+  /** Unidades ya leídas: palabras o, con `porSilaba`, sílabas. */
+  leidas: number
+  porSilaba: boolean
   letra: number
   tranquilo: boolean
   alTocarPalabra?: (indice: number) => void
 }
 
 /**
- * La frase con las palabras ya leídas encendidas (sílabas de colores). Solo se
- * vuelve a dibujar cuando se enciende una palabra, no con cada movimiento del dedo.
+ * La frase con las palabras (o sílabas) ya leídas encendidas. Solo se vuelve
+ * a dibujar cuando se enciende una, no con cada movimiento del dedo.
  */
 const FraseEncendida = memo(
-  forwardRef<HTMLParagraphElement, PropsFrase>(function FraseEncendida({ palabras, palabrasLeidas, letra, tranquilo, alTocarPalabra }, ref) {
+  forwardRef<HTMLParagraphElement, PropsFrase>(function FraseEncendida({ palabras, leidas, porSilaba, letra, tranquilo, alTocarPalabra }, ref) {
+    let antes = 0
     return (
       <p
         ref={ref}
@@ -131,34 +147,36 @@ const FraseEncendida = memo(
         style={{ ...ESTILO_LINEA, fontSize: letra, paddingLeft: MARGEN_IZQ, paddingRight: MARGEN_DER }}
       >
         {palabras.map((palabra, p) => {
-          const encendida = p < palabrasLeidas
-          const color = colorDePalabra(p)
+          const desde = antes
+          antes += porSilaba ? palabra.silabas.length : 1
+          // Tocar la palabra la dice; no empieza a deslizar (eso es en el carril de Ciempi).
+          const tocar = (e: React.PointerEvent) => {
+            if (!alTocarPalabra) return
+            e.stopPropagation()
+            alTocarPalabra(p)
+          }
+          if (!porSilaba) return <PalabraEncendida key={p} palabra={palabra} indice={p} encendida={desde < leidas} tranquilo={tranquilo} medir onPointerDown={tocar} />
           return (
-            <span
-              key={p}
-              data-palabra
-              aria-hidden
-              // Tocar la palabra la dice; no empieza a deslizar (eso es en el carril de Ciempi).
-              onPointerDown={(e) => {
-                if (!alTocarPalabra) return
-                e.stopPropagation()
-                alTocarPalabra(p)
-              }}
-              className={['palabra inline-flex rounded-[0.22em]', encendida ? `encendida ${color.texto}` : '', tranquilo ? 'tranquilo' : ''].join(' ')}
-            >
-              {palabra.silabas.map((silaba, s) => (
-                <span
-                  key={s}
-                  className={[
-                    'inline-block transition-colors duration-200',
-                    encendida ? (s % 2 === 0 ? color.fondo : color.fondoAlterno) : '',
-                    s === 0 ? 'rounded-l-[0.22em]' : '',
-                    s === palabra.silabas.length - 1 ? 'rounded-r-[0.22em]' : '',
-                  ].join(' ')}
-                >
-                  {silaba}
-                </span>
-              ))}
+            <span key={p} aria-hidden onPointerDown={tocar} className="inline-flex items-baseline">
+              {palabra.silabas.map((silaba, s) => {
+                const color = colorDePalabra(p)
+                const encendida = desde + s < leidas
+                return (
+                  <span key={s} className="inline-flex items-baseline">
+                    {s > 0 && <span className="px-[0.06em] text-tinta-suave/50">-</span>}
+                    <span
+                      data-palabra
+                      className={[
+                        'palabra inline-block rounded-[0.22em] transition-colors duration-200',
+                        encendida ? `encendida ${color.texto} ${s % 2 === 0 ? color.fondo : color.fondoAlterno}` : '',
+                        tranquilo ? 'tranquilo' : '',
+                      ].join(' ')}
+                    >
+                      {silaba}
+                    </span>
+                  </span>
+                )
+              })}
             </span>
           )
         })}
@@ -166,3 +184,53 @@ const FraseEncendida = memo(
     )
   }),
 )
+
+/** Una palabra: encendida, sus sílabas con dos tonos del color de la palabra. */
+export function PalabraEncendida({
+  palabra,
+  indice,
+  encendida,
+  tranquilo,
+  medir = false,
+  actual = false,
+  onPointerDown,
+}: {
+  palabra: PalabraSilabeada
+  indice: number
+  encendida: boolean
+  tranquilo: boolean
+  /** Marca la palabra para medir dónde quedó (la manzana va debajo). */
+  medir?: boolean
+  /** La que sigue: subrayada suave, para que el ojo sepa por dónde va. */
+  actual?: boolean
+  onPointerDown?: (e: React.PointerEvent) => void
+}) {
+  const color = colorDePalabra(indice)
+  return (
+    <span
+      data-palabra={medir || undefined}
+      aria-hidden
+      onPointerDown={onPointerDown}
+      className={[
+        'palabra inline-flex rounded-[0.22em]',
+        encendida ? `encendida ${color.texto}` : '',
+        actual ? 'underline decoration-amarillo decoration-[0.12em] underline-offset-[0.2em]' : '',
+        tranquilo ? 'tranquilo' : '',
+      ].join(' ')}
+    >
+      {palabra.silabas.map((silaba, s) => (
+        <span
+          key={s}
+          className={[
+            'inline-block transition-colors duration-200',
+            encendida ? (s % 2 === 0 ? color.fondo : color.fondoAlterno) : '',
+            s === 0 ? 'rounded-l-[0.22em]' : '',
+            s === palabra.silabas.length - 1 ? 'rounded-r-[0.22em]' : '',
+          ].join(' ')}
+        >
+          {silaba}
+        </span>
+      ))}
+    </span>
+  )
+}

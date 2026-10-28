@@ -4,7 +4,7 @@ import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, Id, PerfilNino, Texto } from '../dominio/tipos'
-import { NIVELES } from '../lenguaje/unidades'
+import { datosNivel } from '../lenguaje/unidades'
 import { BarraProgreso, BotonIcono, Encabezado, Icono, Monedas, Portada } from '../ui/comunes'
 import { resumirProgreso } from './progreso'
 
@@ -127,7 +127,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     {libro.texto.autor && <span className="truncate text-sm text-tinta-suave">{libro.texto.autor}</span>}
                     <span className="mt-auto flex flex-wrap items-center gap-x-2 text-sm text-tinta-suave">
                       <span className="rounded-full bg-amarillo/40 px-2 font-bold text-tinta">
-                        Nivel {libro.asignacion.nivel} · {NIVELES[libro.asignacion.nivel - 1].nombre}
+                        Nivel {libro.asignacion.nivel} · {datosNivel(libro.asignacion.nivel).nombre}
                       </span>
                       {resumen.etiqueta}
                     </span>

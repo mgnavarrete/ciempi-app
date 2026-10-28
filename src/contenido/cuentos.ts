@@ -2,7 +2,7 @@ import type { NivelLectura } from '../dominio/tipos.ts'
 
 /**
  * Cuentos de Ciempi: vienen con la app y todo lector nuevo los encuentra en
- * su biblioteca, cada uno en su nivel (cuatro por nivel). El servidor los
+ * su biblioteca, cada uno en su nivel (cuatro por nivel, del 0 al 4). El servidor los
  * guarda sin dueño (nadie los borra; un adulto sí puede quitárselos a un
  * niño o cambiarle el nivel). Ver server/src/cuentos.ts.
  *
@@ -23,6 +23,61 @@ const id = (n: number) => `c1e0a000-0000-4000-8000-${String(n).padStart(12, '0')
 export const AUTOR_CUENTOS = 'Cuentos de Ciempi'
 
 export const CUENTOS: Cuento[] = [
+  // ── Nivel 0: sílabas ────────────────────────────────────────────────────
+  // Palabras cortas y de sílabas simples (como en el silabario): se leen
+  // sílaba por sílaba, «La ca-sa de Juan».
+  {
+    id: id(17),
+    nivel: 0,
+    titulo: 'Mi mamá',
+    texto: `Mi mamá me mima.
+Yo amo a mi mamá.
+Mamá me da la mano.
+La mano de mamá es tibia.
+Mamá me lee un cuento.
+Mamá me da un beso.
+¡Te amo, mamá!`,
+  },
+  {
+    id: id(18),
+    nivel: 0,
+    titulo: 'La casa de Juan',
+    texto: `La casa de Juan es muy grande.
+La casa es roja.
+Juan tiene un gato.
+El gato se llama Lalo.
+Lalo toma leche.
+Lalo se sube a la mesa.
+¡Baja, Lalo!
+Lalo duerme en la cama.
+Juan mima a Lalo.`,
+  },
+  {
+    id: id(19),
+    nivel: 0,
+    titulo: 'Hola, sol',
+    texto: `Sale el sol.
+El sol mira la loma.
+La luna se va.
+Una nube pasa.
+Ana sale a jugar.
+Ana ve el sol.
+¡Hola, sol!
+El sol se ríe.`,
+  },
+  {
+    id: id(20),
+    nivel: 0,
+    titulo: 'Ciempi come fruta',
+    texto: `Ciempi ve una uva.
+La uva es rica.
+Ciempi come la uva.
+Ciempi ve una pera.
+Ciempi se la come.
+¡Ñam, ñam!
+Ciempi se toca la panza.
+¡Qué panza tan grande!`,
+  },
   // ── Nivel 1: palabra ────────────────────────────────────────────────────
   {
     id: id(1),
@@ -63,6 +118,7 @@ Mi perro se llama Pupo.
 Pupo es café y chico.
 Pupo mueve la cola.
 Pupo salta y corre.
+Pupo juega con la pelota.
 A Pupo le gusta el agua.
 Pupo se moja todo.
 ¡Pupo, ven aquí!

@@ -309,6 +309,9 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, N, { nivel: 1 })).status).toBe(403)
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, X, { nivel: 1 })).status).toBe(403)
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, T, { nivel: 3 })).body.nivel).toBe(3)
+    // Nivel 0 (sílabas) existe; el 5 no.
+    expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, T, { nivel: 0 })).body.nivel).toBe(0)
+    expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, T, { nivel: 5 })).status).toBe(400)
     // Si el niño agrega un libro, queda en el nivel sugerido (1 para una frase corta) aunque pida otro.
     const suyo = randomUUID()
     await pedir('PUT', `/api/textos/${suyo}`, N, { titulo: 'Mi guía', textoOriginal: 'x', frases: ['Hola.'], capitulos: [], origen: 'pdf' })

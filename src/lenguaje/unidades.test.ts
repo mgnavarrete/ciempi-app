@@ -20,10 +20,12 @@ const libro = {
 const palabrasDe = (unidades: string[]) => unidades.reduce((n, u) => n + contarPalabras(u), 0)
 
 describe('vistaPorNivel', () => {
-  it('nivel 1: las frases tal cual', () => {
-    const v = vistaPorNivel(libro, 1)
-    expect(v.unidades).toEqual(libro.frases)
-    expect(v.capitulos).toEqual(libro.capitulos)
+  it('niveles 0 y 1: las frases tal cual', () => {
+    for (const nivel of [0, 1] as NivelLectura[]) {
+      const v = vistaPorNivel(libro, nivel)
+      expect(v.unidades).toEqual(libro.frases)
+      expect(v.capitulos).toEqual(libro.capitulos)
+    }
   })
 
   it('nivel 2: junta las frases de una misma oración; el título va solo', () => {
@@ -49,7 +51,7 @@ describe('vistaPorNivel', () => {
   })
 
   it('en todos los niveles se leen las mismas palabras (las monedas cuestan lo mismo)', () => {
-    for (const nivel of [1, 2, 3, 4] as NivelLectura[]) expect(palabrasDe(vistaPorNivel(libro, nivel).unidades)).toBe(palabrasDe(libro.frases))
+    for (const nivel of [0, 1, 2, 3, 4] as NivelLectura[]) expect(palabrasDe(vistaPorNivel(libro, nivel).unidades)).toBe(palabrasDe(libro.frases))
   })
 
   it('el avance pasa de un nivel a otro sin perder el lugar', () => {

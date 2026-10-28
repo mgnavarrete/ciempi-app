@@ -22,7 +22,7 @@ describe('nivelSugerido', () => {
 
 describe('cuentos de Ciempi', () => {
   it('hay cuatro por nivel, con ids únicos', () => {
-    for (const n of [1, 2, 3, 4]) expect(CUENTOS.filter((c) => c.nivel === n)).toHaveLength(4)
+    for (const n of [0, 1, 2, 3, 4]) expect(CUENTOS.filter((c) => c.nivel === n)).toHaveLength(4)
     expect(new Set(CUENTOS.map((c) => c.id)).size).toBe(CUENTOS.length)
   })
 
@@ -30,7 +30,7 @@ describe('cuentos de Ciempi', () => {
     for (const c of CUENTOS) {
       const texto = { ...dividirConParrafos(c.texto), capitulos: [] }
       const { unidades } = vistaPorNivel(texto, c.nivel)
-      const maximo = { 1: 8, 2: 16, 3: 60, 4: 160 }[c.nivel]
+      const maximo = { 0: 8, 1: 8, 2: 12, 3: 60, 4: 160 }[c.nivel]
       for (const u of unidades) expect(u.split(/\s+/).length).toBeLessThanOrEqual(maximo)
     }
   })

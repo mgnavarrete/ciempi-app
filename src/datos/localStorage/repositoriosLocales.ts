@@ -169,6 +169,19 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
     id: '2026-10-cuentos-de-ciempi',
     aplicar: (tablas) => tablas.perfiles.todos().forEach((p) => darCuentos(tablas, p.id, p.creadoPor)),
   },
+  {
+    // Llegan los cuentos del nivel 0 (sílabas); los que un adulto quitó no vuelven.
+    id: '2026-10-cuentos-nivel-0',
+    aplicar: (tablas) =>
+      tablas.perfiles.todos().forEach((p) =>
+        darCuentos(
+          tablas,
+          p.id,
+          p.creadoPor,
+          CUENTOS.filter((c) => c.nivel === 0),
+        ),
+      ),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
@@ -186,8 +199,8 @@ function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
  * Deja en la biblioteca del niño los cuentos de Ciempi, cada uno en su nivel
  * (y los textos guardados, al día). Igual que el servidor: ver server/src/cuentos.ts.
  */
-function darCuentos({ textos, asignaciones }: Tablas, perfilId: Id, asignadaPor: Id) {
-  for (const c of CUENTOS) {
+function darCuentos({ textos, asignaciones }: Tablas, perfilId: Id, asignadaPor: Id, cuentos = CUENTOS) {
+  for (const c of cuentos) {
     if (textos.obtener(c.id)?.textoOriginal !== c.texto) {
       const fecha = ahora()
       textos.guardar({

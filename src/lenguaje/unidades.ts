@@ -2,7 +2,7 @@ import type { Capitulo, NivelLectura, Texto } from '../dominio/tipos'
 import { contarPalabras } from '../lectura/monedas'
 
 /**
- * Niveles de lectura. Todos se arman con las frases del libro (las del nivel 1,
+ * Niveles de lectura. Todos se arman con las frases del libro (las de los niveles 0 y 1,
  * las más cortas): una oración son varias frases seguidas, un párrafo varias
  * oraciones, una página varios párrafos. Por eso el avance se guarda siempre
  * como índice de frase y se puede cambiar de nivel sin perder el lugar.
@@ -11,14 +11,17 @@ export type { NivelLectura }
 
 /** `unidad`: lo que se lee de una vez («Frase 3 de 40»). */
 export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; descripcion: string }[] = [
+  { nivel: 0, nombre: 'Sílabas', unidad: 'Frase', descripcion: 'Frases cortas separadas en sílabas, una manzana por sílaba.' },
   { nivel: 1, nombre: 'Palabra', unidad: 'Frase', descripcion: 'Frases cortas, una manzana por palabra.' },
-  { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa, línea por línea.' },
-  { nivel: 3, nombre: 'Párrafo', unidad: 'Párrafo', descripcion: 'Un párrafo o una estrofa, línea por línea.' },
-  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa, sin pista: toca «Terminé».' },
+  { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa de un solo deslizar.' },
+  { nivel: 3, nombre: 'Párrafo', unidad: 'Párrafo', descripcion: 'El párrafo o la estrofa completa a la vista, de un solo deslizar.' },
+  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa, sin pista ni voz: toca «Terminé».' },
 ]
 
-/** Una oración larga se corta (en los mismos cortes de sus frases) para no pasar de esto. */
-export const MAX_PALABRAS_ORACION = 16
+export const datosNivel = (nivel: NivelLectura) => NIVELES.find((n) => n.nivel === nivel) ?? NIVELES[1]
+
+/** Una oración larga se corta (en los mismos cortes de sus frases) para no pasar de esto: cabe en una línea. */
+export const MAX_PALABRAS_ORACION = 12
 /** Párrafos armados a falta de párrafos reales: entre estas palabras y oraciones. */
 const PARRAFO = { minPalabras: 30, maxPalabras: 60, maxOraciones: 4 }
 const PAGINA = { minPalabras: 100, maxPalabras: 160 }
@@ -73,7 +76,7 @@ function agrupar(
 ): Grupo[] {
   const sueltas: Grupo[] = []
   for (let i = desde; i < hasta; i++) sueltas.push([i, i + 1])
-  if (nivel === 1) return sueltas
+  if (nivel <= 1) return sueltas
 
   // Nivel 2: oraciones (frases seguidas hasta un punto), sin pasar de MAX_PALABRAS_ORACION.
   const oraciones = juntar(sueltas, (actual, sig) => !terminaOracion(frases[actual[1] - 1]) && palabras([actual[0], sig[1]]) <= MAX_PALABRAS_ORACION && !inicioParrafo.has(sig[0]))
