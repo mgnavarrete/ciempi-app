@@ -473,11 +473,16 @@ export function PantallaLectura(props: Props) {
   }
 
   /**
-   * Nivel 2 con la voz de Ciempi: la oración entera, de corrido, al ritmo del
-   * dedo, a velocidad normal: si el dedo va adelante, se apura (hasta 1,2×);
-   * si va lento, baja un poco (hasta 0,9×), y si se queda más de tres palabras
-   * atrás, la voz lo espera; si el dedo se detiene, la voz se pausa; si vuelve atrás
-   * o se levanta, se corta, y al seguir retoma desde la palabra del dedo.
+   * Nivel 2 con la voz de Ciempi: la oración entera, de corrido, a la
+   * velocidad de Ajustes, sin apurarse ni frenar: si el dedo va rápido, la
+   * oración se pasa recién cuando la voz termina; si el dedo se queda más de
+   * tres palabras atrás, la voz lo espera. Si el dedo se detiene o se levanta,
+   * la voz termina hasta donde llegó el dedo y ahí se pausa (nunca se corta
+   * atrasada). Si vuelve atrás, se corta y retoma desde la palabra del dedo.
+   *
+   * La velocidad no cambia mientras suena: al pausar y retomar un audio
+   * acelerado, el navegador se salta lo que tenía preparado (casi media
+   * palabra o más), y la voz se comía palabras.
    */
   const seguirOracionConElAudio = (pos: number, terminada: boolean) => {
     const o = oracionAlDedo.current
@@ -489,35 +494,64 @@ export function PantallaLectura(props: Props) {
       return
     }
     ultimaPos.current = Math.max(ultimaPos.current, pos)
-    // La palabra del dedo: la última cuya manzana ya pasó (o la primera).
-    let palabra = 0
-    while (palabra + 1 < pista.manzanas.length && pista.manzanas[palabra + 1] <= pos + 1e-9) palabra++
+    const palabra = palabraEn(pos)
     const dedo = inicioDePalabra[palabra] ?? 0
     const unaPalabra = 1 / Math.max(1, palabras.length)
 
     if (!o.empezada) {
       o.empezada = true
-      voz.decirDesde(frase, ajustes.velocidadVoz * velocidadPara(velocidadDelDedo()), dedo)
+      voz.decirDesde(frase, ajustes.velocidadVoz, dedo)
     } else if (o.cortada) {
       o.cortada = false
-      voz.buscar(dedo)
+      // Retoma donde está el dedo solo si volvió a una palabra que la voz ya
+      // terminó; si no (la voz venía atrasada o va en esa palabra), sigue donde iba.
+      const iba = voz.progreso()
+      const finDelDedo = inicioDePalabra[palabra + 1] ?? 1
+      if (iba === null || finDelDedo < iba - 0.01) voz.buscar(dedo)
     }
     const va = voz.progreso()
     // La voz va más de tres palabras delante del dedo: lo espera (salvo que el dedo ya llegó al final).
     if (va !== null && va - dedo > PALABRAS_DE_VENTAJA * unaPalabra && !terminada) voz.pausar()
     else voz.reanudar()
-    const adelante = va !== null && dedo - va > 2 * unaPalabra
-    voz.ajustarVelocidad(ajustes.velocidadVoz * (adelante || terminada ? VELOCIDAD_MAXIMA : velocidadPara(velocidadDelDedo())))
-    // Si el dedo se queda quieto, la voz se pausa (sigue apenas se mueva).
-    if (!terminada) o.quieto = window.setTimeout(() => voz.pausar(), MS_DEDO_QUIETO)
+    // Si el dedo se queda quieto, la voz termina hasta el dedo y se pausa (sigue apenas se mueva).
+    if (!terminada) o.quieto = window.setTimeout(() => pausarAlLlegar(palabra), MS_DEDO_QUIETO)
   }
 
-  /** El dedo volvió atrás o se levantó: se corta la voz; al seguir, vuelve a leer el trozo donde esté. */
+  /** Nivel 2: la palabra del dedo (la última cuya manzana ya pasó, o la primera). */
+  const palabraEn = (pos: number) => {
+    let palabra = 0
+    while (palabra + 1 < pista.manzanas.length && pista.manzanas[palabra + 1] <= pos + 1e-9) palabra++
+    return palabra
+  }
+
+  /**
+   * Nivel 2: la voz sigue hasta terminar la palabra del dedo y ahí se pausa.
+   * Si iba atrasada (el dedo fue rápido), no se corta a mitad de la oración.
+   */
+  const pausarAlLlegar = (palabra: number) => {
+    const o = oracionAlDedo.current
+    window.clearTimeout(o.quieto)
+    const hasta = inicioDePalabra[palabra + 1] ?? 1
+    const limite = performance.now() + MS_ESPERA_VOZ_LARGA
+    const revisar = () => {
+      const va = voz.progreso()
+      // Todavía cargando (null pero con algo por decir) o atrasada: se espera.
+      const falta = va === null ? voz.hablando() : va < hasta
+      if (falta && performance.now() < limite) o.quieto = window.setTimeout(revisar, 50)
+      else voz.pausar()
+    }
+    revisar()
+  }
+
+  /**
+   * El dedo volvió atrás o se levantó: se corta la voz; al seguir, vuelve a
+   * leer el trozo donde esté. En el nivel 2, al levantarse, la voz antes
+   * termina lo que el dedo ya leyó.
+   */
   const cortarVoz = () => {
     if (oracion && voz.sigueAlDedo) {
-      window.clearTimeout(oracionAlDedo.current.quieto)
-      voz.pausar()
       oracionAlDedo.current.cortada = true
+      pausarAlLlegar(palabraEn(ultimaPos.current))
       return
     }
     voz.callar()
