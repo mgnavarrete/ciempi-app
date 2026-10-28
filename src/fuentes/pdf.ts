@@ -24,17 +24,25 @@ export async function extraerPdf(archivo: File, alProgreso?: (pagina: number, to
     for (let n = 1; n <= doc.numPages; n++) {
       const contenido = await (await doc.getPage(n)).getTextContent()
       let linea = ''
+      let caja: { y: number; x: number; fin: number } | null = null
       const lineas: string[] = []
+      const geometria: { y: number; x: number; fin: number }[] = []
+      const cerrar = () => {
+        lineas.push(linea)
+        geometria.push(caja ?? { y: 0, x: 0, fin: 0 })
+        linea = ''
+        caja = null
+      }
       for (const item of contenido.items) {
         if (!('str' in item)) continue
+        // Dónde está la línea en la página: sirve para encontrar párrafos y versos.
+        const [x, y] = [item.transform[4], item.transform[5]]
+        if (item.str.trim()) caja = caja ? { y: caja.y, x: Math.min(caja.x, x), fin: Math.max(caja.fin, x + item.width) } : { y, x, fin: x + item.width }
         linea += item.str
-        if (item.hasEOL) {
-          lineas.push(linea)
-          linea = ''
-        }
+        if (item.hasEOL) cerrar()
       }
-      if (linea) lineas.push(linea)
-      paginas.push({ numero: n, lineas })
+      if (linea) cerrar()
+      paginas.push({ numero: n, lineas, geometria })
       alProgreso?.(n, doc.numPages)
     }
 

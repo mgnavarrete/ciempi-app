@@ -193,9 +193,13 @@ La clave de un niño la cambia su adulto desde el panel de la app.
 
 ## 10. Respaldos
 
+`deploy/respaldar.sh` guarda la base en `/var/backups/ciempi` (14 días) y revisa que el archivo se
+pueda leer. `deploy/actualizar.sh` lo corre solo antes de cada actualización. Para uno diario:
+
 ```bash
-# crontab -e (root): respaldo diario a las 3:10, guardando 14 días
-10 3 * * * sudo -u postgres pg_dump -Fc ciempi > /var/backups/ciempi-$(date +\%F).dump && find /var/backups -name 'ciempi-*.dump' -mtime +14 -delete
+# sudo crontab -e (cron de root): respaldo diario a las 3:10
+10 3 * * * bash /var/www/ciempi-app/deploy/respaldar.sh >> /var/log/ciempi-respaldo.log 2>&1
 ```
 
-Restaurar: `sudo -u postgres pg_restore -d ciempi --clean /var/backups/ciempi-AAAA-MM-DD.dump`.
+Restaurar: `sudo -u postgres pg_restore -d ciempi --clean /var/backups/ciempi/ciempi-AAAA-MM-DD-HHMM.dump`.
+Conviene copiar de vez en cuando un respaldo fuera del servidor (por ejemplo con `scp` al computador).

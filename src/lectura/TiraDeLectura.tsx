@@ -18,6 +18,8 @@ interface Props {
   alEntrar: (entrada: Entrada) => void
   /** Tocar una palabra (sin deslizar): la app la dice. */
   alTocarPalabra?: (indice: number) => void
+  /** Solo la comida del final de la línea (niveles 2 y 3). */
+  soloUltimaManzana?: boolean
 }
 
 /** Espacio a la izquierda para la cabeza de Ciempi: la primera palabra parte a su lado. */
@@ -32,7 +34,7 @@ const LETRA_MINIMA = 16
  * palabra. El niño desliza el dedo por debajo de las palabras (como cuando
  * se lee siguiendo con el dedo) y Ciempi lo sigue.
  */
-export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
+export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra, soloUltimaManzana }: Props) {
   const zona = useRef<HTMLDivElement>(null)
   const linea = useRef<HTMLParagraphElement>(null)
   const medidor = useRef<HTMLSpanElement>(null)
@@ -94,7 +96,7 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
 
       {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
       <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
-        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} />
+        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} soloUltima={soloUltimaManzana} />
         {esperando && motor.progreso === 0 && (
           <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
             <span className="pointer-fine:hidden">Pon el dedo en Ciempi y desliza →</span>

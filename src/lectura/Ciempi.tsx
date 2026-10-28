@@ -16,6 +16,8 @@ interface Props {
   tranquilo: boolean
   /** Colores, gorro, zapatos… que eligió el niño. */
   apariencia: AparienciaCiempi
+  /** Solo se dibuja la comida del final (niveles 2 y 3): las palabras igual cuentan. */
+  soloUltima?: boolean
 }
 
 /**
@@ -24,7 +26,7 @@ interface Props {
  * Cuando la cabeza llega a una, la palabra se enciende y suena, Ciempi se la
  * come y le crece un segmento.
  */
-export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia }: Props) {
+export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false }: Props) {
   const contenedor = useRef<HTMLDivElement>(null)
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
@@ -52,7 +54,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
 
   // La comida de cada palabra que falta, en su lugar del camino.
   const tamanoManzana = Math.min(14, Math.max(10, r * 0.85))
-  const manzanas = pista.manzanas.map((x, i) => ({ i, x: x * ancho })).filter(({ i }) => i >= palabrasLeidas)
+  const manzanas = pista.manzanas.map((x, i) => ({ i, x: x * ancho })).filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === pista.manzanas.length - 1))
 
   const colores = paletaDe(apariencia).cuerpo
 

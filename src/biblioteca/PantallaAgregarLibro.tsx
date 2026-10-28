@@ -65,6 +65,7 @@ export function PantallaAgregarLibro({ perfilId, usuarioId, alAgregar, alVolver 
           textoOriginal: libro.capitulos.map((c) => `${c.titulo}\n${c.texto}`).join('\n\n'),
           frases: libro.frases,
           capitulos: libro.indice,
+          parrafos: libro.parrafos,
           portada: pdf.portada,
         }),
       )
@@ -133,4 +134,4 @@ export function PantallaAgregarLibro({ perfilId, usuarioId, alAgregar, alVolver 
   )
 }
 
-const renombrar = ({ frases, capitulos }: ReturnType<typeof frasesDelLibro>) => ({ frases, indice: capitulos })
+const renombrar = ({ frases, capitulos, parrafos }: ReturnType<typeof frasesDelLibro>) => ({ frases, indice: capitulos, parrafos })

@@ -1,21 +1,16 @@
-import { TEXTO_EJEMPLO } from '../contenido/ejemplo'
 import { nuevoId } from '../dominio/ids'
 import type { Capitulo, Id, Texto } from '../dominio/tipos'
-import { dividirEnFrases } from '../lenguaje/frases'
+import { dividirConParrafos } from '../lenguaje/frases'
 import type { Repositorios } from './repositorios'
 
 /**
- * Primera vez en una cuenta: crea un niño y le deja el cuento de ejemplo
- * en su biblioteca, para que se pueda probar la lectura de inmediato.
+ * Primera vez sin conexión: crea un lector para probar la lectura de
+ * inmediato. Al crearse, recibe los cuentos de Ciempi en su biblioteca.
  */
-export async function prepararCuentaNueva(repos: Repositorios, usuarioId: Id): Promise<void> {
+export async function prepararCuentaNueva(repos: Repositorios): Promise<void> {
   const perfiles = await repos.perfiles.listar()
   if (perfiles.length > 0) return
-  const perfil = await repos.perfiles.crear({ apodo: 'Lector', icono: '🐛' })
-  const texto =
-    (await repos.textos.listar())[0] ??
-    (await repos.textos.guardar(crearTexto(usuarioId, { titulo: TEXTO_EJEMPLO.titulo, textoOriginal: TEXTO_EJEMPLO.texto, origen: 'ejemplo' })))
-  await repos.asignaciones.asignar(perfil.id, texto.id)
+  await repos.perfiles.crear({ apodo: 'Lector', icono: '🐛' })
 }
 
 export function crearTexto(
@@ -27,9 +22,12 @@ export function crearTexto(
     autor?: string | null
     frases?: string[]
     capitulos?: Capitulo[]
+    parrafos?: number[]
     portada?: string | null
   },
 ): Texto {
+  // Sin frases ya revisadas, se dividen respetando los párrafos (líneas en blanco).
+  const division = datos.frases ? { frases: datos.frases, parrafos: datos.parrafos } : dividirConParrafos(datos.textoOriginal)
   const fecha = new Date().toISOString()
   const titulo = datos.titulo.trim() || 'Sin título'
   return {
@@ -38,8 +36,9 @@ export function crearTexto(
     titulo,
     autor: datos.autor?.trim() || null,
     textoOriginal: datos.textoOriginal,
-    frases: datos.frases ?? dividirEnFrases(datos.textoOriginal),
+    frases: division.frases,
     capitulos: datos.capitulos ?? [{ titulo, desdeFrase: 0 }],
+    ...(division.parrafos ? { parrafos: division.parrafos } : {}),
     portada: datos.portada ?? null,
     origen: datos.origen,
     creadoEn: fecha,

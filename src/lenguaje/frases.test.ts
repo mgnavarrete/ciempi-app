@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dividirEnFrases, dividirEnOraciones, quitarGuiones, trocearOracion } from './frases'
+import { dividirConParrafos, dividirEnFrases, dividirEnOraciones, quitarGuiones, trocearOracion } from './frases'
 
 describe('dividirEnOraciones', () => {
   it('corta por puntuación y conserva ¿? ¡!', () => {
@@ -87,5 +87,17 @@ describe('quitarGuiones', () => {
 
   it('conserva los guiones dentro de una palabra', () => {
     expect(quitarGuiones('un amigo franco-chileno')).toBe('un amigo franco-chileno')
+  })
+})
+
+describe('dividirConParrafos', () => {
+  it('una línea en blanco separa párrafos; cada verso es una frase', () => {
+    const r = dividirConParrafos('Cien zapatitos tengo yo,\ncien zapatitos de color.\n\nUno, dos, tres y cuatro,\nme pongo a contar.')
+    expect(r.frases).toEqual(['Cien zapatitos tengo yo,', 'cien zapatitos de color.', 'Uno, dos, tres y cuatro,', 'me pongo a contar.'])
+    expect(r.parrafos).toEqual([0, 2])
+  })
+
+  it('un solo párrafo no marca párrafos', () => {
+    expect(dividirConParrafos('Sale el sol. Sale la luna.')).toEqual({ frases: ['Sale el sol.', 'Sale la luna.'] })
   })
 })

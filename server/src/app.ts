@@ -22,7 +22,9 @@ import {
   verificarClave,
   type UsuarioSesion,
 } from './auth.ts'
+import { nivelSugerido } from '../../src/lenguaje/dificultad.ts'
 import { enviarRecuperacion } from './correo.ts'
+import { darCuentos } from './cuentos.ts'
 import { fuentesDeVoz, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
@@ -91,6 +93,7 @@ const aTexto = (f: Fila) => ({
   textoOriginal: f.texto_original ?? '',
   frases: f.frases,
   capitulos: f.capitulos,
+  ...(f.parrafos ? { parrafos: f.parrafos } : {}),
   portada: f.portada ?? null,
   origen: f.origen,
   creadoEn: f.creado_en,
@@ -378,6 +381,8 @@ export async function crearApp() {
       }
       const { rows } = await c.query('insert into perfiles_ninos (creado_por, usuario_id, apodo, icono) values ($1, $2, $3, $4) returning id', [yo(req).id, usuarioId, apodo, icono])
       await c.query('insert into miembros_nino (perfil_id, cuenta_id, rol) select $1, id, rol from cuentas where id = $2', [rows[0].id, yo(req).id])
+      // Todo lector nuevo parte con los cuentos de Ciempi en su biblioteca.
+      await darCuentos(c, rows[0].id, yo(req).id)
       return rows[0].id as string
     })
     return perfilPorId(id)
@@ -477,10 +482,11 @@ export async function crearApp() {
 
   // ── Textos y libros ─────────────────────────────────────────────────────
 
-  // Los que subió quien pregunta (sin el texto original, que es grande y la lista no lo usa).
+  // Los que subió quien pregunta y los cuentos de Ciempi (sin el texto original, que es grande y la lista no lo usa).
   app.get('/api/textos', conUsuario, async (req) => {
     const { rows } = await pool.query(
-      'select id, subido_por, titulo, autor, frases, capitulos, portada, origen, creado_en, actualizado_en from textos where subido_por = $1 order by actualizado_en desc',
+      `select id, subido_por, titulo, autor, frases, capitulos, parrafos, portada, origen, creado_en, actualizado_en from textos
+        where subido_por = $1 or origen = 'ciempi' order by origen = 'ciempi', actualizado_en desc`,
       [yo(req).id],
     )
     return rows.map(aTexto)
@@ -498,14 +504,16 @@ export async function crearApp() {
     const frases = b.frases
     if (!Array.isArray(frases) || frases.some((f) => typeof f !== 'string')) throw new Problema('Las frases no son válidas')
     if (!Array.isArray(b.capitulos)) throw new Problema('Los capítulos no son válidos')
+    // Dónde empieza cada párrafo: índices de frase, en orden.
+    const parrafos = Array.isArray(b.parrafos) && b.parrafos.every((p, i, l) => Number.isInteger(p) && p >= 0 && p < frases.length && (i === 0 || p > l[i - 1])) ? b.parrafos : null
     const { rows: existente } = await pool.query('select subido_por from textos where id = $1', [id])
     if (existente[0] && existente[0].subido_por !== yo(req).id) throw new Prohibido('Solo quien subió el texto puede cambiarlo')
     const portada = typeof b.portada === 'string' ? texto(b.portada, 'la portada', 200000) : null
     const { rows } = await pool.query(
-      `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen, parrafos)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
        on conflict (id) do update set titulo = excluded.titulo, autor = excluded.autor, texto_original = excluded.texto_original,
-         frases = excluded.frases, capitulos = excluded.capitulos, portada = excluded.portada, actualizado_en = now()
+         frases = excluded.frases, capitulos = excluded.capitulos, portada = excluded.portada, parrafos = excluded.parrafos, actualizado_en = now()
        returning *`,
       [
         id,
@@ -517,6 +525,7 @@ export async function crearApp() {
         JSON.stringify(b.capitulos),
         portada,
         ['pegado', 'pdf', 'ejemplo'].includes(b.origen as string) ? b.origen : 'pegado',
+        parrafos,
       ],
     )
     return aTexto(rows[0])
@@ -543,8 +552,8 @@ export async function crearApp() {
     await exigirVerNino(yo(req), perfilId)
     if (!(await puedeVerTexto(yo(req), textoId))) throw new Prohibido('No tienes acceso a este texto')
     const modo = ['coro', 'eco', 'solo'].includes(b.modo as string) ? b.modo : 'coro'
-    // El nivel lo elige un adulto del niño; si el niño agrega un libro, parte en el 1.
-    const nivel = (await esAdminDe(yo(req), perfilId)) ? nivelValido(b.nivel) : 1
+    // El nivel lo elige un adulto del niño; si el niño agrega un libro, parte en el sugerido.
+    const nivel = (await esAdminDe(yo(req), perfilId)) ? nivelValido(b.nivel) : await nivelSugeridoDe(textoId)
     await pool.query(
       'insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel) values ($1, $2, $3, $4, $5) on conflict (perfil_id, texto_id) do nothing',
       [yo(req).id, perfilId, textoId, modo, nivel],
@@ -552,6 +561,11 @@ export async function crearApp() {
     const { rows } = await pool.query('select * from asignaciones where perfil_id = $1 and texto_id = $2', [perfilId, textoId])
     return aAsignacion(rows[0])
   })
+
+  async function nivelSugeridoDe(textoId: string) {
+    const { rows } = await pool.query('select frases, parrafos from textos where id = $1', [textoId])
+    return rows[0] ? nivelSugerido(rows[0].frases, rows[0].parrafos ?? undefined) : 1
+  }
 
   async function asignacionPorId(id: string) {
     const { rows } = await pool.query('select a.*, t.subido_por from asignaciones a join textos t on t.id = a.texto_id where a.id = $1', [id])

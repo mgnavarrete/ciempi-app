@@ -5,6 +5,8 @@ import type { Asignacion, Cuenta, InvitacionNino, PerfilNino, SesionLectura, Tex
 import type { IdFuente } from '../fuentes/entradas'
 import { CambiarClave } from '../inicio/CambiarClave'
 import { NuevoPerfil } from '../inicio/PantallaPerfiles'
+import { CUENTOS } from '../contenido/cuentos'
+import { NIVELES } from '../lenguaje/unidades'
 import { LectoresDelLibro } from './LectoresDelLibro'
 import { BarraProgreso, BotonPrincipal, BotonSecundario, Encabezado, Icono, MensajeError, Portada } from '../ui/comunes'
 
@@ -59,7 +61,12 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
   }
 
   // Primero los que subió este adulto; después los de sus niños (o de otro adulto), que también se pueden compartir.
-  const libros = [...textos.filter((t) => t.subidoPor === cuenta.id), ...textos.filter((t) => t.subidoPor !== cuenta.id)]
+  // Los cuentos de Ciempi van aparte, por nivel.
+  const subidos = textos.filter((t) => t.origen !== 'ciempi')
+  const libros = [...subidos.filter((t) => t.subidoPor === cuenta.id), ...subidos.filter((t) => t.subidoPor !== cuenta.id)]
+  const cuentos = CUENTOS.map((c) => ({ cuento: c, texto: textos.find((t) => t.id === c.id) })).filter(
+    (x): x is { cuento: (typeof CUENTOS)[number]; texto: Texto } => x.texto !== undefined,
+  )
   const [creando, setCreando] = useState(false)
   const [cambiandoClave, setCambiandoClave] = useState(false)
   const [avisoCuenta, setAvisoCuenta] = useState<string | null>(null)
@@ -118,7 +125,7 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
           <p className="-mt-2 text-sm text-tinta-suave">
             Toca un lector para darle el libro en un nivel, cambiárselo o quitárselo. Así se comparte un libro entre niños sin volver a subirlo.
           </p>
-          {libros.length === 0 && <p className="text-tinta-suave">Aún no hay textos. Sube un PDF o pega un texto.</p>}
+          {libros.length === 0 && <p className="text-tinta-suave">Aún no subes textos propios. Sube un PDF o pega un texto.</p>}
           <ul className="flex flex-col gap-3">
             {libros.map((t) => (
               <li key={t.id} className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm">
@@ -153,6 +160,30 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
               </li>
             ))}
           </ul>
+
+          {cuentos.length > 0 && (
+            <details className="rounded-2xl bg-white/60 p-3">
+              <summary className="cursor-pointer text-lg font-bold">Cuentos de Ciempi ({cuentos.length})</summary>
+              <p className="mt-1 text-sm text-tinta-suave">
+                Vienen con la app: cada lector nuevo los recibe en su nivel. Puedes cambiarles el nivel o quitárselos a un niño.
+              </p>
+              {NIVELES.map((n) => (
+                <div key={n.nivel} className="mt-3 flex flex-col gap-2">
+                  <h3 className="font-bold text-petroleo">
+                    Nivel {n.nivel} · {n.nombre}
+                  </h3>
+                  {cuentos
+                    .filter((c) => c.cuento.nivel === n.nivel)
+                    .map(({ texto: t }) => (
+                      <div key={t.id} className="flex flex-col gap-1.5 rounded-xl bg-white p-3">
+                        <p className="font-bold">{t.titulo}</p>
+                        <LectoresDelLibro texto={t} perfiles={perfiles} asignaciones={asignaciones} alCambiar={() => void recargar()} />
+                      </div>
+                    ))}
+                </div>
+              ))}
+            </details>
+          )}
         </section>
 
         {/* ── Cuenta ──────────────────────────────────────────── */}

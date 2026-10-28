@@ -20,8 +20,23 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Firma de las APK de release: android/firma/ (scripts/crear-firma.sh), fuera de git.
+    def archivoFirma = file('../firma/firma.properties')
+    signingConfigs {
+        if (archivoFirma.exists()) {
+            release {
+                def firma = new Properties()
+                archivoFirma.withInputStream { firma.load(it) }
+                storeFile file(firma['storeFile'])
+                storePassword firma['storePassword']
+                keyAlias firma['keyAlias']
+                keyPassword firma['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
+            if (archivoFirma.exists()) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

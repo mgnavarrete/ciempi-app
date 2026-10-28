@@ -17,3 +17,5 @@ server/voz/modelos/
 __pycache__/
 # Muestras de voces para elegir (no van en git).
 muestras-voces/
+# Llave para firmar las APK (scripts/crear-firma.sh): se respalda aparte, nunca en git.
+android/firma/

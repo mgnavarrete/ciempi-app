@@ -4,6 +4,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 git pull --ff-only
+# Antes de que el servidor aplique migraciones nuevas, un respaldo de la base.
+bash deploy/respaldar.sh
 npm ci --no-audit --no-fund
 npm run build
 npm --prefix server ci --omit=dev --no-audit --no-fund

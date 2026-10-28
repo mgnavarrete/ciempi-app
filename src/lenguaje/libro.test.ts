@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   capituloDeFrase,
+  cortesDePagina,
   frasesDelLibro,
   normalizarTexto,
   procesarPaginas,
@@ -122,5 +123,46 @@ describe('títulos en mayúsculas', () => {
   it('el título queda con mayúscula solo al inicio y el autor como nombre propio', () => {
     const portada = { numero: 1, lineas: ['GUÍA DE LENGUAJE', 'ANA MARÍA PÉREZ'] }
     expect(sugerirTituloYAutor([portada])).toEqual({ titulo: 'Guía de lenguaje', autor: 'Ana María Pérez' })
+  })
+})
+
+describe('párrafos y versos en el PDF', () => {
+  // Prosa: margen 50–550, interlineado 14. Línea corta con punto = fin de párrafo.
+  const prosa = {
+    numero: 1,
+    lineas: ['Había una vez un ciempiés que vivía en un', 'jardín lleno de flores.', 'Un día salió a caminar por el', 'camino de tierra hasta la laguna.', 'Allí conoció a una rana.'],
+    geometria: [
+      { y: 700, x: 50, fin: 548 },
+      { y: 686, x: 50, fin: 200 },
+      { y: 672, x: 70, fin: 550 },
+      { y: 658, x: 50, fin: 545 },
+      { y: 630, x: 50, fin: 230 },
+    ],
+  }
+
+  it('separa párrafos por línea corta con punto y por espacio mayor', () => {
+    expect(cortesDePagina(prosa)).toEqual([null, null, 'parrafo', null, 'parrafo'])
+    const [cap] = procesarPaginas([prosa])
+    expect(cap.texto).toBe('Había una vez un ciempiés que vivía en un jardín lleno de flores.\n\nUn día salió a caminar por el camino de tierra hasta la laguna.\n\nAllí conoció a una rana.')
+    expect(frasesDelLibro([cap]).parrafos).toEqual([0, 2, 4])
+  })
+
+  it('conserva los versos de un poema', () => {
+    const poema = {
+      numero: 1,
+      lineas: ['Cien zapatitos tengo yo,', 'cien zapatitos de color,', 'camino lento por el jardín', 'saludando a cada flor.', 'Esta es una línea larga de prosa que llega hasta el margen derecho'],
+      geometria: [
+        { y: 700, x: 50, fin: 220 },
+        { y: 686, x: 50, fin: 230 },
+        { y: 672, x: 50, fin: 240 },
+        { y: 658, x: 50, fin: 210 },
+        { y: 630, x: 50, fin: 550 },
+      ],
+    }
+    expect(cortesDePagina(poema)).toEqual([null, 'verso', 'verso', 'verso', 'parrafo'])
+  })
+
+  it('sin posiciones, todo sigue igual que antes', () => {
+    expect(cortesDePagina({ numero: 1, lineas: prosa.lineas })).toEqual([null, null, null, null, null])
   })
 })

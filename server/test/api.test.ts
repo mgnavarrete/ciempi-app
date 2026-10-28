@@ -20,6 +20,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     // Base limpia en cada corrida.
     await pool.query('drop schema public cascade; create schema public')
     await migrar()
+    await (await import('../src/cuentos.ts')).sembrarCuentos()
     app = await crearApp()
   })
   afterAll(async () => {
@@ -28,6 +29,9 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   type Respuesta = { status: number; body: any }
+  // La biblioteca sin los cuentos de Ciempi (que todo niño recibe al crearse).
+  const { CUENTOS } = await import('../../src/contenido/cuentos.ts')
+  const sinCuentos = (asignaciones: { textoId: string }[]) => asignaciones.filter((a) => !CUENTOS.some((c) => c.id === a.textoId))
   const pedir = async (metodo: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, token?: string, payload?: object): Promise<Respuesta> => {
     const r = await app.inject({ method: metodo, url, payload, headers: token ? { authorization: `Bearer ${token}` } : {} })
     return { status: r.statusCode, body: r.body ? JSON.parse(r.body) : null }
@@ -94,11 +98,11 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
 
   it('la terapeuta le asigna un libro; el niño lo ve pero no lo borra ni lo edita', async () => {
     libroT = randomUUID()
-    expect((await pedir('PUT', `/api/textos/${libroT}`, T, { titulo: 'Papelucho', textoOriginal: 'x', frases: ['a'], capitulos: [] })).status).toBe(200)
+    expect((await pedir('PUT', `/api/textos/${libroT}`, T, { titulo: 'Libro de la terapeuta', textoOriginal: 'x', frases: ['a'], capitulos: [] })).status).toBe(200)
     asigT = (await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, T, { textoId: libroT })).body.id
     const biblioteca = await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, N)
-    expect(biblioteca.body).toHaveLength(2)
-    expect((await pedir('GET', `/api/textos/${libroT}`, N)).body.titulo).toBe('Papelucho')
+    expect(sinCuentos(biblioteca.body)).toHaveLength(2)
+    expect((await pedir('GET', `/api/textos/${libroT}`, N)).body.titulo).toBe('Libro de la terapeuta')
     expect((await pedir('DELETE', `/api/asignaciones/${asigT}`, N)).status).toBe(403)
     expect((await pedir('PUT', `/api/textos/${libroT}`, N, { titulo: 'x', textoOriginal: 'x', frases: [], capitulos: [] })).status).toBe(403)
     expect((await pedir('DELETE', `/api/textos/${libroT}`, N)).status).toBe(403)
@@ -113,7 +117,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
 
   it('el niño borra su propia guía', async () => {
     expect((await pedir('DELETE', `/api/textos/${guia}`, N)).status).toBe(200)
-    expect((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, N)).body).toHaveLength(1)
+    expect(sinCuentos((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, N)).body)).toHaveLength(1)
   })
 
   it('tienda: no compra sin monedas, compra con monedas, no cobra dos veces y solo deja ponerse lo comprado', async () => {
@@ -144,7 +148,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect(inv.body.codigo).toMatch(/^[A-Z2-9]{6}$/)
     expect((await pedir('POST', '/api/invitaciones/canjear', N, { codigo: inv.body.codigo })).status).toBe(403)
     expect((await pedir('POST', '/api/invitaciones/canjear', A, { codigo: inv.body.codigo.toLowerCase() })).body.id).toBe(perfilId)
-    expect((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, A)).body).toHaveLength(1)
+    expect(sinCuentos((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, A)).body)).toHaveLength(1)
     expect((await pedir('POST', '/api/invitaciones/canjear', A, { codigo: inv.body.codigo })).status).toBe(400)
   })
 
@@ -305,7 +309,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, N, { nivel: 1 })).status).toBe(403)
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, X, { nivel: 1 })).status).toBe(403)
     expect((await pedir('PUT', `/api/asignaciones/${a.body.id}/nivel`, T, { nivel: 3 })).body.nivel).toBe(3)
-    // Si el niño agrega un libro, queda en nivel 1 aunque pida otro.
+    // Si el niño agrega un libro, queda en el nivel sugerido (1 para una frase corta) aunque pida otro.
     const suyo = randomUUID()
     await pedir('PUT', `/api/textos/${suyo}`, N, { titulo: 'Mi guía', textoOriginal: 'x', frases: ['Hola.'], capitulos: [], origen: 'pdf' })
     expect((await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, N, { textoId: suyo, nivel: 4 })).body.nivel).toBe(1)
@@ -313,6 +317,31 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     const s = await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId, nivel: 3, iniciadaEn: new Date().toISOString() })
     expect(s.body.nivel).toBe(3)
     expect((await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId })).body.nivel).toBe(1)
+  })
+
+  it('cuentos de Ciempi: todo niño nuevo los tiene en su nivel, nadie los borra y los ven todos', async () => {
+    const nuevo = await pedir('POST', '/api/perfiles', T, { apodo: 'Lu', icono: '🐱' })
+    const biblioteca = (await pedir('GET', `/api/perfiles/${nuevo.body.id}/asignaciones`, T)).body as { textoId: string; nivel: number }[]
+    expect(biblioteca).toHaveLength(CUENTOS.length)
+    for (const c of CUENTOS) expect(biblioteca.find((a) => a.textoId === c.id)?.nivel).toBe(c.nivel)
+    const poema = CUENTOS.find((c) => c.titulo === 'Canción de Ciempi')!
+    const texto = (await pedir('GET', `/api/textos/${poema.id}`, X)).body
+    expect(texto).toMatchObject({ subidoPor: null, origen: 'ciempi', autor: 'Cuentos de Ciempi', parrafos: [0, 4, 8, 12] })
+    expect((await pedir('GET', '/api/textos', X)).body.filter((t: { origen: string }) => t.origen === 'ciempi')).toHaveLength(CUENTOS.length)
+    expect((await pedir('DELETE', `/api/textos/${poema.id}`, T)).status).toBe(403)
+    expect((await pedir('PUT', `/api/textos/${poema.id}`, T, { titulo: 'x', textoOriginal: 'x', frases: [], capitulos: [] })).status).toBe(403)
+    // Volver a sembrar no repite ni devuelve un cuento que un adulto quitó.
+    const quitado = biblioteca.find((a) => a.textoId === poema.id) as unknown as { id: string }
+    expect((await pedir('DELETE', `/api/asignaciones/${quitado.id}`, T)).status).toBe(200)
+    await (await import('../src/cuentos.ts')).sembrarCuentos()
+    expect((await pedir('GET', `/api/perfiles/${nuevo.body.id}/asignaciones`, T)).body).toHaveLength(CUENTOS.length - 1)
+  })
+
+  it('los párrafos de un texto se guardan si son válidos', async () => {
+    const id = randomUUID()
+    const frases = ['Uno.', 'Dos.', 'Tres.']
+    expect((await pedir('PUT', `/api/textos/${id}`, T, { titulo: 'P', textoOriginal: 'x', frases, capitulos: [], parrafos: [0, 2] })).body.parrafos).toEqual([0, 2])
+    expect((await pedir('PUT', `/api/textos/${id}`, T, { titulo: 'P', textoOriginal: 'x', frases, capitulos: [], parrafos: [2, 0] })).body.parrafos).toBeUndefined()
   })
 
   it('compartir: un adulto pasa a otro niño un libro que subió un niño suyo', async () => {

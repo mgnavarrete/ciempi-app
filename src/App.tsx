@@ -61,8 +61,8 @@ export function App() {
   useEffect(() => {
     if (!sesion) return setPerfiles(null)
     void (async () => {
-      // Sin conexión se deja un niño con el cuento de ejemplo para probar de inmediato.
-      if (!repos.enLinea) await prepararCuentaNueva(repos, sesion.usuarioId)
+      // Sin conexión se deja un niño con los cuentos de Ciempi para probar de inmediato.
+      if (!repos.enLinea) await prepararCuentaNueva(repos)
       await recargarPerfiles()
     })().catch((e: Error) => setError(e.message))
   }, [repos, sesion, recargarPerfiles])

@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
+import { nivelSugerido } from '../lenguaje/dificultad'
 import { NIVELES } from '../lenguaje/unidades'
 import { MensajeError } from '../ui/comunes'
-
-/** Niveles que la pantalla de lectura ya sabe mostrar (los demás aparecen como «Pronto»). */
-export const NIVELES_DISPONIBLES: NivelLectura[] = [1]
 
 interface Props {
   texto: Texto
@@ -63,6 +61,7 @@ export function DialogoNivel(props: { texto: Texto; perfil: PerfilNino; asignaci
   const repos = useRepositorios()
   const [error, setError] = useState<string | null>(null)
   const [ocupado, setOcupado] = useState(false)
+  const sugerido = useMemo(() => nivelSugerido(texto.frases, texto.parrafos), [texto])
 
   const hacer = async (fn: () => Promise<unknown>) => {
     setOcupado(true)
@@ -100,14 +99,13 @@ export function DialogoNivel(props: { texto: Texto; perfil: PerfilNino; asignaci
 
         <ul className="flex flex-col gap-2">
           {NIVELES.map((n) => {
-            const disponible = NIVELES_DISPONIBLES.includes(n.nivel)
             const actual = asignacion?.nivel === n.nivel
             return (
               <li key={n.nivel}>
                 <button
-                  disabled={!disponible || ocupado || actual}
+                  disabled={ocupado || actual}
                   onClick={() => elegir(n.nivel)}
-                  className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left ${actual ? 'bg-petroleo text-white' : 'bg-white'} disabled:cursor-default ${!disponible ? 'opacity-50' : ''}`}
+                  className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left ${actual ? 'bg-petroleo text-white' : 'bg-white'} disabled:cursor-default`}
                 >
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amarillo font-bold text-tinta">{n.nivel}</span>
                   <span className="min-w-0 flex-1">
@@ -115,7 +113,7 @@ export function DialogoNivel(props: { texto: Texto; perfil: PerfilNino; asignaci
                     <span className={`block text-sm ${actual ? 'text-white/85' : 'text-tinta-suave'}`}>{n.descripcion}</span>
                   </span>
                   {actual && <span className="text-sm font-bold">✓ Ahora</span>}
-                  {!disponible && <span className="text-sm text-tinta-suave">Pronto</span>}
+                  {!actual && n.nivel === sugerido && <span className="rounded-full bg-verde-claro px-2 py-0.5 text-xs font-bold text-tinta">Sugerido</span>}
                 </button>
               </li>
             )

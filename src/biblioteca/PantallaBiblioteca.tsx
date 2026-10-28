@@ -47,7 +47,11 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
     const conTexto = await Promise.all(
       asignaciones.filter((a) => a.estado !== 'archivada').map(async (asignacion) => ({ asignacion, texto: await repos.textos.obtener(asignacion.textoId) })),
     )
-    return conTexto.filter((l): l is LibroEnBiblioteca => l.texto !== null)
+    // Primero lo que está leyendo, después lo nuevo (de los niveles más fáciles a los más difíciles) y al final lo terminado.
+    const orden = { en_curso: 0, pendiente: 1, completada: 2, archivada: 3 }
+    return conTexto
+      .filter((l): l is LibroEnBiblioteca => l.texto !== null)
+      .sort((a, b) => orden[a.asignacion.estado] - orden[b.asignacion.estado] || (a.asignacion.nivel ?? 1) - (b.asignacion.nivel ?? 1))
   }, [repos, perfil.id])
 
   useEffect(() => {

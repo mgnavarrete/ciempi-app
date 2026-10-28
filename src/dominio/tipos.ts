@@ -1,4 +1,4 @@
-import type { AparienciaCiempi } from '../ciempi/catalogo'
+import type { AparienciaCiempi } from '../ciempi/catalogo.ts'
 
 /**
  * Modelo de datos de Ciempi.
@@ -133,7 +133,8 @@ export interface InvitacionNino {
 
 // ── Textos y asignaciones ──────────────────────────────────────────────────
 
-export type OrigenTexto = 'pegado' | 'pdf' | 'ejemplo'
+/** ciempi: los cuentos que trae la app (ver contenido/cuentos.ts), de nadie en particular. */
+export type OrigenTexto = 'pegado' | 'pdf' | 'ejemplo' | 'ciempi'
 
 export interface Capitulo {
   titulo: string
@@ -144,8 +145,11 @@ export interface Capitulo {
 /** Un texto corto o un libro completo. Los cortos tienen un solo capítulo. */
 export interface Texto {
   id: Id
-  /** Usuario que lo subió (un adulto o el propio niño). Solo él puede editarlo o borrarlo. */
-  subidoPor: Id
+  /**
+   * Usuario que lo subió (un adulto o el propio niño). Solo él puede editarlo o
+   * borrarlo. null en los cuentos de Ciempi, que nadie puede borrar.
+   */
+  subidoPor: Id | null
   titulo: string
   autor: string | null
   /** Texto limpio de origen (para volver a dividirlo si cambian las reglas). */

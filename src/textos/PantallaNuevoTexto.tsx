@@ -5,7 +5,8 @@ import { crearTexto } from '../datos/inicio'
 import type { PerfilNino, Texto } from '../dominio/tipos'
 import { FUENTES, type IdFuente } from '../fuentes/entradas'
 import { extraerPdf, tieneTexto, type PdfExtraido } from '../fuentes/pdf'
-import { dividirEnFrases } from '../lenguaje/frases'
+import { nivelSugerido } from '../lenguaje/dificultad'
+import { dividirConParrafos } from '../lenguaje/frases'
 import { frasesDelLibro, procesarPaginas } from '../lenguaje/libro'
 import { separarSilabas } from '../lenguaje/silabas'
 import { BotonPrincipal, Encabezado, MensajeError, Portada } from '../ui/comunes'
@@ -35,7 +36,9 @@ export function PantallaNuevoTexto({ usuarioId, perfiles, paraPerfilId, fuenteIn
     setError(null)
     try {
       const guardado = await repos.textos.guardar(texto)
-      await Promise.all([...paraNinos].map((id) => repos.asignaciones.asignar(id, guardado.id)))
+      // Queda en el nivel sugerido; después se puede cambiar por niño.
+      const nivel = nivelSugerido(guardado.frases, guardado.parrafos)
+      await Promise.all([...paraNinos].map((id) => repos.asignaciones.asignar(id, guardado.id, nivel)))
       alGuardar(guardado)
     } catch (e) {
       setError((e as Error).message)
@@ -111,7 +114,8 @@ interface PropsFuente {
 function DesdeTextoPegado({ cuentaId, guardando, alGuardar, pie }: PropsFuente) {
   const [titulo, setTitulo] = useState('')
   const [contenido, setContenido] = useState('')
-  const frases = useMemo(() => dividirEnFrases(contenido), [contenido])
+  // Una línea en blanco separa párrafos (o estrofas, en un poema).
+  const { frases, parrafos } = useMemo(() => dividirConParrafos(contenido), [contenido])
 
   return (
     <>
@@ -137,7 +141,7 @@ function DesdeTextoPegado({ cuentaId, guardando, alGuardar, pie }: PropsFuente) 
       {pie}
       <BotonPrincipal
         disabled={frases.length === 0 || guardando}
-        onClick={() => alGuardar(crearTexto(cuentaId, { titulo, textoOriginal: contenido, origen: 'pegado', frases }))}
+        onClick={() => alGuardar(crearTexto(cuentaId, { titulo, textoOriginal: contenido, origen: 'pegado', frases, parrafos }))}
       >
         Guardar
       </BotonPrincipal>
@@ -209,8 +213,8 @@ function RevisarLibro({ pdf, cuentaId, guardando, alGuardar, pie }: PropsFuente 
 
   const libro = useMemo(() => {
     const capitulos = procesarPaginas(pdf.paginas.slice(desde - 1, hasta))
-    const { frases, capitulos: indice } = frasesDelLibro(capitulos)
-    return { capitulos, frases, indice }
+    const { frases, capitulos: indice, parrafos } = frasesDelLibro(capitulos)
+    return { capitulos, frases, indice, parrafos }
   }, [pdf, desde, hasta])
 
   const inicioDePagina = (n: number) => pdf.paginas[n - 1]?.lineas.find((l) => l.trim().length > 20)?.trim() ?? ''
@@ -225,6 +229,7 @@ function RevisarLibro({ pdf, cuentaId, guardando, alGuardar, pie }: PropsFuente 
         textoOriginal: libro.capitulos.map((c) => `${c.titulo}\n${c.texto}`).join('\n\n'),
         frases: libro.frases,
         capitulos: libro.indice,
+        parrafos: libro.parrafos,
         portada: pdf.portada,
       }),
     )

@@ -85,15 +85,35 @@ export function PantallaLectura(props: Props) {
   const [indiceAbierto, setIndiceAbierto] = useState(false)
   // Sin rayas ni guiones de diálogo, que confunden al leer.
   const frase = quitarGuiones(unidades[indice] ?? '')
+  // Niveles 2 y 3: la unidad se lee línea por línea (cada línea es una frase
+  // del nivel 1), con una pista por línea. Nivel 4: la página entera, sin pista.
+  const multilinea = nivel === 2 || nivel === 3
+  const libre = nivel === 4
+  const desdeFraseUnidad = vista.desdeFrase[indice] ?? 0
+  const hastaFraseUnidad = vista.desdeFrase[indice + 1] ?? totalFrases
+  const lineas = useMemo(
+    () =>
+      multilinea
+        ? texto.frases
+            .slice(desdeFraseUnidad, hastaFraseUnidad)
+            .map(quitarGuiones)
+            .filter((l) => /\p{L}|\p{N}/u.test(l))
+        : [frase],
+    [multilinea, texto.frases, desdeFraseUnidad, hastaFraseUnidad, frase],
+  )
+  const [linea, setLinea] = useState(0)
+  const textoLinea = lineas[linea] ?? ''
 
   const conCapitulos = capitulos.length > 1
   const numCapitulo = capituloDeFrase(capitulos, indice)
   const capitulo = capitulos[numCapitulo]
   const finDelCapitulo = capitulos[numCapitulo + 1]?.desdeFrase ?? total
   const avanceCapitulo = (indice - capitulo.desdeFrase) / Math.max(1, finDelCapitulo - capitulo.desdeFrase)
-  // Arriba se ve lo que ya leyó (no lo que viene): hasta dos frases del capítulo.
-  const yaLeidas = unidades.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
-  const palabras = useMemo(() => silabearFrase(frase), [frase])
+  // Arriba se ve lo que ya leyó: hasta dos frases del capítulo o, en una
+  // oración o párrafo, sus líneas ya leídas. Abajo, las líneas que vienen.
+  const yaLeidas = multilinea ? lineas.slice(Math.max(0, linea - 3), linea) : unidades.slice(Math.max(capitulo.desdeFrase, indice - 2), indice).map(quitarGuiones)
+  const queVienen = multilinea ? lineas.slice(linea + 1, linea + 3) : []
+  const palabras = useMemo(() => silabearFrase(textoLinea), [textoLinea])
   // La voz del servidor se pide de antemano (esta frase y la siguiente) para que suene apenas llega el dedo.
   const fraseQueViene = unidades[indice + 1]
   useEffect(() => {
@@ -174,6 +194,16 @@ export function PantallaLectura(props: Props) {
     setAviso(null)
     setPausa(null)
     setIndice(i)
+    setLinea(0)
+    reiniciarMotor()
+  }
+
+  /** Siguiente línea de la misma oración o párrafo. */
+  const siguienteLinea = () => {
+    cambiosDeFrase.current++
+    cancelarProgramados()
+    setAviso(null)
+    setLinea((l) => l + 1)
     reiniciarMotor()
   }
 
@@ -215,17 +245,21 @@ export function PantallaLectura(props: Props) {
   }
 
   /**
-   * Frase terminada: sin pausa ni cartel, se pasa a la siguiente. Las
-   * palabras leídas a buen ritmo, en frases nuevas, suman hacia la próxima moneda.
+   * Frase (o línea) terminada: sin pausa ni cartel, se pasa a la siguiente.
+   * Las palabras leídas a buen ritmo, en frases nuevas, suman hacia la
+   * próxima moneda: igual en todos los niveles.
    */
   const completar = (aBuenRitmo: boolean) => {
     const eraNueva = indice >= maximaRef.current
-    maximaRef.current = Math.max(maximaRef.current, indice + 1)
-    setMaxima(maximaRef.current)
+    const terminaUnidad = linea >= lineas.length - 1
+    if (terminaUnidad) {
+      maximaRef.current = Math.max(maximaRef.current, indice + 1)
+      setMaxima(maximaRef.current)
+    }
 
     let ganadas = 0
     if (aBuenRitmo && eraNueva && !vistaPrevia) {
-      const r = acumularPalabras(haciaMonedaRef.current, contarPalabras(frase))
+      const r = acumularPalabras(haciaMonedaRef.current, contarPalabras(textoLinea))
       ganadas = r.monedas
       haciaMonedaRef.current = r.resto
       setHaciaMoneda(r.resto)
@@ -247,9 +281,41 @@ export function PantallaLectura(props: Props) {
     const cambio = cambiosDeFrase.current
     programar(async () => {
       await voz.esperarSilencio(4000)
-      if (cambio === cambiosDeFrase.current) siguienteFrase(eraNueva)
+      if (cambio !== cambiosDeFrase.current) return
+      if (terminaUnidad) siguienteFrase(eraNueva)
+      else siguienteLinea()
     }, MS_PASO_FRASE)
   }
+
+  // ── Nivel 4: página libre ─────────────────────────────────────────────
+  // Sin pista: el niño lee y toca «Terminé». Si fue más rápido que el ritmo
+  // máximo (palabras ÷ palabras por segundo), la página no da monedas.
+  const inicioPagina = useRef(Date.now())
+  useEffect(() => {
+    inicioPagina.current = Date.now()
+  }, [indice, pausa])
+  const terminarPagina = () => {
+    voz.desbloquear()
+    voz.callar()
+    const segundos = (Date.now() - inicioPagina.current) / 1000
+    tiempoActivo.current.ms += Math.min(segundos, 600) * 1000
+    const aBuenRitmo = segundos >= contarPalabras(frase) / ajustes.umbralPalabrasPorSegundo
+    if (aBuenRitmo) return completar(true)
+    if (!tranquilo) sonarTropiezo()
+    setAviso('Muy rápido 🐢 Esta página no da monedas')
+    programar(() => completar(false), MS_TROPIEZO)
+  }
+  const parrafosPagina = useMemo(() => {
+    if (!libre) return []
+    // Los párrafos de la página: los del libro o, si no tiene, los del nivel 3.
+    const inicios = new Set(vistaPorNivel(texto, 3).desdeFrase)
+    const parrafos: string[][] = []
+    for (let f = desdeFraseUnidad; f < hastaFraseUnidad; f++) {
+      if (!parrafos.length || inicios.has(f)) parrafos.push([])
+      parrafos[parrafos.length - 1].push(quitarGuiones(texto.frases[f]))
+    }
+    return parrafos.map((p) => p.join(' ')).filter((p) => /\p{L}|\p{N}/u.test(p))
+  }, [libre, texto, desdeFraseUnidad, hastaFraseUnidad])
 
   // Una frase que quedó vacía (era solo una raya) se salta sola.
   useEffect(() => {
@@ -351,6 +417,11 @@ export function PantallaLectura(props: Props) {
     voz.callar()
     if (palabras[i]) voz.decir(palabras[i].texto, ajustes.velocidadVoz)
   }
+  const decirTexto = (t: string) => {
+    voz.desbloquear()
+    voz.callar()
+    if (t) voz.decir(t, ajustes.velocidadVoz)
+  }
 
   const panelIndice = indiceAbierto && (
     <PanelIndice
@@ -433,14 +504,25 @@ export function PantallaLectura(props: Props) {
         📱 Gira el teléfono: se lee mejor en horizontal
       </p>
 
-      {/* Lectura centrada en la pantalla: lo ya leído arriba, la frase y el carril de Ciempi abajo. */}
+      {libre ? (
+        <PaginaLibre
+          key={indice}
+          parrafos={parrafosPagina}
+          letra={ajustes.tamanoLetra}
+          esUltima={indice === total - 1}
+          aviso={aviso}
+          alTocarPalabra={decirTexto}
+          alTerminar={terminarPagina}
+        />
+      ) : (
+      /* Lectura centrada en la pantalla: lo ya leído arriba, la frase y el carril de Ciempi abajo. */
       <div className="flex min-h-0 flex-1 flex-col justify-center">
       {/* Lo que ya leyó, chico y tenue: da contexto sin adelantar lo que viene. */}
       <div className="flex min-h-0 shrink flex-col items-center justify-end gap-1 overflow-hidden px-6 pb-3" aria-hidden>
         {yaLeidas.map((f, i) => (
           <p
-            key={`${indice}-${i}`}
-            className={`subir font-lectura line-clamp-1 text-center leading-snug text-tinta-suave ${i === yaLeidas.length - 1 ? 'opacity-70' : 'opacity-40'} ${tranquilo ? 'tranquilo' : ''}`}
+            key={`${indice}-${linea - yaLeidas.length + i}`}
+            className={`subir font-lectura line-clamp-1 text-center leading-snug ${multilinea ? 'text-petroleo' : 'text-tinta-suave'} ${i === yaLeidas.length - 1 ? 'opacity-70' : 'opacity-40'} ${tranquilo ? 'tranquilo' : ''}`}
             style={{ fontSize: `min(${Math.round(ajustes.tamanoLetra * 0.5)}px, 6dvh, 5vw)`, letterSpacing: '0.04em' }}
           >
             {f}
@@ -450,13 +532,14 @@ export function PantallaLectura(props: Props) {
 
       {/* La frase, y justo debajo el carril de Ciempi: ahí se desliza el dedo. */}
       <div className="relative px-4 pb-4 apaisado:px-10 apaisado:pb-2">
-        {aviso && (
+        {aviso && !libre && (
           <div role="alert" className="aparecer absolute inset-x-5 -top-16 z-20 rounded-2xl bg-amarillo px-4 py-3 text-center text-2xl font-bold text-tinta shadow-md">
             {aviso}
           </div>
         )}
-        <div key={indice} className={`subir ${tranquilo ? 'tranquilo' : ''}`}>
+        <div key={`${indice}-${linea}`} className={`subir ${tranquilo ? 'tranquilo' : ''}`}>
           <TiraDeLectura
+            soloUltimaManzana={multilinea}
             palabras={palabras}
             motor={motor}
             pista={pista}
@@ -468,7 +551,76 @@ export function PantallaLectura(props: Props) {
             alTocarPalabra={decirPalabra}
           />
         </div>
+        {/* Lo que falta de la oración o el párrafo: se ve, pero se lee al llegar. */}
+        {queVienen.length > 0 && (
+          <div className="flex flex-col items-center gap-0.5 pt-1" aria-hidden>
+            {queVienen.map((l, i) => (
+              <p
+                key={`${indice}-${linea + 1 + i}`}
+                className={`font-lectura line-clamp-1 text-center leading-snug text-tinta ${i === 0 ? 'opacity-60' : 'opacity-35'}`}
+                style={{ fontSize: `min(${Math.round(ajustes.tamanoLetra * 0.5)}px, 6dvh, 5vw)`, letterSpacing: '0.04em' }}
+              >
+                {l}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
+      </div>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Nivel 4: la página completa, sin pista. Tocar una palabra la dice. Al
+ * terminar de leer, el niño toca «Terminé».
+ */
+function PaginaLibre(props: {
+  parrafos: string[]
+  letra: number
+  esUltima: boolean
+  aviso: string | null
+  alTocarPalabra: (palabra: string) => void
+  alTerminar: () => void
+}) {
+  const [listo, setListo] = useState(false)
+  return (
+    <div className="flex min-h-0 flex-1 flex-col gap-2 px-5 pb-3 pt-1 apaisado:flex-row apaisado:items-end apaisado:px-10">
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-3xl bg-white px-5 py-4 shadow-sm apaisado:self-stretch">
+        {props.parrafos.map((p, i) => (
+          <p
+            key={i}
+            className="font-lectura mb-3 leading-relaxed text-tinta last:mb-0"
+            style={{ fontSize: `min(${Math.round(props.letra * 0.62)}px, 7vw)`, letterSpacing: '0.02em' }}
+          >
+            {p.split(/\s+/).map((palabra, j) => (
+              <span key={j}>
+                <span onClick={() => props.alTocarPalabra(palabra.replace(/[^\p{L}\p{N}]/gu, ''))} className="cursor-pointer rounded active:bg-amarillo/50">
+                  {palabra}
+                </span>{' '}
+              </span>
+            ))}
+          </p>
+        ))}
+      </div>
+      <div className="flex shrink-0 flex-col items-center gap-2 apaisado:w-40">
+        {props.aviso && (
+          <p role="alert" className="aparecer rounded-2xl bg-amarillo px-3 py-2 text-center font-bold text-tinta">
+            {props.aviso}
+          </p>
+        )}
+        <BotonPrincipal
+          disabled={listo}
+          onClick={() => {
+            setListo(true)
+            props.alTerminar()
+          }}
+          className="w-full px-6 py-4 text-xl"
+        >
+          {props.esUltima ? 'Terminé el libro ✓' : 'Terminé ✓'}
+        </BotonPrincipal>
+        <p className="text-center text-xs text-tinta-suave">Toca una palabra para escucharla</p>
       </div>
     </div>
   )

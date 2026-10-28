@@ -1,8 +1,10 @@
 import { crearApp } from './app.ts'
+import { sembrarCuentos } from './cuentos.ts'
 import { migrar } from './db.ts'
 
-// Crea o actualiza las tablas antes de empezar a atender.
+// Crea o actualiza las tablas (y los cuentos de Ciempi) antes de empezar a atender.
 await migrar()
+await sembrarCuentos()
 const app = await crearApp()
 
 const PUERTO = Number(process.env.PORT ?? 3200)

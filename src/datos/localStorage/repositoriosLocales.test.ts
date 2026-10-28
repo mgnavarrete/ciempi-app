@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { CUENTOS } from '../../contenido/cuentos'
 import { crearTexto, prepararCuentaNueva } from '../inicio'
 import { crearRepositoriosLocales } from './repositoriosLocales'
 
@@ -15,21 +16,22 @@ async function preparado() {
   const repos = crearRepositoriosLocales(almacen)
   const sesion = (await repos.auth.sesionActual())!
   const cuenta = sesion.tipo === 'adulto' ? sesion.cuenta : null!
-  await prepararCuentaNueva(repos, cuenta.id)
+  await prepararCuentaNueva(repos)
   const [perfil] = await repos.perfiles.listar()
   return { almacen, repos, cuenta, perfil }
 }
 
 describe('repositorios en localStorage', () => {
-  it('la primera vez crea un niño con el cuento de ejemplo en su biblioteca, una sola vez', async () => {
-    const { almacen, repos, cuenta, perfil } = await preparado()
-    await prepararCuentaNueva(repos, cuenta.id)
+  it('la primera vez crea un niño con los cuentos de Ciempi en su biblioteca, una sola vez', async () => {
+    const { almacen, repos, perfil } = await preparado()
+    await prepararCuentaNueva(repos)
     const otraVez = crearRepositoriosLocales(almacen)
     expect(await otraVez.perfiles.listar()).toHaveLength(1)
     const biblioteca = await otraVez.asignaciones.listarPorPerfil(perfil.id)
-    expect(biblioteca).toHaveLength(1)
-    const texto = await otraVez.textos.obtener(biblioteca[0].textoId)
-    expect(texto?.frases.length).toBeGreaterThan(3)
+    expect(biblioteca).toHaveLength(CUENTOS.length)
+    for (const c of CUENTOS) expect(biblioteca.find((a) => a.textoId === c.id)?.nivel).toBe(c.nivel)
+    const texto = await otraVez.textos.obtener(CUENTOS[8].id)
+    expect(texto).toMatchObject({ subidoPor: null, origen: 'ciempi', parrafos: [0, 4, 8, 12] })
     expect(texto?.capitulos).toEqual([{ titulo: texto?.titulo, desdeFrase: 0 }])
   })
 
@@ -61,10 +63,11 @@ describe('repositorios en localStorage', () => {
   })
 
   it('eliminar un texto lo saca de las bibliotecas', async () => {
-    const { repos, perfil } = await preparado()
-    const [a] = await repos.asignaciones.listarPorPerfil(perfil.id)
-    await repos.textos.eliminar(a.textoId)
-    expect(await repos.asignaciones.listarPorPerfil(perfil.id)).toHaveLength(0)
+    const { repos, cuenta, perfil } = await preparado()
+    const libro = await repos.textos.guardar(crearTexto(cuenta.id, { titulo: 'Libro', textoOriginal: 'Uno. Dos.', origen: 'pegado' }))
+    await repos.asignaciones.asignar(perfil.id, libro.id)
+    await repos.textos.eliminar(libro.id)
+    expect(await repos.asignaciones.listarPorPerfil(perfil.id)).toHaveLength(CUENTOS.length)
   })
 
   it('una sesión se actualiza en vez de duplicarse', async () => {
@@ -125,7 +128,10 @@ describe('migraciones', () => {
     expect(perfil?.ajustes.umbralPalabrasPorSegundo).toBe(4)
     expect(perfil?.ajustes).not.toHaveProperty('umbralSilabasPorSegundo')
     expect(await repos.textos.obtener('t1')).toMatchObject({ subidoPor: 'c1', autor: null, portada: null, capitulos: [{ titulo: 'Cuento', desdeFrase: 0 }] })
-    expect(await repos.asignaciones.listarPorPerfil('p1')).toMatchObject([{ textoId: 't1', fraseActual: 0 }])
+    const biblioteca = await repos.asignaciones.listarPorPerfil('p1')
+    expect(biblioteca.find((a) => a.textoId === 't1')).toMatchObject({ fraseActual: 0 })
+    // Y recibe los cuentos de Ciempi.
+    expect(biblioteca).toHaveLength(1 + CUENTOS.length)
 
     // Si después elige 0.85 a mano, no se vuelve a pisar.
     await repos.perfiles.actualizarAjustes('p1', { ...perfil!.ajustes, velocidadVoz: 0.85 })

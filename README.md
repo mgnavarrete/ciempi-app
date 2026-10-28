@@ -127,33 +127,58 @@ Para instalarla, pasa la APK al teléfono (cable, Drive, WhatsApp…) y
   el dominio, cámbialo ahí y vuelve a correr `npm run apk`.
 - Íconos y pantalla de inicio se generan desde `assets/` con
   `npx capacitor-assets generate --android`.
-- Es una APK de prueba (firmada con la llave de depuración). Para la Play
-  Store hay que generar una firmada con llave propia (`assembleRelease`).
+- **Firma:** desde la 1.0.0 las APK son de release, firmadas con la llave
+  propia de `android/firma/` (se crea una vez con `bash scripts/crear-firma.sh`;
+  no va a git). **Respáldala** (`ciempi.jks` y `firma.properties`): sin ella
+  no se puede instalar una versión nueva encima de la anterior. La misma
+  llave sirve para la Play Store.
+- Al pasar de una APK 0.x (firmada con la llave de depuración) a la 1.0.0,
+  Android no la instala encima: hay que desinstalar CIEMPI primero. Los
+  libros, el avance y las monedas están en el servidor y no se pierden.
 
-## Niveles de lectura (camino a la 1.0.0)
+## Niveles de lectura
 
 El nivel es **del libro asignado a cada niño** (el mismo libro puede estar en
 otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia.
 
-| Nivel | Se lee de una vez | Voz si el niño no eligió |
-|---|---|---|
-| 1 Palabra | frase corta, una manzana por palabra | lee contigo |
-| 2 Oración | la oración completa | escuchar primero |
-| 3 Párrafo | párrafo o estrofa | sin voz |
-| 4 Libre | una página | sin voz |
+| Nivel | Se lee de una vez | En pantalla | Voz si el niño no eligió |
+|---|---|---|---|
+| 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | lee contigo |
+| 2 Oración | la oración completa (≤ 16 palabras) | línea por línea, una manzana al final de cada línea | escuchar primero |
+| 3 Párrafo | párrafo o estrofa | igual que el 2; arriba lo leído, abajo lo que viene | sin voz |
+| 4 Libre | una página (100–160 palabras) | la página entera, sin pista; botón «Terminé» | sin voz |
 
 - Todas las unidades se arman con las frases del nivel 1
   (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
   cambiar de nivel sin perder el lugar. Se leen las mismas palabras en
-  cualquier nivel: las monedas cuestan lo mismo (1 cada 20 palabras).
-- La última manzana va siempre al borde derecho de la pista.
+  cualquier nivel: **las monedas cuestan lo mismo** (1 cada 20 palabras a buen
+  ritmo). En los niveles 2 y 3 se mide el ritmo en cada línea igual que en el
+  1. En el 4, si «Terminé» llega antes de palabras ÷ ritmo máximo (4 palabras/s
+  por defecto), la página no da monedas.
+- La última manzana va siempre al borde derecho de la pista: hay que llegar al final.
+- **Párrafos y versos:** al pegar un texto, una línea en blanco separa párrafos
+  (en un poema: un verso por línea y una línea en blanco entre estrofas). En un
+  PDF se detectan por la posición de las líneas (`cortesDePagina` en
+  `src/lenguaje/libro.ts`). Los libros subidos antes arman sus párrafos por largo.
+- **Nivel sugerido** (`src/lenguaje/dificultad.ts`): según palabras por oración,
+  sílabas por palabra y largo. Al subir un texto queda en el sugerido, que
+  aparece marcado al cambiar el nivel; si un niño agrega un libro, también.
 - **Compartir:** en el panel del adulto, cada libro (también los que subieron
   sus niños) tiene un botón por niño para dárselo en un nivel, cambiarlo o
   quitarlo; en la biblioteca de un niño, «Cambiar nivel» y «Compartir con otro niño».
 - **Voz:** el niño elige (botón de voz al leer, o Ajustes): «Leer conmigo»,
   «Escuchar primero» (eco) o «Sin voz». Tocar una palabra siempre la dice.
-- Hoy están listos el nivel 1, el nivel por libro, compartir y la voz; los
-  niveles 2 a 4 aparecen como «Pronto». Plan completo: fases 4 a 8.
+
+### Cuentos de Ciempi
+
+La app trae 16 cuentos propios, cuatro por nivel (`src/contenido/cuentos.ts`):
+cuentos de una línea por oración para el nivel 1 y 2, dos poemas y dos
+cuentos en párrafos para el 3 y cuatro cuentos largos para el 4. **Todo
+lector nuevo los recibe en su biblioteca**, cada uno en su nivel. En el
+servidor no tienen dueño: nadie los borra, pero un adulto puede cambiarles el
+nivel o quitárselos a un niño (en el panel, «Cuentos de Ciempi»). Al arrancar,
+el servidor los deja al día (`server/src/cuentos.ts`): si se corrige uno, se
+corrige para todos; si se agrega uno nuevo, llega también a los niños que ya existían.
 
 ## Voz de Ciempi
 
@@ -353,11 +378,12 @@ deploy/            nginx, systemd y actualizar.sh
    - Une las líneas cortadas y repara las palabras partidas con guion ("es-/perando").
    - Convierte los guiones de diálogo en raya ("-Hola -dijo-." → "—Hola —dijo—.").
    - Detecta capítulos: "Capítulo N", "Parte II", números romanos y fechas de diario como "Enero 4".
-3. Cada capítulo se divide en frases de máximo 6 palabras. El título del
+   - Separa párrafos y conserva los versos según dónde quedó cada línea en la página.
+3. Cada capítulo se divide en frases de máximo 8 palabras. El título del
    capítulo se lee como primera frase.
 4. El adulto revisa el resultado y elige el rango de páginas antes de guardar.
 
-Con Papelucho (48 páginas) salen 71 capítulos y unas 4.500 frases, que pesan
+Con un libro de 48 páginas salen unos 70 capítulos y 4.500 frases, que pesan
 unos 230 KB guardados. Un PDF escaneado (solo imágenes) no tiene texto y la
 app avisa. Para esos casos haría falta OCR más adelante.
 
@@ -442,7 +468,7 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
   `perfiles_ninos.inventario` y en el historial `compras`. El servidor impide
   ponerse algo no comprado.
 - Precios pensados para el ritmo de monedas (1 cada 20 palabras): un capítulo
-  de Papelucho da ~15–20 monedas, y las cosas cuestan entre 6 y 30.
+  de un libro de 48 páginas da ~15–20 monedas, y las cosas cuestan entre 6 y 30.
 - Límite conocido: como el niño gana monedas desde su propio dispositivo,
   alguien con conocimientos técnicos podría sumarse monedas llamando a la API.
   Para esta app no se consideró un riesgo real.
@@ -451,12 +477,11 @@ Por eso se puede probar sin navegador y reutilizar en los modos eco y solo.
 
 1. **Editar frases en la revisión del libro:** unir o separar frases a mano y
    renombrar capítulos.
-2. **Modos eco y solo:** las banderas ya están en `src/lectura/modos.ts`.
-3. **Modo sin conexión con cuenta (PWA):** guardar los libros asignados en el
+2. **Modo sin conexión con cuenta (PWA):** guardar los libros asignados en el
    dispositivo y sincronizar el progreso al volver la conexión. El service
    worker exige HTTPS fuera de localhost.
-4. **Voces en la tienda.**
-5. **OCR** para PDF escaneados.
-6. **Validar con la psicopedagoga:** umbral de ritmo, colores, tamaño de
+3. **Voces en la tienda.**
+4. **OCR** para PDF escaneados.
+5. **Validar con la psicopedagoga:** umbral de ritmo, colores, tamaño de
    letra y casos de silabeo dudosos: con prefijos, las reglas dan
    *su‑bra‑yar* y no *sub‑ra‑yar*.

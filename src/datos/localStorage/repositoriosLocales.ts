@@ -1,4 +1,6 @@
 import { PARTES, buscarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
+import { AUTOR_CUENTOS, CUENTOS } from '../../contenido/cuentos'
+import { dividirConParrafos } from '../../lenguaje/frases'
 import { nuevoId } from '../../dominio/ids'
 import {
   AJUSTES_POR_DEFECTO,
@@ -6,6 +8,7 @@ import {
   type Asignacion,
   type Cuenta,
   type Id,
+  type NivelLectura,
   type PerfilNino,
   type SesionLectura,
   type Texto,
@@ -161,6 +164,11 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
         .filter((p) => p.ajustes.umbralPalabrasPorSegundo === 2.5)
         .forEach((p) => perfiles.guardar({ ...p, ajustes: { ...p.ajustes, umbralPalabrasPorSegundo: AJUSTES_POR_DEFECTO.umbralPalabrasPorSegundo } })),
   },
+  {
+    // Los cuentos de Ciempi llegan a la biblioteca de los niños que ya existían.
+    id: '2026-10-cuentos-de-ciempi',
+    aplicar: (tablas) => tablas.perfiles.todos().forEach((p) => darCuentos(tablas, p.id, p.creadoPor)),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
@@ -174,7 +182,35 @@ function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
   almacen.setItem(clave, JSON.stringify([...aplicadas]))
 }
 
-function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id): Asignacion {
+/**
+ * Deja en la biblioteca del niño los cuentos de Ciempi, cada uno en su nivel
+ * (y los textos guardados, al día). Igual que el servidor: ver server/src/cuentos.ts.
+ */
+function darCuentos({ textos, asignaciones }: Tablas, perfilId: Id, asignadaPor: Id) {
+  for (const c of CUENTOS) {
+    if (textos.obtener(c.id)?.textoOriginal !== c.texto) {
+      const fecha = ahora()
+      textos.guardar({
+        id: c.id,
+        subidoPor: null,
+        titulo: c.titulo,
+        autor: AUTOR_CUENTOS,
+        textoOriginal: c.texto,
+        ...dividirConParrafos(c.texto),
+        capitulos: [{ titulo: c.titulo, desdeFrase: 0 }],
+        portada: null,
+        origen: 'ciempi',
+        creadoEn: fecha,
+        actualizadoEn: fecha,
+      })
+    }
+    if (!asignaciones.todos().some((a) => a.perfilId === perfilId && a.textoId === c.id)) {
+      asignaciones.guardar(nuevaAsignacion(perfilId, c.id, asignadaPor, c.nivel))
+    }
+  }
+}
+
+function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id, nivel: NivelLectura = 1): Asignacion {
   const fecha = ahora()
   return {
     id: nuevoId(),
@@ -182,7 +218,7 @@ function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id): Asignacion
     perfilId,
     textoId,
     modo: 'coro',
-    nivel: 1,
+    nivel,
     estado: 'pendiente',
     fraseActual: 0,
     fraseMaxima: 0,
@@ -254,7 +290,7 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       return p ? completarPerfil(p) : null
     },
     async crear({ apodo, icono }) {
-      return perfiles.guardar({
+      const perfil = perfiles.guardar({
         id: nuevoId(),
         creadoPor: cuentaLocal().id,
         apodo,
@@ -268,6 +304,9 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
         inventario: [],
         creadoEn: ahora(),
       })
+      // Todo lector nuevo parte con los cuentos de Ciempi.
+      darCuentos(tablas, perfil.id, perfil.creadoPor)
+      return perfil
     },
     async actualizarAjustes(id, ajustes) {
       const perfil = perfiles.obtener(id)

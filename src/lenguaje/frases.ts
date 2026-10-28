@@ -82,3 +82,25 @@ export function quitarGuiones(texto: string): string {
     .replace(/\s+/g, ' ')
     .trim()
 }
+
+/**
+ * Texto con párrafos (separados por una línea en blanco) → frases y la frase
+ * donde empieza cada párrafo. En un poema cada verso va en su línea y cada
+ * estrofa es un párrafo. Con un solo párrafo no hay `parrafos`.
+ */
+export function dividirConParrafos(texto: string, max = MAX_PALABRAS_POR_FRASE): { frases: string[]; parrafos?: number[] } {
+  const bloques = texto
+    .replace(/\r/g, '')
+    .split(/\n[ \t]*\n/)
+    .map((b) => b.trim())
+    .filter(Boolean)
+  const frases: string[] = []
+  const parrafos: number[] = []
+  for (const b of bloques) {
+    const delBloque = dividirEnFrases(b, max)
+    if (!delBloque.length) continue
+    parrafos.push(frases.length)
+    frases.push(...delBloque)
+  }
+  return parrafos.length > 1 ? { frases, parrafos } : { frases }
+}

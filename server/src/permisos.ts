@@ -7,6 +7,7 @@ import type { UsuarioSesion } from './auth.ts'
  * - Un adulto es "admin" de los niños a los que está vinculado (miembros_nino).
  * - Un niño solo ve su propio perfil.
  * - Un texto lo ve quien lo subió y los que pueden ver a un niño que lo tiene en su biblioteca.
+ *   Los cuentos de Ciempi los ve cualquiera.
  */
 
 export class Prohibido extends Error {
@@ -34,6 +35,7 @@ export async function puedeVerTexto(u: UsuarioSesion, textoId: string): Promise<
   const { rowCount } = await pool.query(
     `select 1 from textos t where t.id = $1 and (
        t.subido_por = $2
+       or t.origen = 'ciempi'
        or exists (
          select 1 from asignaciones a
            left join miembros_nino m on m.perfil_id = a.perfil_id and m.cuenta_id = $2

@@ -12,9 +12,9 @@ export type { NivelLectura }
 /** `unidad`: lo que se lee de una vez («Frase 3 de 40»). */
 export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; descripcion: string }[] = [
   { nivel: 1, nombre: 'Palabra', unidad: 'Frase', descripcion: 'Frases cortas, una manzana por palabra.' },
-  { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa de una vez.' },
+  { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa, línea por línea.' },
   { nivel: 3, nombre: 'Párrafo', unidad: 'Párrafo', descripcion: 'Un párrafo o una estrofa, línea por línea.' },
-  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa, sin pista.' },
+  { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa, sin pista: toca «Terminé».' },
 ]
 
 /** Una oración larga se corta (en los mismos cortes de sus frases) para no pasar de esto. */
@@ -79,9 +79,20 @@ function agrupar(
   const oraciones = juntar(sueltas, (actual, sig) => !terminaOracion(frases[actual[1] - 1]) && palabras([actual[0], sig[1]]) <= MAX_PALABRAS_ORACION && !inicioParrafo.has(sig[0]))
   if (nivel === 2) return oraciones
 
-  // Nivel 3: los párrafos del libro; si no los tiene, se arman de 30 a 60 palabras.
+  // Nivel 3: los párrafos (o estrofas) del libro; si no los tiene, se arman de
+  // 30 a 60 palabras. Un párrafo real muy largo se parte igual, para que quepa.
   const parrafos = inicioParrafo.size
-    ? juntar(oraciones, (_, sig) => !inicioParrafo.has(sig[0]))
+    ? juntar(oraciones, (_, sig) => !inicioParrafo.has(sig[0])).flatMap((p) =>
+        palabras(p) <= PARRAFO.maxPalabras * 1.5
+          ? [p]
+          : juntarPorLargo(
+              oraciones.filter((o) => o[0] >= p[0] && o[1] <= p[1]),
+              PARRAFO.minPalabras,
+              PARRAFO.maxPalabras,
+              palabras,
+              PARRAFO.maxOraciones,
+            ),
+      )
     : juntarPorLargo(oraciones, PARRAFO.minPalabras, PARRAFO.maxPalabras, palabras, PARRAFO.maxOraciones)
   if (nivel === 3) return parrafos
 
