@@ -17,13 +17,15 @@ import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos,
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
-import { acomodarVoz, type VozEnCurso } from './vozAlDedo'
+import { acomodarVoz, palabraDeLaVoz, type VozEnCurso } from './vozAlDedo'
 
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
 const MS_PASO_FRASE = 450
-/** Una oración o un párrafo leído en voz alta: se espera a que la voz termine (hasta esto). */
+/** Un párrafo o una página leídos en voz alta, fragmento por fragmento: se espera a que la voz termine (hasta esto). */
 const MS_ESPERA_VOZ_LARGA = 20_000
+/** Nivel 2: al llegar el dedo al final, la voz tiene este rato para terminar la oración; después se corta. */
+const MS_ESPERA_VOZ_ORACION = 1500
 /** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
 const INICIO_PISTA_PARRAFO = 0.06
 /** Nivel 2: si el dedo se queda quieto este rato, la voz se calla (y sigue cuando el dedo sigue). */
@@ -83,6 +85,8 @@ export function PantallaLectura(props: Props) {
   const porSilaba = nivel === 0
   const oracion = nivel === 2
   const porFragmentos = nivel === 3 || nivel === 4
+  // Nivel 3: una frase por línea, una manzana por frase repartidas parejo, y la frase se lee entera.
+  const porFrase = nivel === 3
   // La voz: la que eligió el niño o, si no eligió, la que corresponde al nivel.
   const modo: ModoLectura = ajustes.modoVoz ?? MODO_POR_NIVEL[nivel]
   const definicionModo = MODOS[modo]
@@ -156,10 +160,15 @@ export function PantallaLectura(props: Props) {
   )
   const pistaPareja = useMemo(() => {
     if (!porFragmentos) return calcularPista(manzanasPorLeer)
+    if (porFrase) {
+      // Repartidas parejo: la primera después de un tramo de carril, la última en el borde derecho.
+      const n = fragmentos.length
+      return { manzanas: fragmentos.map((_, k) => INICIO_PISTA_PARRAFO + ((FIN_PISTA - INICIO_PISTA_PARRAFO) * (k + 1)) / n), fin: FIN_PISTA }
+    }
     let fin = -1
     const manzanas = fragmentos.map((f) => posicionesPalabras[(fin += f.length)])
     return { manzanas, fin: FIN_PISTA }
-  }, [porFragmentos, manzanasPorLeer, fragmentos, posicionesPalabras])
+  }, [porFragmentos, porFrase, manzanasPorLeer, fragmentos, posicionesPalabras])
   const pista = !porFragmentos && pistaMedida && pistaMedida.manzanas.length === manzanasPorLeer ? pistaMedida : pistaPareja
 
   const [motor, setMotor] = useState<EstadoMotor>(estadoInicial)
@@ -170,13 +179,14 @@ export function PantallaLectura(props: Props) {
   // Un hito alcanzado: «¡Llegaste a la mitad! +5 🪙» por un momento.
   const [festejo, setFestejo] = useState<string | null>(null)
 
-  // Niveles 3 y 4: palabras encendidas (todas las de los fragmentos comidos, y las que ya pasó el dedo).
+  // Niveles 3 y 4: palabras encendidas, todas las de los fragmentos comidos y,
+  // en el 4, también las que ya pasó el dedo (en el 3 la frase se enciende entera).
   const palabrasEncendidas = useMemo(() => {
     if (!porFragmentos) return 0
     let n = fragmentos.slice(0, motor.palabrasLeidas).reduce((s, f) => s + f.length, 0)
-    while (n < posicionesPalabras.length && posicionesPalabras[n] <= motor.progreso + 1e-9) n++
+    if (!porFrase) while (n < posicionesPalabras.length && posicionesPalabras[n] <= motor.progreso + 1e-9) n++
     return n
-  }, [porFragmentos, fragmentos, posicionesPalabras, motor.palabrasLeidas, motor.progreso])
+  }, [porFragmentos, porFrase, fragmentos, posicionesPalabras, motor.palabrasLeidas, motor.progreso])
 
   const temporizadores = useRef<number[]>([])
   const programar = (fn: () => void, ms: number) => {
@@ -231,6 +241,8 @@ export function PantallaLectura(props: Props) {
 
   // Nivel 2: la voz que acompaña al dedo, y cuándo se movió el dedo por última vez.
   const vozAlDedo = useRef<VozEnCurso | null>(null)
+  // Dónde se calló la voz cuando el dedo se detuvo: sigue desde ahí (no se salta palabras).
+  const vozPausadaEn = useRef<number | null>(null)
   const dedoQuieto = useRef(0)
   // Cuándo tocó el niño por primera vez esta unidad (para revisar el ritmo al terminar).
   const inicioUnidad = useRef<number | null>(null)
@@ -238,6 +250,7 @@ export function PantallaLectura(props: Props) {
   const reiniciarMotor = () => {
     motorRef.current = estadoInicial()
     vozAlDedo.current = null
+    vozPausadaEn.current = null
     inicioUnidad.current = null
     setMotor(motorRef.current)
   }
@@ -350,8 +363,10 @@ export function PantallaLectura(props: Props) {
     // Se pasa a la siguiente recién cuando la voz terminó.
     const cambio = cambiosDeFrase.current
     programar(async () => {
-      await voz.esperarSilencio(nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
+      await voz.esperarSilencio(oracion ? MS_ESPERA_VOZ_ORACION : nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
       if (cambio !== cambiosDeFrase.current) return
+      // Nivel 2: el dedo ya llegó al final; lo que le faltaba a la voz se corta.
+      if (oracion) voz.callar()
       siguienteFrase({ monedas: terminaLibro ? ganadas : 0, mensaje: mensajeFinal })
     }, MS_PASO_FRASE)
   }
@@ -379,13 +394,15 @@ export function PantallaLectura(props: Props) {
       case 'decir': {
         if (!definicionModo.vozAlDeslizar) break
         if (porSilaba) {
-          // Sílaba por sílaba: «La – u – va».
-          voz.decir(silabas[efecto.palabra]?.texto ?? '', ajustes.velocidadVoz)
+          // Sílaba por sílaba: «La – u – va». Sin tilde: «piés» suelta no es una
+          // palabra y la voz la deletrea; «pies» sí la dice bien.
+          voz.decir(sinTilde(silabas[efecto.palabra]?.texto ?? ''), ajustes.velocidadVoz)
         } else if (oracion) {
           // La oración, de corrido y al ritmo del dedo.
-          const nueva = acomodarVoz(vozAlDedo.current, efecto.palabra, velocidadDelDedo(), performance.now())
+          const nueva = acomodarVoz(vozAlDedo.current, efecto.palabra, velocidadDelDedo(), performance.now(), vozPausadaEn.current)
           if (nueva) {
             vozAlDedo.current = nueva
+            vozPausadaEn.current = null
             const resto = nueva.desde === 0 ? frase : palabras.slice(nueva.desde).map((p) => p.texto).join(' ')
             voz.decirFrase(resto, ajustes.velocidadVoz * nueva.velocidad)
           }
@@ -417,6 +434,7 @@ export function PantallaLectura(props: Props) {
   /** Nivel 2: el dedo se detuvo o se levantó: la voz se calla y vuelve a empezar desde el dedo cuando siga. */
   const pausarVozAlDedo = () => {
     if (!oracion || !vozAlDedo.current || motorRef.current.fase === 'completada') return
+    vozPausadaEn.current = Math.floor(palabraDeLaVoz(vozAlDedo.current, performance.now()))
     vozAlDedo.current = null
     voz.callar()
   }
@@ -592,6 +610,7 @@ export function PantallaLectura(props: Props) {
             <ParrafoCompleto
               lineas={fragmentos}
               palabrasEncendidas={palabrasEncendidas}
+              porFrase={porFrase}
               motor={motor}
               pista={pista}
               tamanoLetra={ajustes.tamanoLetra}
@@ -646,6 +665,9 @@ export function PantallaLectura(props: Props) {
     </div>
   )
 }
+
+/** Sin tildes (á → a), conservando la ñ y la ü. */
+const sinTilde = (t: string) => t.normalize('NFD').replace(/\u0301/g, '').normalize('NFC')
 
 /**
  * Niveles 2 a 4: cuánto del libro lleva (siempre desde el 0 % al abrirlo) y

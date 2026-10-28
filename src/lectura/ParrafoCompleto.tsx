@@ -9,8 +9,13 @@ import { PalabraEncendida } from './TiraDeLectura'
 interface Props {
   /** Las palabras de cada fragmento (un verso, o un trozo con sentido de una oración). */
   lineas: PalabraSilabeada[][]
-  /** Cuántas palabras ya pasó el dedo (se encienden de corrido). */
+  /** Cuántas palabras ya se leyeron (se encienden). */
   palabrasEncendidas: number
+  /**
+   * Nivel 3: siempre una frase por línea, cada una de un color (rojo y azul
+   * alternados), y se enciende entera al comer su manzana.
+   */
+  porFrase?: boolean
   motor: EstadoMotor
   /** Una manzana por fragmento, donde termina su última palabra. */
   pista: Pista
@@ -23,17 +28,24 @@ interface Props {
 }
 
 const LETRA_MINIMA = 14
+/** Nivel 3: los colores de las frases, alternados (texto, y fondo cuando ya se leyó). */
+const COLORES_FRASE = [
+  { texto: 'text-coral', fondo: 'bg-coral/15' },
+  { texto: 'text-petroleo', fondo: 'bg-petroleo-claro' },
+] as const
 /** Un fragmento por línea (como un poema) salvo que el texto corrido permita letra bastante más grande. */
 const VENTAJA_TEXTO_CORRIDO = 1.25
 
 /**
- * Niveles 3 y 4: el párrafo, la estrofa o la página completa a la vista: un
- * fragmento por línea (cada verso en la suya) o, si así la letra queda muy
- * chica, de corrido. Abajo, un solo carril con una manzana por fragmento: al
- * deslizar a Ciempi las palabras se encienden de corrido y, al comer cada
- * manzana, Ciempi lee ese fragmento (si el niño eligió «Leer conmigo»).
+ * Niveles 3 y 4: el párrafo, la estrofa o la página completa a la vista, con
+ * un solo carril abajo y una manzana por fragmento; al comer cada manzana,
+ * Ciempi lee ese fragmento (si el niño eligió «Leer conmigo»).
+ * - Nivel 3 (`porFrase`): una frase por línea, rojo y azul alternados; la
+ *   frase se enciende entera al llegar a su manzana.
+ * - Nivel 4: un fragmento por línea o, si así la letra queda muy chica, de
+ *   corrido; las palabras se encienden a medida que pasa el dedo.
  */
-export function ParrafoCompleto({ lineas, palabrasEncendidas, motor, pista, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
+export function ParrafoCompleto({ lineas, palabrasEncendidas, porFrase = false, motor, pista, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
   const caja = useRef<HTMLDivElement>(null)
   const contenido = useRef<HTMLDivElement>(null)
 
@@ -61,6 +73,8 @@ export function ParrafoCompleto({ lineas, palabrasEncendidas, motor, pista, tama
         return cabe(max, corrido) ? max : min
       }
       const porLinea = mayor(false)
+      // Nivel 3: siempre una frase por línea (si ni con la letra mínima cabe, se deja cortar).
+      if (porFrase) return void (porLinea ? cabe(porLinea, false) : cabe(LETRA_MINIMA, true))
       const corrido = mayor(true)
       if (porLinea && porLinea * VENTAJA_TEXTO_CORRIDO >= corrido) cabe(porLinea, false)
       else cabe(Math.max(corrido, LETRA_MINIMA), true)
@@ -70,7 +84,7 @@ export function ParrafoCompleto({ lineas, palabrasEncendidas, motor, pista, tama
     if (caja.current) obs.observe(caja.current)
     void document.fonts?.ready.then(ajustar)
     return () => obs.disconnect()
-  }, [lineas, tamanoLetra])
+  }, [lineas, tamanoLetra, porFrase])
 
   let indice = 0
   const esperando = motor.fase === 'esperando'
@@ -84,25 +98,51 @@ export function ParrafoCompleto({ lineas, palabrasEncendidas, motor, pista, tama
           className="font-lectura max-w-full leading-snug text-tinta data-[corrido=si]:[&>p]:inline"
           style={{ letterSpacing: '0.03em', wordSpacing: '0.12em' }}
         >
-          {lineas.map((linea, l) => (
-            <p key={l}>
-              {linea.map((palabra) => {
-                const i = indice++
-                return (
-                  <span key={i}>
-                    <PalabraEncendida
-                      palabra={palabra}
-                      indice={i}
-                      encendida={i < palabrasEncendidas}
-                      actual={i === palabrasEncendidas && motor.progreso > 0}
-                      tranquilo={tranquilo}
-                      onPointerDown={() => alTocarPalabra(i)}
-                    />{' '}
-                  </span>
-                )
-              })}
-            </p>
-          ))}
+          {lineas.map((linea, l) => {
+            if (porFrase) {
+              // La frase entera de un color; ya leída, con su fondo; la que sigue, marcada; las demás, más suaves.
+              const desde = indice
+              indice += linea.length
+              const leida = indice <= palabrasEncendidas
+              const sigue = !leida && desde === palabrasEncendidas
+              const color = COLORES_FRASE[l % 2]
+              return (
+                <p
+                  key={l}
+                  className={[
+                    'w-fit rounded-[0.3em] px-[0.2em] transition-colors duration-300',
+                    color.texto,
+                    leida ? `${color.fondo} ${tranquilo ? '' : 'frase-leida'}` : sigue ? '' : 'opacity-55',
+                  ].join(' ')}
+                >
+                  {linea.map((palabra, j) => (
+                    <span key={j} onPointerDown={() => alTocarPalabra(desde + j)} className={sigue && j === 0 ? 'underline decoration-amarillo decoration-[0.12em] underline-offset-[0.2em]' : ''}>
+                      {palabra.texto}{' '}
+                    </span>
+                  ))}
+                </p>
+              )
+            }
+            return (
+              <p key={l}>
+                {linea.map((palabra) => {
+                  const i = indice++
+                  return (
+                    <span key={i}>
+                      <PalabraEncendida
+                        palabra={palabra}
+                        indice={i}
+                        encendida={i < palabrasEncendidas}
+                        actual={i === palabrasEncendidas && motor.progreso > 0}
+                        tranquilo={tranquilo}
+                        onPointerDown={() => alTocarPalabra(i)}
+                      />{' '}
+                    </span>
+                  )
+                })}
+              </p>
+            )
+          })}
         </div>
       </div>
 

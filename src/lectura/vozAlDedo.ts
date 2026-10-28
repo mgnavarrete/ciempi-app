@@ -2,7 +2,8 @@
  * Nivel 2: la voz lee la oración al ritmo del dedo. Rápido si desliza
  * rápido, lento si desliza lento, y se calla si el dedo se detiene. La voz
  * del teléfono no se puede acelerar mientras habla: cuando el dedo y la voz
- * se separan, se vuelve a empezar desde la palabra del dedo con otra velocidad.
+ * se separan, la voz sigue desde la palabra en que iba ella (nunca se salta
+ * palabras), más rápido para alcanzar al dedo o más lento para esperarlo.
  */
 
 /** Palabras por segundo que dice la voz a velocidad 1 (aprox., en español). */
@@ -34,13 +35,31 @@ export function palabraDeLaVoz(v: VozEnCurso, t: number): number {
   return v.desde + ((t - v.t) / 1000) * v.velocidad * PALABRAS_POR_SEGUNDO_VOZ
 }
 
+/** Cuánto más rápido (o lento) va la voz cuando tiene que alcanzar al dedo (o esperarlo). */
+const ALCANZAR = 1.3
+
+const limitar = (v: number) => Math.min(VELOCIDAD_MAXIMA, Math.max(VELOCIDAD_MINIMA, v))
+
 /**
- * El dedo llegó a la palabra `palabra`: ¿hay que (re)empezar la voz desde
- * ahí? Devuelve la nueva voz en curso, o null si la actual sigue bien.
+ * El dedo llegó a la palabra `palabra`: ¿hay que (re)empezar la voz? Devuelve
+ * la nueva voz en curso, o null si la actual sigue bien. `pausadaEn`: dónde
+ * quedó la voz si se calló porque el dedo se detuvo (sigue desde ahí).
  */
-export function acomodarVoz(actual: VozEnCurso | null, palabra: number, palabrasPorSegundo: number | null, t: number): VozEnCurso | null {
-  if (!actual) return { desde: palabra, t, velocidad: velocidadPara(palabrasPorSegundo) }
+export function acomodarVoz(
+  actual: VozEnCurso | null,
+  palabra: number,
+  palabrasPorSegundo: number | null,
+  t: number,
+  pausadaEn: number | null = null,
+): VozEnCurso | null {
+  const ritmo = velocidadPara(palabrasPorSegundo)
+  if (!actual) {
+    const desde = pausadaEn == null ? palabra : Math.min(palabra, pausadaEn)
+    return { desde, t, velocidad: limitar(desde < palabra ? ritmo * ALCANZAR : ritmo) }
+  }
   if (t - actual.t < MS_ENTRE_ARRANQUES) return null
-  if (Math.abs(palabraDeLaVoz(actual, t) - palabra) < DESFASE_MAXIMO) return null
-  return { desde: palabra, t, velocidad: velocidadPara(palabrasPorSegundo) }
+  const vaEn = palabraDeLaVoz(actual, t)
+  if (Math.abs(vaEn - palabra) < DESFASE_MAXIMO) return null
+  const desde = Math.max(actual.desde, Math.floor(vaEn))
+  return { desde, t, velocidad: limitar(palabra > vaEn ? ritmo * ALCANZAR : ritmo / ALCANZAR) }
 }

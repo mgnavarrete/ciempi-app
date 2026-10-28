@@ -178,7 +178,11 @@ function motorNativo(): MotorVoz | null {
   // Capacitor que "tiene" cualquier método, también then(): la promesa lo confundía con
   // otra promesa, llamaba a un then() nativo que no existe y la voz del teléfono fallaba siempre.
   const tts = TextToSpeech
-  let pendientes = 0
+  // Lo que está sonando o en cola, cada cosa con su número. Al cortar (decir algo
+  // nuevo sin encolar, o callar) se olvida lo anterior: si su aviso de «terminé»
+  // llega tarde, ya no cuenta, y lo nuevo sigue contando como «hablando».
+  const pendientes = new Set<number>()
+  let ultimo = 0
   let error: string | null = null
   /** El primer español que acepta el teléfono: se usa si no se pudo elegir una voz. */
   let espanolDelTelefono: string | null = null
@@ -227,7 +231,9 @@ function motorNativo(): MotorVoz | null {
       document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && fn())
     },
     hablar(texto, o) {
-      pendientes = o.encolar ? pendientes + 1 : 1
+      if (!o.encolar) pendientes.clear()
+      const mio = ++ultimo
+      pendientes.add(mio)
       const decirEn = (lang: string, conVoz: boolean) =>
         tts.speak({ text: texto, lang, voice: conVoz ? o.voz?.indice : undefined, rate: o.velocidad, pitch: o.tono, queueStrategy: o.encolar ? 1 : 0 })
       void (async () => {
@@ -248,15 +254,15 @@ function motorNativo(): MotorVoz | null {
             }
           }
         })().finally(() => {
-          pendientes = Math.max(0, pendientes - 1)
+          pendientes.delete(mio)
         })
     },
     callar() {
-      pendientes = 0
+      pendientes.clear()
       void tts.stop().catch(() => {})
     },
-    hablando: () => pendientes > 0,
-    enCola: () => pendientes > 1,
+    hablando: () => pendientes.size > 0,
+    enCola: () => pendientes.size > 1,
     ultimoError: () => error,
   }
 }

@@ -18,13 +18,22 @@ describe('voz al ritmo del dedo', () => {
     expect(acomodarVoz(v, 3, 2.5, 1000)).toBeNull()
   })
 
-  it('si el dedo se adelanta o se atrasa, la voz vuelve a empezar desde el dedo a otra velocidad', () => {
+  it('si el dedo se adelanta, la voz sigue desde donde iba (sin saltarse palabras) y más rápido', () => {
     const v = acomodarVoz(null, 0, null, 0)!
-    const adelante = acomodarVoz(v, 6, 5, 1000)
-    expect(adelante?.desde).toBe(6)
-    expect(adelante!.velocidad).toBeGreaterThan(1)
-    const atras = acomodarVoz(v, 1, 0.8, 2000)
-    expect(atras?.desde).toBe(1)
-    expect(atras!.velocidad).toBeLessThan(1)
+    const adelante = acomodarVoz(v, 6, 5, 1000)!
+    // Al segundo, la voz iba por la palabra 2: sigue desde ahí, no desde la 6.
+    expect(adelante.desde).toBe(2)
+    expect(adelante.velocidad).toBeGreaterThan(velocidadPara(5) - 0.01)
+  })
+
+  it('si el dedo se atrasa, la voz va más lenta para esperarlo', () => {
+    const v = acomodarVoz(null, 0, null, 0)!
+    const atras = acomodarVoz(v, 1, 0.8, 2000)!
+    expect(atras.velocidad).toBeLessThan(1)
+  })
+
+  it('si el dedo se detuvo, la voz sigue desde donde se calló', () => {
+    expect(acomodarVoz(null, 7, 2.5, 0, 4)?.desde).toBe(4)
+    expect(acomodarVoz(null, 7, 2.5, 0, 4)!.velocidad).toBeGreaterThan(1)
   })
 })

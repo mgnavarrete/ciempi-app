@@ -49,7 +49,8 @@ export const MODO_POR_NIVEL: Record<NivelLectura, ModoLectura> = { 0: 'coro', 1:
 export function descripcionModo(modo: ModoLectura, nivel: NivelLectura): string {
   if (modo === 'coro' && nivel === 0) return 'Ciempi dice cada sílaba cuando llegas a ella.'
   if (modo === 'coro' && nivel === 2) return 'Ciempi lee la oración contigo, a la velocidad de tu dedo.'
-  if (modo === 'coro' && nivel >= 3) return 'Ciempi lee cada parte cuando llegas a su manzana.'
+  if (modo === 'coro' && nivel === 3) return 'Ciempi lee cada frase entera cuando llegas a su manzana.'
+  if (modo === 'coro' && nivel === 4) return 'Ciempi lee cada parte cuando llegas a su manzana.'
   if (modo === 'eco' && nivel >= 2) return `Ciempi lee ${nivel === 2 ? 'la oración' : nivel === 3 ? 'el párrafo' : 'la página'} y después lo lees tú.`
   return MODOS[modo].descripcion
 }

@@ -143,11 +143,11 @@ otro nivel para otro niño). Lo elige un adulto del niño; el niño no lo cambia
 
 | Nivel | Se lee de una vez | En pantalla | Voz si el niño no eligió |
 |---|---|---|---|
-| 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada sílaba al llegar: «La – u – va» |
+| 0 Sílabas | frase corta (≤ 8 palabras) | una línea, «ma-má», una manzana por sílaba | dice cada sílaba al llegar: «La – u – va» (sin tilde: «piés» suelta la voz la deletrea) |
 | 1 Palabra | frase corta (≤ 8 palabras) | una línea, una manzana por palabra | dice cada palabra al llegar |
-| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración al ritmo del dedo (`src/lectura/vozAlDedo.ts`) |
-| 3 Párrafo | párrafo o estrofa | todo a la vista; una manzana por fragmento (`dividirEnFragmentos`) | dice cada fragmento al llegar a su manzana |
-| 4 Libre | una página (100–160 palabras) | igual que el 3 | sin voz (el niño puede elegir «Leer conmigo») |
+| 2 Oración | la oración completa (≤ 12 palabras) | una línea, solo la manzana del final; el dedo va a la velocidad que quiera | lee la oración al ritmo del dedo, sin saltarse palabras (`src/lectura/vozAlDedo.ts`); al llegar al final espera a la voz 1,5 s como máximo |
+| 3 Párrafo | párrafo o estrofa | una frase por línea, rojo y azul alternados; una manzana por frase, repartidas parejo; la frase se enciende entera | dice la frase entera al llegar a su manzana |
+| 4 Libre | una página (100–160 palabras) | toda a la vista; una manzana por oración; las palabras se encienden al pasar el dedo | sin voz (el niño puede elegir «Leer conmigo») |
 
 - Todas las unidades se arman con las frases de los niveles 0 y 1
   (`src/lenguaje/unidades.ts`), así el avance se guarda en frases y se puede
