@@ -8,10 +8,21 @@
  * todo, y en los niveles 2 y 4 la voz puede apurarse, ir más lenta o
  * pausarse mientras habla, siguiendo al dedo (ver PantallaLectura).
  * Lo pedido se guarda en memoria; la lectura precarga lo que viene.
+ *
+ * De cada audio se toca solo la parte con voz (ver silencio.ts): así la
+ * palabra suena apenas se come la manzana y la siguiente no espera.
  */
+
+import { bordesDeLaVoz } from './silencio'
 
 /** La voz de Ciempi niño o niña, o una voz con nombre (ver server/src/voz.ts). */
 export type VozCiempi = 'nino' | 'nina' | 'lorenzo' | 'catalina' | 'paloma' | 'alonso'
+
+/** Un audio ya descargado: su dirección local y dónde habla (en segundos; sin `bordes`, todo). */
+interface AudioGuardado {
+  url: string
+  bordes: { inicio: number; fin: number } | null
+}
 
 interface Pedido {
   texto: string
@@ -27,9 +38,12 @@ const SILENCIO = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+
 
 export class VozServidor {
   /** Dirección local (blob:) del audio de cada texto ya pedido. */
-  private audios = new Map<string, Promise<string>>()
+  private audios = new Map<string, Promise<AudioGuardado>>()
   private cola: Pedido[] = []
   private sonando: HTMLAudioElement | null = null
+  /** Dónde habla lo que suena (en segundos). */
+  private tramo = { inicio: 0, fin: Infinity }
+  private decodificador: BaseAudioContext | null = null
   /** Cambia cada vez que se corta lo que suena, para descartar lo que venía en camino. */
   private turno = 0
   private fallandoHasta = 0
@@ -70,7 +84,18 @@ export class VozServidor {
     void a.play().catch(() => {})
   }
 
-  private obtener(texto: string, voz: VozCiempi): Promise<string> {
+  /** Dónde empieza y termina la voz en este audio, o null si el equipo no lo puede analizar. */
+  private async bordes(datos: Blob) {
+    try {
+      this.decodificador ??= new OfflineAudioContext(1, 1, 24000)
+      const sonido = await this.decodificador.decodeAudioData(await datos.arrayBuffer())
+      return bordesDeLaVoz(sonido.getChannelData(0), sonido.sampleRate)
+    } catch {
+      return null
+    }
+  }
+
+  private obtener(texto: string, voz: VozCiempi): Promise<AudioGuardado> {
     const clave = `${voz}|${texto}`
     let audio = this.audios.get(clave)
     if (!audio) {
@@ -80,14 +105,14 @@ export class VozServidor {
           if (!r.ok) throw new Error(`voz ${r.status}`)
           return r.blob()
         })
-        .then((datos) => URL.createObjectURL(datos))
+        .then(async (datos) => ({ url: URL.createObjectURL(datos), bordes: await this.bordes(datos) }))
       // Si falla, se olvida para poder intentarlo otra vez más tarde.
       audio.catch(() => this.audios.delete(clave))
       this.audios.set(clave, audio)
       if (this.audios.size > MAXIMO_EN_MEMORIA) {
         const [primera, url] = this.audios.entries().next().value!
         this.audios.delete(primera)
-        void url.then((u) => URL.revokeObjectURL(u)).catch(() => {})
+        void url.then((a) => URL.revokeObjectURL(a.url)).catch(() => {})
       }
     }
     return audio
@@ -144,9 +169,9 @@ export class VozServidor {
     const pedido = this.cola[0]
     if (!pedido) return
     const turno = this.turno
-    let url: string
+    let guardado: AudioGuardado
     try {
-      url = await this.obtener(pedido.texto, pedido.voz)
+      guardado = await this.obtener(pedido.texto, pedido.voz)
     } catch {
       // Sin conexión o sin servicio de voz: por un minuto se usa la voz del teléfono.
       this.fallandoHasta = Date.now() + 60_000
@@ -155,10 +180,12 @@ export class VozServidor {
       return
     }
     if (turno !== this.turno) return
-    const audio = new Audio(url)
+    const audio = new Audio(guardado.url)
     audio.preservesPitch = true
     audio.playbackRate = pedido.velocidad
+    let vigilar = 0
     const seguir = () => {
+      window.clearInterval(vigilar)
       if (this.sonando !== audio) return
       this.sonando = null
       this.cola.shift()
@@ -166,7 +193,24 @@ export class VozServidor {
     }
     audio.onended = seguir
     audio.onerror = seguir
-    if (pedido.desde) audio.addEventListener('loadedmetadata', () => (audio.currentTime = pedido.desde! * audio.duration), { once: true })
+    this.tramo = guardado.bordes ?? { inicio: 0, fin: Infinity }
+    const tramo = this.tramo
+    // Cuando termina la voz, lo que queda es silencio: se pasa a lo siguiente.
+    if (guardado.bordes) {
+      vigilar = window.setInterval(() => {
+        if (this.sonando !== audio) return window.clearInterval(vigilar)
+        if (audio.currentTime >= tramo.fin) {
+          audio.pause()
+          seguir()
+        }
+      }, 15)
+    }
+    const empezar = () => {
+      const desde = this.enSegundos(pedido.desde ?? 0, audio)
+      if (desde !== null && desde > 0.01) audio.currentTime = desde
+    }
+    empezar()
+    audio.addEventListener('loadedmetadata', empezar, { once: true })
     this.sonando = audio
     if (!this.pausada) void audio.play().catch(seguir)
   }
@@ -200,13 +244,29 @@ export class VozServidor {
   /** Qué parte de lo que suena ya se dijo (0..1), o null si no suena nada (o todavía no se sabe su largo). */
   progreso(): number | null {
     const a = this.sonando
-    return a && Number.isFinite(a.duration) && a.duration > 0 ? a.currentTime / a.duration : null
+    if (!a) return null
+    const { inicio, fin } = this.tramoDe(a)
+    if (!Number.isFinite(fin) || fin <= inicio) return null
+    return Math.max(0, Math.min(1, (a.currentTime - inicio) / (fin - inicio)))
   }
 
   /** Salta a esta parte de lo que suena (0..1). */
   buscar(fraccion: number) {
     const a = this.sonando
-    if (a && Number.isFinite(a.duration)) a.currentTime = Math.max(0, Math.min(1, fraccion)) * a.duration
+    const segundos = a && this.enSegundos(fraccion, a)
+    if (a && segundos !== null) a.currentTime = segundos
+  }
+
+  /** Dónde habla este audio; sin análisis, el audio entero (si ya se sabe su largo). */
+  private tramoDe(a: HTMLAudioElement) {
+    return Number.isFinite(this.tramo.fin) ? this.tramo : { inicio: 0, fin: Number.isFinite(a.duration) ? a.duration : Infinity }
+  }
+
+  /** Una parte de lo que se dice (0..1) en segundos del audio, o null si todavía no se sabe. */
+  private enSegundos(fraccion: number, a: HTMLAudioElement): number | null {
+    const { inicio, fin } = this.tramoDe(a)
+    if (!Number.isFinite(fin)) return null
+    return inicio + Math.max(0, Math.min(1, fraccion)) * (fin - inicio)
   }
 
   hablando(): boolean {
