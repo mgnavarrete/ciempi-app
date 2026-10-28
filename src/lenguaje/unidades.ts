@@ -1,5 +1,5 @@
-import type { Capitulo, NivelLectura, Texto } from '../dominio/tipos'
-import { contarPalabras } from '../lectura/monedas'
+import type { Capitulo, NivelLectura, Texto } from '../dominio/tipos.ts'
+import { contarPalabras } from '../lectura/monedas.ts'
 
 /**
  * Niveles de lectura. Todos se arman con las frases del libro (las de los niveles 0 y 1,

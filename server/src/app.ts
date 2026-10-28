@@ -25,7 +25,7 @@ import {
 import { nivelSugerido } from '../../src/lenguaje/dificultad.ts'
 import { enviarRecuperacion } from './correo.ts'
 import { darCuentos } from './cuentos.ts'
-import { fuentesDeVoz, vozDisponible } from './voz.ts'
+import { audioDe, leerVozPedida, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
@@ -164,9 +164,8 @@ const ALFABETO_CODIGO = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 const codigoInvitacion = () => Array.from({ length: 6 }, () => ALFABETO_CODIGO[randomInt(ALFABETO_CODIGO.length)]).join('')
 
 const LIMITE_LIBRO = 8 * 1024 * 1024
-/** La voz dice palabras y frases de Ciempi; las palabras (cortas) se guardan. */
+/** Lo más largo que se le pide a la voz de una vez (una oración; un texto largo se pide por partes). */
 const LARGO_VOZ = 300
-const LARGO_PALABRA = 40
 
 export async function crearApp() {
   const app = Fastify({
@@ -241,30 +240,16 @@ export async function crearApp() {
     const q = req.query as Record<string, string | undefined>
     const dicho = (q.texto ?? '').trim()
     if (!dicho || dicho.length > LARGO_VOZ) throw new Problema('Texto inválido para la voz')
-    const voz = q.voz === 'nina' ? 'nina' : 'nino'
-    // Pasos de 0,05 (como el ajuste de la app) para que lo guardado sirva.
+    const voz = leerVozPedida(q.voz)
+    // Pasos de 0,05 para que lo guardado sirva. La app nueva pide siempre 1 y
+    // cambia la velocidad al reproducir (así el mismo audio sirve para todo).
     const velocidad = Math.min(1.5, Math.max(0.5, Math.round((Number(q.velocidad) || 1) * 20) / 20))
-    const guardar = dicho.length <= LARGO_PALABRA
-
-    // La primera fuente que tenga el audio guardado o lo pueda generar (las de pago, si hay clave, antes que Kokoro).
-    for (const fuente of fuentesDeVoz(voz)) {
-      const clave = `${fuente.id}|${velocidad}|${dicho}`
-      if (guardar) {
-        const { rows } = await pool.query<{ audio: Buffer }>('select audio from audios_voz where clave = $1', [clave])
-        if (rows[0]) return enviarAudio(reply, rows[0].audio)
-      }
-      try {
-        const audio = await fuente.generar(dicho, velocidad)
-        if (guardar) await pool.query('insert into audios_voz (clave, audio) values ($1, $2) on conflict do nothing', [clave, audio])
-        return enviarAudio(reply, audio)
-      } catch (e) {
-        req.log.warn({ fuente: fuente.id, error: (e as Error).message }, 'la voz falló; se prueba la siguiente')
-      }
-    }
-    throw new Problema('La voz de Ciempi no está disponible', 503)
+    const audio = await audioDe(dicho, voz, velocidad, (fuente, e) => req.log.warn({ fuente, error: e.message }, 'la voz falló; se prueba la siguiente'))
+    if (!audio) throw new Problema('La voz de Ciempi no está disponible', 503)
+    return reply.type(tipoDeAudio(audio)).header('Cache-Control', 'private, max-age=31536000, immutable').send(audio)
   })
-  const enviarAudio = (reply: FastifyReply, audio: Buffer) =>
-    reply.type('audio/wav').header('Cache-Control', 'private, max-age=31536000, immutable').send(audio)
+  /** WAV (Azure, xAI, Kokoro) o MP3 (Microsoft). */
+  const tipoDeAudio = (audio: Buffer) => (audio.toString('ascii', 0, 4) === 'RIFF' ? 'audio/wav' : 'audio/mpeg')
 
   // ── Sesión ──────────────────────────────────────────────────────────────
 

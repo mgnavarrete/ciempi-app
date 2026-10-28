@@ -1,6 +1,14 @@
+import { spawn } from 'node:child_process'
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { pool } from './db.ts'
+
 /**
  * Voz de Ciempi: genera el audio de una palabra o frase.
  *
+ * - Voces neuronales de Microsoft, gratis y sin cuenta (edge-tts, en
+ *   server/voz-microsoft): Lorenzo y Catalina (Chile), Paloma y Alonso
+ *   (EE. UU.). Se usan si están instaladas (deploy/instalar-voz-microsoft.sh).
  * - Con AZURE_SPEECH_KEY: voces neuronales de Microsoft (Lorenzo, de Chile,
  *   para Ciempi niño; Paloma para Ciempi niña).
  * - Con XAI_API_KEY: voces de xAI (Leo para niño, Ara para niña) en español de México.
@@ -12,6 +20,25 @@
  */
 
 export type VozCiempi = 'nino' | 'nina'
+
+/** Las voces de Microsoft que se pueden elegir en la app. */
+export const VOCES_MICROSOFT = {
+  lorenzo: 'es-CL-LorenzoNeural',
+  catalina: 'es-CL-CatalinaNeural',
+  paloma: 'es-US-PalomaNeural',
+  alonso: 'es-US-AlonsoNeural',
+} as const
+export type VozMicrosoft = keyof typeof VOCES_MICROSOFT
+/** Lo que pide la app: la voz de Ciempi niño o niña, o una voz con nombre. */
+export type VozPedida = VozCiempi | VozMicrosoft
+
+export function leerVozPedida(v: unknown): VozPedida {
+  return v === 'nina' || (typeof v === 'string' && v in VOCES_MICROSOFT) ? (v as VozPedida) : 'nino'
+}
+/** Ciempi niño habla con Lorenzo y Ciempi niña con Catalina. */
+const vozMicrosoftDe = (voz: VozPedida): VozMicrosoft => (voz === 'nino' ? 'lorenzo' : voz === 'nina' ? 'catalina' : voz)
+/** Para las otras voces (Azure, xAI, Kokoro): de niño o de niña. */
+const generoDe = (voz: VozPedida): VozCiempi => (voz === 'nina' || voz === 'catalina' || voz === 'paloma' ? 'nina' : 'nino')
 
 export interface FuenteVoz {
   /** Identifica la voz exacta: es parte de la clave con que se guarda el audio. */
@@ -99,13 +126,93 @@ function fuenteLocal(voz: VozCiempi): FuenteVoz {
   }
 }
 
-/** En orden de preferencia: Azure y xAI (las que tengan clave) y después Kokoro en este servidor. */
-export function fuentesDeVoz(voz: VozCiempi): FuenteVoz[] {
-  return [...(azureConfigurado() ? [fuenteAzure(voz)] : []), ...(xaiConfigurado() ? [fuenteXai(voz)] : []), fuenteLocal(voz)]
+// ── Microsoft (edge-tts) ────────────────────────────────────────────────────
+
+const SCRIPT_MICROSOFT = fileURLToPath(new URL('../voz-microsoft/decir.py', import.meta.url))
+const pythonMicrosoft = () => process.env.VOZ_MICROSOFT_PYTHON ?? fileURLToPath(new URL('../voz-microsoft/.venv/bin/python', import.meta.url))
+export const microsoftInstalado = () => process.env.VOZ_MICROSOFT !== 'no' && existsSync(pythonMicrosoft())
+
+/** Cuántos audios se piden a la vez (cada uno es un proceso corto y una consulta por internet). */
+const maximoALaVez = () => Number(process.env.VOZ_MICROSOFT_A_LA_VEZ) || 4
+let ocupados = 0
+const esperando: (() => void)[] = []
+async function turno<T>(fn: () => Promise<T>): Promise<T> {
+  if (ocupados >= maximoALaVez()) await new Promise<void>((r) => esperando.push(r))
+  ocupados++
+  try {
+    return await fn()
+  } finally {
+    ocupados--
+    esperando.shift()?.()
+  }
+}
+
+export function fuenteMicrosoft(voz: VozPedida): FuenteVoz {
+  const nombre = VOCES_MICROSOFT[vozMicrosoftDe(voz)]
+  return {
+    id: `microsoft:${nombre}`,
+    generar: (texto, velocidad) =>
+      turno(
+        () =>
+          new Promise<Buffer>((resolver, rechazar) => {
+            const rate = `${velocidad >= 1 ? '+' : ''}${Math.round((velocidad - 1) * 100)}%`
+            const proceso = spawn(pythonMicrosoft(), [SCRIPT_MICROSOFT, nombre, rate], { timeout: 20_000 })
+            const partes: Buffer[] = []
+            let error = ''
+            proceso.stdout.on('data', (d: Buffer) => partes.push(d))
+            proceso.stderr.on('data', (d: Buffer) => (error += d))
+            proceso.on('error', rechazar)
+            proceso.on('close', (codigo) => {
+              const audio = Buffer.concat(partes)
+              if (codigo === 0 && audio.length > 0) resolver(audio)
+              else rechazar(new Error(`edge-tts terminó con ${codigo}: ${error.trim().split('\n').at(-1) ?? ''}`))
+            })
+            proceso.stdin.end(texto)
+          }),
+      ),
+  }
+}
+
+/** En orden de preferencia: Microsoft (si está instalada), Azure y xAI (las que tengan clave) y después Kokoro en este servidor. */
+export function fuentesDeVoz(voz: VozPedida): FuenteVoz[] {
+  const g = generoDe(voz)
+  return [
+    ...(microsoftInstalado() ? [fuenteMicrosoft(voz)] : []),
+    ...(azureConfigurado() ? [fuenteAzure(g)] : []),
+    ...(xaiConfigurado() ? [fuenteXai(g)] : []),
+    fuenteLocal(g),
+  ]
+}
+
+/** Solo se guardan las palabras, salvo con Microsoft: ahí también las frases (son gratis, pero lentas de generar). */
+const LARGO_GUARDADO = 40
+
+/**
+ * El audio de un texto con la primera voz que lo tenga guardado o lo pueda
+ * generar (y queda guardado). null si ninguna funciona.
+ */
+export async function audioDe(texto: string, voz: VozPedida, velocidad: number, alFallar?: (fuente: string, error: Error) => void): Promise<Buffer | null> {
+  for (const fuente of fuentesDeVoz(voz)) {
+    const clave = `${fuente.id}|${velocidad}|${texto}`
+    const guardar = texto.length <= LARGO_GUARDADO || fuente.id.startsWith('microsoft:')
+    if (guardar) {
+      const { rows } = await pool.query<{ audio: Buffer }>('select audio from audios_voz where clave = $1', [clave])
+      if (rows[0]) return rows[0].audio
+    }
+    try {
+      const audio = await fuente.generar(texto, velocidad)
+      if (guardar) await pool.query('insert into audios_voz (clave, audio) values ($1, $2) on conflict do nothing', [clave, audio])
+      return audio
+    } catch (e) {
+      alFallar?.(fuente.id, e as Error)
+    }
+  }
+  return null
 }
 
 /** ¿Hay alguna voz funcionando? Devuelve cuál, o null. */
 export async function vozDisponible(): Promise<string | null> {
+  if (microsoftInstalado()) return 'microsoft'
   const responde = (url: string, init?: RequestInit) =>
     fetch(url, { ...init, signal: AbortSignal.timeout(5_000) })
       .then((r) => r.ok)

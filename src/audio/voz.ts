@@ -1,8 +1,9 @@
 import { Capacitor } from '@capacitor/core'
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { instalarVozDelTelefono } from '../plataforma/telefono'
-import { paraLaVoz } from './pronunciacion'
-import { VozServidor, type VozCiempi } from './vozServidor'
+import { dividirEnFragmentos } from '../lenguaje/frases'
+import { fraseParaLaVoz, palabraParaLaVoz } from './pronunciacion'
+import { VozServidor } from './vozServidor'
 
 /**
  * Voz de Ciempi. Dice palabras, frases y, en el nivel 0, sílabas sueltas. Con cuenta
@@ -81,9 +82,16 @@ export function tonoPara(voz: VozMinima | null, genero: GeneroVoz | null): numbe
   return real === 'masculina' ? 1.35 : 1.15
 }
 
-/** Quita signos para que la voz no cambie la entonación ("perro," → "perro"). */
-export function limpiarParaVoz(palabra: string): string {
-  return palabra.replace(/[^\p{L}\p{N}]/gu, '')
+export { limpiarParaVoz } from './pronunciacion'
+
+/** Hasta este largo se le pide un texto a la voz del servidor de una vez; si es más largo, por oraciones. */
+const LARGO_DE_UNA_VEZ = 280
+
+/** Un texto ya listo para la voz, en partes que el servidor acepta (y que coinciden con lo grabado). */
+function partesParaLaVoz(texto: string): string[] {
+  const limpio = fraseParaLaVoz(texto)
+  if (limpio.length <= LARGO_DE_UNA_VEZ) return limpio ? [limpio] : []
+  return dividirEnFragmentos(limpio, { porOracion: true }).flatMap((o) => (o.length <= LARGO_DE_UNA_VEZ ? [o] : dividirEnFragmentos(o)))
 }
 
 // ── Motores de voz ─────────────────────────────────────────────────────────
@@ -101,11 +109,22 @@ interface VozDelMotor extends VozMinima {
 /**
  * Qué voz usar, elegida en Ajustes y guardada en este dispositivo (las voces
  * del teléfono cambian de un equipo a otro):
- * - "auto": la voz de Ciempi del servidor y, si no está, la mejor del teléfono;
- * - "ciempi-nino" / "ciempi-nina": la voz de Ciempi de niño o de niña;
+ * - "auto": la voz de Ciempi del servidor (Lorenzo si Ciempi es niño,
+ *   Catalina si es niña) y, si no está, la mejor del teléfono;
+ * - "ciempi:<voz>": una de las voces de Ciempi (Lorenzo, Catalina, Paloma o Alonso);
+ * - "ciempi-nino" / "ciempi-nina": como se guardaba antes (Lorenzo y Catalina);
  * - "equipo:<id>": una voz del teléfono o navegador, de cualquier idioma.
  */
-export type EleccionVoz = 'auto' | 'ciempi-nino' | 'ciempi-nina' | `equipo:${string}`
+export type EleccionVoz = 'auto' | 'ciempi-nino' | 'ciempi-nina' | `ciempi:${VozConNombre}` | `equipo:${string}`
+
+/** Las voces de Ciempi (de Microsoft, en el servidor), en el orden en que se ofrecen. */
+export const VOCES_CIEMPI = [
+  { id: 'lorenzo', nombre: 'Lorenzo', detalle: 'hombre, Chile' },
+  { id: 'catalina', nombre: 'Catalina', detalle: 'mujer, Chile' },
+  { id: 'paloma', nombre: 'Paloma', detalle: 'mujer, latinoamericana' },
+  { id: 'alonso', nombre: 'Alonso', detalle: 'hombre, latinoamericano' },
+] as const
+export type VozConNombre = (typeof VOCES_CIEMPI)[number]['id']
 
 export interface OpcionVoz {
   id: EleccionVoz
@@ -296,6 +315,13 @@ class Voz {
   usarServidor(base: string, token: () => string | null) {
     this.servidor = new VozServidor(base, token, (texto) => this.motor?.hablar(texto, this.opcionesMotor(true)))
     this.alCambiar.forEach((fn) => fn())
+    void this.comprobarServidor()
+  }
+
+  /** Al abrir la app y al iniciar sesión: ¿la voz de Ciempi del servidor está funcionando? */
+  async comprobarServidor() {
+    await this.servidor?.comprobar()
+    this.alCambiar.forEach((fn) => fn())
   }
 
   /** Se está usando la voz de Ciempi del servidor (y no la del teléfono). */
@@ -303,10 +329,11 @@ class Voz {
     return !this.eleccionActual.startsWith('equipo:') && !!this.servidor?.disponible
   }
 
-  private get vozCiempi(): VozCiempi {
-    if (this.eleccionActual === 'ciempi-nino') return 'nino'
-    if (this.eleccionActual === 'ciempi-nina') return 'nina'
-    return this.genero === 'femenina' ? 'nina' : 'nino'
+  private get vozCiempi(): VozConNombre {
+    if (this.eleccionActual.startsWith('ciempi:')) return this.eleccionActual.slice(7) as VozConNombre
+    if (this.eleccionActual === 'ciempi-nino') return 'lorenzo'
+    if (this.eleccionActual === 'ciempi-nina') return 'catalina'
+    return this.genero === 'femenina' ? 'catalina' : 'lorenzo'
   }
 
   get eleccion(): EleccionVoz {
@@ -317,8 +344,7 @@ class Voz {
   get opciones(): OpcionVoz[] {
     const ciempi: OpcionVoz[] = this.servidor
       ? [
-          { id: 'ciempi-nino', nombre: 'Voz de Ciempi: niño', espanol: true },
-          { id: 'ciempi-nina', nombre: 'Voz de Ciempi: niña', espanol: true },
+          ...VOCES_CIEMPI.map((v) => ({ id: `ciempi:${v.id}` as EleccionVoz, nombre: `Voz de Ciempi: ${v.nombre} (${v.detalle})`, espanol: true })),
         ]
       : []
     const equipo = this.vocesDelEquipo
@@ -381,7 +407,7 @@ class Voz {
   }
 
   get nombreVoz(): string | null {
-    if (this.conServidor) return `Voz de Ciempi (${this.vozCiempi === 'nina' ? 'niña' : 'niño'})`
+    if (this.conServidor) return `Voz de Ciempi: ${VOCES_CIEMPI.find((v) => v.id === this.vozCiempi)?.nombre}`
     return this.voz ? `${this.voz.name} (${this.voz.lang})` : null
   }
 
@@ -425,15 +451,20 @@ class Voz {
     }
   }
 
-  /** Pide de antemano el audio de estas palabras, para que suenen sin demora. */
-  precargar(palabras: string[], velocidad: number) {
+  /** Pide de antemano el audio de estas palabras (o sílabas), para que suenen sin demora. */
+  precargar(palabras: string[]) {
     if (!this.conServidor) return
-    const limpias = palabras.map((p) => limpiarParaVoz(paraLaVoz(p)).toLowerCase()).filter(Boolean)
-    this.servidor!.precargar(limpias, this.vozCiempi, velocidad)
+    this.servidor!.precargar(palabras.map(palabraParaLaVoz).filter(Boolean), this.vozCiempi)
+  }
+
+  /** Lo mismo para frases y oraciones. */
+  precargarFrases(frases: string[]) {
+    if (!this.conServidor) return
+    this.servidor!.precargar(frases.flatMap(partesParaLaVoz), this.vozCiempi)
   }
 
   decir(texto: string, velocidadPedida: number) {
-    const limpio = limpiarParaVoz(paraLaVoz(texto)).toLowerCase()
+    const limpio = palabraParaLaVoz(texto)
     if (!limpio) return
     const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad
@@ -449,15 +480,51 @@ class Voz {
    * `encolar`, después de lo que esté sonando; si no, lo corta.
    */
   decirFrase(texto: string, velocidadPedida = 1, encolar = false) {
-    const limpio = paraLaVoz(texto)
-      .replace(/[\p{Extended_Pictographic}️‍]/gu, '')
-      .replace(/\s+/g, ' ')
-      .trim()
+    const limpio = fraseParaLaVoz(texto)
     if (!limpio) return
     const velocidad = Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida)
     this.velocidadActual = velocidad
-    if (this.conServidor) return this.servidor!.hablar(limpio, this.vozCiempi, velocidad, encolar)
+    if (this.conServidor) {
+      // Un texto largo (un párrafo, una página) se pide oración por oración.
+      partesParaLaVoz(limpio).forEach((parte, i) => this.servidor!.hablar(parte, this.vozCiempi, velocidad, encolar || i > 0))
+      return
+    }
     this.motor?.hablar(limpio, this.opcionesMotor(encolar))
+  }
+
+  // ── Seguir al dedo (niveles 2 y 4) ──────────────────────────────────────
+  // Solo con la voz de Ciempi del servidor: es un audio, y se le puede cambiar
+  // la velocidad, pausar o retomar mientras habla. Con la voz del teléfono no.
+
+  get sigueAlDedo(): boolean {
+    return this.conServidor
+  }
+
+  /** Dice una oración empezando desde esta parte (0..1), para retomar donde está el dedo. */
+  decirDesde(texto: string, velocidadPedida: number, desde: number) {
+    if (!this.conServidor) return this.decirFrase(texto, velocidadPedida)
+    this.servidor!.hablar(fraseParaLaVoz(texto), this.vozCiempi, Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida), false, desde)
+  }
+
+  ajustarVelocidad(velocidadPedida: number) {
+    this.servidor?.ajustarVelocidad(Math.min(VELOCIDAD_MAXIMA_VOZ, velocidadPedida))
+  }
+
+  pausar() {
+    this.servidor?.pausar()
+  }
+
+  reanudar() {
+    this.servidor?.reanudar()
+  }
+
+  /** Qué parte de lo que suena ya se dijo (0..1), o null. */
+  progreso(): number | null {
+    return this.servidor?.progreso() ?? null
+  }
+
+  buscar(fraccion: number) {
+    this.servidor?.buscar(fraccion)
   }
 
   /** Hay algo sonando o por sonar. */

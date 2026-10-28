@@ -18,7 +18,7 @@ import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos,
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
-import { VELOCIDAD_MAXIMA, encolarTrozo, trozoEn } from './vozAlDedo'
+import { TROZOS_DE_ATRASO, VELOCIDAD_MAXIMA, encolarTrozo, trozoEn, velocidadPara } from './vozAlDedo'
 
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
@@ -27,8 +27,10 @@ const MS_PASO_FRASE = 450
 const MS_ESPERA_VOZ_LARGA = 20_000
 /** Niveles 2 y 4: cuánto tiene que volver atrás el dedo para que la voz se corte. */
 const RETROCESO = 0.04
-/** Nivel 2: la voz va en trozos de hasta tantas palabras (cortos, para que se apure de a poco). */
+/** Nivel 2 con la voz del teléfono: va en trozos de hasta tantas palabras (cortos, para que se apure de a poco). */
 const PALABRAS_POR_TROZO = 3
+/** Nivel 2 con la voz de Ciempi: si el dedo se queda quieto este rato, la voz se pausa. */
+const MS_DEDO_QUIETO = 600
 /** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
 const INICIO_PISTA_PARRAFO = 0.06
 /** Pausas más largas que esto no cuentan como tiempo leyendo. */
@@ -144,14 +146,6 @@ export function PantallaLectura(props: Props) {
   )
   const manzanasPorLeer = porSilaba ? silabas.length : porFragmentos ? fragmentos.length : palabras.length
 
-  // La voz del servidor se pide de antemano (esta frase y la siguiente) para que suene apenas llega el dedo.
-  const fraseQueViene = unidades[indice + 1]
-  useEffect(() => {
-    if (modo === 'solo' || nivel >= 2) return
-    const proximas = fraseQueViene ? silabearFrase(quitarGuiones(fraseQueViene)) : []
-    const ahora = porSilaba ? silabas.map((s) => s.texto) : palabras.map((p) => p.texto)
-    voz.precargar([...ahora, ...proximas.map((p) => p.texto)], ajustes.velocidadVoz)
-  }, [palabras, silabas, porSilaba, fraseQueViene, ajustes.velocidadVoz, modo, nivel])
 
   // La pista se mide en pantalla (dónde quedó cada palabra); mientras, una
   // pareja. En los niveles 3 y 4 las palabras se reparten parejo a lo largo del
@@ -197,6 +191,30 @@ export function PantallaLectura(props: Props) {
     }
     return { textos: [], palabras: [], inicios: [] }
   }, [oracion, pagina, frase, fragmentos, pista])
+
+  // La voz del servidor se pide de antemano (lo de ahora y lo que sigue) para que suene apenas llega el dedo.
+  const fraseQueViene = quitarGuiones(unidades[indice + 1] ?? '')
+  useEffect(() => {
+    if (modo === 'solo') return
+    if (porSilaba) voz.precargar(silabas.map((s) => silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas)))
+    else if (nivel === 1) voz.precargar([...palabras, ...silabearFrase(fraseQueViene)].map((p) => p.texto))
+    else if (oracion) voz.precargarFrases([frase, fraseQueViene])
+    else if (pagina) voz.precargarFrases(trozos.textos)
+    else voz.precargarFrases(fragmentos.map((f) => f.map((p) => p.texto).join(' ')))
+  }, [palabras, silabas, porSilaba, fraseQueViene, frase, fragmentos, trozos, modo, nivel, oracion, pagina])
+
+  // Nivel 2 con la voz de Ciempi: dónde empieza cada palabra en lo que dice la voz (0..1, por letras),
+  // para saber por dónde va la voz comparada con el dedo.
+  const inicioDePalabra = useMemo(() => {
+    const largos = palabras.map((p) => p.texto.length + 1)
+    const total = largos.reduce((a, b) => a + b, 0) || 1
+    let antes = 0
+    return largos.map((l) => {
+      const inicio = antes / total
+      antes += l
+      return inicio
+    })
+  }, [palabras])
 
   const [motor, setMotor] = useState<EstadoMotor>(estadoInicial)
   const motorRef = useRef(motor)
@@ -271,6 +289,8 @@ export function PantallaLectura(props: Props) {
   const filaVoz = useRef<number[]>([])
   const proximoTrozo = useRef(0)
   const ultimaPos = useRef(0)
+  // Nivel 2 con la voz de Ciempi: la oración es un solo audio que sigue al dedo.
+  const oracionAlDedo = useRef({ empezada: false, cortada: false, quieto: 0 })
   // Cuándo tocó el niño por primera vez esta unidad (para revisar el ritmo al terminar).
   const inicioUnidad = useRef<number | null>(null)
 
@@ -279,6 +299,8 @@ export function PantallaLectura(props: Props) {
     filaVoz.current = []
     proximoTrozo.current = 0
     ultimaPos.current = 0
+    window.clearTimeout(oracionAlDedo.current.quieto)
+    oracionAlDedo.current = { empezada: false, cortada: false, quieto: 0 }
     inicioUnidad.current = null
     setMotor(motorRef.current)
   }
@@ -424,7 +446,8 @@ export function PantallaLectura(props: Props) {
    * Al entrar el dedo a un trozo, se pone en fila (y los anteriores que falten:
    * nunca se salta uno). Si el dedo vuelve atrás, la voz se corta y sigue desde ahí.
    */
-  const seguirConLaVoz = (pos: number) => {
+  const seguirConLaVoz = (pos: number, terminada: boolean) => {
+    if (oracion && voz.sigueAlDedo) return seguirOracionConElAudio(pos, terminada)
     // Volviendo atrás: se corta y no se dice nada hasta que el dedo vuelva a avanzar.
     if (pos < ultimaPos.current - RETROCESO) {
       ultimaPos.current = pos
@@ -440,9 +463,60 @@ export function PantallaLectura(props: Props) {
       // Nunca más rápido que lo normal, aunque en Ajustes la voz esté más rápida.
       voz.decirFrase(trozos.textos[k], Math.min(VELOCIDAD_MAXIMA, ajustes.velocidadVoz * fila.velocidad), true)
     }
+    // Con la voz de Ciempi, la oración que suena también se apura o va más lenta según el dedo.
+    if (voz.sigueAlDedo) {
+      const atrasada = filaVoz.current.filter((fin) => fin > performance.now()).length >= TROZOS_DE_ATRASO
+      voz.ajustarVelocidad(ajustes.velocidadVoz * (atrasada ? VELOCIDAD_MAXIMA : velocidadPara(velocidadDelDedo())))
+    }
   }
+
+  /**
+   * Nivel 2 con la voz de Ciempi: la oración entera, de corrido, al ritmo del
+   * dedo. Si el dedo va adelante, la voz se apura (hasta 1,2×); si va detrás,
+   * la voz lo espera; si el dedo se detiene, la voz se pausa; si vuelve atrás
+   * o se levanta, se corta, y al seguir retoma desde la palabra del dedo.
+   */
+  const seguirOracionConElAudio = (pos: number, terminada: boolean) => {
+    const o = oracionAlDedo.current
+    window.clearTimeout(o.quieto)
+    if (pos < ultimaPos.current - RETROCESO) {
+      ultimaPos.current = pos
+      voz.pausar()
+      o.cortada = true
+      return
+    }
+    ultimaPos.current = Math.max(ultimaPos.current, pos)
+    // La palabra del dedo: la última cuya manzana ya pasó (o la primera).
+    let palabra = 0
+    while (palabra + 1 < pista.manzanas.length && pista.manzanas[palabra + 1] <= pos + 1e-9) palabra++
+    const dedo = inicioDePalabra[palabra] ?? 0
+    const unaPalabra = 1 / Math.max(1, palabras.length)
+
+    if (!o.empezada) {
+      o.empezada = true
+      voz.decirDesde(frase, ajustes.velocidadVoz * velocidadPara(velocidadDelDedo()), dedo)
+    } else if (o.cortada) {
+      o.cortada = false
+      voz.buscar(dedo)
+    }
+    const va = voz.progreso()
+    // La voz va más de una palabra y media delante del dedo: lo espera (salvo que el dedo ya llegó al final).
+    if (va !== null && va - dedo > 1.5 * unaPalabra && !terminada) voz.pausar()
+    else voz.reanudar()
+    const adelante = va !== null && dedo - va > 2 * unaPalabra
+    voz.ajustarVelocidad(ajustes.velocidadVoz * (adelante || terminada ? VELOCIDAD_MAXIMA : velocidadPara(velocidadDelDedo())))
+    // Si el dedo se queda quieto, la voz se pausa (sigue apenas se mueva).
+    if (!terminada) o.quieto = window.setTimeout(() => voz.pausar(), MS_DEDO_QUIETO)
+  }
+
   /** El dedo volvió atrás o se levantó: se corta la voz; al seguir, vuelve a leer el trozo donde esté. */
   const cortarVoz = () => {
+    if (oracion && voz.sigueAlDedo) {
+      window.clearTimeout(oracionAlDedo.current.quieto)
+      voz.pausar()
+      oracionAlDedo.current.cortada = true
+      return
+    }
     voz.callar()
     filaVoz.current = []
     proximoTrozo.current = trozoEn(trozos.inicios, ultimaPos.current)
@@ -501,7 +575,7 @@ export function PantallaLectura(props: Props) {
     // se corta si el dedo se levanta antes de llegar al final.
     if ((oracion || pagina) && definicionModo.vozAlDeslizar) {
       if ((entrada.tipo === 'tocar' || entrada.tipo === 'mover') && estado.fase !== 'esperando' && estado.fase !== 'tropiezo') {
-        seguirConLaVoz(Math.min(Math.max(entrada.pos, 0), estado.progreso))
+        seguirConLaVoz(Math.min(Math.max(entrada.pos, 0), estado.progreso), estado.fase === 'completada')
       } else if (entrada.tipo === 'soltar' && motorRef.current.fase === 'arrastrando') cortarVoz()
     }
     if (estado !== motorRef.current) {

@@ -14,5 +14,14 @@ if [ -x server/voz/.venv/bin/python ] && systemctl is-enabled --quiet ciempi-voz
   server/voz/.venv/bin/pip install --quiet -r server/voz/requirements.txt
   sudo systemctl restart ciempi-voz
 fi
+# Las voces de Microsoft, si están instaladas (deploy/instalar-voz-microsoft.sh):
+# edge-tts se actualiza (Microsoft cambia a veces cómo se le pide la voz).
+if [ -x server/voz-microsoft/.venv/bin/python ]; then
+  server/voz-microsoft/.venv/bin/pip install --quiet --upgrade -r server/voz-microsoft/requirements.txt
+fi
 sudo systemctl restart ciempi-api
+# Si hay cuentos nuevos (o corregidos), se graban aparte.
+if [ -x server/voz-microsoft/.venv/bin/python ]; then
+  bash deploy/grabar-cuentos.sh
+fi
 echo "Ciempi actualizado."

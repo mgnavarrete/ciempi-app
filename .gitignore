@@ -19,3 +19,5 @@ __pycache__/
 muestras-voces/
 # Llave para firmar las APK (scripts/crear-firma.sh): se respalda aparte, nunca en git.
 android/firma/
+muestras-voz/
+server/voz-microsoft/.venv/

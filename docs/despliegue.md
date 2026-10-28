@@ -104,26 +104,37 @@ Prueba: abre https://ciempi.minttu.cl, crea una cuenta de adulto y un lector.
 
 ## 6b. Voz de Ciempi
 
-La voz con que Ciempi lee la genera el servidor con **Kokoro** (voz neuronal, gratis, sin
-internet ni cuentas): **Alex** si Ciempi es niño y **Dora** si es niña. Así suena igual en todos
-los teléfonos, aunque no tengan voces en español.
+La voz con que Ciempi lee la genera el servidor con las **voces neuronales de Microsoft**
+(gratis, sin cuenta ni clave, con [edge-tts](https://github.com/rany2/edge-tts)): **Lorenzo**
+(Chile) si Ciempi es niño y **Catalina** (Chile) si es niña; en Ajustes → Voz también se puede
+elegir **Paloma** o **Alonso**. Suenan igual en todos los teléfonos y en la web.
 
 ```bash
-cd /var/www/ciempi-app && bash deploy/instalar-voz.sh
+cd /var/www/ciempi-app && bash deploy/instalar-voz-microsoft.sh
 ```
 
-Instala `espeak-ng` (con `sudo apt`), crea `server/voz/.venv` con Kokoro, descarga el modelo
-(~350 MB) e instala el servicio `ciempi-voz` (solo escucha en 127.0.0.1:3201). Usa alrededor de
-1 GB de RAM. Si dice que falta `venv`: `sudo apt install python3-venv` y repetir.
+Crea `server/voz-microsoft/.venv` con edge-tts (unos MB), prueba una voz, reinicia la API, apaga
+Kokoro si estaba encendido y deja **grabando los cuentos** aparte: todo lo que se dice en los
+cuentos de Ciempi (palabras, sílabas y oraciones), en las cuatro voces. La primera vez toma unos
+25 minutos y ocupa unos 90 MB en la base; para ver cómo va: `tail -f /tmp/ciempi-grabar-cuentos.log`.
+Mientras tanto la app igual funciona: lo que falta se pide en el momento (tarda un poco la primera vez).
 
-Cada palabra se genera una sola vez y queda guardada en la tabla `audios_voz`. Si el servicio está
-apagado, la app usa la voz del teléfono. Registros: `journalctl -u ciempi-voz -n 30`.
+- Casi no usa memoria: cada audio es una consulta por internet y queda guardado en `audios_voz`
+  (las oraciones de los textos que suben los adultos también, la primera vez que se leen).
+- `deploy/actualizar.sh` actualiza edge-tts y graba lo que falte (cuentos nuevos o corregidos).
+  Para grabar a mano: `bash deploy/grabar-cuentos.sh` (o `bash deploy/grabar-cuentos.sh lorenzo`).
+- Es el servicio de lectura en voz alta del navegador Edge, no uno oficial para apps: si un día
+  Microsoft lo cierra, lo ya grabado sigue sonando y lo nuevo se lee con la voz del teléfono.
+  Para no usarlo: `VOZ_MICROSOFT=no` en `server/.env`.
 
-Para **pausar** Kokoro y liberar la memoria (la app usa la voz del teléfono; conviene elegirla en
-Ajustes → Voz): `sudo systemctl disable --now ciempi-voz`. Para volver a usarlo:
-`sudo systemctl enable --now ciempi-voz`. `deploy/actualizar.sh` no lo enciende si está pausado.
+### Kokoro (ya no se usa)
 
-Opcionales, de pago (se usan antes que Kokoro si tienen clave):
+Antes la voz era **Kokoro** en el propio servidor (`bash deploy/instalar-voz.sh`, ~1 GB de RAM,
+servicio `ciempi-voz`). Queda como respaldo si se enciende (`sudo systemctl enable --now
+ciempi-voz`), pero las voces de Microsoft suenan más naturales y casi no usan memoria. Para
+liberar el disco: `sudo systemctl disable --now ciempi-voz && rm -rf server/voz/.venv server/voz/modelos`.
+
+Opcionales, de pago (se usan si las voces de Microsoft gratis no están instaladas o fallan):
 
 ### Voces de Microsoft (Lorenzo y Paloma)
 

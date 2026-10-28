@@ -1,4 +1,4 @@
-import type { NivelLectura } from '../dominio/tipos'
+import type { NivelLectura } from '../dominio/tipos.ts'
 
 /**
  * Monedas por leer. Cada libro se lee siempre desde el comienzo (o, en un

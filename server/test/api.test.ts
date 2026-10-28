@@ -308,6 +308,36 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     }
   })
 
+  it('voces de Microsoft: cada voz con su nombre, frases guardadas y MP3', async () => {
+    // Un «python» falso: escribe la voz y el texto que le pidieron como si fueran el audio.
+    const { mkdtempSync, writeFileSync, chmodSync } = await import('node:fs')
+    const { tmpdir } = await import('node:os')
+    const dir = mkdtempSync(`${tmpdir()}/voz-`)
+    const contador = `${dir}/veces`
+    writeFileSync(`${dir}/python`, `#!/bin/sh\necho x >> ${contador}\nprintf 'ID3 %s %s ' "$2" "$3"\ncat\n`)
+    chmodSync(`${dir}/python`, 0o755)
+    process.env.VOZ_MICROSOFT_PYTHON = `${dir}/python`
+    const voz = (url: string) => app.inject({ method: 'GET', url, headers: { authorization: `Bearer ${N}` } })
+    const { readFileSync } = await import('node:fs')
+    const veces = () => readFileSync(contador, 'utf8').split('\n').filter(Boolean).length
+    try {
+      expect((await voz('/api/voz/estado')).json()).toEqual({ ok: true, proveedor: 'microsoft' })
+      const frase = 'Hoy es el primer día de clases.'
+      const r = await voz(`/api/voz?${new URLSearchParams({ texto: frase, voz: 'paloma', velocidad: '1' })}`)
+      expect(r.headers['content-type']).toBe('audio/mpeg')
+      expect(r.rawPayload.toString()).toBe(`ID3 es-US-PalomaNeural +0% ${frase}`)
+      // Ciempi niño habla con Lorenzo y niña con Catalina.
+      expect((await voz('/api/voz?texto=hola&voz=nino')).rawPayload.toString()).toContain('es-CL-LorenzoNeural')
+      expect((await voz('/api/voz?texto=hola&voz=nina')).rawPayload.toString()).toContain('es-CL-CatalinaNeural')
+      // La frase quedó guardada: la segunda vez no se vuelve a generar.
+      const antes = veces()
+      await voz(`/api/voz?${new URLSearchParams({ texto: frase, voz: 'paloma', velocidad: '1' })}`)
+      expect(veces()).toBe(antes)
+    } finally {
+      delete process.env.VOZ_MICROSOFT_PYTHON
+    }
+  })
+
   it('niveles: el adulto elige el nivel del libro para cada niño; el niño no lo cambia', async () => {
     const libro = randomUUID()
     await pedir('PUT', `/api/textos/${libro}`, T, { titulo: 'Poemas', textoOriginal: 'x', frases: ['Uno.', 'Dos.'], capitulos: [], origen: 'pegado' })

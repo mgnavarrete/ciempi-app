@@ -75,3 +75,24 @@ export function silabaParaLaVoz(silaba: string, indice: number, palabra: string,
   s = s.replace(/([^aeiou])y$/, '$1i')
   return SILABAS_EN_INGLES[s] ?? s
 }
+
+/** Quita signos para que la voz no cambie la entonación ("perro," → "perro"). */
+export function limpiarParaVoz(palabra: string): string {
+  return palabra.replace(/[^\p{L}\p{N}]/gu, '')
+}
+
+/**
+ * Una palabra o sílaba suelta tal como se le pide a la voz (y como se guarda
+ * su audio en el servidor): sin signos, en minúsculas y a la española.
+ */
+export function palabraParaLaVoz(texto: string): string {
+  return limpiarParaVoz(paraLaVoz(texto)).toLowerCase()
+}
+
+/** Una frase tal como se le pide a la voz: sin emojis (la voz los leería) y a la española. */
+export function fraseParaLaVoz(texto: string): string {
+  return paraLaVoz(texto)
+    .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}

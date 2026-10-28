@@ -216,34 +216,32 @@ corrige para todos; si se agrega uno nuevo, llega también a los niños que ya e
 
 ## Voz de Ciempi
 
-La app lee con la **voz del teléfono o navegador** (Ajustes → Voz: «Automática»
-elige la mejor en español, o se elige una a mano). Se puede **apagar la voz**
-(botón 🔊 al leer, o Ajustes → «Leer con voz»), por niño, para leer sin que
-Ciempi diga las palabras.
+Con cuenta en línea, la voz la genera el servidor con las **voces neuronales
+de Microsoft** (gratis, sin cuenta: edge-tts, `server/voz-microsoft/decir.py`):
+**Lorenzo** para Ciempi niño y **Catalina** para Ciempi niña; también
+**Paloma** y **Alonso**. Instalación: `docs/despliegue.md` §6b.
 
-La voz generada en el servidor (Kokoro, Azure o xAI, descrita abajo) quedó
-desactivada en la app; para volver a usarla, ver `src/datos/DatosProvider.tsx`.
-
-
-Con cuenta en línea, la voz la genera el servidor, así suena igual en
-cualquier teléfono y en la web:
-
-- **Kokoro** en el propio servidor (gratis, sin internet ni cuentas):
-  **Alex** para Ciempi niño y **Dora** para Ciempi niña, elegidas escuchando
-  muestras de 15 voces. `server/voz/servidor_voz.py` (127.0.0.1:3201) genera el
-  WAV de una palabra en ~120 ms y le quita el silencio del inicio.
-- Opcional, de pago: si hay `AZURE_SPEECH_KEY` (Lorenzo y Paloma) o
-  `XAI_API_KEY` (Leo y Ara), se usan antes que Kokoro (`server/src/voz.ts`).
-- `GET /api/voz?texto=…&voz=nino|nina&velocidad=…` (con sesión) guarda cada
-  palabra en la tabla `audios_voz`: se genera una sola vez.
-- `src/audio/vozServidor.ts` la reproduce con Web Audio; la pantalla de
-  lectura precarga las palabras de la frase actual y la siguiente.
-- Si la voz del servidor no responde, la app usa la del teléfono.
-- **Ajustes → Voz:** se puede elegir a mano la voz de Ciempi (niño o niña) o
+- **Los cuentos se graban de antemano** (`node src/cli.ts grabar-cuentos`, ver
+  `src/contenido/textosParaGrabar.ts`): cada palabra, sílaba y oración, en
+  cada voz. Lo que falta (los textos de los adultos) se graba la primera vez
+  que se lee. Todo queda en la tabla `audios_voz`.
+- `GET /api/voz?texto=…&voz=lorenzo|catalina|paloma|alonso|nino|nina` (con
+  sesión). La app pide siempre velocidad 1 y **cambia la velocidad al
+  reproducir** (sin cambiar el tono): en los niveles 2 y 4 la oración suena
+  entera y de corrido, y se apura (hasta 1,2×), va más lenta, se pausa o
+  retoma siguiendo al dedo (`src/audio/vozServidor.ts`, `PantallaLectura`).
+- Si el servidor no tiene voz o no responde, la app usa la del teléfono o
+  navegador (Ajustes → Voz: «Automática» elige la mejor en español). Con la
+  voz del teléfono, en los niveles 2 y 4 la voz va por trozos (no se puede
+  cambiar su velocidad mientras habla).
+- Los nombres extranjeros y las sílabas sueltas se reescriben para la voz
+  (`src/audio/pronunciacion.ts`).
+- Kokoro, Azure y xAI (descritos abajo) quedan como respaldo opcional.
+- **Ajustes → Voz:** se puede elegir a mano la voz de Ciempi (Lorenzo, Catalina, Paloma o Alonso) o
   cualquier voz del teléfono. Se guarda en el dispositivo, y debajo se ve si la
   voz de Ciempi funciona o qué falla.
 
-En local: `bash deploy/instalar-voz.sh` (necesita `espeak-ng` del sistema).
+En local: `bash deploy/instalar-voz-microsoft.sh` crea el entorno de Python (sin `sudo`, salvo para reiniciar el servicio), o se apunta `VOZ_MICROSOFT_PYTHON` a un Python con edge-tts.
 
 ## Servidor (cuentas y sincronización)
 
