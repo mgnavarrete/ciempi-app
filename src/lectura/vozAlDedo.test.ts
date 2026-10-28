@@ -2,11 +2,12 @@ import { describe, expect, it } from 'vitest'
 import { VELOCIDAD_MAXIMA, VELOCIDAD_MINIMA, encolarTrozo, trozoEn, velocidadPara } from './vozAlDedo'
 
 describe('voz al ritmo del dedo', () => {
-  it('lento si el dedo va lento, más rápido si va rápido; nunca más de 1,2×', () => {
+  it('entre 0,9× (dedo lento) y 1,2× (dedo rápido): más lento suena arrastrado', () => {
     expect(velocidadPara(2.5)).toBe(1)
     expect(velocidadPara(2.75)).toBeCloseTo(1.1)
     expect(velocidadPara(3.5)).toBe(1.2)
-    expect(velocidadPara(1.5)).toBeLessThan(1)
+    expect(velocidadPara(1.5)).toBe(VELOCIDAD_MINIMA)
+    expect(VELOCIDAD_MINIMA).toBe(0.9)
     expect(velocidadPara(20)).toBe(VELOCIDAD_MAXIMA)
     expect(VELOCIDAD_MAXIMA).toBe(1.2)
     expect(velocidadPara(0.1)).toBe(VELOCIDAD_MINIMA)

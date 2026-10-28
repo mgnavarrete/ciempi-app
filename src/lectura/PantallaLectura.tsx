@@ -29,6 +29,8 @@ const MS_ESPERA_VOZ_LARGA = 20_000
 const RETROCESO = 0.04
 /** Nivel 2 con la voz del teléfono: va en trozos de hasta tantas palabras (cortos, para que se apure de a poco). */
 const PALABRAS_POR_TROZO = 3
+/** Nivel 2 con la voz de Ciempi: cuántas palabras puede ir la voz delante del dedo antes de esperarlo. */
+const PALABRAS_DE_VENTAJA = 3
 /** Nivel 2 con la voz de Ciempi: si el dedo se queda quieto este rato, la voz se pausa. */
 const MS_DEDO_QUIETO = 600
 /** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
@@ -472,8 +474,9 @@ export function PantallaLectura(props: Props) {
 
   /**
    * Nivel 2 con la voz de Ciempi: la oración entera, de corrido, al ritmo del
-   * dedo. Si el dedo va adelante, la voz se apura (hasta 1,2×); si va detrás,
-   * la voz lo espera; si el dedo se detiene, la voz se pausa; si vuelve atrás
+   * dedo, a velocidad normal: si el dedo va adelante, se apura (hasta 1,2×);
+   * si va lento, baja un poco (hasta 0,9×), y si se queda más de tres palabras
+   * atrás, la voz lo espera; si el dedo se detiene, la voz se pausa; si vuelve atrás
    * o se levanta, se corta, y al seguir retoma desde la palabra del dedo.
    */
   const seguirOracionConElAudio = (pos: number, terminada: boolean) => {
@@ -500,8 +503,8 @@ export function PantallaLectura(props: Props) {
       voz.buscar(dedo)
     }
     const va = voz.progreso()
-    // La voz va más de una palabra y media delante del dedo: lo espera (salvo que el dedo ya llegó al final).
-    if (va !== null && va - dedo > 1.5 * unaPalabra && !terminada) voz.pausar()
+    // La voz va más de tres palabras delante del dedo: lo espera (salvo que el dedo ya llegó al final).
+    if (va !== null && va - dedo > PALABRAS_DE_VENTAJA * unaPalabra && !terminada) voz.pausar()
     else voz.reanudar()
     const adelante = va !== null && dedo - va > 2 * unaPalabra
     voz.ajustarVelocidad(ajustes.velocidadVoz * (adelante || terminada ? VELOCIDAD_MAXIMA : velocidadPara(velocidadDelDedo())))

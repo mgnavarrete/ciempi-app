@@ -10,7 +10,8 @@
 
 /** Palabras por segundo que dice la voz a velocidad 1 (aprox., en español). */
 export const PALABRAS_POR_SEGUNDO_VOZ = 2.5
-export const VELOCIDAD_MINIMA = 0.6
+/** Más lento que esto la voz suena arrastrada: si el dedo va lento, la voz baja un poco y lo espera. */
+export const VELOCIDAD_MINIMA = 0.9
 /** La voz nunca va más rápido que 1,2× (igual que en audio/voz.ts): si el dedo va más rápido, los trozos esperan su turno. */
 export const VELOCIDAD_MAXIMA = 1.2
 /** Con tantos trozos esperando, la voz va a la velocidad máxima aunque el dedo vaya más lento. */
