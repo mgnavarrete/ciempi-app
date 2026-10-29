@@ -9,7 +9,35 @@ import '../src/ciempi/v2/arte/lib/acabados-armario.mjs'
 
 const c = JSON.parse(fs.readFileSync('public/ciempi-v2/catalogo.json', 'utf8'))
 const items = []
-const agregar = (categoria, id, nombre, precio) => items.push({ id: `${categoria}:${id}`, nombre, categoria, precio })
+// Nombres cortos y concretos, que un niño entiende de un vistazo (los del diseño son largos o abstractos).
+const NOMBRES = {
+  // Colores y ojos
+  oceano: 'Mar', rosa: 'Rosa', noche: 'Noche', gryffindor: 'Gryffindor', slytherin: 'Slytherin', ravenclaw: 'Ravenclaw', hufflepuff: 'Hufflepuff',
+  harry: 'Harry', kitty: 'Kitty', mickey: 'Mickey', minnie: 'Minnie', oscuro: 'Oscuros', violeta: 'Morados',
+  // Gestos
+  'b03-carcajada': 'Risa', 'b03-pensativo': 'Pensando', 'b03-sorprendido': 'Sorpresa', 'b03-dormilon': 'Con sueño', 'b03-enojadito': 'Enojado',
+  // Gorros y máscaras
+  'b06-ia-jockey': 'Jockey', 'b06-ia-dragon': 'Gorro dragón', 'b06-ia-mago': 'Gorro de mago', 'b06-ia-aventura': 'Explorador',
+  'b06-ia-pirata': 'Pirata', 'b06-ia-corona': 'Corona', 'b07-ia-robot': 'Robot', 'b07-ia-gatita': 'Gatita', 'b07-ia-espiritu': 'Espíritu',
+  'b07-ia-dragon': 'Antifaz dragón', 'b07-ia-buho': 'Búho', 'b12-araluz': 'AraLuz', 'b12-raton': 'Ratón',
+  // Peinados
+  'b05-harry': 'Harry', 'b05-hermione': 'Rizos', 'b05-super': 'Copete', 'b05-barbie': 'Pelo largo', 'b05-flequillo': 'Flequillo',
+  'b05-coletas': 'Coletas', 'b05-trenza': 'Trenza', 'b05-monos': 'Moños', 'b05-cresta': 'Cresta', 'b05-ondas': 'Ondas', 'b05-mechon': 'Mechón',
+  'b04-cicatriz': 'Rayo',
+  // Lentes
+  'b04-lector': 'Turquesa', 'b04-redondos': 'Redondos', 'b04-estrellas': 'Estrellas', 'b04-llamas': 'Llamas', 'b04-visor': 'Visor', 'b04-deportivo': 'Deportivos', 'b04-sol': 'De sol',
+  // Bufanda, capas, calzado y estampados
+  'bufanda-calco32': 'Bufanda', 'b08-ia-heroica': 'Capa de héroe', 'b08-ia-bosque': 'Capa de hojas',
+  'b10-robot': 'Botas robot', 'b10-aventura': 'Botas explorador', 'b10-lluvia': 'Botas de lluvia', 'b10-mago': 'Zapatos de mago', 'b10-deportiva': 'Deportivas',
+  liso: 'Liso', 'b11-robot': 'Armadura', 'b11-draco': 'Escamas', 'b11-mago': 'Estrellas', 'b11-pirata': 'Marinero', 'b11-araluz': 'Seda',
+  // Conjuntos
+  'b12-set-robot': 'Robot', 'b12-set-draco': 'Dragón', 'b12-set-cartografo': 'Explorador', 'b12-set-pirata': 'Pirata', 'b12-set-luna': 'Mago',
+  'b12-set-noctilio': 'Espíritu', 'b12-set-araluz': 'AraLuz', 'b12-set-raton': 'Ratón', 'b12-set-reino': 'Realeza', 'b12-set-lluvia': 'Charcos',
+}
+const NOMBRES_COLORES = {
+  bronce: 'Bronce', barbie: 'Rosa', original: 'Roja', luna: 'Azul', aurora: 'Morada', oceano: 'Turquesa', 'oceano-coral': 'Coral', 'lavanda-magica': 'Lavanda',
+}
+const agregar = (categoria, id, nombre, precio) => items.push({ id: `${categoria}:${id}`, nombre: NOMBRES[id] ?? nombre, categoria, precio })
 
 // Precios (propuesta económica del plan maestro, aprobada para 2.2): según el
 // trabajo de cada pieza; gestos gratis (expresar emociones no cuesta monedas).
@@ -61,9 +89,11 @@ for (const s of c.surfaces) agregar('textura', s.id, s.nombre, precio(s.id))
 
 // Variantes de color (se desbloquean todas al comprar la pieza).
 const variantes = {}
+// El color «original» de unos lentes se llama así; el de la capa de héroe es rojo.
+const nombreColor = (pieza, v) => (v.id === 'original' && pieza !== 'b08-ia-heroica' ? 'Original' : NOMBRES_COLORES[v.id] ?? v.nombre)
 for (const [categoria, lista] of [['cara', c.lenses], ['espalda', c.capes]])
-  for (const x of lista) if (x.variantes?.length > 1) variantes[`${categoria}:${x.id}`] = x.variantes.map((v) => ({ id: v.id, nombre: v.nombre }))
-variantes[`cuello:${c.scarf.id}`] = c.scarf.variantes.map((v) => ({ id: v.id, nombre: v.nombre }))
+  for (const x of lista) if (x.variantes?.length > 1) variantes[`${categoria}:${x.id}`] = x.variantes.map((v) => ({ id: v.id, nombre: nombreColor(x.id, v) }))
+variantes[`cuello:${c.scarf.id}`] = c.scarf.variantes.map((v) => ({ id: v.id, nombre: nombreColor(c.scarf.id, v) }))
 
 // Conjuntos: sus piezas con precio (el pack cuesta 20 % menos que comprarlas sueltas).
 const CLAVE = { cabeza: 'cabeza', textura: 'textura', pies: 'pies', espalda: 'espalda', cuello: 'cuello', cara: 'cara', pelo: 'pelo', paleta: 'paleta', expresion: 'gesto' }
@@ -77,7 +107,7 @@ const conjuntos = c.sets.map((s) => {
   const variantesConjunto = {}
   if (s.seleccion.variante) variantesConjunto.cuello = s.seleccion.variante
   if (s.seleccion.varianteCapa) variantesConjunto.espalda = s.seleccion.varianteCapa
-  return { id: `conjunto:${s.id}`, nombre: s.nombre, pone, piezas, variantes: variantesConjunto }
+  return { id: `conjunto:${s.id}`, nombre: NOMBRES[s.id] ?? s.nombre, pone, piezas, variantes: variantesConjunto }
 })
 
 // Colores casi iguales se compran una vez para toda la familia.

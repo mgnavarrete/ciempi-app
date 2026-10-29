@@ -80,6 +80,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
   const [aviso, setAviso] = useState<string | null>(null)
   const [ocupado, setOcupado] = useState(false)
   const [estreno, setEstreno] = useState<string | null>(null)
+  const [editandoNombre, setEditandoNombre] = useState(false)
   // El último conjunto que se probó (para ofrecer el pack).
   const [conjunto, setConjunto] = useState<ItemCiempi | null>(null)
   // Lo guardado y el inventario más recientes (las compras seguidas no esperan a que la pantalla se redibuje).
@@ -187,9 +188,10 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
       {/* En horizontal: Ciempi fijo a la izquierda; a la derecha las secciones y la grilla con su propio scroll. */}
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 overflow-y-auto px-5 pb-32 pt-2 apaisado:min-h-0 apaisado:max-w-4xl apaisado:flex-row apaisado:gap-5 apaisado:overflow-hidden apaisado:pb-0 apaisado:pt-1">
         <div className="flex flex-col gap-3 apaisado:w-[38%] apaisado:shrink-0 apaisado:justify-center apaisado:pb-3">
-          <div className="relative h-52 shrink-0 overflow-hidden rounded-3xl shadow-sm apaisado:h-40">
+          {/* Ciempi grande, de las monedas hasta las secciones. */}
+          <div className="relative h-72 shrink-0 overflow-hidden rounded-3xl shadow-sm apaisado:h-56">
             <FondoTema fondo={probando.fondo} />
-            <div className="pointer-events-none absolute inset-x-0 bottom-2 mx-auto w-[min(78%,340px)]">
+            <div className="pointer-events-none absolute inset-x-0 bottom-3 mx-auto w-[min(86%,440px)]">
               <CiempiPersonaje apariencia={probando} ancho="100%" animado={!tranquilo} festejarCambios={!tranquilo} />
             </div>
             {/* Lo que come, frente a su boca */}
@@ -206,9 +208,18 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
                 ↺ Volver a lo mío
               </button>
             )}
+            {/* El nombre se cambia desde aquí, para no quitarle espacio a Ciempi. */}
+            <button
+              onClick={() => setEditandoNombre(!editandoNombre)}
+              aria-expanded={editandoNombre}
+              className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1.5 font-bold text-petroleo shadow-sm active:scale-95"
+            >
+              ✏️ {perfil.ciempi.nombre}
+            </button>
           </div>
 
-          <div className="flex flex-wrap items-end gap-3">
+          {editandoNombre && (
+          <div className="aparecer flex flex-wrap items-end gap-3">
             <label className="flex min-w-0 flex-1 flex-col gap-1">
               <span className="text-sm font-bold text-tinta-suave">Su nombre</span>
               <input
@@ -216,7 +227,11 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
                 maxLength={20}
                 onChange={(e) => setNombre(e.target.value)}
                 onBlur={guardarNombre}
-                onKeyDown={(e) => e.key === 'Enter' && (e.currentTarget as HTMLInputElement).blur()}
+                onKeyDown={(e) => {
+                  if (e.key !== 'Enter') return
+                  ;(e.currentTarget as HTMLInputElement).blur()
+                  setEditandoNombre(false)
+                }}
                 className="campo"
               />
             </label>
@@ -238,6 +253,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
               ))}
             </div>
           </div>
+          )}
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-3 apaisado:min-h-0 apaisado:gap-2">
@@ -274,7 +290,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
             </div>
           )}
           {aviso && <p className="rounded-2xl bg-amarillo/40 px-3 py-2 text-sm font-bold">{aviso}</p>}
-          {categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y cuesta menos que sus piezas por separado (no se cobra lo que ya tienes).</p>}
+          {categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y sale más barato que comprar cada cosa.</p>}
 
           <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 apaisado:min-h-0 apaisado:flex-1 apaisado:grid-cols-4 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-1 apaisado:pb-24">
             {tarjetas.map((t) => {

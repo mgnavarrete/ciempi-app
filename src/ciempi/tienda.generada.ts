@@ -10,13 +10,13 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "paleta:oceano",
-  "nombre": "Océano",
+  "nombre": "Mar",
   "categoria": "paleta",
   "precio": 0
  },
  {
   "id": "paleta:rosa",
-  "nombre": "Jardín rosa",
+  "nombre": "Rosa",
   "categoria": "paleta",
   "precio": 0
  },
@@ -28,7 +28,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "paleta:noche",
-  "nombre": "Noche mágica",
+  "nombre": "Noche",
   "categoria": "paleta",
   "precio": 0
  },
@@ -52,31 +52,31 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "paleta:gryffindor",
-  "nombre": "Colores Gryffindor",
+  "nombre": "Gryffindor",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "paleta:slytherin",
-  "nombre": "Colores Slytherin",
+  "nombre": "Slytherin",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "paleta:ravenclaw",
-  "nombre": "Colores Ravenclaw",
+  "nombre": "Ravenclaw",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "paleta:hufflepuff",
-  "nombre": "Colores Hufflepuff",
+  "nombre": "Hufflepuff",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "paleta:harry",
-  "nombre": "Harry Potter",
+  "nombre": "Harry",
   "categoria": "paleta",
   "precio": 12
  },
@@ -94,7 +94,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "paleta:kitty",
-  "nombre": "Hello Kitty",
+  "nombre": "Kitty",
   "categoria": "paleta",
   "precio": 12
  },
@@ -106,19 +106,19 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "paleta:mickey",
-  "nombre": "Mickey Mouse",
+  "nombre": "Mickey",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "paleta:minnie",
-  "nombre": "Minnie Mouse",
+  "nombre": "Minnie",
   "categoria": "paleta",
   "precio": 12
  },
  {
   "id": "ojos:oscuro",
-  "nombre": "Azul oscuro",
+  "nombre": "Oscuros",
   "categoria": "ojos",
   "precio": 0
  },
@@ -142,7 +142,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "ojos:violeta",
-  "nombre": "Violetas",
+  "nombre": "Morados",
   "categoria": "ojos",
   "precio": 6
  },
@@ -154,7 +154,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "gesto:b03-carcajada",
-  "nombre": "Carcajada",
+  "nombre": "Risa",
   "categoria": "gesto",
   "precio": 0
  },
@@ -166,19 +166,19 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "gesto:b03-pensativo",
-  "nombre": "Pensativo",
+  "nombre": "Pensando",
   "categoria": "gesto",
   "precio": 0
  },
  {
   "id": "gesto:b03-sorprendido",
-  "nombre": "Sorprendido",
+  "nombre": "Sorpresa",
   "categoria": "gesto",
   "precio": 0
  },
  {
   "id": "gesto:b03-dormilon",
-  "nombre": "Dormilón",
+  "nombre": "Con sueño",
   "categoria": "gesto",
   "precio": 0
  },
@@ -214,7 +214,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "gesto:b03-enojadito",
-  "nombre": "Enojadito",
+  "nombre": "Enojado",
   "categoria": "gesto",
   "precio": 0
  },
@@ -238,79 +238,79 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cabeza:b06-ia-jockey",
-  "nombre": "Jockey Chispa",
+  "nombre": "Jockey",
   "categoria": "cabeza",
   "precio": 0
  },
  {
   "id": "cabeza:b06-ia-dragon",
-  "nombre": "Draco abrigado",
+  "nombre": "Gorro dragón",
   "categoria": "cabeza",
   "precio": 26
  },
  {
   "id": "cabeza:b06-ia-mago",
-  "nombre": "Luna bibliotecaria",
+  "nombre": "Gorro de mago",
   "categoria": "cabeza",
   "precio": 20
  },
  {
   "id": "cabeza:b06-ia-aventura",
-  "nombre": "Cartógrafo de cuentos",
+  "nombre": "Explorador",
   "categoria": "cabeza",
   "precio": 22
  },
  {
   "id": "cabeza:b06-ia-pirata",
-  "nombre": "Capitán Brisa",
+  "nombre": "Pirata",
   "categoria": "cabeza",
   "precio": 18
  },
  {
   "id": "cabeza:b06-ia-corona",
-  "nombre": "Corona de relatos",
+  "nombre": "Corona",
   "categoria": "cabeza",
   "precio": 25
  },
  {
   "id": "cabeza:b07-ia-robot",
-  "nombre": "Robot Lumen",
+  "nombre": "Robot",
   "categoria": "cabeza",
   "precio": 32
  },
  {
   "id": "cabeza:b07-ia-gatita",
-  "nombre": "Gatita de porcelana",
+  "nombre": "Gatita",
   "categoria": "cabeza",
   "precio": 24
  },
  {
   "id": "cabeza:b07-ia-espiritu",
-  "nombre": "Espíritu de los cuentos",
+  "nombre": "Espíritu",
   "categoria": "cabeza",
   "precio": 28
  },
  {
   "id": "cabeza:b07-ia-dragon",
-  "nombre": "Antifaz Draco",
+  "nombre": "Antifaz dragón",
   "categoria": "cabeza",
   "precio": 28
  },
  {
   "id": "cabeza:b07-ia-buho",
-  "nombre": "Búho lector",
+  "nombre": "Búho",
   "categoria": "cabeza",
   "precio": 24
  },
  {
   "id": "cabeza:b12-araluz",
-  "nombre": "Máscara AraLuz",
+  "nombre": "AraLuz",
   "categoria": "cabeza",
   "precio": 30
  },
  {
   "id": "cabeza:b12-raton",
-  "nombre": "Antifaz Ratón Atlas",
+  "nombre": "Ratón",
   "categoria": "cabeza",
   "precio": 24
  },
@@ -322,67 +322,67 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "pelo:b05-harry",
-  "nombre": "Harry · mechones libres",
+  "nombre": "Harry",
   "categoria": "pelo",
   "precio": 14
  },
  {
   "id": "pelo:b05-hermione",
-  "nombre": "Hermione · rizos grandes",
+  "nombre": "Rizos",
   "categoria": "pelo",
   "precio": 18
  },
  {
   "id": "pelo:b05-super",
-  "nombre": "Superman · onda heroica",
+  "nombre": "Copete",
   "categoria": "pelo",
   "precio": 14
  },
  {
   "id": "pelo:b05-barbie",
-  "nombre": "Barbie · ondas largas",
+  "nombre": "Pelo largo",
   "categoria": "pelo",
   "precio": 18
  },
  {
   "id": "pelo:b05-flequillo",
-  "nombre": "Flequillo de cobre",
+  "nombre": "Flequillo",
   "categoria": "pelo",
   "precio": 12
  },
  {
   "id": "pelo:b05-coletas",
-  "nombre": "Coletas saltarinas",
+  "nombre": "Coletas",
   "categoria": "pelo",
   "precio": 16
  },
  {
   "id": "pelo:b05-trenza",
-  "nombre": "Trenza de aventura",
+  "nombre": "Trenza",
   "categoria": "pelo",
   "precio": 18
  },
  {
   "id": "pelo:b05-monos",
-  "nombre": "Dos moños",
+  "nombre": "Moños",
   "categoria": "pelo",
   "precio": 16
  },
  {
   "id": "pelo:b05-cresta",
-  "nombre": "Cresta de nube",
+  "nombre": "Cresta",
   "categoria": "pelo",
   "precio": 14
  },
  {
   "id": "pelo:b05-ondas",
-  "nombre": "Ondas al lado",
+  "nombre": "Ondas",
   "categoria": "pelo",
   "precio": 18
  },
  {
   "id": "pelo:b05-mechon",
-  "nombre": "Mechón travieso",
+  "nombre": "Mechón",
   "categoria": "pelo",
   "precio": 12
  },
@@ -394,7 +394,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "detalle:b04-cicatriz",
-  "nombre": "Cicatriz de rayo",
+  "nombre": "Rayo",
   "categoria": "detalle",
   "precio": 6
  },
@@ -406,13 +406,13 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cara:b04-lector",
-  "nombre": "Lector turquesa",
+  "nombre": "Turquesa",
   "categoria": "cara",
   "precio": 10
  },
  {
   "id": "cara:b04-redondos",
-  "nombre": "Redondos · Harry",
+  "nombre": "Redondos",
   "categoria": "cara",
   "precio": 10
  },
@@ -424,13 +424,13 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cara:b04-estrellas",
-  "nombre": "Estrellas de fiesta",
+  "nombre": "Estrellas",
   "categoria": "cara",
   "precio": 16
  },
  {
   "id": "cara:b04-llamas",
-  "nombre": "Llamas de sol",
+  "nombre": "Llamas",
   "categoria": "cara",
   "precio": 20
  },
@@ -442,7 +442,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cara:b04-visor",
-  "nombre": "Visor cósmico",
+  "nombre": "Visor",
   "categoria": "cara",
   "precio": 22
  },
@@ -460,7 +460,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cara:b04-deportivo",
-  "nombre": "Deportivo",
+  "nombre": "Deportivos",
   "categoria": "cara",
   "precio": 16
  },
@@ -472,7 +472,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cara:b04-sol",
-  "nombre": "Sol clásico",
+  "nombre": "De sol",
   "categoria": "cara",
   "precio": 12
  },
@@ -484,7 +484,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cuello:bufanda-calco32",
-  "nombre": "Bufanda acolchada",
+  "nombre": "Bufanda",
   "categoria": "cuello",
   "precio": 30
  },
@@ -496,13 +496,13 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "espalda:b08-ia-heroica",
-  "nombre": "Brisa heroica",
+  "nombre": "Capa de héroe",
   "categoria": "espalda",
   "precio": 28
  },
  {
   "id": "espalda:b08-ia-bosque",
-  "nombre": "Guardián del bosque",
+  "nombre": "Capa de hojas",
   "categoria": "espalda",
   "precio": 24
  },
@@ -514,67 +514,67 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "pies:b10-robot",
-  "nombre": "Botas Lumen",
+  "nombre": "Botas robot",
   "categoria": "pies",
   "precio": 24
  },
  {
   "id": "pies:b10-aventura",
-  "nombre": "Botas de travesía",
+  "nombre": "Botas explorador",
   "categoria": "pies",
   "precio": 18
  },
  {
   "id": "pies:b10-lluvia",
-  "nombre": "Botas de charcos",
+  "nombre": "Botas de lluvia",
   "categoria": "pies",
   "precio": 12
  },
  {
   "id": "pies:b10-mago",
-  "nombre": "Zapatos de luna",
+  "nombre": "Zapatos de mago",
   "categoria": "pies",
   "precio": 22
  },
  {
   "id": "pies:b10-deportiva",
-  "nombre": "Deportivas Brisa",
+  "nombre": "Deportivas",
   "categoria": "pies",
   "precio": 18
  },
  {
   "id": "textura:liso",
-  "nombre": "Sin estampado",
+  "nombre": "Liso",
   "categoria": "textura",
   "precio": 0
  },
  {
   "id": "textura:b11-robot",
-  "nombre": "Armadura Lumen",
+  "nombre": "Armadura",
   "categoria": "textura",
   "precio": 32
  },
  {
   "id": "textura:b11-draco",
-  "nombre": "Escamas Draco",
+  "nombre": "Escamas",
   "categoria": "textura",
   "precio": 28
  },
  {
   "id": "textura:b11-mago",
-  "nombre": "Tejido de constelaciones",
+  "nombre": "Estrellas",
   "categoria": "textura",
   "precio": 26
  },
  {
   "id": "textura:b11-pirata",
-  "nombre": "Travesía de cuentos",
+  "nombre": "Marinero",
   "categoria": "textura",
   "precio": 24
  },
  {
   "id": "textura:b11-araluz",
-  "nombre": "Seda de AraLuz",
+  "nombre": "Seda",
   "categoria": "textura",
   "precio": 28
  }
@@ -589,7 +589,7 @@ export const VARIANTES: Record<string, { id: string; nombre: string }[]> = {
   },
   {
    "id": "bronce",
-   "nombre": "Bronce mágico"
+   "nombre": "Bronce"
   }
  ],
  "cara:b04-corazones": [
@@ -599,25 +599,25 @@ export const VARIANTES: Record<string, { id: string; nombre: string }[]> = {
   },
   {
    "id": "barbie",
-   "nombre": "Rosa Barbie"
+   "nombre": "Rosa"
   }
  ],
  "espalda:b08-ia-heroica": [
   {
    "id": "original",
-   "nombre": "Escarlata"
+   "nombre": "Roja"
   },
   {
    "id": "luna",
-   "nombre": "Luna · índigo"
+   "nombre": "Azul"
   },
   {
    "id": "aurora",
-   "nombre": "Aurora · orquídea"
+   "nombre": "Morada"
   },
   {
    "id": "oceano",
-   "nombre": "Océano · turquesa"
+   "nombre": "Turquesa"
   }
  ],
  "cuello:bufanda-calco32": [
@@ -639,11 +639,11 @@ export const VARIANTES: Record<string, { id: string; nombre: string }[]> = {
   },
   {
    "id": "oceano-coral",
-   "nombre": "Océano Coral"
+   "nombre": "Coral"
   },
   {
    "id": "lavanda-magica",
-   "nombre": "Lavanda Mágica"
+   "nombre": "Lavanda"
   }
  ]
 }
@@ -655,7 +655,7 @@ export const FAMILIAS: string[][] = [["paleta:gryffindor","paleta:harry","paleta
 export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: string[]; variantes: Partial<Record<'cuello' | 'espalda', string>> }[] = [
  {
   "id": "conjunto:b12-set-robot",
-  "nombre": "Robot Lumen",
+  "nombre": "Robot",
   "pone": [
    "cabeza:b07-ia-robot",
    "textura:b11-robot",
@@ -670,7 +670,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-draco",
-  "nombre": "Draco del bosque",
+  "nombre": "Dragón",
   "pone": [
    "cabeza:b06-ia-dragon",
    "textura:b11-draco",
@@ -686,7 +686,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-cartografo",
-  "nombre": "Cartógrafo de cuentos",
+  "nombre": "Explorador",
   "pone": [
    "cabeza:b06-ia-aventura",
    "textura:b11-pirata",
@@ -704,7 +704,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-pirata",
-  "nombre": "Capitán Brisa",
+  "nombre": "Pirata",
   "pone": [
    "cabeza:b06-ia-pirata",
    "textura:b11-pirata",
@@ -722,7 +722,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-luna",
-  "nombre": "Luna bibliotecaria",
+  "nombre": "Mago",
   "pone": [
    "cabeza:b06-ia-mago",
    "textura:b11-mago",
@@ -742,7 +742,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-noctilio",
-  "nombre": "Noctilio, guardián nocturno",
+  "nombre": "Espíritu",
   "pone": [
    "cabeza:b07-ia-espiritu",
    "textura:b11-mago",
@@ -780,7 +780,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-raton",
-  "nombre": "Ratón Atlas",
+  "nombre": "Ratón",
   "pone": [
    "cabeza:b12-raton",
    "textura:b11-pirata",
@@ -796,7 +796,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-reino",
-  "nombre": "Reino de relatos",
+  "nombre": "Realeza",
   "pone": [
    "cabeza:b06-ia-corona",
    "textura:b11-mago",
@@ -816,7 +816,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-lluvia",
-  "nombre": "Explorador de charcos",
+  "nombre": "Charcos",
   "pone": [
    "cabeza:b06-ia-jockey",
    "pies:b10-lluvia",
