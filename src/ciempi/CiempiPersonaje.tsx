@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { CiempiVivo, type EventoCiempi } from './v2/CiempiVivo'
 import { useEscena } from './v2/Vestuario'
-import { paletaDe, type AparienciaCiempi } from './catalogo'
+import type { AparienciaCiempi } from './catalogo'
+import { APARIENCIA_CLASICA, paletaDe } from './clasico'
 import { Cabeza, Segmento } from './dibujos'
 
 interface Props {
@@ -21,8 +22,9 @@ const SEPARACION = R_CUERPO * 1.5
 const CENTRO_Y = 66
 const ALTO = 104
 
-/** Ciempi completo (cabeza + cuerpo), para la portada de la biblioteca y la tienda. */
-export function CiempiClasico({ apariencia, segmentos = 5, ancho, animado = true, className = '' }: Props) {
+/** El Ciempi clásico: solo mientras carga el nuevo o si no se pudo cargar. */
+export function CiempiClasico({ segmentos = 5, ancho, animado = true, className = '' }: Omit<Props, 'apariencia'>) {
+  const apariencia = APARIENCIA_CLASICA
   const colores = paletaDe(apariencia).cuerpo
   // Reservar espacio para la visera y el casco, incluso en previews SVG sin CSS.
   const xCabeza = R_CUERPO + segmentos * SEPARACION + R_CABEZA * 0.65
@@ -65,8 +67,8 @@ export function CiempiClasico({ apariencia, segmentos = 5, ancho, animado = true
 const ACCION_CLASICA: Record<string, string> = { A04: 'saludar', A03: 'saltar', A12: 'saltar', E02: 'bailar' }
 
 /**
- * Ciempi nuevo (pose aprobada y vestuario, animado por partes) o, si su
- * apariencia guardada no tiene equivalencia, el clásico.
+ * El Ciempi del niño: pose aprobada y vestuario, animado por partes (mientras
+ * carga el vestuario, o si falla, el clásico).
  */
 export function CiempiPersonaje({ accion = null, festejarCambios = false, ...props }: Props & {
   /** Acción que juega una vez (A04 saludar, A03 saltar…; ver animacion/animaciones.js). */

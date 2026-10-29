@@ -1,4 +1,5 @@
-import { PARTES, buscarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
+import { PARTES, comprarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
+import { PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
 import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { nuevoId } from '../../dominio/ids'
@@ -192,6 +193,17 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
     id: '2026-10-cuentos-de-personajes',
     aplicar: (tablas) => tablas.perfiles.todos().forEach((p) => darCuentos(tablas, p.id, p.creadoPor, CUENTOS_DE_PERSONAJES)),
   },
+  {
+    // CIEMPI 2.1: la tienda vende solo los diseños nuevos. Lo comprado en la
+    // anterior (menos fondos y comida) se devuelve en monedas y sale del inventario.
+    id: '2026-10-tienda-nueva',
+    aplicar: ({ perfiles }) =>
+      perfiles.todos().forEach((p) => {
+        const inventario = p.inventario ?? []
+        const devolver = inventario.filter(esCompraAntigua).reduce((s, id) => s + (PRECIOS_TIENDA_ANTIGUA[id] ?? 0), 0)
+        perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !esCompraAntigua(id)), ciempi: normalizarApariencia(p.ciempi) })
+      }),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
@@ -366,14 +378,10 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     async comprar(id, itemId) {
       const perfil = perfiles.obtener(id)
       if (!perfil) throw new Error(`Perfil ${id} no existe`)
-      const item = buscarItem(itemId)
-      if (!item) throw new Error('Eso no está en la tienda')
       const { inventario, monedas } = completarPerfil(perfil)
-      if (loTiene(inventario, itemId)) return { monedas, inventario }
-      if (monedas < item.precio) throw new Error(`Te faltan ${item.precio - monedas} monedas`)
-      const nuevo = { monedas: monedas - item.precio, inventario: [...inventario, itemId] }
-      perfiles.guardar({ ...perfil, ...nuevo })
-      return nuevo
+      const nuevo = comprarItem(inventario, monedas, itemId)
+      perfiles.guardar({ ...perfil, monedas: nuevo.monedas, inventario: nuevo.inventario })
+      return { monedas: nuevo.monedas, inventario: nuevo.inventario }
     },
     async crearInvitacion() {
       throw new Error(SIN_CONEXION)

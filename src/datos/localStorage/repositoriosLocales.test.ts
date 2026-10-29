@@ -144,17 +144,17 @@ describe('tienda de Ciempi', () => {
     const { almacen, repos, perfil } = await preparado()
     expect(perfil.ciempi.nombre).toBe('Ciempi')
 
-    await expect(repos.perfiles.comprar(perfil.id, 'cabeza-corona')).rejects.toThrow(/Te faltan 25 monedas/)
-    await expect(repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, cabeza: 'cabeza-corona' })).rejects.toThrow(/comprarlo/)
+    await expect(repos.perfiles.comprar(perfil.id, 'cabeza:b06-ia-corona')).rejects.toThrow(/Te faltan 25 monedas/)
+    await expect(repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, cabeza: 'cabeza:b06-ia-corona' })).rejects.toThrow(/comprarlo/)
 
     await repos.perfiles.sumarMonedas(perfil.id, 30)
-    expect(await repos.perfiles.comprar(perfil.id, 'cabeza-corona')).toEqual({ monedas: 5, inventario: ['cabeza-corona'] })
+    expect(await repos.perfiles.comprar(perfil.id, 'cabeza:b06-ia-corona')).toEqual({ monedas: 5, inventario: ['cabeza:b06-ia-corona'] })
     // Comprar dos veces no cobra de nuevo.
-    expect(await repos.perfiles.comprar(perfil.id, 'cabeza-corona')).toEqual({ monedas: 5, inventario: ['cabeza-corona'] })
+    expect(await repos.perfiles.comprar(perfil.id, 'cabeza:b06-ia-corona')).toEqual({ monedas: 5, inventario: ['cabeza:b06-ia-corona'] })
 
-    await repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, nombre: 'Rayito', genero: 'nina', cabeza: 'cabeza-corona' })
+    await repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, nombre: 'Rayito', genero: 'nina', cabeza: 'cabeza:b06-ia-corona' })
     const releido = await crearRepositoriosLocales(almacen).perfiles.obtener(perfil.id)
-    expect(releido?.ciempi).toMatchObject({ nombre: 'Rayito', genero: 'nina', cabeza: 'cabeza-corona' })
+    expect(releido?.ciempi).toMatchObject({ nombre: 'Rayito', genero: 'nina', cabeza: 'cabeza:b06-ia-corona' })
     expect(releido?.monedas).toBe(5)
   })
 })

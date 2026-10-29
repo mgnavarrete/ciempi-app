@@ -1,7 +1,8 @@
 import { CiempiVivo, type EventoCiempi } from '../ciempi/v2/CiempiVivo'
 import { useEscena } from '../ciempi/v2/Vestuario'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { paletaDe, type AparienciaCiempi } from '../ciempi/catalogo'
+import type { AparienciaCiempi } from '../ciempi/catalogo'
+import { APARIENCIA_CLASICA, paletaDe } from '../ciempi/clasico'
 import { Cabeza, Comida, Segmento } from '../ciempi/dibujos'
 import type { Fase, Pista } from './motor'
 
@@ -69,7 +70,9 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const tamanoManzana = Math.min(14, Math.max(10, r * 0.85))
   const manzanas = pista.manzanas.map((x, i) => ({ i, x: x * ancho })).filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === pista.manzanas.length - 1))
 
-  const colores = paletaDe(apariencia).cuerpo
+  // Mientras carga el nuevo Ciempi se dibuja el clásico (con la comida del niño).
+  const clasica = { ...APARIENCIA_CLASICA, comida: apariencia.comida }
+  const colores = paletaDe(clasica).cuerpo
 
   const clases = [
     caminando && fase === 'arrastrando' ? 'caminando' : '',
@@ -95,14 +98,14 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
             r={r}
             indice={i}
             color={colores[i % colores.length]}
-            apariencia={apariencia}
+            apariencia={clasica}
             className={`segmento-nuevo ${tranquilo ? 'tranquilo' : ''}`}
           />
         ))}
 
         {!nuevo && <g className="ciempi-cabeza" style={{ transform: `translate(${xCabeza}px, ${CENTRO_Y - 4}px)` }}>
           <g className="ciempi-cara" style={{ transform: `scale(${R / 20})` }}>
-            <Cabeza apariencia={apariencia} />
+            <Cabeza apariencia={clasica} />
           </g>
           {fase === 'tropiezo' && (
             <text x={0} y={-R - 10} textAnchor="middle" fontSize={20} className="aparecer">

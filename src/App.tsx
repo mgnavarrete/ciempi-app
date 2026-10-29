@@ -270,8 +270,11 @@ export function App() {
     )
   }
 
-  const perfilVisual = 'perfilId' in vista ? vista.perfilId : sesion.tipo === 'nino' ? sesion.perfilId : 'sin-perfil'
-  return <VestuarioProvider key={perfilVisual}><Marco>{pantalla}</Marco></VestuarioProvider>
+  return (
+    <VestuarioProvider>
+      <Marco>{pantalla}</Marco>
+    </VestuarioProvider>
+  )
 }
 
 function Marco({ children }: { children: React.ReactNode }) {

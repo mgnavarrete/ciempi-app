@@ -130,16 +130,30 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   it('tienda: no compra sin monedas, compra con monedas, no cobra dos veces y solo deja ponerse lo comprado', async () => {
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-corona' })).body.error).toMatch(/Te faltan 23 monedas/)
-    expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { cabeza: 'cabeza-corona' } })).status).toBe(403)
-    const ok = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', genero: 'nino', cabeza: 'cabeza-antenas' } })
-    expect(ok.body.ciempi).toMatchObject({ nombre: 'Rayito', cabeza: 'cabeza-antenas' })
+    const corona = 'cabeza:b06-ia-corona'
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body.error).toMatch(/Te faltan 23 monedas/)
+    expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { cabeza: corona } })).status).toBe(403)
+    const ok = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', genero: 'nino', cabeza: 'cabeza:cabeza-nada' } })
+    expect(ok.body.ciempi).toMatchObject({ nombre: 'Rayito', cabeza: 'cabeza:cabeza-nada' })
     await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 28 })
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-corona' })).body).toEqual({ monedas: 5, inventario: ['cabeza-corona'] })
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-corona' })).body).toEqual({ monedas: 5, inventario: ['cabeza-corona'] })
-    expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', cabeza: 'cabeza-corona' } })).body.ciempi.cabeza).toBe('cabeza-corona')
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-dragon' })).status).toBe(400)
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 5, inventario: [corona] })
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 5, inventario: [corona] })
+    expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', cabeza: corona } })).body.ciempi.cabeza).toBe(corona)
+    // Lo de la tienda anterior ya no se vende.
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-corona' })).status).toBe(400)
     expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'x'.repeat(25) } })).status).toBe(400)
+  })
+
+  it('tienda: un conjunto se compra como pack (30 % menos) y trae todas sus piezas', async () => {
+    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 95 })
+    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot' })
+    // Máscara 30 + estampado 20 + botas 18 + propulsor 25 = 93 → 65.
+    expect(r.body.monedas).toBe(100 - 65)
+    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot', 'espalda:b09-robot']))
+    const puesto = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, {
+      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b07-ia-robot', textura: 'textura:b11-robot', pies: 'pies:b10-robot', espalda: 'espalda:b09-robot' },
+    })
+    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b07-ia-robot', espalda: 'espalda:b09-robot' })
   })
 
   it('la terapeuta cambia la clave del niño: la vieja deja de servir y se cierran sus sesiones', async () => {
@@ -168,7 +182,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('GET', `/api/textos/${libroT}`, X)).status).toBe(403)
     expect((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, X)).status).toBe(403)
     expect((await pedir('POST', `/api/perfiles/${perfilId}/monedas`, X, { cantidad: 100 })).status).toBe(403)
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, X, { itemId: 'cabeza-mago' })).status).toBe(403)
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, X, { itemId: 'cabeza:b06-ia-mago' })).status).toBe(403)
     expect((await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, X, { textoId: libroT })).status).toBe(403)
     expect((await pedir('PUT', `/api/asignaciones/${asigT}/progreso`, X, { fraseActual: 0 })).status).toBe(403)
     expect((await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, X, { perfilId, modo: 'coro' })).status).toBe(403)

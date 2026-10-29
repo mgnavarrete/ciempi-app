@@ -1,7 +1,7 @@
 import { randomInt } from 'node:crypto'
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify'
 import type pg from 'pg'
-import { PARTES, buscarItem, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
+import { PARTES, buscarItem, comprarItem, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
 import {
   MIN_CLAVE_ADULTO,
   MIN_CLAVE_NINO,
@@ -422,13 +422,15 @@ export async function crearApp() {
       const { rows } = await c.query('select monedas, inventario from perfiles_ninos where id = $1 for update', [id])
       const p = rows[0]
       if (loTiene(p.inventario, item.id)) return { monedas: p.monedas, inventario: p.inventario }
-      if (p.monedas < item.precio) throw new Problema(`Te faltan ${item.precio - p.monedas} monedas`)
-      const r = await c.query('update perfiles_ninos set monedas = monedas - $1, inventario = array_append(inventario, $2) where id = $3 returning monedas, inventario', [
-        item.precio,
-        item.id,
-        id,
-      ])
-      await c.query('insert into compras (usuario_id, perfil_id, item_id, precio_pagado) values ($1, $2, $3, $4)', [yo(req).id, id, item.id, item.precio])
+      // La misma regla que sin conexión: un conjunto agrega sus piezas y no cobra lo que ya tiene.
+      let compra: ReturnType<typeof comprarItem>
+      try {
+        compra = comprarItem(p.inventario, p.monedas, item.id)
+      } catch (e) {
+        throw new Problema((e as Error).message)
+      }
+      const r = await c.query('update perfiles_ninos set monedas = $1, inventario = $2 where id = $3 returning monedas, inventario', [compra.monedas, compra.inventario, id])
+      await c.query('insert into compras (usuario_id, perfil_id, item_id, precio_pagado) values ($1, $2, $3, $4)', [yo(req).id, id, item.id, compra.precio])
       return { monedas: r.rows[0].monedas, inventario: r.rows[0].inventario }
     })
   })

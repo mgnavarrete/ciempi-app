@@ -1,8 +1,6 @@
 # Representación integrada 1.6.0
 
-`VestuarioProvider` carga un manifiesto local y mantiene únicamente una selección de prueba en memoria, aislada por perfil. No concede productos, no escribe almacenamiento y no llama a la API. Al seleccionar un artículo de la tienda histórica se cancela la prueba. La apariencia persistida sigue pasando por el catálogo y los repositorios existentes.
-
-`seleccion.ts` relaciona solo equivalencias visuales comprobadas. Si un campo no tiene equivalencia, se conserva el renderizador clásico completo; nunca se elimina el ID ni el derecho adquirido. Las categorías nuevas se prueban durante la sesión, también al leer. Su comercialización/persistencia necesita otra tarea aprobada.
+Tienda (2.1): `../catalogo.ts` vende solo los diseños nuevos (ids «categoría:diseño», generados por `scripts/generar-tienda-ciempi.mjs` en `../tienda.generada.ts`), más fondos y comida. La apariencia guardada usa esos ids y `seleccion.ts` la traduce al compositor; ya no hay prueba temporal ni renderizador clásico elegible (el clásico solo se dibuja mientras carga el vestuario o si falla). Lo comprado en la tienda anterior se devolvió en monedas (`server/sql/010_tienda_nueva.sql` y la migración local `2026-10-tienda-nueva`). Las miniaturas de la tienda son el Ciempi del niño con la pieza puesta (`Miniatura.tsx`).
 
 `arte/` contiene una copia derivada del compositor del laboratorio y sus bibliotecas. No importa recursos desde `docs/` en ejecución. `public/ciempi-v2/` contiene el maestro SVG, fragmentos aprobados, variantes y raster WebP lossless con nombres por contenido. Regeneración opcional: `node scripts/exportar-ciempi-produccion.mjs` (requiere los originales del laboratorio y Sharp ya disponible en este entorno; no se ejecuta en build/deploy).
 

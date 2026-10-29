@@ -2,9 +2,10 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { voz } from '../audio/voz'
 import type { PerfilNino } from '../dominio/tipos'
 import { BotonPrincipal } from '../ui/comunes'
-import { CATALOGO, PALETAS, variante, type AparienciaCiempi, type Genero } from './catalogo'
+import { CATALOGO, buscarItem, ponerItem, type AparienciaCiempi, type Genero, type ItemCiempi } from './catalogo'
+import { MiniaturaCiempi } from './v2/Miniatura'
 import { CiempiPersonaje } from './CiempiPersonaje'
-import { Cabeza, FondoTema } from './dibujos'
+import { FondoTema } from './dibujos'
 import { useVozDeCiempi } from './vozDeCiempi'
 
 interface Props {
@@ -20,6 +21,8 @@ const NOMBRES: Record<Genero, string[]> = {
 const GESTOS = ['A04', 'A08', 'A12', 'A03']
 /** Lo que se puede elegir en la presentación: solo cosas gratis. */
 const gratis = (categoria: 'paleta' | 'cabeza') => CATALOGO.filter((i) => i.categoria === categoria && i.precio === 0)
+/** Lo que se muestra de la tienda al final de la presentación. */
+const VITRINA = ['cabeza:b06-ia-corona', 'cabeza:b06-ia-mago', 'cabeza:b07-ia-robot'].map(buscarItem).filter((i): i is ItemCiempi => !!i)
 
 type Paso = 'genero' | 'nombre' | 'colores' | 'gorro' | 'leer' | 'ritmo' | 'tienda'
 const PASOS: Paso[] = ['genero', 'nombre', 'colores', 'gorro', 'leer', 'ritmo', 'tienda']
@@ -138,28 +141,19 @@ export function Presentacion({ perfil, alTerminar }: Props) {
 
           {actual === 'colores' && (
             <Opciones>
-              {gratis('paleta').map((i) => {
-                const p = PALETAS[variante(i.id)]
-                return (
-                  <Opcion key={i.id} elegida={a.paleta === i.id} alElegir={() => setA({ ...a, paleta: i.id })} nombre={i.nombre}>
-                    <span className="flex gap-1" aria-hidden>
-                      {[...p.cuerpo, p.cabeza].map((c, j) => (
-                        <span key={j} className="h-6 w-6 rounded-full border-2 border-[#223d5d]" style={{ background: c }} />
-                      ))}
-                    </span>
-                  </Opcion>
-                )
-              })}
+              {gratis('paleta').map((i) => (
+                <Opcion key={i.id} elegida={a.paleta === i.id} alElegir={() => setA(ponerItem(a, i))} nombre={i.nombre}>
+                  <MiniaturaCiempi apariencia={ponerItem(a, i)} categoria="paleta" className="h-12 w-20" />
+                </Opcion>
+              ))}
             </Opciones>
           )}
 
           {actual === 'gorro' && (
             <Opciones>
               {gratis('cabeza').map((i) => (
-                <Opcion key={i.id} elegida={a.cabeza === i.id} alElegir={() => setA({ ...a, cabeza: i.id })} nombre={i.nombre}>
-                  <svg viewBox="-34 -58 68 82" className="h-14 w-14" aria-hidden>
-                    <Cabeza apariencia={{ ...a, cabeza: i.id }} />
-                  </svg>
+                <Opcion key={i.id} elegida={a.cabeza === i.id} alElegir={() => setA(ponerItem(a, i))} nombre={i.nombre}>
+                  <MiniaturaCiempi apariencia={ponerItem(a, i)} categoria="cabeza" className="h-14 w-14" />
                 </Opcion>
               ))}
             </Opciones>
@@ -178,12 +172,10 @@ export function Presentacion({ perfil, alTerminar }: Props) {
           )}
           {actual === 'tienda' && (
             <div className="grid grid-cols-3 gap-3">
-              {(['cabeza-corona', 'cabeza-astronauta', 'cabeza-mago'] as const).map((id) => (
-                <div key={id} className="flex flex-col items-center rounded-2xl bg-white p-2 shadow-sm">
-                  <svg viewBox="-34 -58 68 82" className="h-14 w-14" aria-hidden>
-                    <Cabeza apariencia={{ ...a, cabeza: id }} />
-                  </svg>
-                  <span className="text-sm font-bold text-naranjo">🪙 {CATALOGO.find((x) => x.id === id)?.precio}</span>
+              {VITRINA.map((i) => (
+                <div key={i.id} className="flex flex-col items-center rounded-2xl bg-white p-2 shadow-sm">
+                  <MiniaturaCiempi apariencia={ponerItem(a, i)} categoria={i.categoria} className="h-14 w-full" />
+                  <span className="text-sm font-bold text-naranjo">🪙 {i.precio}</span>
                 </div>
               ))}
             </div>

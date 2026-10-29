@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import { paletaDe, type AparienciaCiempi } from './catalogo'
+import { paletaDe, type AparienciaClasica as AparienciaCiempi } from './clasico'
 
 /**
  * Piezas de Ciempi dibujadas en SVG (sin imágenes: livianas, offline y
