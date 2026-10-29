@@ -5,7 +5,7 @@ import { BotonPrincipal } from '../ui/comunes'
 import { CATALOGO, buscarItem, ponerItem, type AparienciaCiempi, type Genero, type ItemCiempi } from './catalogo'
 import { MiniaturaCiempi } from './v2/Miniatura'
 import { CiempiPersonaje } from './CiempiPersonaje'
-import { FondoTema } from './dibujos'
+import { Comida, FondoTema } from './dibujos'
 import { useVozDeCiempi } from './vozDeCiempi'
 
 interface Props {
@@ -22,7 +22,7 @@ const GESTOS = ['A04', 'A08', 'A12', 'A03']
 /** Lo que se puede elegir en la presentación: solo cosas gratis. */
 const gratis = (categoria: 'paleta' | 'cabeza') => CATALOGO.filter((i) => i.categoria === categoria && i.precio === 0)
 /** Lo que se muestra de la tienda al final de la presentación. */
-const VITRINA = ['cabeza:b06-ia-corona', 'cabeza:b06-ia-mago', 'cabeza:b07-ia-robot'].map(buscarItem).filter((i): i is ItemCiempi => !!i)
+const VITRINA = ['cabeza:b06-ia-corona', 'espalda:b08-ia-heroica', 'conjunto:b12-set-robot'].map(buscarItem).filter((i): i is ItemCiempi => !!i)
 
 type Paso = 'genero' | 'nombre' | 'colores' | 'gorro' | 'leer' | 'ritmo' | 'tienda'
 const PASOS: Paso[] = ['genero', 'nombre', 'colores', 'gorro', 'leer', 'ritmo', 'tienda']
@@ -46,9 +46,9 @@ export function Presentacion({ perfil, alTerminar }: Props) {
     nombre: '¡Genial! ¿Cómo me vas a llamar?',
     colores: `¡Me encanta llamarme ${a.nombre}! Elige mis colores.`,
     gorro: '¿Qué me pongo en la cabeza?',
-    leer: 'Para leer, pon tu dedo en la pista y deslízalo despacito. Cuando llego a una manzana, leemos esa palabra juntos.',
-    ritmo: 'Si vas muy rápido, me tropiezo. Lee con calma y ganarás monedas: una cada veinte palabras.',
-    tienda: `Con tus monedas me puedes comprar gorros, colores y fondos nuevos. ¡Soy ${a.nombre}, ${amigo}! ¿Vamos a leer?`,
+    leer: 'Para leer, pon tu dedo sobre mí y llévame despacito por el camino. Cuando llego a una manzana, leemos esa palabra juntos.',
+    ritmo: 'Si vas muy rápido, me tropiezo. Lee con calma: mientras avanzas en un libro ganas monedas, ¡y al terminarlo te llevas un premio!',
+    tienda: `Con tus monedas me puedes vestir: gorros, capas, peinados ¡y disfraces completos! Soy ${a.nombre}, ${amigo}. ¿Vamos a leer?`,
   }
 
   // Ciempi dice cada mensaje (después del primer toque: los navegadores no hablan sin un gesto).
@@ -159,7 +159,7 @@ export function Presentacion({ perfil, alTerminar }: Props) {
             </Opciones>
           )}
 
-          {actual === 'leer' && <DemoPista />}
+          {actual === 'leer' && <DemoPista apariencia={a} />}
           {actual === 'ritmo' && (
             <div className="flex items-center justify-center gap-6 rounded-3xl bg-white p-5 text-center shadow-sm">
               <span className="text-5xl" aria-hidden>
@@ -214,21 +214,26 @@ function Opcion({ elegida, alElegir, nombre, children }: { elegida: boolean; alE
   )
 }
 
-/** Dibujo de la pista: el dedo, Ciempi y las manzanas. */
-function DemoPista() {
+/** La pista en pequeño: Ciempi avanza con el dedo, se come las manzanas y se encienden las palabras. */
+function DemoPista({ apariencia }: { apariencia: AparienciaCiempi }) {
   return (
     <div className="flex flex-col gap-2 rounded-3xl bg-white p-4 shadow-sm">
       <p className="text-center font-lectura text-3xl tracking-wide">
-        <span className="rounded bg-petroleo-claro text-petroleo">Mi</span> <span className="rounded bg-naranjo-claro text-naranjo">perro</span> come
+        <span className="demo-palabra rounded px-0.5">Mi</span> <span className="demo-palabra demo-palabra-2 rounded px-0.5">perro</span>{' '}
+        <span className="demo-palabra demo-palabra-3 rounded px-0.5">come</span>
       </p>
-      <div className="relative h-16 rounded-full border-2 border-[#e2d6bf] bg-arena">
-        <div className="absolute inset-y-0 left-0 w-[52%] rounded-l-full bg-verde-claro" />
-        <span className="absolute left-[46%] top-1/2 -translate-y-1/2 text-3xl" aria-hidden>
-          👆
-        </span>
-        <span className="absolute right-[18%] top-1/2 -translate-y-1/2 text-2xl" aria-hidden>
-          🍎
-        </span>
+      <div className="relative h-20 overflow-hidden rounded-full border-2 border-[#e2d6bf] bg-arena">
+        {[22, 50, 78].map((x, i) => (
+          <svg key={x} viewBox="-14 -14 28 28" className={`demo-manzana absolute top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 demo-manzana-${i + 1}`} style={{ left: `${x}%` }} aria-hidden>
+            <Comida comida={apariencia.comida} x={0} y={0} tamano={11} />
+          </svg>
+        ))}
+        <div className="demo-ciempi absolute top-1/2 h-16 w-28 -translate-y-1/2">
+          <MiniaturaCiempi apariencia={apariencia} categoria="conjunto" className="h-full w-full" />
+          <span className="absolute -bottom-1 right-1 text-3xl" aria-hidden>
+            👆
+          </span>
+        </div>
       </div>
       <p className="text-center text-sm text-tinta-suave">Desliza de izquierda a derecha →</p>
     </div>

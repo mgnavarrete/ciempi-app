@@ -1,5 +1,8 @@
 import { VestuarioProvider } from './ciempi/v2/Vestuario'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { CargasProvider } from './adultos/cargas'
+import { alCambiarPreferencias, leerPreferencias, ponerMusica, sonarToque } from './audio/musica'
+import { obtenerContexto } from './audio/sonidos'
 import { PantallaAdultos } from './adultos/PantallaAdultos'
 import { PantallaAjustes } from './ajustes/PantallaAjustes'
 import { PantallaAgregarLibro } from './biblioteca/PantallaAgregarLibro'
@@ -39,6 +42,8 @@ export function App() {
   const [sesion, setSesion] = useState<Sesion | null | undefined>(undefined)
   const [perfiles, setPerfiles] = useState<PerfilNino[] | null>(null)
   const [vista, setVista] = useState<Vista>({ tipo: 'inicio' })
+  /** Un adulto que entró a la sesión de un alumno («Leer con…»): la app es la del niño. */
+  const [alumno, setAlumno] = useState<Id | null>(null)
   const [error, setError] = useState<string | null>(null)
   // Llegó desde el enlace de "recuperar contraseña": hay que pedirle la nueva.
   const [pidiendoClave, setPidiendoClave] = useState(() => new URLSearchParams(window.location.search).has('recuperar'))
@@ -47,6 +52,7 @@ export function App() {
     repos.auth.sesionActual().then(setSesion, (e: Error) => setError(e.message))
     const dejarSesion = repos.auth.alCambiar((s) => {
       setSesion(s)
+      setAlumno(null)
       setVista({ tipo: 'inicio' })
     })
     const dejarRecuperacion = repos.auth.alPedirNuevaClave(() => setPidiendoClave(true))
@@ -84,6 +90,31 @@ export function App() {
     void repos.perfiles.actualizarAjustes(id, ajustes)
   }
 
+  // ── Música y sonido de los botones (ver audio/musica.ts) ──
+  const [sonido, setSonido] = useState(leerPreferencias)
+  useEffect(() => alCambiarPreferencias(() => setSonido(leerPreferencias())), [])
+  const perfilActivo =
+    sesion?.tipo === 'nino' ? perfiles?.find((p) => p.id === sesion.perfilId) : sesion?.tipo === 'adulto' && alumno ? perfiles?.find((p) => p.id === alumno) : undefined
+  // Suena en las pantallas del niño; nunca mientras lee (taparía la voz) ni en la presentación.
+  const conMusica =
+    sonido.musica && !!perfilActivo && !perfilActivo.ajustes.modoTranquilo && ['inicio', 'biblioteca', 'ciempi', 'ajustes', 'agregarLibro'].includes(vista.tipo) && !(vista.tipo === 'ajustes' && vista.volverA.tipo === 'leer')
+  const actual = useRef({ conMusica, botones: sonido.botones, leyendo: vista.tipo === 'leer' })
+  actual.current = { conMusica, botones: sonido.botones, leyendo: vista.tipo === 'leer' }
+  useEffect(() => ponerMusica(conMusica), [conMusica])
+  useEffect(() => {
+    const alTocar = (e: PointerEvent) => {
+      const ctx = obtenerContexto()
+      // El audio se habilita con el primer toque; la música empieza ahí.
+      if (ctx?.state === 'suspended') void ctx.resume().then(() => ponerMusica(actual.current.conMusica))
+      if (actual.current.botones && !actual.current.leyendo && (e.target as Element | null)?.closest('button, [role=tab], a, label')) sonarToque()
+    }
+    document.addEventListener('pointerdown', alTocar, true)
+    return () => {
+      document.removeEventListener('pointerdown', alTocar, true)
+      ponerMusica(false)
+    }
+  }, [])
+
   if (error) return <p className="p-6 text-coral">No se pudieron cargar los datos: {error}</p>
   if (sesion === undefined) return null
   // Llegó desde el enlace del correo: puede no tener sesión todavía (la crea al guardar la clave nueva).
@@ -107,6 +138,18 @@ export function App() {
   /** Un adulto con cuenta en línea mira los libros del niño sin mover su avance. */
   const esAdmin = sesion.tipo === 'adulto' && repos.enLinea
   const perfilDe = (id: Id) => perfiles.find((p) => p.id === id)
+  /** El adulto está dentro de la sesión de un alumno: ve y puede hacer todo lo que él. */
+  const enSesionDe = sesion.tipo === 'adulto' && alumno ? perfilDe(alumno) : undefined
+  /** El adulto mira la biblioteca de un alumno desde su panel (cambia niveles, no personaliza). */
+  const modoAdmin = esAdmin && !enSesionDe
+  const leerCon = (p: PerfilNino) => {
+    setAlumno(p.id)
+    setVista({ tipo: 'inicio' })
+  }
+  const volverAlPanel = () => {
+    setAlumno(null)
+    setVista({ tipo: 'adultos' })
+  }
   const salir = () => void repos.auth.cerrarSesion()
   const inicio = () => setVista({ tipo: 'inicio' })
 
@@ -114,6 +157,7 @@ export function App() {
     switch (vista.tipo) {
       case 'inicio': {
         if (sesion.tipo === 'nino') return mostrarBiblioteca(sesion.perfilId)
+        if (enSesionDe) return mostrarBiblioteca(enSesionDe.id)
         if (esAdmin) return mostrarAdultos()
         return (
           <PantallaPerfiles
@@ -170,7 +214,7 @@ export function App() {
             perfil={perfil}
             alCambiar={(a) => cambiarAjustes(perfil.id, a)}
             alVolver={() => setVista(vista.volverA)}
-            alVerPresentacion={esAdmin ? undefined : () => setVista({ tipo: 'presentacion', perfilId: perfil.id })}
+            alVerPresentacion={modoAdmin ? undefined : () => setVista({ tipo: 'presentacion', perfilId: perfil.id })}
             alSalir={esNino ? salir : undefined}
           />
         )
@@ -237,19 +281,20 @@ export function App() {
     const perfil = perfilDe(perfilId)
     if (!perfil) return null
     // La primera vez que el niño entra, Ciempi se presenta.
-    if (!esAdmin && !perfil.ciempi.presentado) return mostrarPresentacion(perfil)
+    if (!modoAdmin && !perfil.ciempi.presentado) return mostrarPresentacion(perfil)
     return (
       <PantallaBiblioteca
         perfil={perfil}
         usuarioId={sesion!.usuarioId}
-        modo={esAdmin ? 'admin' : 'nino'}
+        modo={modoAdmin ? 'admin' : 'nino'}
         // Un adulto puede leer junto al niño (cuenta para el niño) o solo mirar (vista previa).
         alLeer={(libro, vistaPrevia = false) => setVista({ tipo: 'leer', perfilId, libro, vistaPrevia })}
         alAjustes={() => setVista({ tipo: 'ajustes', perfilId, volverA: { tipo: 'biblioteca', perfilId } })}
-        alAgregarLibro={esAdmin ? undefined : () => setVista({ tipo: 'agregarLibro', perfilId })}
-        alPersonalizar={esAdmin ? undefined : () => setVista({ tipo: 'ciempi', perfilId })}
-        alVolver={esNino ? undefined : esAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}
-        ninosDelAdulto={esAdmin ? perfiles! : undefined}
+        alAgregarLibro={modoAdmin ? undefined : () => setVista({ tipo: 'agregarLibro', perfilId })}
+        alPersonalizar={modoAdmin ? undefined : () => setVista({ tipo: 'ciempi', perfilId })}
+        // En la sesión de un alumno se sale con la franja de arriba («Volver al panel»).
+        alVolver={esNino || enSesionDe ? undefined : modoAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}
+        ninosDelAdulto={modoAdmin ? perfiles! : undefined}
       />
     )
   }
@@ -265,6 +310,7 @@ export function App() {
         alAgregarTexto={(fuente, para) => setVista({ tipo: 'nuevoTexto', fuente, paraPerfilId: para?.id })}
         alAjustesDe={(p) => setVista({ tipo: 'ajustes', perfilId: p.id, volverA: { tipo: 'adultos' } })}
         alVerLibros={(p) => setVista({ tipo: 'biblioteca', perfilId: p.id })}
+        alLeerCon={leerCon}
         alCambiarNinos={() => void recargarPerfiles()}
       />
     )
@@ -272,7 +318,21 @@ export function App() {
 
   return (
     <VestuarioProvider>
-      <Marco>{pantalla}</Marco>
+      <CargasProvider>
+        <Marco>
+          {enSesionDe && vista.tipo !== 'adultos' && vista.tipo !== 'nuevoTexto' && (
+            <div className="flex shrink-0 items-center justify-between gap-2 bg-petroleo px-4 py-1.5 text-sm text-white">
+              <span className="truncate">
+                👀 Estás en la sesión de <span className="font-bold">{enSesionDe.apodo}</span>
+              </span>
+              <button onClick={volverAlPanel} className="shrink-0 rounded-full bg-white/20 px-3 py-1 font-bold active:scale-95">
+                ← Volver al panel
+              </button>
+            </div>
+          )}
+          {pantalla}
+        </Marco>
+      </CargasProvider>
     </VestuarioProvider>
   )
 }

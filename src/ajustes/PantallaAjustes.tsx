@@ -1,3 +1,4 @@
+import { AjustesSonido } from '../audio/AjustesSonido'
 import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { silabaParaLaVoz } from '../audio/pronunciacion'
@@ -171,6 +172,11 @@ export function PantallaAjustes({ perfil, alCambiar, alVolver, alVerPresentacion
             </span>
             <input type="checkbox" checked={ajustes.modoTranquilo} onChange={(e) => cambiar('modoTranquilo', e.target.checked)} className="h-7 w-7 shrink-0 accent-petroleo" />
           </label>
+        </Seccion>
+
+        <Seccion emoji="🎵" titulo="Música y sonidos">
+          <AjustesSonido />
+          {ajustes.modoTranquilo && <p className="text-sm text-tinta-suave">Con el modo tranquilo la música no suena.</p>}
         </Seccion>
 
         {alVerPresentacion && (

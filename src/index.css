@@ -280,3 +280,21 @@ body {
 }
 
 /* El Ciempi nuevo se anima por partes (ciempi/v2/CiempiVivo.tsx), no con CSS. */
+
+/* Demostración de la pista en la presentación: Ciempi avanza, come y se encienden las palabras (4 s en bucle). */
+.demo-ciempi { left: -6%; animation: demo-avanza 4s ease-in-out infinite; }
+@keyframes demo-avanza { 0%, 8% { left: -6%; } 85%, 100% { left: 66%; } }
+.demo-manzana { animation: demo-come 4s step-end infinite; }
+.demo-manzana-1 { animation-name: demo-come-1; }
+.demo-manzana-2 { animation-name: demo-come-2; }
+.demo-manzana-3 { animation-name: demo-come-3; }
+@keyframes demo-come-1 { 0%, 30% { opacity: 1; } 31%, 100% { opacity: 0; } }
+@keyframes demo-come-2 { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+@keyframes demo-come-3 { 0%, 82% { opacity: 1; } 83%, 100% { opacity: 0; } }
+.demo-palabra { animation: demo-lee-1 4s step-end infinite; }
+.demo-palabra-2 { animation-name: demo-lee-2; }
+.demo-palabra-3 { animation-name: demo-lee-3; }
+@keyframes demo-lee-1 { 0%, 30% { background: transparent; } 31%, 100% { background: #d3ecee; color: #1f6f73; } }
+@keyframes demo-lee-2 { 0%, 55% { background: transparent; } 56%, 100% { background: #fde1cf; color: #c4581f; } }
+@keyframes demo-lee-3 { 0%, 82% { background: transparent; } 83%, 100% { background: #d3ecee; color: #1f6f73; } }
+@media (prefers-reduced-motion: reduce) { .demo-ciempi, .demo-manzana, .demo-palabra { animation: none !important; } }

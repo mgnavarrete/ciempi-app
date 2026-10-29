@@ -5,7 +5,8 @@
 
 let contexto: AudioContext | null = null
 
-function obtenerContexto(): AudioContext | null {
+/** El contexto de audio compartido por efectos y música (null si el equipo no tiene Web Audio). */
+export function obtenerContexto(): AudioContext | null {
   if (typeof window === 'undefined' || !('AudioContext' in window)) return null
   contexto ??= new AudioContext()
   return contexto
