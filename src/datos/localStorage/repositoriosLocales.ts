@@ -1,5 +1,5 @@
 import { PARTES, comprarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
-import { PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
+import { PRECIOS_MOCHILAS_2_1, PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
 import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { nuevoId } from '../../dominio/ids'
@@ -204,6 +204,16 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
         perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !esCompraAntigua(id)), ciempi: normalizarApariencia(p.ciempi) })
       }),
   },
+  {
+    // CIEMPI 2.2: las mochilas salen de la tienda (se veían pegadas encima del cuerpo): se devuelven.
+    id: '2026-10-sin-mochilas',
+    aplicar: ({ perfiles }) =>
+      perfiles.todos().forEach((p) => {
+        const inventario = p.inventario ?? []
+        const devolver = inventario.reduce((s, id) => s + (PRECIOS_MOCHILAS_2_1[id] ?? 0), 0)
+        if (devolver) perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !(id in PRECIOS_MOCHILAS_2_1)), ciempi: normalizarApariencia(p.ciempi) })
+      }),
+  },
 ]
 
 function migrar(almacen: AlmacenClaveValor, tablas: Tablas) {
@@ -375,11 +385,11 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       }
       return completarPerfil(perfiles.guardar({ ...perfil, ciempi }))
     },
-    async comprar(id, itemId) {
+    async comprar(id, itemId, precioVisto) {
       const perfil = perfiles.obtener(id)
       if (!perfil) throw new Error(`Perfil ${id} no existe`)
       const { inventario, monedas } = completarPerfil(perfil)
-      const nuevo = comprarItem(inventario, monedas, itemId)
+      const nuevo = comprarItem(inventario, monedas, itemId, precioVisto)
       perfiles.guardar({ ...perfil, monedas: nuevo.monedas, inventario: nuevo.inventario })
       return { monedas: nuevo.monedas, inventario: nuevo.inventario }
     },

@@ -15,6 +15,7 @@ import {
   normalizarApariencia,
   ponerItem,
   precioDe,
+  ahorroDe,
 } from './catalogo'
 import { esCompraAntigua } from './tiendaAntigua'
 
@@ -39,19 +40,51 @@ describe('tienda de Ciempi', () => {
     expect(CATALOGO.filter((i) => esCompraAntigua(i.id))).toEqual([])
   })
 
-  it('un conjunto cuesta 30 % menos que sus piezas y no cobra lo que ya tiene', () => {
-    const robot = item('conjunto:b12-set-robot')
-    const suelto = CONJUNTOS.find((c) => c.id === robot.id)!.piezas.reduce((s, p) => s + item(p).precio, 0)
-    expect(precioDe(robot, [])).toBe(Math.round(suelto * 0.7))
-    expect(precioDe(robot, ['cabeza:b07-ia-robot'])).toBe(Math.round((suelto - item('cabeza:b07-ia-robot').precio) * 0.7))
+  it('precios aprobados: gestos gratis, piezas según su trabajo', () => {
+    expect(CATALOGO.filter((i) => i.categoria === 'gesto').every((i) => i.precio === 0)).toBe(true)
+    expect(item('pies:b10-lluvia').precio).toBe(12)
+    expect(item('cuello:bufanda-calco32').precio).toBe(30)
+    expect(item('cabeza:b07-ia-robot').precio).toBe(32)
+    // Las mochilas salieron de la tienda (y de los conjuntos).
+    expect(CATALOGO.some((i) => i.id.startsWith('espalda:b09'))).toBe(false)
+    expect(CONJUNTOS.every((c) => c.pone.every((id) => !id.startsWith('espalda:b09')))).toBe(true)
   })
 
-  it('comprar un conjunto agrega el pack y sus piezas, y descuenta su precio', () => {
+  it('un conjunto cuesta 20 % menos que sus piezas (redondeando hacia arriba) y no cobra lo que ya tiene', () => {
+    const robot = item('conjunto:b12-set-robot')
+    // Máscara 32 + armadura 32 + botas 24 = 88 → 71, ahorra 17.
+    expect(precioDe(robot, [])).toBe(71)
+    expect(ahorroDe(robot, [])).toBe(17)
+    // Con la máscara: armadura 32 + botas 24 = 56 → 45.
+    expect(precioDe(robot, ['cabeza:b07-ia-robot'])).toBe(45)
+  })
+
+  it('comprar un conjunto agrega el pack y sus piezas, y reparte lo cobrado entre ellas', () => {
     const r = comprarItem([], 200, 'conjunto:b12-set-robot')
-    expect(r.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot', 'espalda:b09-robot']))
-    expect(r.monedas).toBe(200 - precioDe(item('conjunto:b12-set-robot'), []))
+    expect(r.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot']))
+    expect(r.monedas).toBe(200 - 71)
+    expect(r.lineas.reduce((s, l) => s + l.precio, 0)).toBe(71)
+    expect(r.lineas.map((l) => l.id)).toEqual(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot'])
     expect(() => comprarItem([], 3, 'cabeza:b06-ia-corona')).toThrow('Te faltan 22 monedas')
     expect(() => comprarItem([], 99, 'forma-estrella')).toThrow('Eso no está en la tienda')
+  })
+
+  it('no cobra más de lo que mostró la tienda', () => {
+    expect(() => comprarItem([], 99, 'cabeza:b06-ia-corona', 20)).toThrow('El precio cambió: ahora cuesta 25 monedas')
+    expect(comprarItem([], 99, 'cabeza:b06-ia-corona', 25).monedas).toBe(74)
+  })
+
+  it('los colores casi iguales se compran una vez para toda la familia', () => {
+    const r = comprarItem([], 50, 'paleta:harry')
+    expect(r.monedas).toBe(38)
+    expect(loTiene(r.inventario, 'paleta:gryffindor')).toBe(true)
+    expect(loTiene(r.inventario, 'paleta:hermione')).toBe(true)
+    expect(loTiene(r.inventario, 'paleta:slytherin')).toBe(false)
+  })
+
+  it('elegir un color quita el estampado (que lo taparía)', () => {
+    const conEstampado = ponerItem(APARIENCIA_INICIAL, item('textura:b11-draco'))
+    expect(ponerItem(conEstampado, item('paleta:oceano')).textura).toBe('textura:liso')
   })
 
   it('gorro y peinado se excluyen; cambiar de pieza vuelve a su color original', () => {

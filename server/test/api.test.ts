@@ -144,16 +144,18 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'x'.repeat(25) } })).status).toBe(400)
   })
 
-  it('tienda: un conjunto se compra como pack (30 % menos) y trae todas sus piezas', async () => {
+  it('tienda: un conjunto se compra como pack (20 % menos), trae sus piezas y no cobra más de lo mostrado', async () => {
     await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 95 })
-    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot' })
-    // Máscara 30 + estampado 20 + botas 18 + propulsor 25 = 93 → 65.
-    expect(r.body.monedas).toBe(100 - 65)
-    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot', 'espalda:b09-robot']))
+    // Si la app mostró un precio menor (por ejemplo, una versión antigua), no se cobra.
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 60 })).body.error).toMatch(/ahora cuesta 71/)
+    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 71 })
+    // Máscara 32 + armadura 32 + botas 24 = 88 → 71.
+    expect(r.body.monedas).toBe(100 - 71)
+    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot']))
     const puesto = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, {
-      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b07-ia-robot', textura: 'textura:b11-robot', pies: 'pies:b10-robot', espalda: 'espalda:b09-robot' },
+      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b07-ia-robot', textura: 'textura:b11-robot', pies: 'pies:b10-robot' },
     })
-    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b07-ia-robot', espalda: 'espalda:b09-robot' })
+    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b07-ia-robot', pies: 'pies:b10-robot' })
   })
 
   it('la terapeuta cambia la clave del niño: la vieja deja de servir y se cierran sus sesiones', async () => {

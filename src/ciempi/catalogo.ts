@@ -6,9 +6,9 @@
  * así que los precios viven solo aquí (y en scripts/generar-tienda-ciempi.mjs).
  * Todo está disponible para todos: no hay cosas "de niño" o "de niña".
  */
-import { CONJUNTOS, PIEZAS, VARIANTES } from './tienda.generada.ts'
+import { CONJUNTOS, FAMILIAS, PIEZAS, VARIANTES } from './tienda.generada.ts'
 
-export { CONJUNTOS, VARIANTES }
+export { CONJUNTOS, FAMILIAS, VARIANTES }
 
 export type CategoriaCiempi =
   | 'paleta' | 'ojos' | 'gesto' | 'cabeza' | 'pelo' | 'detalle' | 'cara' | 'cuello' | 'espalda' | 'pies' | 'textura' | 'fondo' | 'comida' | 'conjunto'
@@ -45,20 +45,33 @@ const FONDOS_Y_COMIDA: ItemCiempi[] = [
   { id: 'comida-helado', nombre: 'Helados', categoria: 'comida', precio: 15 },
 ]
 
-/** Un conjunto cuesta 30 % menos que sus piezas sueltas (y no se cobra lo que ya tiene). */
-const DESCUENTO_CONJUNTO = 0.7
+/** Un conjunto cuesta 20 % menos que sus piezas sueltas (y no se cobra lo que ya tiene). */
+const DESCUENTO_CONJUNTO = 0.8
 
 export const buscarItem = (id: string): ItemCiempi | undefined => CATALOGO.find((i) => i.id === id)
 
-/** Lo gratis siempre está disponible; lo demás, si se compró. */
-export const loTiene = (inventario: string[], id: string) => (buscarItem(id)?.precio ?? 1) === 0 || inventario.includes(id)
+/** La familia de una pieza (colores casi iguales que se compran una vez), o solo ella. */
+export const familiaDe = (id: string) => FAMILIAS.find((f) => f.includes(id)) ?? [id]
+
+/** Lo gratis siempre está disponible; lo demás, si se compró (él o alguien de su familia). */
+export const loTiene = (inventario: string[], id: string) =>
+  (buscarItem(id)?.precio ?? 1) === 0 || familiaDe(id).some((x) => inventario.includes(x))
+
+/** Lo que costarían sueltas las piezas de un conjunto que todavía no tiene. */
+const sueltas = (conjuntoId: string, inventario: string[]) =>
+  piezasDe(conjuntoId)
+    .filter((p) => !loTiene(inventario, p))
+    .reduce((s, p) => s + (buscarItem(p)?.precio ?? 0), 0)
 
 /** Lo que cuesta ahora: un conjunto descuenta las piezas que ya tiene. */
 export function precioDe(item: ItemCiempi, inventario: string[]): number {
   if (item.categoria !== 'conjunto') return item.precio
-  const faltan = piezasDe(item.id).filter((p) => !loTiene(inventario, p))
-  return Math.round(faltan.reduce((s, p) => s + (buscarItem(p)?.precio ?? 0), 0) * DESCUENTO_CONJUNTO)
+  return Math.ceil(sueltas(item.id, inventario) * DESCUENTO_CONJUNTO)
 }
+
+/** Cuánto ahorra comprando el conjunto en vez de sus piezas sueltas. */
+export const ahorroDe = (item: ItemCiempi, inventario: string[]) =>
+  item.categoria === 'conjunto' ? sueltas(item.id, inventario) - precioDe(item, inventario) : 0
 
 export const piezasDe = (conjuntoId: string) => CONJUNTOS.find((c) => c.id === conjuntoId)?.piezas ?? []
 
@@ -71,16 +84,33 @@ for (const c of CATALOGO) if (c.categoria === 'conjunto') c.precio = precioDe(c,
 
 /**
  * Compra (la misma regla en el servidor y sin conexión): descuenta las monedas
- * y agrega lo comprado; un conjunto agrega también sus piezas.
+ * y agrega lo comprado; un conjunto agrega también sus piezas, y un color, su
+ * familia. `precioVisto`: lo que mostró la app; si ahora cuesta más, no se cobra.
+ * `lineas`: lo cobrado por cada cosa (un conjunto lo reparte entre sus piezas,
+ * para que una devolución futura sea exacta).
  */
-export function comprarItem(inventario: string[], monedas: number, itemId: string): { monedas: number; inventario: string[]; precio: number } {
+export function comprarItem(
+  inventario: string[],
+  monedas: number,
+  itemId: string,
+  precioVisto?: number,
+): { monedas: number; inventario: string[]; precio: number; lineas: { id: string; precio: number }[] } {
   const item = buscarItem(itemId)
   if (!item) throw new Error('Eso no está en la tienda')
-  if (loTiene(inventario, item.id)) return { monedas, inventario, precio: 0 }
+  if (loTiene(inventario, item.id)) return { monedas, inventario, precio: 0, lineas: [] }
   const precio = precioDe(item, inventario)
+  if (precioVisto !== undefined && precio > precioVisto) throw new Error(`El precio cambió: ahora cuesta ${precio} monedas`)
   if (monedas < precio) throw new Error(`Te faltan ${precio - monedas} monedas`)
-  const nuevos = [item.id, ...piezasDe(item.id)].filter((id) => !loTiene(inventario, id))
-  return { monedas: monedas - precio, inventario: [...inventario, ...nuevos], precio }
+  const piezas = piezasDe(item.id).filter((id) => !loTiene(inventario, id))
+  const nuevos = [...familiaDe(item.id), ...piezas].filter((id) => !inventario.includes(id))
+  let lineas = [{ id: item.id, precio }]
+  if (piezas.length) {
+    const total = piezas.reduce((s, p) => s + (buscarItem(p)?.precio ?? 0), 0)
+    lineas = [{ id: item.id, precio: 0 }, ...piezas.map((id) => ({ id, precio: Math.floor((precio * (buscarItem(id)?.precio ?? 0)) / total) }))]
+    // Lo que sobra del redondeo va a la primera pieza: las líneas suman exactamente lo cobrado.
+    lineas[1].precio += precio - lineas.reduce((s, l) => s + l.precio, 0)
+  }
+  return { monedas: monedas - precio, inventario: [...inventario, ...nuevos], precio, lineas }
 }
 
 export const CATEGORIAS: { id: CategoriaCiempi; nombre: string; emoji: string }[] = [
@@ -141,11 +171,12 @@ export const diseno = (id: string) => id.slice(id.indexOf(':') + 1)
 /** Un peinado solo se ve sin gorro: elegir uno quita el otro. */
 export const SIN_GORRO = 'cabeza:cabeza-nada'
 export const SIN_PEINADO = 'pelo:pelo-nada'
+export const SIN_ESTAMPADO = 'textura:liso'
 
 /**
  * La apariencia con una pieza (o un conjunto completo, que reemplaza todo el
- * personaje) puesta. Gorro y peinado se excluyen; al cambiar una pieza vuelve
- * a su color original.
+ * personaje) puesta. Gorro y peinado se excluyen; un color quita el
+ * estampado (que lo taparía); al cambiar una pieza vuelve a su color original.
  */
 export function ponerItem(a: AparienciaCiempi, item: ItemCiempi): AparienciaCiempi {
   if (item.categoria === 'conjunto') {
@@ -165,6 +196,8 @@ export function ponerItem(a: AparienciaCiempi, item: ItemCiempi): AparienciaCiem
   const nueva: AparienciaCiempi = { ...a, [parte]: item.id, variantes }
   if (parte === 'pelo' && item.id !== SIN_PEINADO) nueva.cabeza = SIN_GORRO
   if (parte === 'cabeza' && item.id !== SIN_GORRO) nueva.pelo = SIN_PEINADO
+  // El estampado tapa los colores del cuerpo: al elegir un color se quita, para que se vea.
+  if (parte === 'paleta') nueva.textura = SIN_ESTAMPADO
   return nueva
 }
 

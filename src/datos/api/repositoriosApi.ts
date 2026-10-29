@@ -162,8 +162,8 @@ export function crearRepositoriosApi(base: string): Repositorios {
       async actualizarCiempi(id, apariencia) {
         return aPerfil(await pedir<PerfilNino>('PUT', `/api/perfiles/${id}/ciempi`, { apariencia }))
       },
-      async comprar(id, itemId) {
-        return pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId })
+      async comprar(id, itemId, precioVisto) {
+        return pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId, precioVisto })
       },
       async crearInvitacion(perfilId) {
         return pedir<InvitacionNino>('POST', `/api/perfiles/${perfilId}/invitaciones`)

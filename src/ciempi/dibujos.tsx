@@ -534,107 +534,141 @@ function Diseno({ x, y, r, diseno, indice }: { x: number; y: number; r: number; 
 }
 
 // ── Comida (lo que Ciempi se come en la pista) ────────────────────────────
+// Con el lenguaje del Ciempi nuevo: contorno azul oscuro, volumen con luz
+// arriba a la izquierda, sombra abajo a la derecha y el brillo de sus segmentos.
+
+const TINTA = '#243e5b'
+
+/** Una forma con volumen: degradado, sombra recortada a la forma, brillo y contorno. */
+function Volumen({ id, d, claro, medio, oscuro, brillo = true }: { id: string; d: string; claro: string; medio: string; oscuro: string; brillo?: boolean }) {
+  return (
+    <>
+      <defs>
+        <linearGradient id={`${id}-g`} x1="0" y1="0" x2=".8" y2="1">
+          <stop stopColor={claro} />
+          <stop offset=".55" stopColor={medio} />
+          <stop offset="1" stopColor={oscuro} />
+        </linearGradient>
+        <clipPath id={`${id}-c`}>
+          <path d={d} />
+        </clipPath>
+      </defs>
+      <path d={d} fill={`url(#${id}-g)`} />
+      <g clipPath={`url(#${id}-c)`}>
+        <ellipse cx={6} cy={9} rx={13} ry={9} fill={TINTA} opacity={0.13} />
+        {brillo && <path d="M-6.5 -2.5 Q-5.5 -6.5 -1.5 -7.5" fill="none" stroke="#fffbe3" strokeOpacity={0.6} strokeWidth={2.2} strokeLinecap="round" />}
+      </g>
+      <path d={d} fill="none" stroke={TINTA} strokeWidth={1.9} strokeLinejoin="round" />
+    </>
+  )
+}
 
 /** Una comida centrada en (x, y); `tamano` es su radio aproximado. */
 export function Comida({ comida, x, y, tamano }: { comida: string; x: number; y: number; tamano: number }) {
-  const borde = { stroke: CONTORNO, strokeWidth: 1.6, strokeLinejoin: 'round' as const }
+  const id = useId().replace(/[^\w-]/g, '')
+  const linea = { stroke: TINTA, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const }
   const dibujo = (() => {
     switch (comida) {
       case 'comida-frutilla':
         return (
           <>
-            <path d="M0 10 C-9 5 -10 -4 -6 -7 C-3 -9 0 -7 0 -7 C0 -7 3 -9 6 -7 C10 -4 9 5 0 10Z" fill="#ea6444" {...borde} />
-            {[[-4, -2], [3, -3], [0, 2], [-3, 5], [4, 3]].map(([sx, sy], i) => (
-              <ellipse key={i} cx={sx} cy={sy} rx={0.8} ry={1.1} fill="#fff3b0" />
+            <Volumen id={id} d="M0 11 C-10 6 -11 -3 -7 -6.5 C-4 -8.5 -1.5 -7.5 0 -6.5 C1.5 -7.5 4 -8.5 7 -6.5 C11 -3 10 6 0 11Z" claro="#ff8a6b" medio="#ef5a46" oscuro="#cf3f3a" />
+            {[[-4, -1], [3, -2.5], [0, 2.5], [-3.5, 5], [4, 3], [0.5, -4]].map(([sx, sy], i) => (
+              <ellipse key={i} cx={sx} cy={sy} rx={0.75} ry={1.1} fill="#ffe7a3" />
             ))}
-            <path d="M0 -7 L-5 -10 L-2 -7.5 L-3 -12 L0 -8.5 L3 -12 L2 -7.5 L5 -10 Z" fill="#62954c" {...borde} strokeWidth={1.1} />
+            <path d="M0 -6.5 L-5.5 -9.5 L-2 -7 L-3 -12 L0 -8.5 L3 -12 L2 -7 L5.5 -9.5 Z" fill="#83cda4" {...linea} strokeWidth={1.3} />
           </>
         )
       case 'comida-platano':
         return (
           <>
-            <path d="M-10 -3 C-7 9 7 10 11 -4 C6 3 -4 4 -10 -3Z" fill="#efc31d" {...borde} />
-            <path d="M-8 -1 C-4 4 4 5 8 0" stroke="#c98a2e" strokeWidth={1} fill="none" />
-            <path d="M11 -4 L12.5 -6.5" stroke="#6b4a2b" strokeWidth={2.4} strokeLinecap="round" />
+            <Volumen id={id} d="M-10.5 -4 C-8 9 8 10.5 11.5 -5 C6 3 -4 4 -10.5 -4Z" claro="#ffe577" medio="#ffd137" oscuro="#f0b32b" brillo={false} />
+            <path d="M-7.5 0 C-4 4.5 4 5 8 0.5" fill="none" stroke="#c98a2e" strokeWidth={1} strokeLinecap="round" />
+            <path d="M11.5 -5 L13 -7.5" stroke="#6b4a2b" strokeWidth={2.6} strokeLinecap="round" />
+            <path d="M-10.5 -4 L-11.5 -5" stroke="#6b4a2b" strokeWidth={2} strokeLinecap="round" />
           </>
         )
       case 'comida-sandia':
         return (
           <>
-            <path d="M-11 -3 A11 11 0 0 0 11 -3 Z" fill="#62954c" {...borde} />
-            <path d="M-8.8 -3 A8.8 8.8 0 0 0 8.8 -3 Z" fill="#ea6444" />
-            {[[-4, 0], [0, 2.5], [4, 0]].map(([sx, sy], i) => (
-              <ellipse key={i} cx={sx} cy={sy} rx={0.9} ry={1.4} fill="#223d5d" />
+            <Volumen id={id} d="M-11.5 -3.5 A11.5 11.5 0 0 0 11.5 -3.5 Z" claro="#a1dfb2" medio="#5fb37f" oscuro="#3f8f63" brillo={false} />
+            <path d="M-9 -3.5 A9 9 0 0 0 9 -3.5 Z" fill="#f5675a" />
+            <path d="M-9 -3.5 H9" stroke="#fff9e9" strokeWidth={1.4} />
+            {[[-4.5, -0.5], [0, 2.5], [4.5, -0.5], [-1.5, -1.5]].map(([sx, sy], i) => (
+              <ellipse key={i} cx={sx} cy={sy} rx={0.8} ry={1.3} fill={TINTA} />
             ))}
+            <path d="M-11.5 -3.5 H11.5" fill="none" stroke={TINTA} strokeWidth={1.9} strokeLinecap="round" />
           </>
         )
       case 'comida-galleta':
         return (
           <>
-            <circle r={9.5} fill="#d9a066" {...borde} />
-            {[[-4, -3], [3, -4], [-1, 3], [5, 3], [-5, 4]].map(([cx, cy], i) => (
-              <circle key={i} cx={cx} cy={cy} r={1.5} fill="#6b4a2b" />
+            <Volumen id={id} d="M0 -10 C6 -10 10 -6 10 0 C10 6 6 10 0 10 C-6 10 -10 6 -10 0 C-10 -6 -6 -10 0 -10Z" claro="#f3c58a" medio="#dfa565" oscuro="#c4844a" />
+            {[[-4, -3.5], [3.5, -4], [-1, 2.5], [5, 3], [-5, 4]].map(([cx, cy], i) => (
+              <circle key={i} cx={cx} cy={cy} r={1.6} fill="#6b4a2b" />
             ))}
           </>
         )
       case 'comida-dona':
         return (
           <>
-            <circle r={9.5} fill="#d9a066" {...borde} />
-            <path d="M-8.5 -2 C-8 -8 8 -9 8.8 -1 C8 4 4 2 2 5 C-1 7 -4 3 -8.5 -2Z" fill="#f6a5b8" />
-            <circle r={3} fill="#fdf8ee" {...borde} />
-            {[[-5, -4, 30], [4, -5, -20], [6, 0, 60], [-2, -7, 80]].map(([cx, cy, g], i) => (
-              <rect key={i} x={cx - 1.2} y={cy - 0.4} width={2.4} height={0.8} rx={0.4} fill={['#3a9fb1', '#efc31d', '#8eb743', '#fff'][i]} transform={`rotate(${g} ${cx} ${cy})`} />
+            <Volumen id={id} d="M0 -10 C6 -10 10 -6 10 0 C10 6 6 10 0 10 C-6 10 -10 6 -10 0 C-10 -6 -6 -10 0 -10Z" claro="#f3c58a" medio="#dfa565" oscuro="#c4844a" brillo={false} />
+            <path d="M-9 -1.5 C-8.5 -8.5 8.5 -9.5 9.3 -0.5 C8.5 4.5 4.5 2 2.5 5.5 C-0.5 7.5 -4.5 3.5 -9 -1.5Z" fill="#f7a8c4" stroke={TINTA} strokeWidth={1.2} strokeLinejoin="round" />
+            <path d="M-5.5 -5.5 Q-3 -7.5 0 -7.5" fill="none" stroke="#fffbe3" strokeOpacity={0.7} strokeWidth={1.6} strokeLinecap="round" />
+            <circle r={2.8} fill="#fff9e9" stroke={TINTA} strokeWidth={1.6} />
+            {[[-5, -3.5, 30], [4.5, -5, -20], [6.5, -0.5, 60], [-1.5, -6, 80]].map(([cx, cy, g], i) => (
+              <rect key={i} x={cx - 1.3} y={cy - 0.45} width={2.6} height={0.9} rx={0.45} fill={['#4fbab8', '#ffd137', '#83cda4', '#fffbe3'][i]} transform={`rotate(${g} ${cx} ${cy})`} />
             ))}
           </>
         )
       case 'comida-cupcake':
         return (
           <>
-            <path d="M-7 1 L-5 10 L5 10 L7 1 Z" fill="#3a9fb1" {...borde} />
-            <path d="M-3 2 L-2.4 9.5 M0 2 V9.5 M3 2 L2.4 9.5" stroke="#223d5d" strokeOpacity={0.35} strokeWidth={1} />
-            <path d="M-8.5 2 C-10 -3 -5 -6 -2 -5 C-1 -9 4 -9 5 -5 C9 -5 10 0 8.5 2 Z" fill="#f6a5b8" {...borde} />
-            <circle cx={1} cy={-8.5} r={2.3} fill="#ea6444" {...borde} strokeWidth={1.1} />
+            <Volumen id={`${id}-p`} d="M-7.5 1 L-5.5 10.5 L5.5 10.5 L7.5 1 Z" claro="#7fd3d0" medio="#4fbab8" oscuro="#26949d" brillo={false} />
+            <path d="M-3 2.5 L-2.5 9.8 M0 2.5 V9.8 M3 2.5 L2.5 9.8" stroke={TINTA} strokeOpacity={0.35} strokeWidth={1} />
+            <Volumen id={id} d="M-9 2 C-10.5 -3 -5.5 -6 -2.5 -5 C-1.5 -9.5 4 -9.5 5 -5 C9.5 -5.5 10.5 0 9 2 Z" claro="#ffd0e0" medio="#f7a8c4" oscuro="#e486a8" />
+            <circle cx={1} cy={-8.5} r={2.4} fill="#ef5a46" stroke={TINTA} strokeWidth={1.3} />
           </>
         )
       case 'comida-pizza':
         return (
           <>
-            <path d="M-9 -7 Q0 -11 9 -7 L0 11 Z" fill="#efc31d" {...borde} />
-            <path d="M-9 -7 Q0 -11 9 -7 L8 -5 Q0 -9 -8 -5 Z" fill="#d9a066" {...borde} strokeWidth={1.1} />
-            <circle cx={-2.5} cy={-2} r={2} fill="#ea6444" />
-            <circle cx={2.5} cy={-1} r={1.8} fill="#ea6444" />
-            <circle cx={0} cy={4} r={1.6} fill="#ea6444" />
+            <Volumen id={id} d="M-9.5 -7 Q0 -11.5 9.5 -7 L0 11.5 Z" claro="#ffe577" medio="#ffd137" oscuro="#f0b32b" brillo={false} />
+            <path d="M-9.5 -7 Q0 -11.5 9.5 -7 L8.4 -4.8 Q0 -9 -8.4 -4.8 Z" fill="#dfa565" stroke={TINTA} strokeWidth={1.3} strokeLinejoin="round" />
+            <circle cx={-2.5} cy={-2} r={2.1} fill="#ef5a46" stroke={TINTA} strokeWidth={0.9} />
+            <circle cx={2.8} cy={-1} r={1.9} fill="#ef5a46" stroke={TINTA} strokeWidth={0.9} />
+            <circle cx={0} cy={4.5} r={1.7} fill="#ef5a46" stroke={TINTA} strokeWidth={0.9} />
           </>
         )
       case 'comida-helado':
         return (
           <>
-            <path d="M-5.5 0 L0 11 L5.5 0 Z" fill="#d9a066" {...borde} />
-            <path d="M-3.5 2 L2 8 M3.5 2 L-1 9" stroke="#b07a45" strokeWidth={0.9} />
-            <circle cx={-2.5} cy={-3} r={4.5} fill="#f6a5b8" {...borde} />
-            <circle cx={2.8} cy={-3.5} r={4.3} fill="#c6e3f3" {...borde} />
-            <circle cx={0} cy={-7.5} r={4} fill="#fdf8ee" {...borde} />
+            <Volumen id={`${id}-c`} d="M-5.8 0 L0 11.5 L5.8 0 Z" claro="#f3c58a" medio="#dfa565" oscuro="#c4844a" brillo={false} />
+            <path d="M-3.5 2 L2 8.5 M3.5 2 L-1 9.5" stroke="#b07a45" strokeWidth={0.9} />
+            <Volumen id={`${id}-r`} d="M-2.5 -7.5 A4.6 4.6 0 1 1 -2.5 1.7 A4.6 4.6 0 1 1 -2.5 -7.5Z" claro="#ffd0e0" medio="#f7a8c4" oscuro="#e486a8" brillo={false} />
+            <Volumen id={`${id}-m`} d="M2.8 -7.8 A4.4 4.4 0 1 1 2.8 1 A4.4 4.4 0 1 1 2.8 -7.8Z" claro="#c8f0d6" medio="#a1dfb2" oscuro="#83cda4" brillo={false} />
+            <Volumen id={id} d="M0 -11.5 A4.1 4.1 0 1 1 0 -3.3 A4.1 4.1 0 1 1 0 -11.5Z" claro="#fffdf5" medio="#fff6dc" oscuro="#f1e3bd" brillo={false} />
+            <path d="M-1.8 -9.2 Q-1 -10.4 0.4 -10.4" fill="none" stroke="#ffffff" strokeWidth={1.3} strokeLinecap="round" />
           </>
         )
       case 'comida-pelota':
         return (
           <>
-            <circle r={9.5} fill="#fff" {...borde} />
-            <path d="M0 -9.5 A9.5 9.5 0 0 1 9.5 0 L0 0 Z" fill="#ea6444" />
-            <path d="M0 9.5 A9.5 9.5 0 0 1 -9.5 0 L0 0 Z" fill="#3a9fb1" />
-            <path d="M-9.5 0 A9.5 9.5 0 0 1 0 -9.5 L0 0 Z" fill="#efc31d" />
-            <circle r={9.5} fill="none" {...borde} />
-            <circle r={1.8} fill="#fff" {...borde} strokeWidth={1} />
+            <Volumen id={id} d="M0 -10 C6 -10 10 -6 10 0 C10 6 6 10 0 10 C-6 10 -10 6 -10 0 C-10 -6 -6 -10 0 -10Z" claro="#ffffff" medio="#fff9e9" oscuro="#eadfc3" brillo={false} />
+            <path d="M0 -10 A10 10 0 0 1 10 0 L0 0 Z" fill="#ef5a46" opacity={0.92} />
+            <path d="M0 10 A10 10 0 0 1 -10 0 L0 0 Z" fill="#4fbab8" opacity={0.92} />
+            <path d="M-10 0 A10 10 0 0 1 0 -10 L0 0 Z" fill="#ffd137" opacity={0.92} />
+            <path d="M-6.5 -3 Q-5.5 -6.5 -2 -7.5" fill="none" stroke="#fffbe3" strokeOpacity={0.75} strokeWidth={2} strokeLinecap="round" />
+            <circle r={10} fill="none" stroke={TINTA} strokeWidth={1.9} />
+            <circle r={1.9} fill="#fff9e9" stroke={TINTA} strokeWidth={1.1} />
           </>
         )
       default: // manzana
         return (
           <>
-            <path d="M0 -8 Q1 -11 3 -12" fill="none" stroke="#6b4a2b" strokeWidth={2} strokeLinecap="round" />
-            <path d="M1 -9 Q7 -14 10 -8 Q5 -6 1 -9Z" fill="#8eb743" {...borde} strokeWidth={1.2} />
-            <path d="M0 -4 C-4 -8 -11 -6 -11 2 C-11 10 -5 15 0 13 C5 15 11 10 11 2 C11 -6 4 -8 0 -4Z" fill="#ea6444" {...borde} />
-            <ellipse cx={-5} cy={0} rx={2.2} ry={3.2} fill="#fff" opacity={0.5} transform="rotate(-20 -5 0)" />
+            <path d="M0 -7.5 Q1 -11 3.2 -12.2" fill="none" stroke="#6b4a2b" strokeWidth={2.2} strokeLinecap="round" />
+            <path d="M1.2 -9.2 Q7.5 -14.5 10.5 -8.2 Q5.5 -6 1.2 -9.2Z" fill="#83cda4" {...linea} strokeWidth={1.3} />
+            <Volumen id={id} d="M0 -4.5 C-4 -8.5 -11.5 -6.5 -11.5 2 C-11.5 10.5 -5 15 0 13 C5 15 11.5 10.5 11.5 2 C11.5 -6.5 4 -8.5 0 -4.5Z" claro="#ff8a6b" medio="#ef5a46" oscuro="#cf3f3a" />
           </>
         )
     }

@@ -19,3 +19,16 @@ it('sin conexión: lo comprado en la tienda anterior se devuelve en monedas; fon
   // Se aplica una sola vez.
   expect((await crearRepositoriosLocales(almacen).perfiles.obtener(p.id))?.monedas).toBe(60)
 })
+
+it('sin conexión: las mochilas de 2.1 se devuelven al precio de entonces', async () => {
+  const datos = new Map<string, string>()
+  const almacen = { getItem: (k: string) => datos.get(k) ?? null, setItem: (k: string, v: string) => void datos.set(k, v) }
+  const p = await crearRepositoriosLocales(almacen).perfiles.crear({ apodo: 'Ana', icono: '🐞' })
+  datos.set('ciempi:v1:perfiles', JSON.stringify([{ ...p, monedas: 5, inventario: ['espalda:b09-robot', 'espalda:b09-aventura', 'cabeza:b06-ia-mago'], ciempi: { ...p.ciempi, espalda: 'espalda:b09-robot' } }]))
+  const aplicadas = JSON.parse(datos.get('ciempi:v1:migraciones')!) as string[]
+  datos.set('ciempi:v1:migraciones', JSON.stringify(aplicadas.filter((m) => m !== '2026-10-sin-mochilas')))
+  const despues = await crearRepositoriosLocales(almacen).perfiles.obtener(p.id)
+  expect(despues?.monedas).toBe(5 + 25 + 20)
+  expect(despues?.inventario).toEqual(['cabeza:b06-ia-mago'])
+  expect(despues?.ciempi.espalda).toBe('espalda:espalda-nada')
+})

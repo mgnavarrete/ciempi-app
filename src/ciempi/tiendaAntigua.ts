@@ -57,3 +57,12 @@ export const PRECIOS_TIENDA_ANTIGUA: Record<string, number> = {
 
 /** Una compra de la tienda anterior que ya no existe (los productos nuevos llevan «:»). */
 export const esCompraAntigua = (id: string) => !id.includes(':') && !id.startsWith('fondo-') && !id.startsWith('comida-')
+
+/** Mochilas de la tienda 2.1, retiradas en 2.2 (se veían pegadas encima del cuerpo): se devuelven a este precio. */
+export const PRECIOS_MOCHILAS_2_1: Record<string, number> = {
+  'espalda:b09-robot': 25,
+  'espalda:b09-aventura': 20,
+  'espalda:b09-draco': 20,
+  'espalda:b09-mago': 20,
+  'espalda:b09-raton': 20,
+}

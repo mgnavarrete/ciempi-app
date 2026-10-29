@@ -52,7 +52,8 @@ export interface RepositorioPerfiles {
   /** Guarda cómo se ve su Ciempi. Solo puede ponerse cosas gratis o compradas. */
   actualizarCiempi(id: Id, apariencia: AparienciaCiempi): Promise<PerfilNino>
   /** Compra algo de la tienda de Ciempi con sus monedas (atómico). */
-  comprar(id: Id, itemId: string): Promise<{ monedas: number; inventario: string[] }>
+  /** `precioVisto`: lo que mostró la tienda; si ahora cuesta más, no se cobra. */
+  comprar(id: Id, itemId: string, precioVisto?: number): Promise<{ monedas: number; inventario: string[] }>
   /** Código para que otra cuenta se vincule a este niño (solo en línea). */
   crearInvitacion(perfilId: Id): Promise<InvitacionNino>
   /** Vincula la cuenta actual al niño de la invitación (solo en línea). */

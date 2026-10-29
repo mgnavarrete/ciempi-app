@@ -418,6 +418,9 @@ export async function crearApp() {
     await exigirVerNino(yo(req), id)
     const item = buscarItem(texto(cuerpo(req).itemId, 'itemId', 60))
     if (!item) throw new Problema('Eso no está en la tienda')
+    // Lo que mostró la app: si ahora cuesta más (por ejemplo, una APK antigua), no se cobra.
+    const visto = cuerpo(req).precioVisto
+    const precioVisto = typeof visto === 'number' && Number.isInteger(visto) && visto >= 0 ? visto : undefined
     return enTransaccion(async (c) => {
       const { rows } = await c.query('select monedas, inventario from perfiles_ninos where id = $1 for update', [id])
       const p = rows[0]
@@ -425,12 +428,14 @@ export async function crearApp() {
       // La misma regla que sin conexión: un conjunto agrega sus piezas y no cobra lo que ya tiene.
       let compra: ReturnType<typeof comprarItem>
       try {
-        compra = comprarItem(p.inventario, p.monedas, item.id)
+        compra = comprarItem(p.inventario, p.monedas, item.id, precioVisto)
       } catch (e) {
         throw new Problema((e as Error).message)
       }
       const r = await c.query('update perfiles_ninos set monedas = $1, inventario = $2 where id = $3 returning monedas, inventario', [compra.monedas, compra.inventario, id])
-      await c.query('insert into compras (usuario_id, perfil_id, item_id, precio_pagado) values ($1, $2, $3, $4)', [yo(req).id, id, item.id, compra.precio])
+      // Una línea por cosa (un conjunto, una por pieza con su parte del precio).
+      for (const l of compra.lineas)
+        await c.query('insert into compras (usuario_id, perfil_id, item_id, precio_pagado) values ($1, $2, $3, $4) on conflict (perfil_id, item_id) do nothing', [yo(req).id, id, l.id, l.precio])
       return { monedas: r.rows[0].monedas, inventario: r.rows[0].inventario }
     })
   })
