@@ -21,6 +21,8 @@ interface Props {
   apariencia: AparienciaCiempi
   /** Solo se dibuja la comida del final (niveles 2 y 3): las palabras igual cuentan. */
   soloUltima?: boolean
+  /** Después de la última comida, la moneda que gana al terminar la frase. */
+  moneda?: boolean
 }
 
 /**
@@ -29,7 +31,7 @@ interface Props {
  * Cuando la cabeza llega a una, la palabra se enciende y suena, Ciempi se la
  * come y le crece un segmento.
  */
-export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false }: Props) {
+export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false, moneda = false }: Props) {
   const contenedor = useRef<HTMLDivElement>(null)
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
@@ -89,6 +91,14 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
         {manzanas.map(({ i, x }) => (
           <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />
         ))}
+        {/* La meta de la frase: una moneda después de la última manzana (se la gana al llegar). */}
+        {moneda && fase !== 'completada' && (
+          <g className={tranquilo ? '' : 'moneda-meta'} transform={`translate(${Math.min(ancho - tamanoManzana, (pista.manzanas.at(-1) ?? 1) * ancho + tamanoManzana * 2.1)} ${CENTRO_Y - tamanoManzana * 1.4})`}>
+            <circle r={tamanoManzana * 0.95} fill="#ffd137" stroke="#243e5b" strokeWidth={1.8} />
+            <circle r={tamanoManzana * 0.58} fill="none" stroke="#f0b32b" strokeWidth={1.6} />
+            <path d={`M${-tamanoManzana * 0.45} ${-tamanoManzana * 0.35} q${tamanoManzana * 0.2} ${-tamanoManzana * 0.3} ${tamanoManzana * 0.5} ${-tamanoManzana * 0.3}`} fill="none" stroke="#fff6c4" strokeWidth={1.6} strokeLinecap="round" />
+          </g>
+        )}
 
         {!nuevo && Array.from({ length: palabrasLeidas }, (_, i) => (
           <Segmento

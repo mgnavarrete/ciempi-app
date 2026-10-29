@@ -1,3 +1,5 @@
+import { TarjetaCarga } from '../adultos/AgregarLibro'
+import { useCargasDeLibros } from '../adultos/cargas'
 import { useCallback, useEffect, useState } from 'react'
 import { DialogoCompartir, DialogoNivel } from '../adultos/LectoresDelLibro'
 import { AvisoVoz } from '../audio/AvisoVoz'
@@ -59,13 +61,18 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
       )
   }, [repos, perfil.id])
 
+  // Libros que se están agregando para este niño: aparecen arriba y, al quedar listos, en la lista.
+  const { cargas, descartar } = useCargasDeLibros()
+  const susCargas = cargas.filter((c) => c.perfiles.includes(perfil.id))
+  const listos = susCargas.filter((c) => c.estado === 'listo').length
+
   useEffect(() => {
     let vigente = true
     void cargar().then((l) => vigente && setLibros(l))
     return () => {
       vigente = false
     }
-  }, [cargar])
+  }, [cargar, listos])
 
   const quitar = async (libro: LibroEnBiblioteca) => {
     const propio = libro.texto.subidoPor === usuarioId
@@ -104,6 +111,14 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
             </button>
           )}
         </div>
+
+        {susCargas.length > 0 && (
+          <ul className="mb-4 flex flex-col gap-2">
+            {susCargas.map((c) => (
+              <TarjetaCarga key={c.id} carga={c} alDescartar={() => descartar(c.id)} />
+            ))}
+          </ul>
+        )}
 
         {libros?.length === 0 && (
           <div className="flex flex-col items-center gap-4 rounded-3xl bg-white p-8 text-center">

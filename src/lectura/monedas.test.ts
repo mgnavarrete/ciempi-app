@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { HITOS, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
+import { MONEDAS_POR_UNIDAD, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
 
 describe('contarPalabras', () => {
   it('cuenta palabras con letras o números, no signos sueltos', () => {
@@ -11,25 +11,21 @@ describe('contarPalabras', () => {
 })
 
 describe('hitos', () => {
-  it('niveles 0 y 1: todo al terminar', () => {
+  it('niveles 0 a 3: monedas por cada frase y un premio al terminar', () => {
+    expect([0, 1, 2, 3, 4].map((n) => MONEDAS_POR_UNIDAD[n as 0])).toEqual([1, 1, 1, 2, 0])
     expect(hitosNuevos(0, 0, 99)).toEqual([])
-    expect(hitosNuevos(0, 0, 100)).toEqual([{ porcentaje: 100, monedas: 5 }])
-    expect(hitosNuevos(1, 0, 100)).toEqual([{ porcentaje: 100, monedas: 10 }])
+    expect(hitosNuevos(0, 0, 100)).toEqual([{ porcentaje: 100, monedas: 3 }])
+    expect(hitosNuevos(3, 0, 80)).toEqual([])
   })
 
-  it('cada hito paga una sola vez: si vuelve a llegar al 50 %, no se repite', () => {
-    expect(hitosNuevos(3, 0, 60).map((h) => h.monedas)).toEqual([5, 5])
-    expect(hitosNuevos(3, 50, 60)).toEqual([])
-    expect(hitosNuevos(3, 50, 80)).toEqual([{ porcentaje: 75, monedas: 5 }])
-  })
-
-  it('los premios de la propuesta: más monedas en los niveles altos', () => {
-    const total = (n: 0 | 1 | 2 | 3 | 4) => HITOS[n].reduce((s, h) => s + h.monedas, 0)
-    expect([0, 1, 2, 3, 4].map((n) => total(n as 0))).toEqual([5, 10, 15, 25, 40])
+  it('nivel 4: por avance, y cada hito paga una sola vez', () => {
+    expect(hitosNuevos(4, 0, 60).map((h) => h.monedas)).toEqual([5, 10])
+    expect(hitosNuevos(4, 50, 60)).toEqual([])
+    expect(hitosNuevos(4, 50, 80)).toEqual([{ porcentaje: 75, monedas: 10 }])
   })
 
   it('releer da menos', () => {
-    expect([0, 1, 2, 3, 4].map((n) => premioRelectura(n as 0))).toEqual([1, 2, 2, 2, 3])
+    expect([0, 1, 2, 3, 4].map((n) => premioRelectura(n as 0))).toEqual([1, 1, 1, 2, 3])
   })
 
   it('porcentaje sin adelantarse', () => {

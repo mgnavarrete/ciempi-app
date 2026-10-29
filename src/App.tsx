@@ -220,15 +220,11 @@ export function App() {
         )
       }
 
-      case 'agregarLibro':
-        return (
-          <PantallaAgregarLibro
-            perfilId={vista.perfilId}
-            usuarioId={sesion.usuarioId}
-            alAgregar={() => setVista({ tipo: 'biblioteca', perfilId: vista.perfilId })}
-            alVolver={() => setVista({ tipo: 'biblioteca', perfilId: vista.perfilId })}
-          />
-        )
+      case 'agregarLibro': {
+        const perfil = perfilDe(vista.perfilId)
+        if (!perfil) return null
+        return <PantallaAgregarLibro perfil={perfil} usuarioId={sesion.usuarioId} alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })} />
+      }
 
       case 'ciempi': {
         const perfil = perfilDe(vista.perfilId)
@@ -290,7 +286,7 @@ export function App() {
         // Un adulto puede leer junto al niño (cuenta para el niño) o solo mirar (vista previa).
         alLeer={(libro, vistaPrevia = false) => setVista({ tipo: 'leer', perfilId, libro, vistaPrevia })}
         alAjustes={() => setVista({ tipo: 'ajustes', perfilId, volverA: { tipo: 'biblioteca', perfilId } })}
-        alAgregarLibro={modoAdmin ? undefined : () => setVista({ tipo: 'agregarLibro', perfilId })}
+        alAgregarLibro={() => setVista({ tipo: 'agregarLibro', perfilId })}
         alPersonalizar={modoAdmin ? undefined : () => setVista({ tipo: 'ciempi', perfilId })}
         // En la sesión de un alumno se sale con la franja de arriba («Volver al panel»).
         alVolver={esNino || enSesionDe ? undefined : modoAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}

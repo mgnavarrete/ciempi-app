@@ -16,6 +16,8 @@ export interface CargaDeLibro {
   detalle: string
   error?: string
   texto?: Texto
+  /** A qué alumnos se les deja. */
+  perfiles: Id[]
 }
 
 interface Pedido {
@@ -52,7 +54,7 @@ export function CargasProvider({ children }: { children: ReactNode }) {
   const procesar = useCallback(
     (titulo: string, pedido: Pedido, preparar: (avance: (detalle: string) => void) => Promise<Texto>) => {
       const id = `carga-${++siguiente.current}`
-      setCargas((cs) => [{ id, titulo, estado: 'cargando', detalle: 'Preparando…' }, ...cs])
+      setCargas((cs) => [{ id, titulo, estado: 'cargando', detalle: 'Preparando…', perfiles: pedido.perfiles }, ...cs])
       void (async () => {
         try {
           const texto = await preparar((detalle) => actualizar(id, { detalle }))

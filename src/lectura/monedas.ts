@@ -2,13 +2,16 @@ import type { NivelLectura } from '../dominio/tipos.ts'
 
 /**
  * Monedas por leer. Cada libro se lee siempre desde el comienzo (o, en un
- * libro con capítulos, desde el capítulo donde iba), y las monedas se ganan
- * por hitos de avance: al llegar al 25, 50, 75 o 100 % del libro. Cada hito
- * paga una sola vez por libro; después, volver a terminarlo da un premio
- * menor, una vez al día.
+ * libro con capítulos, desde el capítulo donde iba).
  *
- * Un hito cuenta cuando el niño leyó de verdad hasta ahí: de corrido desde
- * lo que ya tenía leído, y a buen ritmo (ver `MINIMO_A_BUEN_RITMO`).
+ * Niveles 0 a 3: cada frase (oración o párrafo) leída por primera vez y a
+ * buen ritmo da monedas en el momento, para mantener las ganas de seguir; al
+ * terminar el libro hay un premio. Nivel 4 (páginas largas): por hitos de
+ * avance, al llegar al 25, 50, 75 o 100 % del libro.
+ *
+ * Todo paga una sola vez por libro; después, volver a terminarlo da un premio
+ * menor, una vez al día. Cuenta lo leído de verdad: de corrido desde lo que
+ * ya tenía leído, y a buen ritmo (ver `MINIMO_A_BUEN_RITMO`).
  */
 
 /** Palabras con letras o números ("—", "…" sueltos no cuentan). */
@@ -22,20 +25,15 @@ export interface Hito {
   monedas: number
 }
 
-/** Niveles 0 y 1: cuentos cortos, todo al terminar. Desde el 2, también por avance. */
+/** Monedas por cada frase (u oración, o párrafo en el nivel 3) leída por primera vez. El nivel 4 va por hitos. */
+export const MONEDAS_POR_UNIDAD: Record<NivelLectura, number> = { 0: 1, 1: 1, 2: 1, 3: 2, 4: 0 }
+
+/** Niveles 0 a 3: el premio por terminar el libro (además de lo de cada frase). Nivel 4: por avance. */
 export const HITOS: Record<NivelLectura, Hito[]> = {
-  0: [{ porcentaje: 100, monedas: 5 }],
-  1: [{ porcentaje: 100, monedas: 10 }],
-  2: [
-    { porcentaje: 50, monedas: 5 },
-    { porcentaje: 100, monedas: 10 },
-  ],
-  3: [
-    { porcentaje: 25, monedas: 5 },
-    { porcentaje: 50, monedas: 5 },
-    { porcentaje: 75, monedas: 5 },
-    { porcentaje: 100, monedas: 10 },
-  ],
+  0: [{ porcentaje: 100, monedas: 3 }],
+  1: [{ porcentaje: 100, monedas: 5 }],
+  2: [{ porcentaje: 100, monedas: 5 }],
+  3: [{ porcentaje: 100, monedas: 10 }],
   4: [
     { porcentaje: 25, monedas: 5 },
     { porcentaje: 50, monedas: 10 },
@@ -43,9 +41,6 @@ export const HITOS: Record<NivelLectura, Hito[]> = {
     { porcentaje: 100, monedas: 15 },
   ],
 }
-
-/** En los niveles 0 y 1 no se muestra el porcentaje: el cuento es corto y se lee entero. */
-export const conPorcentaje = (nivel: NivelLectura) => nivel >= 2
 
 /** Al menos esta parte de lo leído en la sesión tiene que ser a buen ritmo para que los hitos cuenten. */
 export const MINIMO_A_BUEN_RITMO = 0.8

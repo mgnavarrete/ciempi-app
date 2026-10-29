@@ -13,7 +13,8 @@ import { NuevoPerfil } from '../inicio/PantallaPerfiles'
 import { nivelSugerido } from '../lenguaje/dificultad'
 import { NIVELES } from '../lenguaje/unidades'
 import { BarraProgreso, BotonPrincipal, BotonSecundario, Encabezado, Icono, MensajeError, Portada } from '../ui/comunes'
-import { useCargasDeLibros, type CargaDeLibro } from './cargas'
+import { AgregarLibro, TarjetaCarga } from './AgregarLibro'
+import { useCargasDeLibros } from './cargas'
 import { LectoresDelLibro } from './LectoresDelLibro'
 
 interface Props {
@@ -100,6 +101,8 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
         {alumno ? (
           <PerfilAlumno
             perfil={alumno}
+            perfiles={perfiles}
+            usuarioId={cuenta.id}
             textos={textos}
             asignaciones={asignaciones.filter((a) => a.perfilId === alumno.id)}
             sesiones={sesiones.filter((s) => s.perfilId === alumno.id)}
@@ -212,6 +215,8 @@ function Alumnos(props: {
 
 function PerfilAlumno(props: {
   perfil: PerfilNino
+  perfiles: PerfilNino[]
+  usuarioId: Id
   textos: Texto[]
   asignaciones: Asignacion[]
   sesiones: SesionLectura[]
@@ -227,6 +232,8 @@ function PerfilAlumno(props: {
   const [nuevaClave, setNuevaClave] = useState<string | null>(null)
   const [aviso, setAviso] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [agregando, setAgregando] = useState(false)
+  const { cargas, descartar } = useCargasDeLibros()
 
   const desde = Date.now() - SEMANA_MS
   const semana = sesiones.filter((s) => new Date(s.iniciadaEn).getTime() > desde)
@@ -255,10 +262,19 @@ function PerfilAlumno(props: {
         ▶ Leer con {perfil.apodo}
       </BotonPrincipal>
       <p className="-mt-2 text-center text-sm text-tinta-suave">Entras a su sesión: lee, personaliza a su Ciempi, ve el tutorial y cambia sus ajustes, igual que él.</p>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <BotonSecundario onClick={() => setAgregando(!agregando)}>＋ Agregar libro</BotonSecundario>
         <BotonSecundario onClick={props.alVerLibros}>📚 Sus libros y niveles</BotonSecundario>
         <BotonSecundario onClick={props.alAjustes}>⚙️ Sus ajustes</BotonSecundario>
       </div>
+      {agregando && <AgregarLibro perfiles={props.perfiles} elegidos={[perfil.id]} usuarioId={props.usuarioId} alListo={() => setAgregando(false)} />}
+      {cargas
+        .filter((c) => c.perfiles.includes(perfil.id))
+        .map((c) => (
+          <ul key={c.id}>
+            <TarjetaCarga carga={c} alDescartar={() => descartar(c.id)} />
+          </ul>
+        ))}
 
       <div className="grid grid-cols-4 gap-2 rounded-2xl bg-white p-3 text-center shadow-sm">
         <p className="col-span-4 text-left text-sm font-bold text-tinta-suave">Últimos 7 días</p>
@@ -460,137 +476,6 @@ function Libros(props: {
         />
       )}
     </section>
-  )
-}
-
-function TarjetaCarga({ carga, alDescartar }: { carga: CargaDeLibro; alDescartar: () => void }) {
-  const color = carga.estado === 'listo' ? 'bg-verde-claro' : carga.estado === 'error' ? 'bg-coral/15' : 'bg-white'
-  return (
-    <li className={`flex items-center gap-3 rounded-2xl p-3 shadow-sm ${color}`} role="status">
-      <span className={`text-3xl ${carga.estado === 'cargando' ? 'animate-pulse' : ''}`} aria-hidden>
-        {carga.estado === 'listo' ? '✅' : carga.estado === 'error' ? '⚠️' : '⏳'}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block truncate font-bold">{carga.titulo}</span>
-        <span className="block text-sm text-tinta-suave">
-          {carga.estado === 'cargando' ? `Cargando… ${carga.detalle}` : carga.estado === 'listo' ? '¡Listo para leer! Ya está en la biblioteca de los alumnos.' : carga.error}
-        </span>
-      </span>
-      {carga.estado !== 'cargando' && (
-        <button onClick={alDescartar} className="shrink-0 rounded-full px-3 py-1.5 font-bold text-tinta-suave" aria-label="Quitar aviso">
-          ✕
-        </button>
-      )}
-    </li>
-  )
-}
-
-/** Agregar un libro en pocos pasos: se elige y se vuelve al panel mientras se carga. */
-function AgregarLibro({ perfiles, usuarioId, alListo, alAvanzado }: { perfiles: PerfilNino[]; usuarioId: Id; alListo: () => void; alAvanzado: (f: IdFuente) => void }) {
-  const { agregarPdf, agregarPegado } = useCargasDeLibros()
-  const [forma, setForma] = useState<'pdf' | 'pegar' | null>(null)
-  const [titulo, setTitulo] = useState('')
-  const [contenido, setContenido] = useState('')
-  const [nivel, setNivel] = useState<NivelLectura | null>(null)
-  const [para, setPara] = useState(() => new Set(perfiles.map((p) => p.id)))
-  const pedido = () => ({ usuarioId, perfiles: [...para], nivel })
-
-  return (
-    <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 shadow-sm">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">Agregar libro</h2>
-        <button onClick={alListo} className="font-bold text-tinta-suave">
-          Cancelar
-        </button>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <label className={`flex cursor-pointer flex-col items-center gap-1 rounded-2xl border-2 p-4 text-center font-bold ${forma === 'pdf' ? 'border-petroleo bg-petroleo-claro' : 'border-[#e2d6bf]'}`}>
-          <span className="text-4xl" aria-hidden>
-            📄
-          </span>
-          Subir PDF
-          <span className="text-xs font-normal text-tinta-suave">Se carga solo</span>
-          <input
-            type="file"
-            accept="application/pdf,.pdf"
-            className="sr-only"
-            onChange={(e) => {
-              const archivo = e.target.files?.[0]
-              if (!archivo) return
-              agregarPdf(archivo, pedido())
-              alListo()
-            }}
-          />
-        </label>
-        <button onClick={() => setForma('pegar')} className={`flex flex-col items-center gap-1 rounded-2xl border-2 p-4 font-bold ${forma === 'pegar' ? 'border-petroleo bg-petroleo-claro' : 'border-[#e2d6bf]'}`}>
-          <span className="text-4xl" aria-hidden>
-            ✍️
-          </span>
-          Escribir o pegar
-          <span className="text-xs font-normal text-tinta-suave">Un cuento o una frase</span>
-        </button>
-      </div>
-
-      {forma === 'pegar' && (
-        <div className="flex flex-col gap-2">
-          <input value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Título" className="campo" />
-          <textarea value={contenido} onChange={(e) => setContenido(e.target.value)} rows={6} placeholder="Escribe o pega aquí el texto… (una línea en blanco separa párrafos)" className="campo leading-relaxed" />
-          <BotonPrincipal
-            disabled={!contenido.trim() || para.size === 0}
-            onClick={() => {
-              agregarPegado(titulo.trim(), contenido, pedido())
-              alListo()
-            }}
-          >
-            Agregar
-          </BotonPrincipal>
-        </div>
-      )}
-
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-bold text-tinta-suave">Nivel</p>
-        <div className="flex flex-wrap gap-2">
-          <button onClick={() => setNivel(null)} aria-pressed={nivel === null} className={`rounded-full px-3 py-1.5 font-bold ${nivel === null ? 'bg-petroleo text-white' : 'bg-crema'}`}>
-            Automático
-          </button>
-          {NIVELES.map((n) => (
-            <button key={n.nivel} onClick={() => setNivel(n.nivel)} aria-pressed={nivel === n.nivel} className={`rounded-full px-3 py-1.5 font-bold ${nivel === n.nivel ? 'bg-petroleo text-white' : 'bg-crema'}`}>
-              {n.nivel} · {n.nombre}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {perfiles.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-bold text-tinta-suave">
-            Para {para.size === perfiles.length ? 'todos los alumnos' : `${para.size} de ${perfiles.length} alumnos`}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {perfiles.map((p) => (
-              <button
-                key={p.id}
-                aria-pressed={para.has(p.id)}
-                onClick={() => {
-                  const s = new Set(para)
-                  if (s.has(p.id)) s.delete(p.id)
-                  else s.add(p.id)
-                  setPara(s)
-                }}
-                className={`rounded-full px-3 py-1.5 font-bold ${para.has(p.id) ? 'bg-verde text-white' : 'bg-crema text-tinta-suave'}`}
-              >
-                {p.icono} {p.apodo}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <button onClick={() => alAvanzado('pdf')} className="self-start text-sm font-bold text-petroleo underline underline-offset-4">
-        Elegir páginas y revisar antes de agregar (opciones avanzadas)
-      </button>
-    </div>
   )
 }
 

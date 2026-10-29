@@ -13,6 +13,8 @@ interface Props {
   /** Entrega dónde quedó cada palabra en pantalla (para poner la comida debajo). */
   alMedir: (pista: Pista) => void
   tamanoLetra: number
+  /** Una moneda al final del camino: esta frase paga si la termina (niveles 0 a 3). */
+  moneda?: boolean
   tranquilo: boolean
   apariencia: AparienciaCiempi
   alEntrar: (entrada: Entrada) => void
@@ -39,7 +41,7 @@ const LETRA_MINIMA = 16
  * palabra. El niño desliza el dedo por debajo de las palabras (como cuando
  * se lee siguiendo con el dedo) y Ciempi lo sigue.
  */
-export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra, soloUltimaManzana, porSilaba = false }: Props) {
+export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tranquilo, moneda = false, apariencia, alEntrar, alTocarPalabra, soloUltimaManzana, porSilaba = false }: Props) {
   const zona = useRef<HTMLDivElement>(null)
   const linea = useRef<HTMLParagraphElement>(null)
   const medidor = useRef<HTMLSpanElement>(null)
@@ -109,7 +111,7 @@ export function TiraDeLectura({ palabras, motor, pista, alMedir, tamanoLetra, tr
 
       {/* Carril de Ciempi, justo debajo de las palabras: aquí va el dedo */}
       <div className="relative mt-1 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
-        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} soloUltima={soloUltimaManzana} />
+        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} soloUltima={soloUltimaManzana} moneda={moneda} />
         {esperando && motor.progreso === 0 && (
           <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
             <span className="pointer-fine:hidden">Pon el dedo en Ciempi y desliza →</span>

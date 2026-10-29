@@ -20,6 +20,8 @@ interface Props {
   /** Una manzana por fragmento, donde termina su última palabra. */
   pista: Pista
   tamanoLetra: number
+  /** Una moneda al final del camino: esta frase paga si la termina (niveles 0 a 3). */
+  moneda?: boolean
   tranquilo: boolean
   apariencia: AparienciaCiempi
   alEntrar: (entrada: Entrada) => void
@@ -45,7 +47,7 @@ const VENTAJA_TEXTO_CORRIDO = 1.25
  * - Nivel 4: un fragmento por línea o, si así la letra queda muy chica, de
  *   corrido; las palabras se encienden a medida que pasa el dedo.
  */
-export function ParrafoCompleto({ lineas, palabrasEncendidas, porFrase = false, motor, pista, tamanoLetra, tranquilo, apariencia, alEntrar, alTocarPalabra }: Props) {
+export function ParrafoCompleto({ lineas, palabrasEncendidas, porFrase = false, motor, pista, tamanoLetra, tranquilo, moneda = false, apariencia, alEntrar, alTocarPalabra }: Props) {
   const caja = useRef<HTMLDivElement>(null)
   const contenido = useRef<HTMLDivElement>(null)
 
@@ -148,7 +150,7 @@ export function ParrafoCompleto({ lineas, palabrasEncendidas, porFrase = false, 
 
       {/* Un solo carril para todo el párrafo: aquí va el dedo. */}
       <PistaDeslizador alEntrar={alEntrar} className="mt-1 shrink-0 rounded-[2rem] border-2 border-[#e2d6bf] bg-arena/70 pt-1">
-        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} />
+        <Ciempi pista={pista} palabrasLeidas={motor.palabrasLeidas} progreso={motor.progreso} fase={motor.fase} tranquilo={tranquilo} apariencia={apariencia} moneda={moneda} />
         {esperando && motor.progreso === 0 && (
           <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-0.5 text-sm text-tinta-suave">
             Desliza a Ciempi despacio y lee todo →

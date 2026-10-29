@@ -298,3 +298,10 @@ body {
 @keyframes demo-lee-2 { 0%, 55% { background: transparent; } 56%, 100% { background: #fde1cf; color: #c4581f; } }
 @keyframes demo-lee-3 { 0%, 82% { background: transparent; } 83%, 100% { background: #d3ecee; color: #1f6f73; } }
 @media (prefers-reduced-motion: reduce) { .demo-ciempi, .demo-manzana, .demo-palabra { animation: none !important; } }
+
+/* Moneda de cada frase: la meta brilla en el camino y, al ganarla, «+1» sube hacia el contador. */
+.moneda-meta { animation: moneda-brilla 1.4s ease-in-out infinite; transform-box: fill-box; }
+@keyframes moneda-brilla { 50% { opacity: .75; } }
+.moneda-sube { animation: moneda-sube 1.4s ease-out forwards; }
+@keyframes moneda-sube { 0% { transform: translateY(24px) scale(.6); opacity: 0; } 20% { transform: translateY(0) scale(1.15); opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(-36px) scale(.9); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .moneda-meta, .moneda-sube { animation: none !important; } }

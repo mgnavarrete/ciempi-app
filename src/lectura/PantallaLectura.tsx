@@ -16,7 +16,7 @@ import { silabearFrase } from '../lenguaje/silabas'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
-import { HITOS, MINIMO_A_BUEN_RITMO, conPorcentaje, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
+import { HITOS, MINIMO_A_BUEN_RITMO, MONEDAS_POR_UNIDAD, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
@@ -227,6 +227,8 @@ export function PantallaLectura(props: Props) {
   const [aviso, setAviso] = useState<string | null>(null)
   // Un hito alcanzado: «¡Llegaste a la mitad! +5 🪙» por un momento.
   const [festejo, setFestejo] = useState<string | null>(null)
+  // La moneda de la frase recién leída, que sube hacia el contador.
+  const [monedaGanada, setMonedaGanada] = useState<{ monedas: number; n: number } | null>(null)
 
   // Niveles 3 y 4: palabras encendidas, todas las de los fragmentos comidos y,
   // en el 4, también las que ya pasó el dedo (en el 3 la frase se enciende entera).
@@ -381,9 +383,15 @@ export function PantallaLectura(props: Props) {
     let mensajeFinal = '¡Muy bien leído! 📖'
     if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
       leidoHasta.current = fin
+      // Niveles 0 a 3: esta frase, leída por primera vez y a su ritmo, paga en el momento.
+      if (aBuenRitmo && MONEDAS_POR_UNIDAD[nivel]) {
+        ganadas += MONEDAS_POR_UNIDAD[nivel]
+        setMonedaGanada({ monedas: MONEDAS_POR_UNIDAD[nivel], n: Date.now() })
+        programar(() => setMonedaGanada(null), 1600)
+      }
       const nuevos = hitosNuevos(nivel, premioHasta.current, porcentajeLeido(fin, totalFrases))
       if (nuevos.length) {
-        ganadas = nuevos.reduce((s, h) => s + h.monedas, 0)
+        ganadas += nuevos.reduce((s, h) => s + h.monedas, 0)
         premioHasta.current = nuevos[nuevos.length - 1].porcentaje
         setPremiado(premioHasta.current)
         if (premioHasta.current < 100) {
@@ -635,7 +643,7 @@ export function PantallaLectura(props: Props) {
       titulo={
         <span className="flex flex-col leading-tight">
           <span className="truncate">{conCapitulos ? capitulo.titulo : texto.titulo}</span>
-          {(conCapitulos || conPorcentaje(nivel)) && (
+          {(conCapitulos || total > 1) && (
             <span className="truncate text-sm font-normal text-tinta-suave apaisado:text-xs">
               {conCapitulos ? texto.titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
             </span>
@@ -720,6 +728,9 @@ export function PantallaLectura(props: Props) {
   }
 
   const porcentaje = porcentajeLeido(fraseDeUnidad(vista, indice, totalFrases), totalFrases)
+  // Al final del camino, la moneda que gana esta frase si es la primera vez que la lee (niveles 0 a 3).
+  const monedaAlFinal =
+    !vistaPrevia && MONEDAS_POR_UNIDAD[nivel] > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -746,14 +757,19 @@ export function PantallaLectura(props: Props) {
         >
           <Icono nombre="anterior" className="h-5 w-5" />
         </button>
-        {/* Niveles 0 y 1: el cuento es corto, sin porcentaje. Desde el 2: cuánto lleva y dónde están las monedas. */}
-        {conPorcentaje(nivel) && <BarraLibro porcentaje={porcentaje} nivel={nivel} premiado={premiado} tranquilo={tranquilo} />}
+        {/* Cuánto lleva del libro y dónde están los premios. */}
+        <BarraLibro porcentaje={porcentaje} nivel={nivel} premiado={premiado} tranquilo={tranquilo} />
       </div>
 
       <AvisoVoz className="mx-5 mt-1 apaisado:py-1" />
       <p className="mx-5 mt-1 rounded-xl bg-amarillo/25 px-3 py-1 text-center text-sm text-tinta-suave vertical-angosto:block hidden">
         📱 Gira el teléfono: se lee mejor en horizontal
       </p>
+      {monedaGanada && (
+        <p key={monedaGanada.n} aria-live="polite" className="moneda-sube pointer-events-none absolute right-6 top-14 z-30 rounded-full bg-amarillo px-3 py-1 text-xl font-bold text-tinta shadow-md">
+          +{monedaGanada.monedas} 🪙
+        </p>
+      )}
       {festejo && (
         <p role="status" className="aparecer absolute inset-x-0 top-24 z-30 mx-auto w-fit rounded-full bg-naranjo px-5 py-2 text-xl font-bold text-white shadow-lg">
           {festejo}
@@ -769,6 +785,7 @@ export function PantallaLectura(props: Props) {
           )}
           <div key={indice} className={`subir flex min-h-0 flex-1 flex-col ${tranquilo ? 'tranquilo' : ''}`}>
             <ParrafoCompleto
+              moneda={monedaAlFinal}
               lineas={fragmentos}
               palabrasEncendidas={palabrasEncendidas}
               porFrase={porFrase}
@@ -807,6 +824,7 @@ export function PantallaLectura(props: Props) {
             )}
             <div key={indice} className={`subir ${tranquilo ? 'tranquilo' : ''}`}>
               <TiraDeLectura
+                moneda={monedaAlFinal}
                 porSilaba={porSilaba}
                 soloUltimaManzana={oracion}
                 palabras={palabras}
@@ -828,8 +846,8 @@ export function PantallaLectura(props: Props) {
 }
 
 /**
- * Niveles 2 a 4: cuánto del libro lleva (siempre desde el 0 % al abrirlo) y
- * dónde están los hitos que dan monedas (apagados si ya los ganó).
+ * Cuánto del libro lleva (siempre desde el 0 % al abrirlo) y dónde están los
+ * premios (apagados si ya los ganó): en los niveles 0 a 3, solo la meta.
  */
 function BarraLibro({ porcentaje, nivel, premiado, tranquilo }: { porcentaje: number; nivel: NivelLectura; premiado: number; tranquilo: boolean }) {
   return (
