@@ -1,3 +1,4 @@
+import { VestuarioProvider } from './ciempi/v2/Vestuario'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PantallaAdultos } from './adultos/PantallaAdultos'
 import { PantallaAjustes } from './ajustes/PantallaAjustes'
@@ -269,7 +270,8 @@ export function App() {
     )
   }
 
-  return <Marco>{pantalla}</Marco>
+  const perfilVisual = 'perfilId' in vista ? vista.perfilId : sesion.tipo === 'nino' ? sesion.perfilId : 'sin-perfil'
+  return <VestuarioProvider key={perfilVisual}><Marco>{pantalla}</Marco></VestuarioProvider>
 }
 
 function Marco({ children }: { children: React.ReactNode }) {

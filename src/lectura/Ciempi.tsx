@@ -1,3 +1,4 @@
+import { useEscena } from '../ciempi/v2/Vestuario'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { paletaDe, type AparienciaCiempi } from '../ciempi/catalogo'
 import { Cabeza, Comida, Segmento } from '../ciempi/dibujos'
@@ -30,6 +31,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const contenedor = useRef<HTMLDivElement>(null)
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
+  const nuevo = useEscena(apariencia, palabrasLeidas)
 
   useLayoutEffect(() => {
     const el = contenedor.current
@@ -45,6 +47,9 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const r = Math.max(9, Math.min(18, ancho / (total * 1.6 + 4)))
   const R = Math.max(17, r * 1.3)
   const xCabeza = Math.max(R, Math.min(ancho - R, progreso * ancho))
+
+  // Escala uniforme: conserva las piezas y evita recortar cuerpos largos en móvil.
+  const escalaNueva = nuevo ? Math.min(R / 130, Math.max(0.015, (xCabeza - 2) / (736 - nuevo.left))) : 1
 
   // El cuerpo va compacto detrás de la cabeza: un segmento por palabra leída.
   const separacionIdeal = r * 1.45
@@ -73,7 +78,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
           <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />
         ))}
 
-        {Array.from({ length: palabrasLeidas }, (_, i) => (
+        {!nuevo && Array.from({ length: palabrasLeidas }, (_, i) => (
           <Segmento
             key={i}
             x={xSegmento(i)}
@@ -86,7 +91,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
           />
         ))}
 
-        <g className="ciempi-cabeza" style={{ transform: `translate(${xCabeza}px, ${CENTRO_Y - 4}px)` }}>
+        {!nuevo && <g className="ciempi-cabeza" style={{ transform: `translate(${xCabeza}px, ${CENTRO_Y - 4}px)` }}>
           <g className="ciempi-cara" style={{ transform: `scale(${R / 20})` }}>
             <Cabeza apariencia={apariencia} />
           </g>
@@ -95,7 +100,11 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
               💫
             </text>
           )}
-        </g>
+        </g>}
+        {nuevo && <g data-ciempi="v2" data-segments={palabrasLeidas} transform={`translate(${xCabeza} ${CENTRO_Y-4}) scale(${escalaNueva}) translate(-736 -340)`}>
+          <g className={tranquilo?'':'ciempi-v2-marcha'} dangerouslySetInnerHTML={{__html:nuevo.html}}/>
+          {fase==='tropiezo'&&<text x="736" y="100" textAnchor="middle" fontSize="90">💫</text>}
+        </g>}
       </svg>
     </div>
   )

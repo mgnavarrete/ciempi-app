@@ -278,3 +278,17 @@ body {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Nuevo Ciempi: movimiento del conjunto, sin desanclar capas del cuello. */
+.ciempi-v2-vivo { animation: ciempi-v2-respira 2.8s ease-in-out infinite; transform-origin: center bottom; }
+.caminando .ciempi-v2-marcha { animation: ciempi-v2-paso .52s ease-in-out infinite; }
+@keyframes ciempi-v2-respira { 50% { translate: 0 -2px; } }
+@keyframes ciempi-v2-paso { 50% { translate: 0 -5px; } }
+@media (prefers-reduced-motion: reduce) { .ciempi-v2-vivo,.ciempi-v2-marcha { animation: none !important; } }
+
+/* Acciones existentes, también sobre el personaje compuesto. */
+.accion-saludar [data-ciempi="v2"], [data-ciempi="v2"].accion-saludar { animation: ciempi-v2-saludo 1.5s ease-in-out; transform-origin: center bottom; }
+.accion-bailar [data-ciempi="v2"], [data-ciempi="v2"].accion-bailar { animation: ciempi-v2-baile .38s ease-in-out 4 alternate; transform-origin: center bottom; }
+@keyframes ciempi-v2-saludo { 30%,70% { rotate: -4deg; } 50% { rotate: 3deg; } }
+@keyframes ciempi-v2-baile { to { rotate: 4deg; translate: 0 -4px; } }
+@media (prefers-reduced-motion: reduce) { [data-ciempi="v2"] { animation: none !important; } }

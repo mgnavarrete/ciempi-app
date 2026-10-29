@@ -1,3 +1,4 @@
+import { useEscena } from './v2/Vestuario'
 import { paletaDe, type AparienciaCiempi } from './catalogo'
 import { Cabeza, Segmento } from './dibujos'
 
@@ -19,7 +20,7 @@ const CENTRO_Y = 66
 const ALTO = 104
 
 /** Ciempi completo (cabeza + cuerpo), para la portada de la biblioteca y la tienda. */
-export function CiempiPersonaje({ apariencia, segmentos = 5, ancho, animado = true, className = '' }: Props) {
+export function CiempiClasico({ apariencia, segmentos = 5, ancho, animado = true, className = '' }: Props) {
   const colores = paletaDe(apariencia).cuerpo
   // Reservar espacio para la visera y el casco, incluso en previews SVG sin CSS.
   const xCabeza = R_CUERPO + segmentos * SEPARACION + R_CABEZA * 0.65
@@ -56,4 +57,11 @@ export function CiempiPersonaje({ apariencia, segmentos = 5, ancho, animado = tr
       </g>
     </svg>
   )
+}
+
+/** Pose aprobada y longitud reutilizando los mismos componentes. */
+export function CiempiPersonaje(props: Props) {
+ const art=useEscena(props.apariencia,props.segmentos??5)
+ if(!art)return <CiempiClasico {...props}/>
+ return <svg width={props.ancho} viewBox={art.viewBox} className={`overflow-visible ${props.animado!==false?'ciempi-v2-vivo':''} ${props.className||''}`} aria-hidden data-ciempi="v2" data-segments={props.segmentos??5}><g dangerouslySetInnerHTML={{__html:art.html}}/></svg>
 }

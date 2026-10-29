@@ -1,3 +1,4 @@
+import { ControlesVestuario, useRestaurarVestuario } from './v2/Vestuario'
 import { useState } from 'react'
 import { sonarCelebracion } from '../audio/sonidos'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -29,6 +30,7 @@ interface Props {
  */
 export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
   const repos = useRepositorios()
+  const restaurarVestuario = useRestaurarVestuario()
   const tranquilo = perfil.ajustes.modoTranquilo
   const [categoria, setCategoria] = useState<CategoriaCiempi>('paleta')
   // Lo que se está probando (puede incluir algo no comprado todavía).
@@ -49,6 +51,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
   }
 
   const elegir = (item: ItemCiempi) => {
+    restaurarVestuario()
     setEstreno(null)
     const nueva = { ...probando, [item.categoria]: item.id }
     setProbando(nueva)
@@ -96,6 +99,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
         <Monedas cantidad={perfil.monedas} />
       </Encabezado>
 
+      <ControlesVestuario />
       {/* En horizontal: Ciempi fijo a la izquierda; a la derecha las pestañas siempre visibles y la grilla con su propio scroll. */}
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 overflow-y-auto px-5 pb-28 pt-2 apaisado:min-h-0 apaisado:max-w-4xl apaisado:flex-row apaisado:gap-5 apaisado:overflow-hidden apaisado:pb-0 apaisado:pt-1">
         <div className="flex flex-col gap-3 apaisado:w-[38%] apaisado:shrink-0 apaisado:justify-center apaisado:pb-3">
