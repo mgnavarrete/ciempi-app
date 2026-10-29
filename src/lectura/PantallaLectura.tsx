@@ -16,7 +16,7 @@ import { silabearFrase } from '../lenguaje/silabas'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
-import { HITOS, MINIMO_A_BUEN_RITMO, MONEDAS_POR_UNIDAD, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
+import { HITOS, MINIMO_A_BUEN_RITMO, contarPalabras, hitosNuevos, hoy, monedasDeUnidad, porcentajeLeido, premioRelectura } from './monedas'
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
@@ -383,10 +383,11 @@ export function PantallaLectura(props: Props) {
     let mensajeFinal = '¡Muy bien leído! 📖'
     if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
       leidoHasta.current = fin
-      // Niveles 0 a 3: esta frase, leída por primera vez y a su ritmo, paga en el momento.
-      if (aBuenRitmo && MONEDAS_POR_UNIDAD[nivel]) {
-        ganadas += MONEDAS_POR_UNIDAD[nivel]
-        setMonedaGanada({ monedas: MONEDAS_POR_UNIDAD[nivel], n: Date.now() })
+      // Niveles 0 a 3: esta frase, leída por primera vez y a su ritmo, paga en el momento (con tope por libro).
+      const deEsta = monedasDeUnidad(nivel, indice + 1, total)
+      if (aBuenRitmo && deEsta) {
+        ganadas += deEsta
+        setMonedaGanada({ monedas: deEsta, n: Date.now() })
         programar(() => setMonedaGanada(null), 1600)
       }
       const nuevos = hitosNuevos(nivel, premioHasta.current, porcentajeLeido(fin, totalFrases))
@@ -730,7 +731,7 @@ export function PantallaLectura(props: Props) {
   const porcentaje = porcentajeLeido(fraseDeUnidad(vista, indice, totalFrases), totalFrases)
   // Al final del camino, la moneda que gana esta frase si es la primera vez que la lee (niveles 0 a 3).
   const monedaAlFinal =
-    !vistaPrevia && MONEDAS_POR_UNIDAD[nivel] > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
+    !vistaPrevia && monedasDeUnidad(nivel, indice + 1, total) > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -847,7 +848,7 @@ export function PantallaLectura(props: Props) {
 
 /**
  * Cuánto del libro lleva (siempre desde el 0 % al abrirlo) y dónde están los
- * premios (apagados si ya los ganó): en los niveles 0 a 3, solo la meta.
+ * premios por avance (apagados si ya los ganó); la meta del final, siempre.
  */
 function BarraLibro({ porcentaje, nivel, premiado, tranquilo }: { porcentaje: number; nivel: NivelLectura; premiado: number; tranquilo: boolean }) {
   return (
@@ -879,6 +880,12 @@ function BarraLibro({ porcentaje, nivel, premiado, tranquilo }: { porcentaje: nu
             {h.porcentaje === 100 ? '🏁' : '🪙'}
           </span>
         ))}
+        {/* La meta del libro, aunque en este nivel las monedas vayan por frase. */}
+        {!HITOS[nivel].some((h) => h.porcentaje === 100) && (
+          <span className="absolute left-[96%] top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm" aria-hidden>
+            🏁
+          </span>
+        )}
       </div>
       <span className="shrink-0 rounded-full bg-verde px-2.5 py-0.5 text-sm font-bold text-white tabular-nums shadow-sm">{porcentaje} %</span>
     </div>

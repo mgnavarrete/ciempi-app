@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MONEDAS_POR_UNIDAD, contarPalabras, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
+import { contarPalabras, monedasDeUnidad, hitosNuevos, hoy, porcentajeLeido, premioRelectura } from './monedas'
 
 describe('contarPalabras', () => {
   it('cuenta palabras con letras o números, no signos sueltos', () => {
@@ -11,11 +11,31 @@ describe('contarPalabras', () => {
 })
 
 describe('hitos', () => {
-  it('niveles 0 a 3: monedas por cada frase y un premio al terminar', () => {
-    expect([0, 1, 2, 3, 4].map((n) => MONEDAS_POR_UNIDAD[n as 0])).toEqual([1, 1, 1, 2, 0])
-    expect(hitosNuevos(0, 0, 99)).toEqual([])
-    expect(hitosNuevos(0, 0, 100)).toEqual([{ porcentaje: 100, monedas: 3 }])
-    expect(hitosNuevos(3, 0, 80)).toEqual([])
+  it('niveles 0 y 1: una moneda por frase, hasta 10 por cuento (repartidas parejo)', () => {
+    const del = (nivel: 0 | 1 | 3, total: number) => Array.from({ length: total }, (_, i) => monedasDeUnidad(nivel, i + 1, total))
+    expect(del(0, 7)).toEqual([1, 1, 1, 1, 1, 1, 1])
+    expect(del(1, 10).reduce((a, b) => a + b)).toBe(10)
+    // 15 frases: 10 monedas, más o menos una cada frase y media, y la última frase siempre paga.
+    const quince = del(1, 15)
+    expect(quince.reduce((a, b) => a + b)).toBe(10)
+    expect(Math.max(...quince)).toBe(1)
+    expect(quince.at(-1)).toBe(1)
+    expect(del(1, 40).reduce((a, b) => a + b)).toBe(10)
+  })
+
+  it('nivel 3: hasta 4 por párrafo y 15 por libro', () => {
+    const del = (total: number) => Array.from({ length: total }, (_, i) => monedasDeUnidad(3, i + 1, total))
+    expect(del(3)).toEqual([4, 4, 4])
+    expect(del(4).reduce((a, b) => a + b)).toBe(15)
+    expect(del(10).reduce((a, b) => a + b)).toBe(15)
+    expect(del(30).reduce((a, b) => a + b)).toBe(15)
+  })
+
+  it('sin premio extra al terminar en 0, 1 y 3 (el tope ya es el total)', () => {
+    expect(hitosNuevos(0, 0, 100)).toEqual([])
+    expect(hitosNuevos(1, 0, 100)).toEqual([])
+    expect(hitosNuevos(3, 0, 100)).toEqual([])
+    expect(hitosNuevos(2, 0, 100)).toEqual([{ porcentaje: 100, monedas: 5 }])
   })
 
   it('nivel 4: por avance, y cada hito paga una sola vez', () => {
