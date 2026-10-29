@@ -3,6 +3,8 @@ import { AvisoVoz } from '../audio/AvisoVoz'
 import { desbloquearSonidos, sonarCelebracion, sonarMoneda, sonarTropiezo } from '../audio/sonidos'
 import { silabaParaLaVoz } from '../audio/pronunciacion'
 import { voz } from '../audio/voz'
+import type { AparienciaCiempi } from '../ciempi/catalogo'
+import { CiempiPersonaje } from '../ciempi/CiempiPersonaje'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { ProgresoAsignacion } from '../datos/repositorios'
@@ -697,6 +699,7 @@ export function PantallaLectura(props: Props) {
           premio={pausa.premio}
           mensaje={pausa.mensaje}
           tranquilo={tranquilo}
+          apariencia={perfil.ciempi}
           principal={esLibro ? { texto: 'Volver a mis libros', accion: alVolver } : { texto: 'Seguir leyendo', accion: () => irAFrase(pausa.siguiente) }}
           secundaria={
             esLibro
@@ -982,12 +985,16 @@ function Pausa(props: {
   /** Si no hay premio: por qué (o un «¡muy bien!»). */
   mensaje: string
   tranquilo: boolean
+  apariencia: AparienciaCiempi
   principal: { texto: string; accion: () => void }
   secundaria: { texto: string; accion: () => void }
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-4 text-center apaisado:flex-row apaisado:gap-10">
-      <img src="/ciempi.svg" alt="" className={`h-36 w-36 rounded-[2rem] apaisado:h-28 apaisado:w-28 ${props.tranquilo ? '' : 'feliz'}`} />
+      {/* Su Ciempi celebra: Victoria si hubo premio, Celebración si no. */}
+      <div className="w-64 shrink-0 apaisado:w-56">
+        <CiempiPersonaje apariencia={props.apariencia} ancho="100%" animado={!props.tranquilo} accion={{ id: props.premio > 0 ? 'A10' : 'A03', n: 1 }} />
+      </div>
       <div className="flex flex-col items-center gap-4">
         <div>
           <p className="text-3xl font-bold text-petroleo">{props.titulo}</p>

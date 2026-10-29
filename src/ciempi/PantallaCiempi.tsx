@@ -106,7 +106,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
           <div className="relative h-52 shrink-0 overflow-hidden rounded-3xl shadow-sm apaisado:h-40">
             <FondoTema fondo={probando.fondo} />
             <div className="pointer-events-none absolute inset-x-0 bottom-2 mx-auto w-[min(78%,340px)]">
-              <CiempiPersonaje apariencia={probando} ancho="100%" animado={!tranquilo} />
+              <CiempiPersonaje apariencia={probando} ancho="100%" animado={!tranquilo} festejarCambios={!tranquilo} />
             </div>
             {/* Lo que come, frente a su boca */}
             <svg viewBox="-14 -14 28 28" className="pointer-events-none absolute bottom-7 right-[4%] h-9 w-9 apaisado:bottom-5 apaisado:h-7 apaisado:w-7" aria-hidden>

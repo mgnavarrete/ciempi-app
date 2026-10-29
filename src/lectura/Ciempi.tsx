@@ -1,3 +1,4 @@
+import { CiempiVivo, type EventoCiempi } from '../ciempi/v2/CiempiVivo'
 import { useEscena } from '../ciempi/v2/Vestuario'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { paletaDe, type AparienciaCiempi } from '../ciempi/catalogo'
@@ -32,6 +33,13 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
   const nuevo = useEscena(apariencia, palabrasLeidas)
+  // Ciempi nuevo: tropieza (E04) al ir muy rápido y celebra (A03) al terminar la frase.
+  const [evento, setEvento] = useState<EventoCiempi | null>(null)
+  const eventos = useRef(0)
+  useEffect(() => {
+    if (fase === 'tropiezo') setEvento({ id: 'E04', n: ++eventos.current })
+    else if (fase === 'completada') setEvento({ id: 'A03', n: ++eventos.current })
+  }, [fase])
 
   useLayoutEffect(() => {
     const el = contenedor.current
@@ -67,7 +75,8 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
     caminando && fase === 'arrastrando' ? 'caminando' : '',
     fase === 'arrastrando' ? 'arrastrando' : '',
     fase === 'tropiezo' ? 'tropiezo' : '',
-    fase === 'completada' ? 'feliz' : '',
+    // El saltito del clásico; el nuevo celebra con su propia animación.
+    fase === 'completada' && !nuevo ? 'feliz' : '',
     tranquilo ? 'tranquilo' : '',
   ].join(' ')
 
@@ -102,7 +111,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
           )}
         </g>}
         {nuevo && <g data-ciempi="v2" data-segments={palabrasLeidas} transform={`translate(${xCabeza} ${CENTRO_Y-4}) scale(${escalaNueva}) translate(-736 -340)`}>
-          <g className={tranquilo?'':'ciempi-v2-marcha'} dangerouslySetInnerHTML={{__html:nuevo.html}}/>
+          <CiempiVivo escena={nuevo} segmentos={palabrasLeidas} base={caminando && fase === 'arrastrando' ? 'A02' : 'A01'} evento={evento} tranquilo={tranquilo} />
           {fase==='tropiezo'&&<text x="736" y="100" textAnchor="middle" fontSize="90">💫</text>}
         </g>}
       </svg>

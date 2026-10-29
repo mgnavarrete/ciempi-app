@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react'
+import { CiempiVivo, type EventoCiempi } from './v2/CiempiVivo'
 import { useEscena } from './v2/Vestuario'
 import { paletaDe, type AparienciaCiempi } from './catalogo'
 import { Cabeza, Segmento } from './dibujos'
@@ -59,9 +61,40 @@ export function CiempiClasico({ apariencia, segmentos = 5, ancho, animado = true
   )
 }
 
-/** Pose aprobada y longitud reutilizando los mismos componentes. */
-export function CiempiPersonaje(props: Props) {
- const art=useEscena(props.apariencia,props.segmentos??5)
- if(!art)return <CiempiClasico {...props}/>
- return <svg width={props.ancho} viewBox={art.viewBox} className={`overflow-visible ${props.animado!==false?'ciempi-v2-vivo':''} ${props.className||''}`} aria-hidden data-ciempi="v2" data-segments={props.segmentos??5}><g dangerouslySetInnerHTML={{__html:art.html}}/></svg>
+/** Equivalencias de las animaciones nuevas con las acciones CSS del Ciempi clásico. */
+const ACCION_CLASICA: Record<string, string> = { A04: 'saludar', A03: 'saltar', A12: 'saltar', E02: 'bailar' }
+
+/**
+ * Ciempi nuevo (pose aprobada y vestuario, animado por partes) o, si su
+ * apariencia guardada no tiene equivalencia, el clásico.
+ */
+export function CiempiPersonaje({ accion = null, festejarCambios = false, ...props }: Props & {
+  /** Acción que juega una vez (A04 saludar, A03 saltar…; ver animacion/animaciones.js). */
+  accion?: EventoCiempi | null
+  /** Celebra cada cambio de vestuario (Estrenar ropa). */
+  festejarCambios?: boolean
+}) {
+  const art = useEscena(props.apariencia, props.segmentos ?? 5)
+  const [evento, setEvento] = useState<EventoCiempi | null>(null)
+  const contador = useRef(0)
+  useEffect(() => {
+    if (accion) setEvento({ id: accion.id, n: ++contador.current })
+  }, [accion?.id, accion?.n])
+  const clave = art?.clave
+  const previa = useRef(clave)
+  useEffect(() => {
+    if (festejarCambios && clave && previa.current && clave !== previa.current) setEvento({ id: 'A09', n: ++contador.current })
+    previa.current = clave
+  }, [clave, festejarCambios])
+
+  if (!art) {
+    const clasica = accion && ACCION_CLASICA[accion.id]
+    return <CiempiClasico {...props} className={`${props.className ?? ''} ${clasica ? `accion-${clasica}` : ''}`} />
+  }
+  const segmentos = props.segmentos ?? 5
+  return (
+    <svg width={props.ancho} viewBox={art.viewBox} className={`overflow-visible ${props.className ?? ''}`} aria-hidden data-ciempi="v2" data-segments={segmentos}>
+      {props.animado === false ? <g dangerouslySetInnerHTML={{ __html: art.html }} /> : <CiempiVivo escena={art} segmentos={segmentos} evento={evento} />}
+    </svg>
+  )
 }

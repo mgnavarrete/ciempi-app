@@ -17,6 +17,7 @@ const NOMBRES: Record<Genero, string[]> = {
   nina: ['Ciempi', 'Pipa', 'Lunita', 'Rayita'],
 }
 
+const GESTOS = ['A04', 'A08', 'A12', 'A03']
 /** Lo que se puede elegir en la presentación: solo cosas gratis. */
 const gratis = (categoria: 'paleta' | 'cabeza') => CATALOGO.filter((i) => i.categoria === categoria && i.precio === 0)
 
@@ -93,7 +94,8 @@ export function Presentacion({ perfil, alTerminar }: Props) {
             {mensajes[actual]}
           </p>
           <div className="pointer-events-none absolute inset-x-0 bottom-1 mx-auto w-[min(70%,300px)]">
-            <CiempiPersonaje apariencia={a} ancho="100%" animado={!tranquilo} />
+            {/* En cada mensaje hace algo distinto: saluda, mira con curiosidad, juega, celebra. */}
+            <CiempiPersonaje apariencia={a} ancho="100%" animado={!tranquilo} festejarCambios={!tranquilo} accion={{ id: GESTOS[paso % GESTOS.length], n: paso }} />
           </div>
         </div>
 

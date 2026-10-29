@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { voz } from '../audio/voz'
 import type { PerfilNino } from '../dominio/tipos'
 import { CiempiPersonaje } from './CiempiPersonaje'
+import type { EventoCiempi } from './v2/CiempiVivo'
 import { FondoTema } from './dibujos'
 import { useVozDeCiempi } from './vozDeCiempi'
 
@@ -11,9 +12,13 @@ interface Props {
   alPersonalizar?: () => void
 }
 
-type Accion = 'saltar' | 'saludar' | 'bailar'
-const ACCIONES: Accion[] = ['saltar', 'saludar', 'bailar']
-const DURACION: Record<Accion, number> = { saltar: 950, saludar: 1550, bailar: 1600 }
+/**
+ * Lo que hace Ciempi cada tanto (animaciones del laboratorio, ver
+ * ciempi/v2/animacion/animaciones.js). El Ciempi clásico solo sabe saludar,
+ * saltar y bailar; las demás las juega únicamente el nuevo.
+ */
+const ACCIONES = ['A04', 'A03', 'E02', 'E05', 'A08', 'A12', 'E03', 'E01']
+const SALUDAR = 'A04'
 
 /**
  * Ciempi del niño sobre su fondo, arriba de "Mis libros". Está vivo: ondula y
@@ -23,25 +28,17 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
   const { ciempi } = perfil
   const tranquilo = perfil.ajustes.modoTranquilo
   useVozDeCiempi(ciempi.genero)
-  const [accion, setAccion] = useState<Accion | null>(null)
-  const fin = useRef<number | undefined>(undefined)
-
-  const hacer = (a: Accion) => {
-    window.clearTimeout(fin.current)
-    setAccion(null)
-    // Un cuadro sin clase para que la animación pueda repetirse.
-    requestAnimationFrame(() => setAccion(a))
-    fin.current = window.setTimeout(() => setAccion(null), DURACION[a])
-  }
+  const [accion, setAccion] = useState<EventoCiempi | null>(null)
+  const veces = useRef(0)
+  const hacer = (id: string) => setAccion({ id, n: ++veces.current })
 
   useEffect(() => {
     if (tranquilo) return
-    const intervalo = window.setInterval(() => hacer(ACCIONES[Math.floor(Math.random() * ACCIONES.length)]), 6000)
-    const primera = window.setTimeout(() => hacer('saludar'), 700)
+    const intervalo = window.setInterval(() => hacer(ACCIONES[Math.floor(Math.random() * ACCIONES.length)]), 7000)
+    const primera = window.setTimeout(() => hacer(SALUDAR), 700)
     return () => {
       window.clearInterval(intervalo)
       window.clearTimeout(primera)
-      window.clearTimeout(fin.current)
     }
   }, [tranquilo])
 
@@ -64,12 +61,12 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
         onClick={() => {
           voz.desbloquear()
           voz.decirFrase(`¡Hola, ${perfil.apodo}!`, perfil.ajustes.velocidadVoz)
-          if (!tranquilo) hacer('saludar')
+          if (!tranquilo) hacer(SALUDAR)
         }}
         aria-label={`Saludar a ${ciempi.nombre}`}
-        className={`absolute inset-x-0 bottom-1 z-0 mx-auto block w-[min(72%,320px)] apaisado:w-[min(40%,260px)] ${accion ? `accion-${accion}` : ''}`}
+        className="absolute inset-x-0 bottom-1 z-0 mx-auto block w-[min(72%,320px)] apaisado:w-[min(40%,260px)]"
       >
-        <CiempiPersonaje apariencia={ciempi} ancho="100%" animado={!tranquilo} />
+        <CiempiPersonaje apariencia={ciempi} ancho="100%" animado={!tranquilo} accion={accion} />
       </button>
     </section>
   )
