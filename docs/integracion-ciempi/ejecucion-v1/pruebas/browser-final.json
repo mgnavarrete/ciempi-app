@@ -1,0 +1,29 @@
+{
+  "errors": [],
+  "growth": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "conjuntos": [
+    "b12-set-robot",
+    "b12-set-draco",
+    "b12-set-cartografo",
+    "b12-set-pirata",
+    "b12-set-luna",
+    "b12-set-noctilio",
+    "b12-set-araluz",
+    "b12-set-raton",
+    "b12-set-reino",
+    "b12-set-lluvia"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "changedFromSnapshot": [
+    "src/App.tsx",
+    "src/index.css",
+    "src/ciempi/CiempiPersonaje.tsx",
+    "src/ciempi/PantallaCiempi.tsx",
+    "src/lectura/Ciempi.tsx",
+    "docs/rediseno-ciempi/laboratorio-animaciones/animaciones.js",
+    "docs/rediseno-ciempi/laboratorio-animaciones/estilos.css",
+    "docs/rediseno-ciempi/laboratorio-animaciones/rig.js",
+    "package.json",
+    "package-lock.json",
+    "CIEMPI_ART_DIRECTION.md"
+  ],
+  "approvedArtChanged": [],
+  "catalogAndDataUnchanged": true,
+  "apkAssetsMatch": true,
+  "apkResources": 34,
+  "apkSha256": "759269a18df28f899ad8ecd912800f7cd1a492fa5490ff8fba73ab763970724b",
+  "apkBytes": 23420517,
+  "concurrentChangesPreserved": [
+    "docs/rediseno-ciempi/laboratorio-animaciones/animaciones.js",
+    "docs/rediseno-ciempi/laboratorio-animaciones/estilos.css",
+    "docs/rediseno-ciempi/laboratorio-animaciones/rig.js"
+  ]
+}

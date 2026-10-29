@@ -1,0 +1,4 @@
+Signer #1 certificate DN: CN=CIEMPI, O=Ciempi, C=CL
+Signer #1 certificate SHA-256 digest: dcc616bf6ca9328a61a3d4f410387f35bbb49a66ee2cab3c98c9eaeb5c3f2668
+Signer #1 certificate SHA-1 digest: dccfbf537350550a35e28d603cb58328dd93d2cc
+Signer #1 certificate MD5 digest: e2ac7dd72bef8e754565c8ccf90ec863

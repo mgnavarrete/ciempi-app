@@ -1,0 +1,12 @@
+
+ RUN  v5.0.5 /mnt/d/Proyectos/ciempi-app
+
+
+ Test Files  18 passed (18)
+      Tests  172 passed (172)
+   Start at  21:49:59
+   Duration  2.83s (import 47%, transform 36%, worker 11%, tests 6%)
+
+    Isolate  18 workers spawned · ~1.00s startup each (spawn + environment, per file)
+             at least ~640ms faster with isolate: false — reuses workers across files instead of one per file
+

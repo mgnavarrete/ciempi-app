@@ -1,0 +1,34 @@
+ M docs/rediseno-ciempi/PLAN.md
+ M docs/rediseno-ciempi/armario/COLECCION-AMPLIADA.md
+ M docs/rediseno-ciempi/armario/colecciones-personajes.png
+ M docs/rediseno-ciempi/armario/conjunto-1.svg
+ M docs/rediseno-ciempi/armario/conjunto-10.svg
+ M docs/rediseno-ciempi/armario/conjunto-11.svg
+ M docs/rediseno-ciempi/armario/conjunto-12.svg
+ M docs/rediseno-ciempi/armario/conjunto-2.svg
+ M docs/rediseno-ciempi/armario/conjunto-3.svg
+ M docs/rediseno-ciempi/armario/conjunto-4.svg
+ M docs/rediseno-ciempi/armario/conjunto-5.svg
+ M docs/rediseno-ciempi/armario/conjunto-6.svg
+ M docs/rediseno-ciempi/armario/conjunto-7.svg
+ M docs/rediseno-ciempi/armario/conjunto-8.svg
+ M docs/rediseno-ciempi/armario/conjunto-9.svg
+ M docs/rediseno-ciempi/armario/index.html
+ M scripts/crear-armario-ciempi.mjs
+ M scripts/lib/armario-ciempi.mjs
+ M scripts/lib/armario-probador.js
+ M scripts/lib/colecciones-personajes.mjs
+?? .agents/
+?? AGENTS.md
+?? CIEMPI_ART_DIRECTION.md
+?? docs/integracion-ciempi/
+?? docs/rediseno-ciempi/armario/COLECCIONES-PERSONAJES.md
+?? docs/rediseno-ciempi/armario/CONFECCION-Y-ACABADOS.md
+?? docs/rediseno-ciempi/armario/detalles-confeccion.png
+?? docs/rediseno-ciempi/auditoria/
+?? docs/rediseno-ciempi/laboratorio-animaciones/
+?? docs/rediseno-ciempi/laboratorio/
+?? docs/rediseno-ciempi/revisiones/
+?? docs/referencia-artiscita/
+?? scripts/auditar-vestuario-ciempi.mjs
+?? scripts/lib/acabados-armario.mjs

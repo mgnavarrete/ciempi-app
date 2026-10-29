@@ -1,0 +1,135 @@
+{
+  "errors": [],
+  "growth": [
+    "0",
+    "0",
+    "1",
+    "1",
+    "1",
+    "1",
+    "2",
+    "2",
+    "2",
+    "3",
+    "3",
+    "3",
+    "4",
+    "4",
+    "4",
+    "4",
+    "4",
+    "5",
+    "5",
+    "5",
+    "6",
+    "6",
+    "6",
+    "6",
+    "6",
+    "7"
+  ],
+  "after": {
+    "id": "67d73a71-4829-4c9d-b1bd-7ae021c0c884",
+    "creadoPor": "5b280b80-99da-46f4-80ca-e5b7180665c9",
+    "apodo": "Lector",
+    "icono": "🐛",
+    "usuario": null,
+    "tieneCuenta": false,
+    "pinHash": null,
+    "ajustes": {
+      "tamanoLetra": 44,
+      "modoTranquilo": false,
+      "velocidadVoz": 1,
+      "umbralPalabrasPorSegundo": 4
+    },
+    "monedas": 100,
+    "ciempi": {
+      "nombre": "Ciempi",
+      "genero": null,
+      "paleta": "paleta-clasica",
+      "forma": "forma-circulo",
+      "ojos": "ojos-normales",
+      "cabeza": "cabeza-nada",
+      "cara": "cara-nada",
+      "pies": "pies-clasicos",
+      "diseno": "diseno-liso",
+      "fondo": "fondo-jardin",
+      "comida": "comida-manzana",
+      "presentado": true
+    },
+    "inventario": [
+      "cara-lentes"
+    ],
+    "creadoEn": "2026-10-29T00:49:52.956Z"
+  },
+  "bought": {
+    "id": "67d73a71-4829-4c9d-b1bd-7ae021c0c884",
+    "creadoPor": "5b280b80-99da-46f4-80ca-e5b7180665c9",
+    "apodo": "Lector",
+    "icono": "🐛",
+    "usuario": null,
+    "tieneCuenta": false,
+    "pinHash": null,
+    "ajustes": {
+      "tamanoLetra": 44,
+      "modoTranquilo": false,
+      "velocidadVoz": 1,
+      "umbralPalabrasPorSegundo": 4
+    },
+    "monedas": 92,
+    "ciempi": {
+      "nombre": "Ciempi",
+      "genero": null,
+      "paleta": "paleta-sol",
+      "forma": "forma-circulo",
+      "ojos": "ojos-normales",
+      "cabeza": "cabeza-nada",
+      "cara": "cara-nada",
+      "pies": "pies-clasicos",
+      "diseno": "diseno-liso",
+      "fondo": "fondo-jardin",
+      "comida": "comida-manzana",
+      "presentado": true
+    },
+    "inventario": [
+      "cara-lentes",
+      "paleta-sol"
+    ],
+    "creadoEn": "2026-10-29T00:49:52.956Z"
+  },
+  "reloaded": {
+    "id": "67d73a71-4829-4c9d-b1bd-7ae021c0c884",
+    "creadoPor": "5b280b80-99da-46f4-80ca-e5b7180665c9",
+    "apodo": "Lector",
+    "icono": "🐛",
+    "usuario": null,
+    "tieneCuenta": false,
+    "pinHash": null,
+    "ajustes": {
+      "tamanoLetra": 44,
+      "modoTranquilo": false,
+      "velocidadVoz": 1,
+      "umbralPalabrasPorSegundo": 4
+    },
+    "monedas": 92,
+    "ciempi": {
+      "nombre": "Ciempi",
+      "genero": null,
+      "paleta": "paleta-sol",
+      "forma": "forma-circulo",
+      "ojos": "ojos-normales",
+      "cabeza": "cabeza-nada",
+      "cara": "cara-nada",
+      "pies": "pies-clasicos",
+      "diseno": "diseno-liso",
+      "fondo": "fondo-jardin",
+      "comida": "comida-manzana",
+      "presentado": true
+    },
+    "inventario": [
+      "cara-lentes",
+      "paleta-sol"
+    ],
+    "creadoEn": "2026-10-29T00:49:52.956Z"
+  }
+}

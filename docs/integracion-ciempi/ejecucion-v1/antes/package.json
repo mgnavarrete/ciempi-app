@@ -1,0 +1,42 @@
+{
+  "name": "ciempi-app",
+  "private": true,
+  "version": "1.5.4",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:red": "vite --host",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "apk": "vite build --mode apk && cap sync android && cd android && (test -f firma/firma.properties || (echo \"Falta la llave: bash scripts/crear-firma.sh\" && exit 1)) && JAVA_HOME=${JAVA_HOME:-$HOME/jdk} ANDROID_HOME=${ANDROID_HOME:-$HOME/android-sdk} bash ./gradlew assembleRelease && cd .. && mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/CIEMPI-$npm_package_version.apk && echo \"→ release/CIEMPI-$npm_package_version.apk\"",
+    "test:servidor": "DATABASE_URL=postgres://ciempi:ciempi@localhost:5434/ciempi_test vitest run server/test",
+    "db:start": "docker compose up -d db",
+    "db:stop": "docker compose stop db",
+    "servidor": "npm --prefix server run dev",
+    "servidor:instalar": "npm --prefix server ci"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@fontsource/andika": "^5.3.0",
+    "pdfjs-dist": "^6.4.299",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
