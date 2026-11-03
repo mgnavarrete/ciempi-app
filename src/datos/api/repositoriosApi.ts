@@ -11,6 +11,8 @@ import {
 } from '../../dominio/tipos'
 import { crearColaPremios, type PedidoEnCola, type RespuestaEnvio } from '../colaPremios'
 import type { Repositorios } from '../repositorios'
+import type { ModeloEconomia } from '../../lectura/monedas'
+import { modeloDeCompilacion } from '../economia'
 
 /**
  * Implementación con el servidor propio de Ciempi (carpeta server/: Node +
@@ -138,9 +140,10 @@ export function crearRepositoriosApi(base: string): Repositorios {
 
   /** Qué economía usa el servidor (lo dice en cada premio): con E2 la app pide también las relecturas por unidad. */
   const CLAVE_ECONOMIA = 'ciempi-economia'
-  let economia: 'actual' | 'e2' = 'actual'
+  let economia: ModeloEconomia = modeloDeCompilacion()
   try {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem(CLAVE_ECONOMIA) === 'e2') economia = 'e2'
+    const guardada = typeof localStorage === 'undefined' ? null : localStorage.getItem(CLAVE_ECONOMIA)
+    if (guardada === 'e2' || guardada === 'actual') economia = guardada
   } catch {
     /* sin almacenamiento: se aprende de la próxima respuesta */
   }
@@ -288,6 +291,6 @@ export function crearRepositoriosApi(base: string): Repositorios {
       listarPorPerfil: (perfilId) => pedir<SesionLectura[]>('GET', `/api/perfiles/${perfilId}/sesiones-lectura`),
     },
 
-    premios,
+    premios: { ...premios, economia: () => economia },
   }
 }
