@@ -153,8 +153,8 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
   const { rows: asignaciones } = await c.query('select * from asignaciones where id = $1 and perfil_id = $2 for update', [p.asignacionId, p.perfilId])
   const a = asignaciones[0]
   if (!a) throw new SinAsignacion()
-  // Texto propio del niño que un adulto todavía no autoriza con su PIN: se lee, pero no paga (ver autorizacion.ts).
-  if (a.autorizacion === 'pendiente') return sinAutorizar(c, p, perfil.monedas, a)
+  // Texto propio del niño sin autorizar (pendiente o rechazado): se lee, pero no paga (ver autorizacion.ts).
+  if (a.autorizacion === 'pendiente' || a.autorizacion === 'rechazada') return sinAutorizar(c, p, perfil.monedas, a)
   const { rows: textos } = await c.query('select id, origen, frases, capitulos, parrafos, huella, actualizado_en from textos where id = $1', [a.texto_id])
   const t = textos[0]
   const clave = await claveDe(c, t)
