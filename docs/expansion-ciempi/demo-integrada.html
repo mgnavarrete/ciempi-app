@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo V3 integrada</title>
+<style>
+  :root { --fondo:#f7ecd9; --texto:#2b2a28; --suave:#6b6257; --tarjeta:#fffaf1; --borde:#e2d3b8; --acento:#2f8f6f; }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#1d1b18; --texto:#f1e9dc; --suave:#b5aa9a; --tarjeta:#29261f; --borde:#3d382e; --acento:#6fd0a8; } }
+  body { margin:0; background:var(--fondo); color:var(--texto); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { margin:0 0 4px; font-size:1.6rem; } h2 { margin:32px 0 8px; font-size:1.15rem; }
+  p.sub { color:var(--suave); margin:0 0 16px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+  a.t { display:block; background:var(--tarjeta); border:1px solid var(--borde); border-radius:12px; padding:14px; color:inherit; text-decoration:none; }
+  a.t:hover { border-color:var(--acento); } a.t b { display:block; color:var(--acento); margin-bottom:4px; }
+  .pin { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .pin figure { margin:0; background:var(--tarjeta); border:1px solid var(--borde); border-radius:10px; padding:6px; }
+  .pin img { width:100%; height:auto; border-radius:6px; display:block; }
+  .pin figcaption { font-size:.8rem; color:var(--suave); padding-top:4px; }
+  code { font-size:.9em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>CIEMPI V3: integración experimental</h1>
+  <p class="sub">Rama <code>expansion-v3-integracion</code>. Nada de esto está en producción. Informe completo: <a href="INFORME-INTEGRACION-V3.md">INFORME-INTEGRACION-V3.md</a>.</p>
+
+  <h2>Especies y animación</h2>
+  <div class="grid">
+    <a class="t" href="../rediseno-ciempi/laboratorio-transformaciones/"><b>Laboratorio de Dragón y Cuncuna</b>Cuerpos aprobados (AD-017), longitudes, conjuntos y animación con el código integrado.</a>
+    <a class="t" href="http://127.0.0.1:8773/hoja.html"><b>Hoja de cuadros E08 «Comer»</b>Bocas sorprendido y carcajada, máscaras sin segunda boca. Requiere <code>node docs/expansion-ciempi/animacion/demo-comer/servir.mjs</code> (puerto 8773).</a>
+    <a class="t" href="animacion/RESULTADOS.md"><b>Resultados de animación</b>Interrupciones, rendimiento, rúbrica y fusión con especies. Demo interactiva: <code>http://127.0.0.1:8773/</code> con <code>servir.mjs</code>.</a>
+  </div>
+
+  <h2>Economía y seguridad</h2>
+  <div class="grid">
+    <a class="t" href="economia/index.html"><b>Informe E2</b>Simulación, sensibilidad, mitigación N3/N4 (E2R) y saldos.</a>
+    <a class="t" href="economia/SEGURIDAD-MONEDAS.md"><b>Seguridad de monedas</b>Bandera ECONOMIA, reloj del servidor, Cuncuna, abusos.</a>
+    <a class="t" href="tienda/index.html"><b>Tienda V3</b>Precios provisionales en dos olas y desbloqueo de la Cuncuna.</a>
+  </div>
+
+  <h2>Flujo de PIN para textos del niño (390 px)</h2>
+  <div class="pin">
+    <figure><img src="seguridad/pin/01-nino-biblioteca-pendiente.png" alt=""><figcaption>1. Texto pendiente</figcaption></figure>
+    <figure><img src="seguridad/pin/02-nino-lectura-pendiente.png" alt=""><figcaption>2. Lectura sin monedas</figcaption></figure>
+    <figure><img src="seguridad/pin/03-nino-dialogo-pin.png" alt=""><figcaption>3. Pedir PIN</figcaption></figure>
+    <figure><img src="seguridad/pin/04-nino-sin-pin-creado.png" alt=""><figcaption>4. Sin PIN creado</figcaption></figure>
+    <figure><img src="seguridad/pin/05-adulto-pendientes-sin-pin.png" alt=""><figcaption>5. Panel: pendientes</figcaption></figure>
+    <figure><img src="seguridad/pin/06-adulto-crear-pin.png" alt=""><figcaption>6. Crear PIN</figcaption></figure>
+    <figure><img src="seguridad/pin/07-adulto-pin-guardado.png" alt=""><figcaption>7. PIN guardado</figcaption></figure>
+    <figure><img src="seguridad/pin/08-adulto-dialogo-pin.png" alt=""><figcaption>8. Aprobar con PIN</figcaption></figure>
+    <figure><img src="seguridad/pin/09-adulto-aprobado-desde-panel.png" alt=""><figcaption>9. Aprobado</figcaption></figure>
+    <figure><img src="seguridad/pin/10-nino-pin-incorrecto.png" alt=""><figcaption>10. PIN incorrecto</figcaption></figure>
+    <figure><img src="seguridad/pin/11-nino-aprobado.png" alt=""><figcaption>11. Ya paga monedas</figcaption></figure>
+  </div>
+</main>
+</body>
+</html>

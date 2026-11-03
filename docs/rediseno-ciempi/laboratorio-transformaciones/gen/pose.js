@@ -90,3 +90,86 @@ export function escena(svg, n, prefix, forma) {
 		right
 	};
 }
+/**
+* Como `escena(svg, n)` para todo n ≤ nMax, pero sin volver a parsear ni
+* serializar al crecer: se arma la cadena modular completa (nMax segmentos,
+* sus patas y la pata de la cabeza) y se conserva lo que `escena` quita según
+* n (sombras del maestro, que solo se ven con n = 5; mochila y superficies,
+* que se ocultan con n = 0), marcado para que el rig lo muestre u oculte.
+*
+* `forma` (opcional, especies): el mismo comportamiento que `escena(…, forma)`:
+* roles y posiciones de la forma, pata del maestro según `pieDeRol` trasladada
+* desde `xMaestro` (anotado en `data-x-pie` para `rig.crecer`), sin sombras del
+* maestro con `siempreClonar` y `margenCola` en el encuadre. Sin `forma` el
+* resultado es idéntico al anterior (mismo html, carácter por carácter).
+*/
+export function escenaCreciente(svg, nMax, prefix, forma) {
+	nMax = Math.max(0, Math.floor(nMax));
+	const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+	if (doc.querySelector("parsererror")) throw Error("Ciempi SVG inválido");
+	const body = doc.getElementById("body"), feet = doc.getElementById("legs-and-sneakers");
+	const sourceBody = [...body.children], sourceFeet = [...feet.children];
+	const xs = [
+		187,
+		289,
+		390,
+		477,
+		558
+	];
+	const pieDe = (role) => forma ? forma.pieDeRol[role] ?? role : role, xPie = (role) => forma ? forma.xMaestro[pieDe(role)] : xs[role];
+	function isolate(node, key) {
+		const ids = new Map();
+		for (const e of [node, ...node.querySelectorAll("[id]")]) if (e.id) ids.set(e.id, key + e.id);
+		for (const e of [node, ...node.querySelectorAll("*")]) for (const a of [...e.attributes]) {
+			let v = a.value;
+			if (a.name === "id") v = ids.get(v) || v;
+			else if (a.localName === "href" && v.startsWith("#")) v = "#" + (ids.get(v.slice(1)) || v.slice(1));
+			else v = v.replace(/url\(#([^)]*)\)/g, (_, id) => `url(#${ids.get(id) || id})`);
+			e.setAttributeNS(a.namespaceURI, a.name, v);
+		}
+	}
+	body.replaceChildren();
+	feet.replaceChildren();
+	for (const [i, p] of posiciones(nMax, forma).entries()) {
+		const part = sourceBody[p.role].cloneNode(true);
+		part.setAttribute("transform", `translate(${p.x} ${p.y})`);
+		part.setAttribute("data-role", String(p.role));
+		isolate(part, `seg${i}-`);
+		body.append(part);
+		const foot = sourceFeet[pieDe(p.role)].cloneNode(true);
+		const wrapper = doc.createElementNS("http://www.w3.org/2000/svg", "g");
+		wrapper.setAttribute("transform", `translate(${p.x - xPie(p.role)} 0)`);
+		wrapper.setAttribute("data-role", String(p.role));
+		if (forma) wrapper.setAttribute("data-x-pie", String(xPie(p.role)));
+		isolate(foot, `foot${i}-`);
+		wrapper.append(foot);
+		feet.append(wrapper);
+	}
+	const headFoot = sourceFeet[5].cloneNode(true);
+	headFoot.setAttribute("data-pata-cabeza", "");
+	feet.append(headFoot);
+	// Con `siempreClonar`, `escena` nunca muestra las sombras del maestro (ni con 5): se quitan.
+	for (const e of [...doc.documentElement.children]) if (e.localName === "ellipse") {
+		if (forma?.siempreClonar) e.remove();
+		else e.setAttribute("data-sombra-base", "");
+	}
+	const edges = (sel) => [...doc.querySelectorAll(sel)].map((e) => Number(e.getAttribute("x")) - 8);
+	const capeEdges = edges("[data-costume^=\"b08-\"] image"), bagEdges = edges("[data-bag] image");
+	doc.documentElement.setAttribute("data-segments", String(nMax));
+	isolate(doc.documentElement, prefix + "-");
+	const right = 1e3, clona = (n) => n !== 5 || !!forma?.siempreClonar;
+	return {
+		nMax,
+		headX: 736,
+		right,
+		posiciones: (n) => posiciones(n, forma),
+		encuadre(n) {
+			const left = !clona(n) ? 0 : Math.min(550, (posiciones(n, forma)[0]?.x ?? 650) - (forma?.margenCola ?? 110), ...capeEdges, ...n === 0 ? [] : bagEdges);
+			return {
+				left,
+				viewBox: `${left} 0 ${right - left} 650`
+			};
+		},
+		html: [...doc.documentElement.childNodes].filter((e) => e.nodeType === 1 && !["title", "desc"].includes(e.localName)).map((e) => new XMLSerializer().serializeToString(e)).join("")
+	};
+}
