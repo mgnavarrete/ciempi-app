@@ -28,6 +28,7 @@ import { darCuentos } from './cuentos.ts'
 import { audioDe, leerVozPedida, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
 import { Esperar, SinAsignacion, ajustarMonedas, anotarLegado, fechaDia, huellaDe, otorgarPremio, recordarLecturas, type PedidoPremio } from './premios.ts'
+import { PIN_VALIDO, PinEnEspera, PinIncorrecto, autorizacionAlAgregar, cifrarPin, pinDebil, revisarPin } from './autorizacion.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
 /** Error con mensaje para mostrarle al usuario (400 por defecto). */
@@ -116,6 +117,9 @@ const aAsignacion = (f: Fila) => ({
   relecturaPremiadaEn: fechaDia(f.relectura_premiada_en as Date | string | null),
   // Hasta dónde ya pagó el servidor (lo demás de lo leído quedó sin moneda o está por pagarse).
   pagadoHasta: (f.pagado_hasta as number | undefined) ?? 0,
+  // Texto propio del niño que un adulto todavía no autoriza con su PIN (se lee, pero no paga).
+  autorizacion: f.autorizacion ?? 'autorizada',
+  autorizadaEn: f.autorizada_en ?? null,
   asignadaEn: f.asignada_en,
   actualizadaEn: f.actualizada_en,
   completadaEn: f.completada_en ?? null,
@@ -197,6 +201,8 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
 
   app.setErrorHandler((error, req, reply) => {
     if (error instanceof Prohibido) return reply.code(403).send({ error: error.message })
+    if (error instanceof PinIncorrecto) return reply.code(403).send({ error: error.message, intentosRestantes: error.intentosRestantes })
+    if (error instanceof PinEnEspera) return reply.code(429).header('Retry-After', String(error.segundos)).send({ error: error.message, reintentarEnSegundos: error.segundos })
     if (error instanceof Esperar) return reply.code(429).header('Retry-After', String(error.segundos)).send({ error: error.message, reintentarEnSegundos: error.segundos })
     if (error instanceof SinAsignacion) return reply.code(404).send({ error: error.message })
     if (error instanceof Problema) return reply.code(error.codigo).send({ error: error.message })
@@ -529,7 +535,17 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
     const huella = huellaDe(frases as string[])
     const rows = await enTransaccion(async (c) => {
       // Si cambia el contenido, lo ya pagado del texto anterior queda recordado (volver a subirlo no paga otra vez).
-      if (existente[0] && existente[0].huella !== huella) await recordarLecturas(c, { textoId: id })
+      if (existente[0] && existente[0].huella !== huella) {
+        await recordarLecturas(c, { textoId: id })
+        // Un niño que cambia el contenido de un texto ya autorizado: vuelve a quedar pendiente
+        // (si no, bastaría con autorizar un texto corto y después reemplazarlo).
+        if (yo(req).tipo === 'nino') {
+          await c.query(
+            `update asignaciones set autorizacion = 'pendiente', autorizada_por = null, autorizada_en = null where texto_id = $1 and autorizacion = 'autorizada'`,
+            [id],
+          )
+        }
+      }
       const r = await c.query(
         `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen, parrafos, huella)
          values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
@@ -583,10 +599,15 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
     if (!(await puedeVerTexto(yo(req), textoId))) throw new Prohibido('No tienes acceso a este texto')
     const modo = ['coro', 'eco', 'solo'].includes(b.modo as string) ? b.modo : 'coro'
     // El nivel lo elige un adulto del niño; si el niño agrega un libro, parte en el sugerido.
-    const nivel = (await esAdminDe(yo(req), perfilId)) ? nivelValido(b.nivel) : await nivelSugeridoDe(textoId)
+    const esAdulto = await esAdminDe(yo(req), perfilId)
+    const nivel = esAdulto ? nivelValido(b.nivel) : await nivelSugeridoDe(textoId)
+    // Lo que agrega el propio niño queda pendiente hasta que un adulto lo autorice con su PIN
+    // (lo que diga la app no cuenta: lo decide el servidor según quién lo agrega).
+    const autorizacion = await autorizacionAlAgregar(pool, { perfilId, textoId, esAdulto })
     await pool.query(
-      'insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel) values ($1, $2, $3, $4, $5) on conflict (perfil_id, texto_id) do nothing',
-      [yo(req).id, perfilId, textoId, modo, nivel],
+      `insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel, autorizacion, autorizada_por, autorizada_en)
+       values ($1, $2, $3, $4, $5, $6, $7, $8) on conflict (perfil_id, texto_id) do nothing`,
+      [yo(req).id, perfilId, textoId, modo, nivel, autorizacion, autorizacion === 'autorizada' && esAdulto ? yo(req).id : null, autorizacion === 'autorizada' && esAdulto ? new Date() : null],
     )
     const { rows } = await pool.query('select * from asignaciones where perfil_id = $1 and texto_id = $2', [perfilId, textoId])
     return aAsignacion(rows[0])
@@ -710,6 +731,88 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
       await c.query('delete from asignaciones where id = $1', [param(req, 'id')])
     })
     return { ok: true }
+  })
+
+  // ── Textos propios: autorización con el PIN del adulto ──────────────────
+  // Ver server/src/autorizacion.ts y docs/expansion-ciempi/seguridad/PIN-TEXTOS.md.
+
+  app.get('/api/mi-pin', conAdulto, async (req) => {
+    const { rows } = await pool.query('select pin_hash is not null as tiene, pin_cambiado_en from cuentas where id = $1', [yo(req).id])
+    return { tienePin: !!rows[0]?.tiene, cambiadoEn: rows[0]?.pin_cambiado_en ?? null }
+  })
+
+  /** Crear o cambiar el PIN: pide la contraseña de la cuenta (alguien con el teléfono del adulto abierto no basta). */
+  app.put('/api/mi-pin', conAdulto, async (req) => {
+    const b = cuerpo(req)
+    const pin = texto(b.pin, 'el PIN', 20)
+    const clave = texto(b.clave, 'la contraseña')
+    const bloqueo = `pin-clave:${yo(req).id}`
+    if (estaBloqueado(bloqueo)) throw new Problema('Demasiados intentos. Espera 5 minutos e inténtalo de nuevo.', 429)
+    const { rows } = await pool.query('select clave_hash from usuarios where id = $1', [yo(req).id])
+    if (!rows[0] || !(await verificarClave(clave, rows[0].clave_hash))) {
+      registrarFallo(bloqueo)
+      throw new Problema('La contraseña no es correcta.', 403)
+    }
+    limpiarFallos(bloqueo)
+    if (!PIN_VALIDO.test(pin)) throw new Problema('El PIN debe tener de 4 a 8 números.')
+    if (pinDebil(pin)) throw new Problema('Ese PIN es muy fácil de adivinar (como 1111 o 1234). Elige otro.')
+    await pool.query('update cuentas set pin_hash = $1, pin_cambiado_en = now() where id = $2', [await cifrarPin(pin), yo(req).id])
+    return { tienePin: true }
+  })
+
+  /** Libros pendientes de autorizar: los de sus niños (adulto) o los propios (niño). */
+  app.get('/api/autorizaciones', conUsuario, async (req) => {
+    const u = yo(req)
+    const { rows } = await pool.query(
+      `select a.*, t.titulo, t.frases, t.parrafos, t.origen, t.subido_por as texto_subido_por, p.apodo, p.icono,
+              (select bool_or(c.pin_hash is not null) from miembros_nino m join cuentas c on c.id = m.cuenta_id where m.perfil_id = a.perfil_id) as hay_pin
+         from asignaciones a join textos t on t.id = a.texto_id join perfiles_ninos p on p.id = a.perfil_id
+        where a.autorizacion = 'pendiente' and ${
+          u.tipo === 'nino' ? 'p.usuario_id = $1' : 'exists (select 1 from miembros_nino m where m.perfil_id = a.perfil_id and m.cuenta_id = $1)'
+        }
+        order by a.asignada_en desc limit 100`,
+      [u.id],
+    )
+    return rows.map((f) => ({
+      asignacion: aAsignacion(f),
+      perfil: { id: f.perfil_id, apodo: f.apodo, icono: f.icono },
+      texto: { id: f.texto_id, titulo: f.titulo, frases: (f.frases as string[]).length, muestra: (f.frases as string[]).slice(0, 3), origen: f.origen },
+      nivelSugerido: nivelSugerido(f.frases, f.parrafos ?? undefined),
+      hayPin: !!f.hay_pin,
+    }))
+  })
+
+  /**
+   * Un adulto del niño autoriza un libro que agregó el niño, con su PIN.
+   * Se puede pedir desde la sesión del niño (el adulto escribe el PIN en su
+   * dispositivo) o desde la del adulto: en los dos casos manda el PIN, que se
+   * verifica aquí. Desde ese momento el libro paga como uno nuevo: lo leído
+   * mientras estaba pendiente no se paga (ni antes ni después).
+   */
+  app.post('/api/asignaciones/:id/autorizar', conUsuario, async (req) => {
+    const id = param(req, 'id')
+    const a = await asignacionPorId(id)
+    await exigirVerNino(yo(req), a.perfil_id)
+    const b = cuerpo(req)
+    const pin = typeof b.pin === 'string' ? b.pin.slice(0, 20) : ''
+    const nivel = b.nivel === undefined || b.nivel === null ? null : nivelValido(b.nivel)
+    if (a.autorizacion !== 'pendiente') return aAsignacion(a)
+    const r = await enTransaccion(async (c) => {
+      const revision = await revisarPin(c, a.perfil_id, pin, ahora())
+      if (revision.tipo !== 'ok') return { revision, fila: null }
+      const { rows } = await c.query(
+        `update asignaciones set autorizacion = 'autorizada', autorizada_por = $2, autorizada_en = now(), actualizada_en = now(),
+           leido_hasta = pagado_hasta, nivel = coalesce($3, nivel)
+         where id = $1 and autorizacion = 'pendiente' returning *`,
+        [id, revision.adultoId, nivel],
+      )
+      return { revision, fila: rows[0] ?? (await c.query('select * from asignaciones where id = $1', [id])).rows[0] }
+    })
+    const v = r.revision
+    if (v.tipo === 'sin_pin') throw new Problema('Todavía ningún adulto creó su PIN. Se crea en el panel de adultos.', 409)
+    if (v.tipo === 'bloqueado') throw new PinEnEspera(v.esperaSegundos)
+    if (v.tipo === 'incorrecto') throw v.esperaSegundos ? new PinEnEspera(v.esperaSegundos) : new PinIncorrecto(v.intentosRestantes)
+    return aAsignacion(r.fila)
   })
 
   // ── Sesiones de lectura ─────────────────────────────────────────────────

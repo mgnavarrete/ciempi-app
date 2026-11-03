@@ -80,13 +80,16 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('POST', `/api/perfiles/${perfilId}/clave`, N, { clave: 'nueva123' })).status).toBe(403)
   })
 
-  it('el niño sube su guía, la agrega a su biblioteca y guarda progreso', async () => {
+  it('el niño sube su guía, la agrega a su biblioteca (pendiente), la terapeuta la autoriza con su PIN y guarda progreso', async () => {
     guia = randomUUID()
     const t = await pedir('PUT', `/api/textos/${guia}`, N, { titulo: 'Guía de lenguaje', textoOriginal: 'x', frases: ['Hola.', 'Chao.'], capitulos: [], origen: 'pdf' })
     expect(t.status).toBe(200)
     const a = await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, N, { textoId: guia })
     expect(a.status).toBe(200)
+    expect(a.body.autorizacion).toBe('pendiente')
     asigGuia = a.body.id
+    expect((await pedir('PUT', '/api/mi-pin', T, { pin: '2580', clave: 'clave-segura' })).status).toBe(200)
+    expect((await pedir('POST', `/api/asignaciones/${asigGuia}/autorizar`, N, { pin: '2580' })).body.autorizacion).toBe('autorizada')
     const p = await pedir('PUT', `/api/asignaciones/${asigGuia}/progreso`, N, { fraseActual: 1, fraseMaxima: 1, estado: 'en_curso' })
     expect(p.body).toMatchObject({ fraseActual: 1, fraseMaxima: 1 })
     const s = await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId, modo: 'coro', frasesCompletadas: 1 })
@@ -453,6 +456,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       appReloj = await crearApp({ ahora: () => ahora })
       const r = await pedirR('POST', '/api/registro', undefined, { correo: 'premios@test.cl', clave: 'clave-segura', nombreVisible: 'Mamá', rol: 'apoderado' })
       P = r.body.token
+      await pedirR('PUT', '/api/mi-pin', P, { pin: '2580', clave: 'clave-segura' })
       ninoId = (await pedirR('POST', '/api/perfiles', P, { apodo: 'Pía', icono: '🐝', usuario: 'pia', clave: 'pia123' })).body.id
       K = (await pedirR('POST', '/api/entrar-nino', undefined, { usuario: 'pia', clave: 'pia123' })).body.token
       // El mismo niño en otro dispositivo.
@@ -562,6 +566,8 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
         const id = randomUUID()
         await pedirR('PUT', `/api/textos/${id}`, K, { titulo: 'Mi gato', textoOriginal: frs.join(' '), frases: frs, capitulos: [], origen: 'pegado' })
         const a = (await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, K, { textoId: id })).body
+        // Lo que sube el niño paga después de que un adulto lo autoriza con su PIN.
+        expect((await pedirR('POST', `/api/asignaciones/${a.id}/autorizar`, K, { pin: '2580' })).body.autorizacion).toBe('autorizada')
         return { textoId: id, asignacionId: a.id as string }
       }
       const leerTodo = async (asignacionId: string) => {
@@ -578,6 +584,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       // Quitar el libro de la biblioteca y volver a agregarlo.
       expect((await pedirR('DELETE', `/api/asignaciones/${otraVez.asignacionId}`, K)).status).toBe(200)
       const reagregada = (await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, K, { textoId: otraVez.textoId })).body
+      await pedirR('POST', `/api/asignaciones/${reagregada.id}/autorizar`, K, { pin: '2580' })
       expect(await leerTodo(reagregada.id)).toBe(0)
       // Un texto de verdad distinto sí paga.
       const nuevo = await subir(['Mi perro se llama Bobi.', 'Bobi corre.', 'Bobi salta alto.'])
@@ -652,6 +659,252 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       const extraño = (await pedirR('POST', '/api/registro', undefined, { correo: 'otro-premios@test.cl', clave: 'clave-segura' })).body.token
       expect((await avance(asignacionId, 1, extraño)).status).toBe(403)
       expect((await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, extraño, { cantidad: 5, motivo: 'x' })).status).toBe(403)
+    })
+  })
+  // ── Textos propios: el niño los agrega, un adulto los autoriza con su PIN ──
+  describe('textos propios con PIN del adulto', () => {
+    let ahora = Date.now()
+    let appPin: Awaited<ReturnType<typeof crearApp>>
+    const pedirP = async (metodo: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, token?: string, payload?: object): Promise<Respuesta> => {
+      const r = await appPin.inject({ method: metodo, url, payload, headers: token ? { authorization: `Bearer ${token}` } : {} })
+      return { status: r.statusCode, body: r.body ? JSON.parse(r.body) : null }
+    }
+    let M: string, M2: string, Z: string, J: string, ninoId: string
+    const PIN = '4826'
+    const PIN2 = '93715'
+    let op = 0
+    const nuevoOp = () => `pin-${randomUUID()}-${++op}`
+    const saldo = async () => (await pedirP('GET', `/api/perfiles/${ninoId}`, M)).body.monedas as number
+    let n = 0
+    const frasesUnicas = (k: number) => {
+      const t = ++n
+      return Array.from({ length: k }, (_, i) => `Mi texto${t} dice cosa${i} bonita.`)
+    }
+    /** El niño escribe un texto y lo agrega a su biblioteca. */
+    const textoDelNino = async (frases = frasesUnicas(3), extra: object = {}) => {
+      const id = randomUUID()
+      expect((await pedirP('PUT', `/api/textos/${id}`, J, { titulo: 'Mi cuento', textoOriginal: frases.join(' '), frases, capitulos: [], origen: 'pegado' })).status).toBe(200)
+      const a = await pedirP('POST', `/api/perfiles/${ninoId}/asignaciones`, J, { textoId: id, ...extra })
+      expect(a.status).toBe(200)
+      return { textoId: id, asignacion: a.body }
+    }
+    const autorizar = (asignacionId: string, pin: unknown, token = J, extra: object = {}) => pedirP('POST', `/api/asignaciones/${asignacionId}/autorizar`, token, { pin, ...extra })
+    const avance = (asignacionId: string, hasta: number, operationId = nuevoOp()) =>
+      pedirP('POST', `/api/asignaciones/${asignacionId}/premios`, J, { operationId, tipo: 'avance', hasta, conPremio: true, esperadas: 1 })
+    const reiniciarIntentos = () => pool.query('delete from intentos_pin where perfil_id = $1', [ninoId])
+
+    beforeAll(async () => {
+      appPin = await crearApp({ ahora: () => ahora })
+      M = (await pedirP('POST', '/api/registro', undefined, { correo: 'mama-pin@test.cl', clave: 'clave-mama-1', nombreVisible: 'Mamá' })).body.token
+      ninoId = (await pedirP('POST', '/api/perfiles', M, { apodo: 'Juan', icono: '🐢', usuario: 'juanpin', clave: 'juan123' })).body.id
+      J = (await pedirP('POST', '/api/entrar-nino', undefined, { usuario: 'juanpin', clave: 'juan123' })).body.token
+      Z = (await pedirP('POST', '/api/registro', undefined, { correo: 'extrano-pin@test.cl', clave: 'clave-extrana' })).body.token
+    })
+    afterAll(async () => {
+      await appPin?.close()
+    })
+
+    it('el niño agrega su texto sin PIN: queda pendiente, en el nivel sugerido, y lo que diga la app no cuenta', async () => {
+      const { asignacion } = await textoDelNino(frasesUnicas(3), { nivel: 4, autorizacion: 'autorizada' })
+      expect(asignacion).toMatchObject({ autorizacion: 'pendiente', autorizadaEn: null })
+      expect(asignacion.nivel).not.toBe(4)
+      const lista = (await pedirP('GET', `/api/perfiles/${ninoId}/asignaciones`, J)).body
+      expect(lista.find((a: { id: string }) => a.id === asignacion.id).autorizacion).toBe('pendiente')
+      // Los cuentos de Ciempi están autorizados.
+      expect(lista.filter((a: { autorizacion: string }) => a.autorizacion === 'autorizada').length).toBe(CUENTOS.length)
+    })
+
+    it('pendiente: lo puede leer y guardar su avance, pero no paga (ni con un cliente que se salta el paso, ni con una APK antigua)', async () => {
+      const { asignacion } = await textoDelNino()
+      const antes = await saldo()
+      expect((await pedirP('PUT', `/api/asignaciones/${asignacion.id}/progreso`, J, { fraseActual: 2, fraseMaxima: 2, estado: 'en_curso', leidoHasta: 2, premiosPorRegistro: true })).status).toBe(200)
+      // Cliente modificado: pide el premio directo, sin pasar por la autorización.
+      const r = await avance(asignacion.id, 1)
+      expect(r.status).toBe(200)
+      expect(r.body).toMatchObject({ otorgadas: 0, motivo: 'sin_autorizar', pagadoHasta: 0 })
+      expect((await pedirP('POST', `/api/asignaciones/${asignacion.id}/premios`, J, { operationId: nuevoOp(), tipo: 'relectura', dia: new Date(ahora).toISOString().slice(0, 10) })).body.otorgadas).toBe(0)
+      // APK antigua: su progreso tampoco paga, y POST /monedas no suma.
+      await pedirP('PUT', `/api/asignaciones/${asignacion.id}/progreso`, J, { fraseActual: 3, fraseMaxima: 3, estado: 'completada', leidoHasta: 3 })
+      expect((await pedirP('POST', `/api/perfiles/${ninoId}/monedas`, J, { cantidad: 6 })).body.monedas).toBe(antes)
+      expect(await saldo()).toBe(antes)
+      const { rows } = await pool.query(`select monedas, detalle->>'motivo' as motivo from premios where asignacion_id = $1`, [asignacion.id])
+      expect(rows.every((f) => f.monedas === 0 && f.motivo === 'sin_autorizar')).toBe(true)
+    })
+
+    it('lo que agrega un adulto no pide nada: queda autorizado y paga', async () => {
+      const id = randomUUID()
+      const frases = frasesUnicas(2)
+      await pedirP('PUT', `/api/textos/${id}`, M, { titulo: 'De mamá', textoOriginal: 'x', frases, capitulos: [], origen: 'pegado' })
+      const a = (await pedirP('POST', `/api/perfiles/${ninoId}/asignaciones`, M, { textoId: id, nivel: 1 })).body
+      expect(a).toMatchObject({ autorizacion: 'autorizada', autorizadaEn: expect.any(String) })
+      const antes = await saldo()
+      expect((await avance(a.id, 1)).body.otorgadas).toBe(1)
+      expect(await saldo()).toBe(antes + 1)
+      // Si el niño vuelve a agregar un libro que ya le dio el adulto, sigue autorizado.
+      expect((await pedirP('POST', `/api/perfiles/${ninoId}/asignaciones`, J, { textoId: id })).body.autorizacion).toBe('autorizada')
+    })
+
+    it('sin PIN creado no se puede autorizar (y no cuenta como intento); crear el PIN pide la contraseña y un PIN no obvio', async () => {
+      const { asignacion } = await textoDelNino()
+      const r = await autorizar(asignacion.id, '1234')
+      expect(r.status).toBe(409)
+      expect(r.body.error).toMatch(/PIN/)
+      expect((await pedirP('GET', '/api/mi-pin', M)).body).toEqual({ tienePin: false, cambiadoEn: null })
+      // El niño no puede crear ni ver el PIN.
+      expect((await pedirP('PUT', '/api/mi-pin', J, { pin: '7777', clave: 'juan123' })).status).toBe(403)
+      expect((await pedirP('GET', '/api/mi-pin', J)).status).toBe(403)
+      expect((await pedirP('PUT', '/api/mi-pin', M, { pin: PIN, clave: 'mala-mala-1' })).status).toBe(403)
+      for (const malo of ['12', 'abcd', '1111', '1234', '98765', '123456789']) {
+        expect((await pedirP('PUT', '/api/mi-pin', M, { pin: malo, clave: 'clave-mama-1' })).status).toBe(400)
+      }
+      expect((await pedirP('PUT', '/api/mi-pin', M, { pin: PIN, clave: 'clave-mama-1' })).body).toEqual({ tienePin: true })
+      expect((await pedirP('GET', '/api/mi-pin', M)).body.tienePin).toBe(true)
+      // Se guarda con scrypt, nunca en claro.
+      const { rows } = await pool.query(`select pin_hash from cuentas c join usuarios u on u.id = c.id where u.correo = 'mama-pin@test.cl'`)
+      expect(rows[0].pin_hash).toMatch(/^scrypt\$[^$]+\$[^$]+$/)
+      expect(rows[0].pin_hash).not.toContain(PIN)
+      const { rows: intentos } = await pool.query('select fallos from intentos_pin where perfil_id = $1', [ninoId])
+      expect(intentos[0]?.fallos ?? 0).toBe(0)
+    })
+
+    it('el niño llama al endpoint de autorización sin el PIN, o con uno equivocado: no se autoriza', async () => {
+      await reiniciarIntentos()
+      const { asignacion } = await textoDelNino()
+      const sinPin = await autorizar(asignacion.id, undefined)
+      expect(sinPin.status).toBe(403)
+      const malo = await autorizar(asignacion.id, '0000')
+      expect(malo.status).toBe(403)
+      expect(malo.body.intentosRestantes).toBe(3)
+      // Basura en el PIN o en el nivel no rompe nada.
+      expect((await autorizar(asignacion.id, { $ne: '' })).status).toBe(403)
+      expect((await autorizar(asignacion.id, PIN, J, { nivel: 9 })).status).toBe(400)
+      expect((await pedirP('GET', `/api/perfiles/${ninoId}/asignaciones`, J)).body.find((a: { id: string }) => a.id === asignacion.id).autorizacion).toBe('pendiente')
+      // Tampoco puede cambiar el nivel él mismo.
+      expect((await pedirP('PUT', `/api/asignaciones/${asignacion.id}/nivel`, J, { nivel: 2 })).status).toBe(403)
+    })
+
+    it('fuerza bruta: a los 5 fallos espera 1 min, después 2, 4…; bloqueado, ni el PIN correcto entra', async () => {
+      await reiniciarIntentos()
+      const { asignacion } = await textoDelNino()
+      const respuestas = []
+      for (const pin of ['1000', '1001', '1002', '1003', '1004']) respuestas.push(await autorizar(asignacion.id, pin))
+      expect(respuestas.map((r) => r.status)).toEqual([403, 403, 403, 403, 429])
+      expect(respuestas[4].body.reintentarEnSegundos).toBe(60)
+      // El correcto, mientras espera: no se revisa (no hay forma de saber si acertó).
+      const bloqueado = await autorizar(asignacion.id, PIN)
+      expect(bloqueado.status).toBe(429)
+      ahora += 61_000
+      expect((await autorizar(asignacion.id, '1005')).body.reintentarEnSegundos).toBe(120)
+      ahora += 121_000
+      expect((await autorizar(asignacion.id, '1006')).body.reintentarEnSegundos).toBe(240)
+      // Reiniciar el servidor no borra los intentos (están en la base).
+      const otraApp = await crearApp({ ahora: () => ahora })
+      const r = await otraApp.inject({ method: 'POST', url: `/api/asignaciones/${asignacion.id}/autorizar`, payload: { pin: PIN }, headers: { authorization: `Bearer ${J}` } })
+      expect(r.statusCode).toBe(429)
+      await otraApp.close()
+      ahora += 241_000
+      expect((await autorizar(asignacion.id, PIN)).body.autorizacion).toBe('autorizada')
+      // Acertar reinicia la cuenta.
+      const { rows } = await pool.query('select fallos from intentos_pin where perfil_id = $1', [ninoId])
+      expect(rows[0].fallos).toBe(0)
+    })
+
+    it('fuerza bruta en paralelo: los intentos se atienden de a uno (como mucho 5 se revisan)', async () => {
+      await reiniciarIntentos()
+      const { asignacion } = await textoDelNino()
+      const pins = Array.from({ length: 20 }, (_, i) => String(5000 + i))
+      const r = await Promise.all(pins.map((pin) => autorizar(asignacion.id, pin)))
+      expect(r.filter((x) => x.status === 403)).toHaveLength(4)
+      expect(r.filter((x) => x.status === 429)).toHaveLength(16)
+      const { rows } = await pool.query('select fallos from intentos_pin where perfil_id = $1', [ninoId])
+      expect(rows[0].fallos).toBe(5)
+      ahora += 3600_000 * 25
+    })
+
+    it('autorizado en el dispositivo del niño: desde ahí paga como libro nuevo, sin pagar lo de antes ni dos veces', async () => {
+      await reiniciarIntentos()
+      const { asignacion } = await textoDelNino(frasesUnicas(3))
+      // Practica mientras espera: lee todo, sin monedas.
+      const opPendiente = nuevoOp()
+      expect((await avance(asignacion.id, 3, opPendiente)).body.otorgadas).toBe(0)
+      await pedirP('PUT', `/api/asignaciones/${asignacion.id}/progreso`, J, { fraseActual: 3, fraseMaxima: 3, estado: 'completada', leidoHasta: 3, premiosPorRegistro: true })
+      const antes = await saldo()
+      const ok = await autorizar(asignacion.id, PIN, J, { nivel: 1 })
+      expect(ok.status).toBe(200)
+      // Lo leído sin autorizar se vuelve a leer: el avance vuelve a lo pagado (0).
+      expect(ok.body).toMatchObject({ autorizacion: 'autorizada', nivel: 1, leidoHasta: 0, pagadoHasta: 0 })
+      // Repetir la autorización no hace nada; el pedido de antes repetido no paga.
+      expect((await autorizar(asignacion.id, '0000')).body.autorizacion).toBe('autorizada')
+      expect((await avance(asignacion.id, 3, opPendiente)).body).toMatchObject({ estado: 'repetido', otorgadas: 0 })
+      let ganadas = 0
+      for (let h = 1; h <= 3; h++) ganadas += (await avance(asignacion.id, h)).body.otorgadas
+      expect(ganadas).toBeGreaterThan(0)
+      expect(await saldo()).toBe(antes + ganadas)
+      // Leído otra vez, no vuelve a pagar.
+      for (let h = 1; h <= 3; h++) expect((await avance(asignacion.id, h)).body.otorgadas).toBe(0)
+      const { rows } = await pool.query(`select autorizada_por from asignaciones where id = $1`, [asignacion.id])
+      const { rows: mama } = await pool.query(`select id from usuarios where correo = 'mama-pin@test.cl'`)
+      expect(rows[0].autorizada_por).toBe(mama[0].id)
+      // El PIN no queda en ninguna parte del registro.
+      const { rows: registro } = await pool.query(`select count(*)::int as n from premios where detalle::text like $1`, [`%${PIN}%`])
+      expect(registro[0].n).toBe(0)
+      ahora += 3600_000
+    })
+
+    it('si el niño cambia el contenido de un texto ya autorizado, vuelve a quedar pendiente (cambiar solo el título, no)', async () => {
+      const frases = frasesUnicas(2)
+      const { textoId, asignacion } = await textoDelNino(frases)
+      await autorizar(asignacion.id, PIN)
+      const guardar = (fs: string[], titulo = 'Mi cuento') => pedirP('PUT', `/api/textos/${textoId}`, J, { titulo, textoOriginal: fs.join(' '), frases: fs, capitulos: [], origen: 'pegado' })
+      await guardar(frases, 'Otro título')
+      const estado = async () => (await pedirP('GET', `/api/perfiles/${ninoId}/asignaciones`, J)).body.find((a: { id: string }) => a.id === asignacion.id).autorizacion
+      expect(await estado()).toBe('autorizada')
+      await guardar(Array(300).fill('Mariposa amarilla.'))
+      expect(await estado()).toBe('pendiente')
+      expect((await avance(asignacion.id, 1)).body.otorgadas).toBe(0)
+    })
+
+    it('el adulto ve los pendientes de sus niños y autoriza desde su panel con su PIN; otro adulto del niño, con el suyo', async () => {
+      const { asignacion } = await textoDelNino()
+      const lista = (await pedirP('GET', '/api/autorizaciones', M)).body
+      const item = lista.find((x: { asignacion: { id: string } }) => x.asignacion.id === asignacion.id)
+      expect(item).toMatchObject({ perfil: { id: ninoId, apodo: 'Juan' }, texto: { titulo: 'Mi cuento', frases: 3 }, hayPin: true })
+      expect(item.texto.muestra).toHaveLength(3)
+      // El niño ve sus propios pendientes; un extraño no ve nada ni puede autorizar.
+      expect((await pedirP('GET', '/api/autorizaciones', J)).body.length).toBeGreaterThan(0)
+      expect((await pedirP('GET', '/api/autorizaciones', Z)).body).toEqual([])
+      expect((await autorizar(asignacion.id, PIN, Z)).status).toBe(403)
+      // Desde el panel también se pide el PIN.
+      expect((await autorizar(asignacion.id, undefined, M)).status).toBe(403)
+      expect((await autorizar(asignacion.id, PIN, M, { nivel: 3 })).body).toMatchObject({ autorizacion: 'autorizada', nivel: 3 })
+      // Un segundo adulto (apoderado) con su propio PIN.
+      M2 = (await pedirP('POST', '/api/registro', undefined, { correo: 'papa-pin@test.cl', clave: 'clave-papa-1' })).body.token
+      const inv = (await pedirP('POST', `/api/perfiles/${ninoId}/invitaciones`, M)).body.codigo
+      await pedirP('POST', '/api/invitaciones/canjear', M2, { codigo: inv })
+      await pedirP('PUT', '/api/mi-pin', M2, { pin: PIN2, clave: 'clave-papa-1' })
+      await reiniciarIntentos()
+      const otro = await textoDelNino()
+      expect((await autorizar(otro.asignacion.id, PIN2)).body.autorizacion).toBe('autorizada')
+      // El PIN de un adulto no sirve para un niño que no es suyo.
+      const ajeno = (await pedirP('POST', '/api/perfiles', Z, { apodo: 'Otro', icono: '🐙', usuario: 'otropin', clave: 'otro123' })).body.id
+      const O = (await pedirP('POST', '/api/entrar-nino', undefined, { usuario: 'otropin', clave: 'otro123' })).body.token
+      await pedirP('PUT', '/api/mi-pin', Z, { pin: '86420', clave: 'clave-extrana' })
+      const tid = randomUUID()
+      await pedirP('PUT', `/api/textos/${tid}`, O, { titulo: 'x', textoOriginal: 'x', frases: ['Hola mundo.'], capitulos: [], origen: 'pegado' })
+      const asig = (await pedirP('POST', `/api/perfiles/${ajeno}/asignaciones`, O, { textoId: tid })).body
+      expect((await autorizar(asig.id, PIN, O)).status).toBe(403)
+      expect((await autorizar(asig.id, '86420', O)).body.autorizacion).toBe('autorizada')
+    })
+
+    it('nada más del niño queda bloqueado: ajustes, cuentos, tienda, borrar su texto pendiente', async () => {
+      const { textoId } = await textoDelNino()
+      expect((await pedirP('PUT', `/api/perfiles/${ninoId}/ajustes`, J, { ajustes: { tamanoLetra: 48 } })).status).toBe(200)
+      const cuento = (await pedirP('GET', `/api/perfiles/${ninoId}/asignaciones`, J)).body.find((a: { textoId: string; nivel: number }) => a.nivel === 2 && CUENTOS.some((c) => c.id === a.textoId))
+      const antes = await saldo()
+      expect((await avance(cuento.id, 1)).body.otorgadas).toBeGreaterThan(0)
+      expect(await saldo()).toBeGreaterThan(antes)
+      expect((await pedirP('POST', `/api/perfiles/${ninoId}/comprar`, J, { itemId: 'comida-frutilla' })).status).not.toBe(403)
+      expect((await pedirP('DELETE', `/api/textos/${textoId}`, J)).status).toBe(200)
     })
   })
 })

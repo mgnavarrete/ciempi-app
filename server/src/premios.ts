@@ -4,6 +4,7 @@ import type { NivelLectura } from '../../src/dominio/tipos.ts'
 import { REGLAS_MONEDAS } from '../../src/lectura/monedas.ts'
 import { calcularPremio, combinarEstados, normalizarParaHuella, revisarRitmo, type EstadoPremios, type SolicitudPremio } from '../../src/lectura/premios.ts'
 import { vistaPorNivel, type VistaPorNivel } from '../../src/lenguaje/unidades.ts'
+import { sinAutorizar } from './autorizacion.ts'
 
 /**
  * Registro de premios (ledger). Las monedas por leer las calcula el servidor
@@ -152,6 +153,8 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
   const { rows: asignaciones } = await c.query('select * from asignaciones where id = $1 and perfil_id = $2 for update', [p.asignacionId, p.perfilId])
   const a = asignaciones[0]
   if (!a) throw new SinAsignacion()
+  // Texto propio del niño que un adulto todavía no autoriza con su PIN: se lee, pero no paga (ver autorizacion.ts).
+  if (a.autorizacion === 'pendiente') return sinAutorizar(c, p, perfil.monedas, a)
   const { rows: textos } = await c.query('select id, origen, frases, capitulos, parrafos, huella, actualizado_en from textos where id = $1', [a.texto_id])
   const t = textos[0]
   const clave = await claveDe(c, t)
