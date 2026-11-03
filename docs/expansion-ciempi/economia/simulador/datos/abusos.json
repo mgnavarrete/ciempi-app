@@ -1,0 +1,42 @@
+[
+ {
+  "id": "n2-sin-tope",
+  "descripcion": "El niño agrega un texto de 300 oraciones de 2 palabras largas (\"Mariposa amarilla.\"). El nivel sugerido es 2, que no tiene tope por libro.",
+  "texto": "Mariposa amarilla. Mariposa amarilla. Mariposa amarilla. Mar…",
+  "nivelSugerido": 2,
+  "nivel": 2,
+  "unidades": 300,
+  "palabras": 600,
+  "monedas": 305
+ },
+ {
+  "id": "n0-corto",
+  "descripcion": "El niño agrega un texto de 10 frases de una sílaba (\"Sol.\"). Nivel 0, tope 10.",
+  "texto": "Sol.\nSol.\nSol.\nSol.\nSol.\nSol.\nSol.\nSol.\nSol.\nSol.",
+  "nivelSugerido": 0,
+  "nivel": 0,
+  "unidades": 10,
+  "palabras": 10,
+  "monedas": 10
+ },
+ {
+  "id": "n4-una-frase",
+  "descripcion": "Un adulto asigna en nivel 4 un texto de una sola frase: pasa el 25, 50, 75 y 100 % de una vez.",
+  "texto": "El sol sale.",
+  "nivel": 4,
+  "nivelSugerido": 0,
+  "unidades": 1,
+  "palabras": 3,
+  "monedas": 40
+ },
+ {
+  "id": "n3-cuatro-frases",
+  "descripcion": "Un adulto asigna en nivel 3 un texto de 4 frases cortas en 4 párrafos: 4 monedas por párrafo.",
+  "texto": "Sol.\n\nLuna.\n\nMar.\n\nPan.",
+  "nivel": 3,
+  "nivelSugerido": 0,
+  "unidades": 4,
+  "palabras": 4,
+  "monedas": 15
+ }
+]
