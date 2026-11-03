@@ -120,7 +120,10 @@ export function registrarRutasPin(app: FastifyInstance, d: DependenciasPin) {
         .header('Retry-After', String(espera))
         .send({ error: 'Demasiados intentos con el PIN. Hay que esperar un poco para volver a probar.', reintentarEnSegundos: espera })
     }
-    if (v.tipo === 'incorrecto') return reply.code(403).send({ error: 'Ese PIN no es. Prueba otra vez.', intentosRestantes: v.intentosRestantes })
+    if (v.tipo === 'incorrecto') {
+      const quedan = v.intentosRestantes === 1 ? 'Queda 1 intento antes de tener que esperar.' : `Quedan ${v.intentosRestantes} intentos antes de tener que esperar.`
+      return reply.code(403).send({ error: `Ese PIN no es. ${quedan}`, intentosRestantes: v.intentosRestantes })
+    }
     return d.aAsignacion(r.fila!)
   }
 

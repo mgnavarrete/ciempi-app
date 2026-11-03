@@ -57,7 +57,7 @@ export function DialogoPin(props: {
             Cerrar
           </button>
         </div>
-        {props.muestra && props.muestra.length > 0 && <blockquote className="rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-tinta">{props.muestra.join(' ')}…</blockquote>}
+        {props.muestra && props.muestra.length > 0 && <blockquote className="rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-tinta">{props.muestra.join(' ')}</blockquote>}
         <label className="flex flex-col gap-1">
           <span className="text-sm font-bold text-tinta-suave">PIN del adulto</span>
           <input
