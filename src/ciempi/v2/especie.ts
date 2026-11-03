@@ -41,6 +41,8 @@ export interface FormaCuerpo {
    * maestro guarda piezas extra (el segmento D) siempre se recompone.
    */
   siempreClonar: boolean
+  /** Margen del encuadre a la izquierda del centro de la cola (Ciempi: 110; una cola con punta necesita más). */
+  margenCola?: number
 }
 
 /** Puntos de unión fijos: la cabeza de todas las especies es la de Ciempi. */
@@ -102,8 +104,8 @@ export const FORMA_CIEMPI: FormaCuerpo = {
  * D (5, guardado aparte en el maestro). Los cuatro centrales tienen el mismo
  * tamaño y altura de unión; D reutiliza la pata de A.
  */
-const formaModular = (y: number, sep: number, yCola: number, sepCola: number): FormaCuerpo => ({
-  ciclo: [1, 2, 3, 5],
+const formaModular = (y: number, sep: number, yCola: number, sepCola: number, margenCola: number, ciclo = [1, 2, 3, 5]): FormaCuerpo => ({
+  ciclo,
   cola: 0,
   frente: 4,
   xFrente: 558,
@@ -112,7 +114,11 @@ const formaModular = (y: number, sep: number, yCola: number, sepCola: number): F
   xMaestro: { 0: 187, 1: 289, 2: 390, 3: 477, 4: 558, 5: 289 },
   pieDeRol: { 0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 1 },
   siempreClonar: true,
+  margenCola,
 })
+
+/** Máscaras que cubren toda la cabeza (fullFace en el catálogo): tapan rasgos propios de la cabeza. */
+export const MASCARAS_COMPLETAS = ['cabeza:b07-ia-robot', 'cabeza:b07-ia-espiritu', 'cabeza:b12-araluz']
 
 const ADAPTABLES_COMUNES: Partial<Record<Parte, Adaptacion>> = {
   pies: { como: 'El calzado se pone sobre la pata propia: mismo tobillo y mismo giro que las zapatillas de Ciempi.' },
@@ -138,13 +144,20 @@ export const ESPECIES: Record<EspecieId, Especie> = {
     item: 'especie:dragon',
     nombre: 'Ciempi Dragón',
     estado: 'laboratorio — pendiente de aprobación',
-    forma: formaModular(402, 92, 400, 104),
+    forma: formaModular(402, 92, 400, 104, 175),
     adaptables: ADAPTABLES_COMUNES,
     exclusivos: [
       { id: 'espalda:dragon-alas', parte: 'espalda', nombre: 'Alitas de dragón', especie: 'dragon' },
     ],
     ocultas: [],
-    rasgosOcultosCon: [],
+    rasgosOcultosCon: [
+      {
+        parte: 'cabeza',
+        ids: MASCARAS_COMPLETAS,
+        rasgos: ['cuernos', 'hocico'],
+        motivo: 'La máscara completa cubre la cabeza: cuernos y hocico quedarían asomando o encima del disfraz.',
+      },
+    ],
     manifiesto: 'docs/rediseno-ciempi/laboratorio-transformaciones/recursos/dragon/manifiesto.json',
   },
   cuncuna: {
@@ -152,11 +165,15 @@ export const ESPECIES: Record<EspecieId, Especie> = {
     item: 'especie:cuncuna',
     nombre: 'Ciempi Cuncuna',
     estado: 'laboratorio — pendiente de aprobación',
-    forma: formaModular(404, 88, 402, 100),
+    forma: formaModular(404, 88, 402, 100, 180, [2, 3, 5, 1]),
+    // Ciclo B→C→D→A: cola y frente son lila, así el primer central es menta y se alterna lila/menta.
     adaptables: ADAPTABLES_COMUNES,
     exclusivos: [],
     ocultas: [],
-    rasgosOcultosCon: [],
+    rasgosOcultosCon: [
+      { parte: 'cabeza', ids: '*', rasgos: ['penacho'], motivo: 'El penacho ocupa la coronilla: bajo gorros y máscaras se guarda para no atravesarlos.' },
+      { parte: 'pelo', ids: '*', rasgos: ['penacho'], motivo: 'Un peinado reemplaza al penacho en la coronilla.' },
+    ],
     manifiesto: 'docs/rediseno-ciempi/laboratorio-transformaciones/recursos/cuncuna/manifiesto.json',
   },
 }

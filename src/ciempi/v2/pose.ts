@@ -28,7 +28,7 @@ export function escena(svg:string,n:number,prefix:string,forma?:FormaCuerpo):Esc
  }
  const positions=posiciones(n,forma);
  const backEdges=[...doc.querySelectorAll('[data-costume^="b08-"] image,[data-bag] image')].map(e=>Number(e.getAttribute('x'))-8);
- const left=!clona?0:Math.min(550,(positions[0]?.x??650)-110,...backEdges),right=1000;
+ const left=!clona?0:Math.min(550,(positions[0]?.x??650)-(forma?.margenCola??110),...backEdges),right=1000;
  doc.documentElement.setAttribute('data-segments',String(n));isolate(doc.documentElement,prefix+'-');
  return {html:[...doc.documentElement.childNodes].filter(e=>e.nodeType===1&&!['title','desc'].includes((e as Element).localName)).map(e=>new XMLSerializer().serializeToString(e)).join(''),viewBox:`${left} 0 ${right-left} 650`,headX:736,left,right}
 }
