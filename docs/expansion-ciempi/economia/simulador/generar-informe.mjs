@@ -153,8 +153,8 @@ const filasSesionMd = (id) =>
 const cabSesion = ['Perfil', '10 min', '15 min', '20 min', '30 min', 'Monedas/min (15)', 'Cuentos terminados (15)', 'Unidades leídas (15)']
 
 // Comparación de modelos
-const orden = ['M0', 'PREV', 'A', 'B', 'C', 'D', 'E']
-const comprension = { M0: '3 — «cada frase da una moneda», pero el tope repartido y la regla del 80 % no se entienden', PREV: '3 — igual que hoy', A: '3 — igual que hoy, con números distintos por nivel', B: '4 — logros con nombre («¡ya conoces 30 sílabas!»)', C: '5 — una barra que se llena leyendo', D: '3 — «las frases largas dan más»; no se ve por qué', E: '4 — «cada frase da monedas, las largas más; terminar el cuento da premio; la barra de lectura da extra»' }
+const orden = ['M0', 'PREV', 'A', 'B', 'C', 'D', 'E', 'E2']
+const comprension = { M0: '3 — «cada frase da una moneda», pero el tope repartido y la regla del 80 % no se entienden', PREV: '3 — igual que hoy', A: '3 — igual que hoy, con números distintos por nivel', B: '4 — logros con nombre («¡ya conoces 30 sílabas!»)', C: '5 — una barra que se llena leyendo', D: '3 — «las frases largas dan más»; no se ve por qué', E: '4 — «cada frase da monedas, las largas más; terminar el cuento da premio; la barra de lectura da extra»', E2: '4 — «cada frase que terminas da monedas; terminar el cuento, aprender sílabas nuevas y releer mejor dan premios»' }
 const peorAbuso = (m) => m.abuso.reduce((a, b) => (b.porMinuto > a.porMinuto ? b : a))
 const acum = (id, perfil, k = 144) => M[id].campanas[perfil].relee.curvaMediana[k - 1]
 const filasModelos = orden.map((id) => {
@@ -191,6 +191,52 @@ const filasSesionesMd = (id, modo) =>
     }),
   ])
 const cabSesiones = ['Artículo · precio', ...P.map((p) => p.id)]
+
+// Escenarios de precio (propuesta v3, no aplicada)
+const celdaSes = (v, html) => (v.p50 == null ? (html ? '<span class="malo">no alcanza</span>' : 'no alcanza') : html ? `${v.p50} <span class="tenue">(${v.p10}–${ses(v.p90)})</span>` : `${v.p50} (${v.p10}–${ses(v.p90)})`)
+const filasPrecios = (id, modo, html = true) =>
+  R.escenariosPrecio.map((a) => [`${html ? esc(a.nombre) : a.nombre} · ${a.precio}`, ...P.map((p) => celdaSes(M[id].campanas[p.id][modo].sesionesParaPrecio[a.id], html))])
+
+// Cuncuna: sesiones hasta 4/6/8 cuentos distintos y hasta los minutos activos (independiente del modelo; se usa E)
+const cun = (p) => M.E2.campanas[p.id].relee.sesionesHastaCuentos
+const filasCuncuna = (html = true) =>
+  P.map((p) => [
+    `${p.id}`,
+    ...[4, 6, 8].map((u) => {
+      const v = cun(p)[u]
+      return `${celdaSes(v, html)}${v.nunca ? ` · ${html ? '<span class="tenue">' : ''}${num(v.nunca * 100, 1)} % nunca${html ? '</span>' : ''}` : ''}`
+    }),
+    celdaSes(cun(p).activoCuncuna, html),
+  ])
+const cabCuncuna = ['Perfil', '4 cuentos distintos', '6 cuentos distintos', '8 cuentos (nivel completo)', '60 min de lectura activa']
+const filasLento = (html = true) =>
+  ['M0', 'PREV', 'A', 'B', 'C', 'D', 'E', 'E2'].flatMap((id) =>
+    M[id].p0Lento.map((l) => [
+      `${html ? esc(M[id].nombre) : M[id].nombre} · sesiones de ${l.minutos} min${l.marcapaginas ? ' con marcapáginas' : ''}`,
+      num(l.monedasEn20.p50),
+      num(l.monedasEn60.p50),
+      l.sesionesHasta6Cuentos.p50 == null ? (html ? '<span class="malo">nunca</span>' : 'nunca') : `${l.sesionesHasta6Cuentos.p50} (${l.sesionesHasta6Cuentos.p10}–${ses(l.sesionesHasta6Cuentos.p90)})`,
+      `${l.sesionesHastaMinActivos.p50}`,
+      l.sesionesProgresoCuncuna?.p50 == null ? '—' : `${l.sesionesProgresoCuncuna.p50} (${l.sesionesProgresoCuncuna.p10}–${ses(l.sesionesProgresoCuncuna.p90)})`,
+    ]),
+  )
+const cabLento = ['Modelo · duración', 'Monedas en 20 sesiones', 'Monedas en 60 sesiones', 'Sesiones hasta 6 cuentos', 'Sesiones hasta 60 min activos', 'Sesiones hasta 60 min activos + 30 frases N0']
+
+// Abusos ampliados, fuentes y grilla de P0
+const filasAbusoAmpliado = (html = true) =>
+  ['M0', 'A', 'B', 'D', 'E', 'E2'].flatMap((id) => M[id].abusoAmpliado.map((a, i) => [i ? '' : html ? esc(M[id].nombre) : M[id].nombre, html ? esc(a.accion) : a.accion, num(a.monedas), num(a.minutos, 1), html ? `<b>${num(a.porMinuto, 1)}</b>` : num(a.porMinuto, 1)]))
+const FUENTES = [['unidad', 'Frase leída por 1.ª vez'], ['relectura', 'Relectura'], ['libro', 'Cuento terminado'], ['nuevas', 'Sílabas/palabras nuevas'], ['nivel', 'Nivel completo'], ['mejora', 'Relectura con mejora'], ['bloque', 'Rato de lectura'], ['hitos', 'Hitos %']]
+const filasFuentes = (id, cual) =>
+  P.map((p) => {
+    const f = cual === 'sesion' ? M[id].celdas[p.id][15].fuentes : M[id].campanas[p.id][cual].fuentes
+    const tot = Object.values(f).reduce((a, b) => a + b, 0) || 1
+    return [`${p.id}${cual === 'sesion' ? '' : cual === 'relee' ? ' · campaña releyendo' : ' · campaña con textos nuevos'}`, ...FUENTES.map(([k]) => (cual === 'sesion' ? num(f[k] ?? 0, 1) : `${num((100 * (f[k] ?? 0)) / tot, 0)} %`))]
+  })
+const filasGrilla = (id) => {
+  const g = M[id].campanas.P0
+  const l = M[id].p0Lento[0]
+  return Object.keys(g.relee.sesionesParaGrilla).map((pr) => [pr, ...[g.relee.sesionesParaGrilla[pr], g.subidos.sesionesParaGrilla[pr]].flatMap((v) => [ses(v.p50), ses(v.p90)]), ses(l.sesionesParaGrilla[pr].p50), ses(l.sesionesParaGrilla[pr].p90)])
+}
 
 // Abusos
 const filasAbuso = orden.flatMap((id) => M[id].abuso.map((a, i) => [i ? '' : esc(M[id].nombre), esc(a.accion), num(a.monedas), num(a.minutos, 1), `<b>${num(a.porMinuto, 1)}</b>`]))
@@ -303,7 +349,7 @@ const nav = [
   ['actual', 'Simulación del modelo actual'],
   ['previa', 'La propuesta previa (N0 = 2 por frase, tope 10)'],
   ['modelos', 'Modelos A–E comparados'],
-  ['recomendado', 'Modelo recomendado: E'],
+  ['recomendado', 'Modelo E y E2 (recomendado v3)'],
   ['campana', 'A lo largo de muchas sesiones'],
   ['precios', 'Esfuerzo por artículo y precios'],
   ['abuso', 'Abuso y topes'],
@@ -318,7 +364,7 @@ const html = `<!doctype html>
 <style>${css}</style></head>
 <body><main>
 <h1>Economía de monedas de Ciempi · v3</h1>
-<p class="tenue">Análisis, simulador y propuesta. Semilla ${R.semilla}, ${R.nNinos} niños simulados por celda. Generado por <code>simulador/generar-informe.mjs</code>.</p>
+<p class="tenue">Documento completo: <code>ECONOMIA-V3.md</code>. Análisis, simulador y propuesta. Semilla ${R.semilla}, ${R.nNinos} niños simulados por celda. Generado por <code>simulador/generar-informe.mjs</code>.</p>
 <p class="aviso"><b>Son estimaciones con supuestos, no datos de niños reales.</b> Lo que viene del código del juego (troceo de los 40 cuentos, monedas por unidad, topes, hitos, precios) está verificado ejecutando ese código. Las velocidades de lectura, pausas, tropiezos y tiempos fuera de la lectura son supuestos anclados en normas públicas cuando las hay (ver <a href="#supuestos">Supuestos</a>). Nada se aplicó al juego.</p>
 <nav><ol>${nav.map(([id, t]) => `<li><a href="#${id}">${t}</a></li>`).join('')}</ol></nav>
 
@@ -348,7 +394,7 @@ ${tabla(cabSesion, filasSesion('M0'))}
 
 <h2 id="modelos">5. Modelos A–E comparados</h2>
 <p>A–E suponen hecha la «Fase 0»: relectura corregida, tope del nivel 2 y pagos calculados en el servidor. Columnas P0–P4: monedas (mediana) en 15 min con cuentos nuevos. «Máx/mín por minuto» compara el perfil que más gana por minuto con el que menos (1× = igualdad). Gini sobre las 5 medianas (0 = igualdad).</p>
-${tabla(cabModelos, filasModelos, 'ultima-texto').replace(`<tr><th scope="row">${esc(M.E.nombre)}`, `<tr class="destacada"><th scope="row">${esc(M.E.nombre)}`)}
+${tabla(cabModelos, filasModelos, 'ultima-texto').replace(`<tr><th scope="row">${esc(M.E2.nombre)}`, `<tr class="destacada"><th scope="row">${esc(M.E2.nombre)}`)}
 <figure class="figura">${g2}<figcaption>Brecha de monedas por minuto entre el perfil que más gana y el que menos (sesión de 15 min, cuentos nuevos).</figcaption></figure>
 <h3>Qué hace cada modelo</h3>
 <ul>${orden.map((id) => `<li><b>${esc(M[id].nombre)}</b>: ${esc(M[id].resumen)}</li>`).join('')}</ul>
@@ -361,7 +407,8 @@ ${tabla(cabModelos, filasModelos, 'ultima-texto').replace(`<tr><th scope="row">$
 <li><b>E (híbrido)</b> toma la paga de D, pero nunca paga más que el tiempo activo real. Así arrastrar rápido no rinde y demorarse más de lo esperado tampoco. Encima suma logros pedagógicos y una barra de «rato de lectura» visible. Es parejo (${num(e0.equidad.maxMin, 2)}×, Gini ${num(e0.equidad.gini, 2)}), su peor abuso queda acotado a ~${num(peorAbuso(e0).porMinuto, 1)}/min (lo mismo que leer de verdad) y el gasto total es predecible.</li>
 </ul>
 
-<h2 id="recomendado">6. Modelo recomendado: E · híbrido</h2>
+<h2 id="recomendado">6. Modelo E (checkpoint) y E2 · híbrido ajustado (recomendado v3)</h2>
+<p><b>E2 es la versión recomendada</b> tras la revisión de Fable y las preferencias del usuario (ver <code>ECONOMIA-V3.md</code>). Abajo, primero E tal como quedó en el checkpoint y después lo que cambia en E2.</p>
 <div class="recomendado">
 <p><b>Idea para el niño:</b> «Cada frase que lees le da monedas a Ciempi, y las largas dan más. Al terminar un cuento hay premio. Cada sílaba nueva que aprendes suma. Y mientras lees se va llenando tu barra de lectura.»</p>
 <p><b>Idea para el adulto:</b> se paga el esfuerzo. Cada frase vale lo que a un lector de ese nivel le toma leerla con calma, pero nunca más que el tiempo que el niño estuvo leyendo de verdad. La velocidad no da más monedas, y la lentitud tampoco quita las que corresponden.</p>
@@ -387,6 +434,20 @@ export const valorUnidad = (nivel: NivelLectura, silabas: number, segundosActivo
 <p>Resultado simulado (15 min, cuentos nuevos): ${P.map((p) => `${p.id} ${num(e0.celdas[p.id][15].monedas.p50)}`).join(' · ')} monedas. Con P0 a 10, 15, 20 y 30 min: ${R.duraciones.map((d) => num(e0.celdas.P0[d].monedas.p50)).join(' / ')}. El caso de «20 min por cuento» gana ${num(e0.casoUsuario.monedas.p50)} en 25 min, frente a ${num(m0.casoUsuario.monedas.p50)} hoy.</p>
 </div>
 
+<div class="recomendado">
+<p><b>E2 · qué cambia respecto de E</b></p>
+${tabla(['Parámetro', 'E2', 'Por qué'], [
+  ['Rato de lectura', 'eliminado', 'Decisión del usuario: nunca pagar por tener la app abierta'],
+  ['Pago de la frase completada', '2 × min(minutos activos, 2 × esperado)', 'El que lee hasta 2 veces más lento que la referencia cobra todo su tiempo activo; el tiempo inactivo (pausas &gt; 10 s) no cuenta'],
+  ['Referencia N0', '5 síl/min (antes 7)', 'Revisión de Fable: el lento perdía'],
+  ['Cuento terminado', 'min(3, minutos esperados), si ≥ 1 min y activo ≥ 50 %', 'Revisión de Fable: el +3 fijo favorecía los textos cortos'],
+  ['Relectura', '1,5/min en N0–N1; 1/min en N2–N4', 'Revisión de Fable'],
+  ['Relectura con mejora', '+2 si releyendo entero tropieza menos que en su mejor lectura completa (1 por cuento y día)', 'Preferencia del usuario: premiar el progreso; contra la mejor marca para que no se pueda provocar'],
+  ['Dificultad real', 'en textos que no son de la biblioteca, lo esperado usa el nivel más exigente entre el sugerido y el asignado', 'Revisión de Fable; abuso del texto difícil marcado en N0'],
+], 'texto')}
+<p>Resultado simulado (15 min, cuentos nuevos): ${P.map((p) => `${p.id} ${num(M.E2.celdas[p.id][15].monedas.p50)}`).join(' · ')}. Brecha ${num(M.E2.equidad.maxMin, 2)}×; Gini sobre 2 000 niños ${num(M.E2.equidad.giniNinos, 2)} (E: ${num(M.E.equidad.giniNinos, 2)}; actual: ${num(M.M0.equidad.giniNinos, 2)}). Caso «20 min por cuento»: ${num(M.E2.casoUsuario.monedas.p50)} (E: ${num(M.E.casoUsuario.monedas.p50)}; actual: ${num(M.M0.casoUsuario.monedas.p50)}).</p>
+</div>
+
 <h2 id="campana">7. A lo largo de muchas sesiones</h2>
 <p>Sesiones seguidas de 15 min, una por día. Cuando se acaban los 8 cuentos de su nivel, el niño los relee. En el anexo de tablas está también el escenario en que un adulto sube textos nuevos.</p>
 <figure class="figura">${leyenda([{ nombre: 'P0 · sílabas', color: 1 }, { nombre: 'P4 · fluido', color: 2 }])}${leyenda([{ nombre: 'actual (punteada)' }, { nombre: 'modelo E (continua)' }], ['punteada', 'linea'])}${g3}<figcaption>Monedas acumuladas (mediana) en 40 sesiones de 15 min. Pasa el cursor para ver cada sesión.</figcaption></figure>
@@ -402,30 +463,60 @@ ${tabla(cabSesiones, filasSesiones('M0', 'subidos'))}
 ${tabla(cabSesiones, filasSesiones('E', 'relee'))}
 <h3>Modelo E · un adulto sube textos nuevos</h3>
 ${tabla(cabSesiones, filasSesiones('E', 'subidos'))}
+<h3>Escenarios de precio (propuesta v3, no aplicada) · modelo E2, un adulto sube textos nuevos</h3>
+<p>Escalones propuestos para piezas nuevas: básico ${R.preciosV3.basico}, común ${R.preciosV3.comun}, especial ${R.preciosV3.especial}, obra ${R.preciosV3.obra}; Dragón ${R.preciosV3.dragon}. Ola 1 = 16 piezas universales o adaptables de Fantasía, Naturaleza y Espacio; ola 2 = 4 exclusivos de especie + 3 mochilas (condicionadas a su rediseño) + el Dragón.</p>
+${tabla(cabSesiones, filasPrecios('E2', 'subidos'))}
+<h3>Escenarios de precio · modelo E2, releyendo</h3>
+${tabla(cabSesiones, filasPrecios('E2', 'relee'))}
+<h3>Escenarios de precio · modelo actual, un adulto sube textos nuevos (contraste)</h3>
+${tabla(cabSesiones, filasPrecios('M0', 'subidos'))}
 <h3>Propuesta de precios (no aplicada)</h3>
 ${tabla(
-  ['Qué', 'Rango', 'Recomendado', 'Esfuerzo con E (P0–P4, mediana)', 'Por qué'],
+  ['Qué', 'Rango', 'Recomendado', 'Esfuerzo con E2 (P0–P4, mediana)', 'Por qué'],
   [
-    ['Dragón (transformación comprable)', '100–150', '<b>120</b>', `${P.map((p) => M.E.campanas[p.id].relee.sesionesPara.personaje100.p50 + '–' + M.E.campanas[p.id].relee.sesionesPara.personaje150.p50).join(' / ')} sesiones (100–150)`, 'Meta de 1,5–2 semanas para cualquier perfil (4 sesiones por semana). Es más que un conjunto (53–84) porque cambia la silueta entera. Con el modelo actual, P0 y P1 nunca lo alcanzarían sin textos de adultos'],
-    ['Cuncuna', 'gratis', 'regalo al completar el nivel 0', '—', 'Hace visible el progreso pedagógico. <b>Riesgo:</b> un niño que empieza en el nivel 2 o más nunca la recibiría. Sugerencia: «al completar tu primer nivel», o el nivel 0 en cualquier momento (decisión pendiente)'],
-    ['Piezas de colecciones nuevas (Fantasía, Naturaleza, Espacio)', 'mismos escalones: 6–12 / 14–18 / 20–26 / 28–32', '—', '1–2 sesiones por pieza', 'No inventar escalones nuevos. El precio sigue al trabajo de construcción, no a la rareza'],
-    ['Conjunto de colección', '−20 % sobre lo que falta (regla actual)', '60–90', '3–4 sesiones', 'Igual que los 10 conjuntos actuales'],
-    ['Colección completa (8–10 piezas)', '150–220', '—', '7–10 sesiones', 'Con E, una colección por mes de uso normal'],
+    ['Dragón (transformación comprable)', '60–100', `<b>${R.preciosV3.dragon}</b>`, `${P.map((p) => M.E2.campanas[p.id].subidos.sesionesParaPrecio.dragon80.p50).join(' / ')} sesiones`, 'P0: 4 sesiones (p90 5); P0 muy lento: 5 (p90 6). Una semana de uso. 120 (borrador anterior) pedía 6 a P0 y 8 al muy lento'],
+    ['Cuncuna', 'gratis', '6 cuentos de Ciempi terminados (de N0, o de cualquier nivel para quien parte en N1+), o 60 min activos en N0 + 30 frases distintas de N0', `${P.map((p) => cun(p)[6].p50).join(' / ')} sesiones (cuentos)`, 'P0: 6 sesiones (p90 10). El muy lento con sesiones de 15 min no termina cuentos: llega por la vía progreso + tiempo en 11 sesiones'],
+    ['Piezas nuevas', 'escalones actuales', `${R.preciosV3.basico} / ${R.preciosV3.comun} / ${R.preciosV3.especial} / ${R.preciosV3.obra}`, 'P0: 1 / 1 / 2 / 2 sesiones', 'El precio sigue al trabajo de construcción, no a la rareza. Ninguna pieza nueva por encima de 32'],
+    ['Conjunto de colección', '−20 % sobre lo que falta (regla actual)', '55–85', '2–4 sesiones', 'Igual que los 10 conjuntos actuales'],
+    ['Colección v3', `ola 1 = ${R.escenariosPrecio.find((e) => e.id === 'ola1').precio}; ola 2 + Dragón = ${R.escenariosPrecio.find((e) => e.id === 'ola2').precio}`, 'dos olas', `${P.map((p) => M.E2.campanas[p.id].subidos.sesionesParaPrecio.ola1.p50).join(' / ')} sesiones (ola 1)`, 'Ola 1 con las piezas universales; ola 2 con las especies. Las mochilas solo tras su rediseño'],
   ],
   'texto',
 )}
 
+<h3>Cuncuna: sesiones de 15 min hasta el umbral (mediana, p10–p90)</h3>
+<p>Cuentos distintos de su nivel terminados por primera vez, releyendo cuando se acaban. No depende del modelo de monedas.</p>
+${tabla(cabCuncuna, filasCuncuna())}
+<h3>El lector muy lento («20 min por cuento») a lo largo del tiempo</h3>
+<p>P0 con factor ${0.42} (≈ 2 palabras por minuto). Como el cuento se empieza siempre desde el principio, con sesiones de 15 min <b>nunca termina un cuento</b>: no recibiría la Cuncuna por cuentos ni el premio de libro terminado. Con E sigue ganando monedas porque la relectura del comienzo paga la mitad.</p>
+${tabla(cabLento, filasLento())}
+
+<h3>Esfuerzo de un niño de nivel 0 (P0) por precio · modelo E2</h3>
+<p>Sesiones de 15 min para juntar cada precio desde cero. «Muy lento» = el caso de ~20 min por cuento (factor 0,42), con sesiones de 15 min.</p>
+${tabla(['Precio', 'P0 mediana, releyendo', 'P0 p90, releyendo', 'P0 mediana, textos nuevos', 'P0 p90, textos nuevos', 'Muy lento mediana', 'Muy lento p90'], filasGrilla('E2'))}
+<h3>Lo mismo con el modelo actual (contraste)</h3>
+${tabla(['Precio', 'P0 mediana, releyendo', 'P0 p90, releyendo', 'P0 mediana, textos nuevos', 'P0 p90, textos nuevos', 'Muy lento mediana', 'Muy lento p90'], filasGrilla('M0'))}
+
 <h2 id="abuso">9. Abuso y topes: ¿hace falta un tope diario?</h2>
 <p>«Peor abuso» es la acción repetitiva que más monedas da sin aprender a leer, con los tiempos mínimos que permite el motor. Las cifras de los textos de abuso salen del código real (<code>verificar-abusos.mts</code>).</p>
 ${tabla(['Modelo', 'Acción', 'Monedas', 'Minutos', 'Monedas/min'], filasAbuso, 'texto')}
-<p><b>Recomendación: no poner un tope diario silencioso.</b> Con E, el ingreso máximo ya está acotado a ~2,4 monedas por minuto de actividad real, así que un tope oculto no protege nada y sí castiga sin explicación. En su lugar, todo visible:</p>
+<p><b>Recomendación (decisión del usuario): ningún tope diario silencioso y ninguna «media tasa» después de X minutos.</b> Con E2, el ingreso máximo ya está atado al reloj real: ~2 monedas por minuto, lo mismo que leer. En su lugar, controles que no castigan al que necesita más tiempo:</p>
 <ol>
-<li><b>Pagos calculados en el servidor</b> («Fase 0»). El servidor recalcula <code>min(esperado, activo)</code> con el texto que ya tiene. El tiempo activo que manda el cliente no puede sumar más que el tiempo real transcurrido entre dos reportes. <code>POST /monedas</code> queda solo para adultos y con motivo.</li>
-<li><b>La relectura paga la mitad, y se dice</b>: «Releer también suma: la mitad de monedas».</li>
-<li><b>Rato de lectura con tope visible</b>: 6 al día. Al llenarse aparece «¡Hoy ya leíste un buen rato! Las frases siguen dando monedas». No se apaga nada.</li>
-<li><b>Opcional</b>, si la telemetría muestra sesiones de más de 45–60 min: «Ciempi ya comió mucho hoy». Desde ese punto la tasa baja a la mitad hasta mañana, con aviso visible y nunca a cero. No hace falta por inflación; sirve para no empujar a sesiones largas (ICO Children's Code, estándar 13).</li>
-<li><b>Textos que sube el propio niño</b>: pagan por unidad como cualquier otro, pero no dan premio de libro terminado ni hitos.</li>
+<li><b>Reloj del servidor con los segundos pagados</b> (extensión de <code>revisarRitmo</code> de la rama de seguridad). La app no puede cobrar más rápido que el tiempo real; la ráfaga máxima es de 1 h acumulada (~120 monedas).</li>
+<li><b>Dificultad real</b>: en textos que no son de la biblioteca, lo esperado usa el nivel más exigente entre el sugerido y el asignado.</li>
+<li><b>Huella y duplicados</b>: un texto ya pagado no vuelve a pagar (ya implementado en la rama de seguridad).</li>
+<li><b>Premio de terminar proporcional</b> (min(3, minutos esperados), mínimo 1 min): muchos textos cortos no rinden.</li>
+<li><b>Avisos visibles al adulto y revisión de textos propios</b> (PIN del adulto opcional). Nada se apaga para el niño.</li>
 </ol>
+<p>Nada de esto toca al lector muy lento que lee de verdad: en la simulación, lo pagado nunca supera el 75 % del tiempo real de su sesión, así que el reloj no lo frena nunca.</p>
+
+<h3>Abusos ampliados (revisión independiente)</h3>
+<p>El que abusa no tropieza y no gasta en otra cosa; subir un texto toma ~40 s. «Falsificado»: la app declara el tope de cada frase como tiempo activo (por ejemplo, desde la cola sin conexión). Con el reloj actual de la rama de seguridad (0,1 s por palabra) eso no se frena; con un reloj que se adelanta con los segundos <b>pagados</b>, nunca rinde más que leer.</p>
+${tabla(['Modelo', 'Acción', 'Monedas', 'Minutos', 'Monedas/min'], filasAbusoAmpliado(), 'texto')}
+<h3>E2: de dónde salen las monedas</h3>
+${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'sesion'))}
+<p class="tenue">Primera sesión de 15 min con cuentos nuevos (monedas promedio por fuente). Abajo, la campaña completa (${160} sesiones) releyendo, en %.</p>
+${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'relee'))}
+${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'subidos'))}
 
 <h2 id="riesgos">10. Riesgos y qué medir después</h2>
 <h3>Riesgos</h3>
@@ -434,7 +525,7 @@ ${tabla(['Modelo', 'Acción', 'Monedas', 'Minutos', 'Monedas/min'], filasAbuso, 
 <li><b>Bajan las monedas por sesión de P3 y P4</b> mientras haya cuentos nuevos: de ~${num(m0.celdas.P3[15].monedas.p50)}–${num(m0.celdas.P4[15].monedas.p50)} a ~${num(e0.celdas.P3[15].monedas.p50)}–${num(e0.celdas.P4[15].monedas.p50)}. Un niño que ya conocía la versión actual lo notará. Conviene anunciarlo con el cambio («ahora todo leer suma, también releer») y no quitar nada de lo comprado.</li>
 <li><b>Monedas con fracción.</b> El niño verá a veces +1 y a veces +2. La moneda al final de la pista debe mostrar lo que va a ganar esa frase.</li>
 <li><b>Sílabas y palabras nuevas</b> dependen de la normalización del texto. Hay que contarlas en el servidor y solo en textos que no subió el propio niño.</li>
-<li><b>La Cuncuna ligada al nivel 0</b> deja fuera a quien empieza más arriba.</li>
+<li><b>La Cuncuna ligada a cuentos terminados</b> deja fuera al lector muy lento con sesiones cortas: por eso se propone la vía de 60 min activos.</li>
 <li><b>Los cuentos 21–40 usan marcas registradas.</b> Si se retiran, cada nivel queda con 4 cuentos y los niños pasan antes a releer.</li>
 </ul>
 <h3>Telemetría mínima y respetuosa</h3>
@@ -498,6 +589,34 @@ const tablasMd = [
   md(cabSesiones, filasSesionesMd('E', 'relee')),
   '\n## Sesiones E subidos\n',
   md(cabSesiones, filasSesionesMd('E', 'subidos')),
+  '\n## Precios v3 · E subidos\n',
+  md(cabSesiones, filasPrecios('E', 'subidos', false)),
+  '\n## Precios v3 · E relee\n',
+  md(cabSesiones, filasPrecios('E', 'relee', false)),
+  '\n## Precios v3 · M0 subidos\n',
+  md(cabSesiones, filasPrecios('M0', 'subidos', false)),
+  '\n## Precios v3 · PREV subidos\n',
+  md(cabSesiones, filasPrecios('PREV', 'subidos', false)),
+  '\n## Cuncuna (sesiones de 15 min)\n',
+  md(cabCuncuna, filasCuncuna(false)),
+  '\n## P0 muy lento (factor 0,42)\n',
+  md(cabLento, filasLento(false)),
+  '\n## Precios v3 · E2 subidos\n',
+  md(cabSesiones, filasPrecios('E2', 'subidos', false)),
+  '\n## Precios v3 · E2 relee\n',
+  md(cabSesiones, filasPrecios('E2', 'relee', false)),
+  '\n## Esfuerzo de P0 por precio · E2\n',
+  md(['Precio', 'P0 p50 relee', 'P0 p90 relee', 'P0 p50 nuevos', 'P0 p90 nuevos', 'Muy lento p50', 'Muy lento p90'], filasGrilla('E2')),
+  '\n## Esfuerzo de P0 por precio · M0\n',
+  md(['Precio', 'P0 p50 relee', 'P0 p90 relee', 'P0 p50 nuevos', 'P0 p90 nuevos', 'Muy lento p50', 'Muy lento p90'], filasGrilla('M0')),
+  '\n## E2 por duración\n',
+  md(cabSesion, filasSesionMd('E2')),
+  '\n## Fuentes E2 (15 min, monedas) y campañas (%)\n',
+  md(['Perfil', ...FUENTES.map((f) => f[1])], [...filasFuentes('E2', 'sesion'), ...filasFuentes('E2', 'relee'), ...filasFuentes('E2', 'subidos')]),
+  '\n## Abusos ampliados\n',
+  md(['Modelo', 'Acción', 'Monedas', 'Min', 'Por min'], filasAbusoAmpliado(false)),
+  '\n## Equidad (Gini sobre 2 000 niños)\n',
+  md(['Modelo', 'Gini 5 medianas', 'Gini niños', 'Máx/mín por minuto'], orden.map((id) => [M[id].nombre, num(M[id].equidad.gini, 2), num(M[id].equidad.giniNinos, 2), num(M[id].equidad.maxMin, 2)])),
   '\n## Abuso\n',
   md(['Modelo', 'Acción', 'Monedas', 'Min', 'Por min'], filasAbuso.map((f) => f.map((c) => String(c).replace(/<[^>]+>/g, '')))),
 ].join('\n')

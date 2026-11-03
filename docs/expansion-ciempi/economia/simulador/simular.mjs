@@ -137,7 +137,9 @@ export const A_RELECTURA = { 0: 3, 1: 1, 2: 1, 3: 1, 4: 2 }
 
 /** Sílabas por minuto «de referencia» de cada nivel (modelos D y E). */
 export const REF_SPM = { 0: 7, 1: 22, 2: 60, 3: 105, 4: 165 }
-const esperadoMin = (u, nivel) => u.silabas / REF_SPM[nivel] + 3 / 60
+const esperadoMin = (u, nivel, ref = REF_SPM) => u.silabas / ref[nivel] + 3 / 60
+/** E2: ritmo de referencia con N0 = 5 síl/min (revisión de Fable). */
+export const REF_SPM_E2 = { 0: 5, 1: 22, 2: 60, 3: 105, 4: 165 }
 
 /**
  * Cada modelo dice cuánto paga cada cosa. `reglaRitmo`: si aplica la regla
@@ -219,7 +221,7 @@ export const MODELOS = [
   },
   {
     id: 'E',
-    nombre: 'E · Híbrido (recomendado)',
+    nombre: 'E · Híbrido (versión del checkpoint)',
     resumen: 'D con «lo que sea menor» entre tiempo esperado y tiempo activo real + terminar cuento + sílabas/palabras nuevas (N0–N1) + nivel completo + rato de lectura; relectura a mitad de tasa.',
     reglaRitmo: false,
     tasa: 2,
@@ -235,6 +237,31 @@ export const MODELOS = [
     bloque: { minutos: 5, monedas: 2, maxPorDia: 6 },
     nivelCompleto: 15,
     sinTropiezo: 0,
+  },
+  {
+    id: 'E2',
+    nombre: 'E2 · Híbrido ajustado (recomendado v3)',
+    resumen: 'E ajustado a las preferencias del usuario y a la revisión de Fable: sin rato de lectura pagado; la frase completada paga 2 por minuto activo hasta 2× lo esperado (el lento no pierde); N0 con referencia 5 síl/min; terminar paga min(3, minutos esperados); relectura 1,5 (N0–N1) o 1 (N2–N4) por minuto; +2 por relectura con mejora (menos tropiezos); sílabas/palabras nuevas y nivel completo.',
+    reglaRitmo: false,
+    tasa: 2,
+    usaTiempoReal: true,
+    ref: REF_SPM_E2,
+    // Tope por unidad: 2 × lo esperado. Quien lee hasta 2 veces más lento que la referencia cobra todo su tiempo activo.
+    capFactor: 2,
+    unidad: null,
+    hitos: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+    relecturaTasa: { 0: 1.5, 1: 1.5, 2: 1, 3: 1, 4: 1 },
+    libroTerminado: ({ esperadoLibro, activoLibro }) => (esperadoLibro >= 1 && activoLibro >= 0.5 * esperadoLibro ? Math.min(3, Math.floor(esperadoLibro)) : 0),
+    silabasNuevas: { 0: { cada: 15, monedas: 2, que: 'silabas' }, 1: { cada: 25, monedas: 2, que: 'palabras' } },
+    bloque: null,
+    nivelCompleto: 15,
+    sinTropiezo: 0,
+    // Relectura completa de un cuento con menos tropiezos que su mejor lectura completa anterior: +2 (una por cuento y día).
+    mejora: 2,
+    // Textos que no son de la biblioteca: lo esperado se calcula con el nivel más exigente entre el sugerido y el asignado.
+    dificultadReal: true,
+    // Textos propios: el premio de terminar se da (una vez por huella), con la misma condición de ≥ 1 min esperado.
+    libroPropio: true,
   },
 ]
 
@@ -306,7 +333,7 @@ function tiempoUnidad(n, u, nivel) {
 function sesion(n, modelo, minutos) {
   n.dia++
   n.bloque = { activoMin: 0, dados: 0 }
-  const res = { monedas: 0, unidades: 0, silabas: 0, libros: 0, activoMin: 0, porFuente: { unidad: 0, hitos: 0, libro: 0, nuevas: 0, bloque: 0, nivel: 0, relectura: 0, sinTropiezo: 0 } }
+  const res = { monedas: 0, unidades: 0, silabas: 0, libros: 0, activoMin: 0, porFuente: { unidad: 0, hitos: 0, libro: 0, nuevas: 0, bloque: 0, nivel: 0, relectura: 0, sinTropiezo: 0, mejora: 0 }, pagadoMin: 0, total: 0 }
   const ganar = (m, fuente) => {
     if (!m) return
     res.monedas += m
@@ -326,9 +353,12 @@ function sesion(n, modelo, minutos) {
     // Un cuento siempre empieza desde el comienzo (fraseDeInicio): lo ya leído se relee sin pagar.
     const tramo = { desde: 0, palabras: 0, buen: 0 }
     let tropezoEnLibro = false
+    let tropiezosLibro = 0
     let completo = true
     let activoLibro = 0
-    for (let k = 0; k < libro.totalUnidades; k++) {
+    // Marcapáginas (variante estudiada solo para el lector muy lento): retoma donde iba si no terminó.
+    const inicio = n.marcapaginas && !est.terminado ? Math.min(est.leidoHasta, libro.totalUnidades - 1) : 0
+    for (let k = inicio; k < libro.totalUnidades; k++) {
       const u = libro.unidades[k]
       const tu = tiempoUnidad(n, u, nivel)
       if (t + tu.total > presupuesto) {
@@ -350,7 +380,10 @@ function sesion(n, modelo, minutos) {
           ganar(modelo.bloque.monedas, 'bloque')
         }
       }
-      if (tu.tropieza) tropezoEnLibro = true
+      if (tu.tropieza) {
+        tropezoEnLibro = true
+        tropiezosLibro++
+      }
       const fin = k + 1
       const nuevaUnidad = fin > est.leidoHasta
       if (modelo.reglaRitmo) {
@@ -370,11 +403,12 @@ function sesion(n, modelo, minutos) {
         }
       } else {
         // D y E: cada unidad paga por esfuerzo esperado; E toma el menor entre esperado y activo real.
-        const esperado = esperadoMin(u, nivel)
-        const base = modelo.usaTiempoReal ? Math.min(esperado, tu.activo) : esperado
-        const tasa = nuevaUnidad ? modelo.tasa : modelo.relecturaTasa
+        const esperado = esperadoMin(u, nivel, modelo.ref)
+        const base = modelo.usaTiempoReal ? Math.min((modelo.capFactor ?? 1) * esperado, tu.activo) : esperado
+        const tasa = nuevaUnidad ? modelo.tasa : typeof modelo.relecturaTasa === 'object' ? modelo.relecturaTasa[nivel] : modelo.relecturaTasa
         if (nuevaUnidad) est.leidoHasta = fin
         est.acarreo += tasa * base
+        res.pagadoMin += base
         const m = Math.floor(est.acarreo + 1e-9)
         est.acarreo -= m
         ganar(m, nuevaUnidad ? 'unidad' : 'relectura')
@@ -425,7 +459,8 @@ function sesion(n, modelo, minutos) {
     est.ultimaVez = n.dia
     res.libros++
     if (!yaPremiadoEntero) {
-      const esperadoLibro = libro.unidades.reduce((s, u) => s + esperadoMin(u, nivel), 0)
+      const esperadoLibro = libro.unidades.reduce((s, u) => s + esperadoMin(u, nivel, modelo.ref), 0)
+      est.tropiezosUltima = tropiezosLibro
       ganar(modelo.libroTerminado({ esperadoLibro, activoLibro }), 'libro')
       if (!libro.subido && (est.intentos ?? 0) < 2) n.cuentosResueltos++
       if (modelo.sinTropiezo && !tropezoEnLibro && !n.sinTropiezoPagado) {
@@ -438,6 +473,13 @@ function sesion(n, modelo, minutos) {
         n.nivelCompletoPagado = true
         ganar(modelo.nivelCompleto, 'nivel')
       }
+    } else if (modelo.mejora) {
+      // Contra su MEJOR lectura completa (no la última): tropezar a propósito no permite volver a cobrarla.
+      if (inicio === 0 && est.tropiezosUltima !== undefined && tropiezosLibro < est.tropiezosUltima && est.mejoraDia !== n.dia) {
+        est.mejoraDia = n.dia
+        ganar(modelo.mejora, 'mejora')
+      }
+      if (inicio === 0) est.tropiezosUltima = Math.min(est.tropiezosUltima ?? Infinity, tropiezosLibro)
     } else if (modelo.relectura) {
       // Modelos con premio fijo por relectura (una vez al día por libro, a buen ritmo).
       const ritmoBien = !modelo.reglaRitmo || tramo.buen >= REGLAS.MINIMO_A_BUEN_RITMO * tramo.palabras
@@ -449,6 +491,7 @@ function sesion(n, modelo, minutos) {
     }
   }
   n.unidades += res.unidades
+  res.total = minutos
   return res
 }
 
@@ -484,6 +527,7 @@ function primeraSesion(modelo, perfil, minutos) {
     silabas: resumen(s),
     activoMin: resumen(a),
     fuentes: Object.fromEntries(Object.entries(fuentes).map(([k, v]) => [k, r1(v)])),
+    _muestra: m.map((x) => x / minutos),
   }
 }
 
@@ -491,16 +535,28 @@ function primeraSesion(modelo, perfil, minutos) {
 function campana(modelo, perfil, modo, minutos = 15) {
   const rng = mulberry32(SEMILLA + 77 + perfil.nivel * 1000 + (modo === 'subidos' ? 500 : 0))
   const curvas = []
+  const fuentes = {}
   for (let i = 0; i < N_NINOS; i++) {
     const n = nuevoNino(perfil, rng, modo)
     const acum = []
     let agotado = null
+    // Sesión en que termina su 4.º, 6.º y 8.º cuento distinto de la biblioteca (umbral de la Cuncuna).
+    // Solo mira el contador: no consume azar, así que no cambia las demás cifras.
+    const cuentos = { 4: null, 6: null, 8: null }
+    let activo = 0
+    let activoCuncuna = null
+    let progresoCuncuna = null
     for (let k = 0; k < SESIONES_CAMPANA; k++) {
-      sesion(n, modelo, minutos)
+      const r = sesion(n, modelo, minutos)
+      activo += r.activoMin
+      for (const [f, v] of Object.entries(r.porFuente)) fuentes[f] = (fuentes[f] ?? 0) + v
+      if (activoCuncuna === null && activo >= MINUTOS_ACTIVOS_CUNCUNA) activoCuncuna = k + 1
+      if (progresoCuncuna === null && activo >= MINUTOS_ACTIVOS_CUNCUNA && frasesDistintas(n) >= FRASES_CUNCUNA) progresoCuncuna = k + 1
       acum.push(n.monedas)
       if (agotado === null && n.cuentosResueltos >= cuentosDeNivel(perfil.nivel).length) agotado = k + 1
+      for (const u of [4, 6, 8]) if (cuentos[u] === null && n.cuentosNuevosTerminados >= u) cuentos[u] = k + 1
     }
-    curvas.push({ acum, agotado })
+    curvas.push({ acum, agotado, cuentos, activoCuncuna, progresoCuncuna })
   }
   const curvaMediana = Array.from({ length: SESIONES_CAMPANA }, (_, k) => Math.round(cuantil(curvas.map((c) => c.acum[k]), 0.5)))
   const sesionesPara = (precio) => {
@@ -514,10 +570,107 @@ function campana(modelo, perfil, modo, minutos = 15) {
     }
     return { p10: f(0.1), p50: f(0.5), p90: f(0.9) }
   }
+  const sesionesHastaCuentos = Object.fromEntries(
+    [4, 6, 8].map((u) => {
+      const xs = curvas.map((c) => c.cuentos[u] ?? 1e9)
+      const f = (q) => {
+        const v = cuantil(xs, q)
+        return v >= 1e8 ? null : Math.ceil(v)
+      }
+      return [u, { p10: f(0.1), p50: f(0.5), p90: f(0.9), nunca: curvas.filter((c) => c.cuentos[u] === null).length / curvas.length }]
+    }),
+  )
+  const aCun = curvas.map((c) => c.activoCuncuna ?? 1e9)
+  sesionesHastaCuentos.activoCuncuna = { p10: Math.ceil(cuantil(aCun, 0.1)), p50: Math.ceil(cuantil(aCun, 0.5)), p90: Math.ceil(cuantil(aCun, 0.9)) }
+  const pCun = curvas.map((c) => c.progresoCuncuna ?? 1e9)
+  const fq = (xs, q) => {
+    const v = cuantil(xs, q)
+    return v >= 1e8 ? null : Math.ceil(v)
+  }
+  sesionesHastaCuentos.progresoCuncuna = { p10: fq(pCun, 0.1), p50: fq(pCun, 0.5), p90: fq(pCun, 0.9) }
   return {
     curvaMediana,
     agotaCuentos: resumen(curvas.map((c) => c.agotado ?? SESIONES_CAMPANA + 1)),
     sesionesPara,
+    sesionesHastaCuentos,
+    // Monedas por fuente, promedio por niño en todas las sesiones de la campaña.
+    fuentes: Object.fromEntries(Object.entries(fuentes).map(([k, v]) => [k, r1(v / N_NINOS)])),
+  }
+}
+
+/** Frases (unidades) distintas de cuentos de la biblioteca leídas al menos una vez. */
+const frasesDistintas = (n) => [...n.libros.entries()].reduce((s, [id, e]) => s + (id.startsWith('subido-') ? 0 : e.leidoHasta), 0)
+/** Vía «progreso + tiempo» para la Cuncuna: 60 min activos Y 30 frases distintas de la biblioteca. */
+export const FRASES_CUNCUNA = 30
+
+const f2 = (xs, q) => {
+  const v = cuantil(xs, q)
+  return v >= 1e8 ? null : Math.ceil(v)
+}
+/** Precios para la tabla de esfuerzo de P0 (ECONOMIA-V3.md §9). */
+export const GRILLA_PRECIOS = [6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 30, 32, 36, 40, 50, 60, 70, 80, 90, 100, 120, 150, 180, 200, 250, 300, 360, 400, 500]
+
+/** Vía alternativa propuesta para la Cuncuna: minutos de lectura activa acumulados (ECONOMIA-V3.md §10). */
+export const MINUTOS_ACTIVOS_CUNCUNA = 60
+
+/**
+ * Caso «20 min por cuento» a lo largo del tiempo: P0 muy lento (factor 0,42)
+ * con sesiones de `minutos`. Azar propio (no altera las demás celdas).
+ */
+function campanaLento(modelo, minutos, marcapaginas = false) {
+  const perfil = PERFILES[0]
+  const rng = mulberry32(SEMILLA + 4242 + minutos + (marcapaginas ? 7 : 0))
+  const progresos = []
+  let maxPagadoSobreReloj = 0
+  const finales = []
+  const cuentos6 = []
+  const activosCuncuna = []
+  const curvas = []
+  for (let i = 0; i < N_NINOS; i++) {
+    const n = nuevoNino(perfil, rng, 'relee')
+    n.factor = CASO_USUARIO.factor
+    n.marcapaginas = marcapaginas
+    let prog = null
+    let c6 = null
+    let activo = 0
+    let aCun = null
+    const acum = []
+    for (let k = 0; k < 60; k++) {
+      const r = sesion(n, modelo, minutos)
+      activo += r.activoMin
+      maxPagadoSobreReloj = Math.max(maxPagadoSobreReloj, r.pagadoMin / r.total)
+      if (aCun === null && activo >= MINUTOS_ACTIVOS_CUNCUNA) aCun = k + 1
+      if (prog === null && activo >= MINUTOS_ACTIVOS_CUNCUNA && frasesDistintas(n) >= FRASES_CUNCUNA) prog = k + 1
+      acum.push(n.monedas)
+      if (c6 === null && n.cuentosNuevosTerminados >= 6) c6 = k + 1
+    }
+    curvas.push(acum)
+    finales.push(n.monedas)
+    cuentos6.push(c6 ?? 1e9)
+    activosCuncuna.push(aCun ?? 1e9)
+    progresos.push(prog ?? 1e9)
+  }
+  const sesPrecio = (precio) => {
+    const xs = curvas.map((a) => {
+      const i = a.findIndex((v) => v >= precio)
+      return i < 0 ? 1e9 : i + 1
+    })
+    return { p50: f2(xs, 0.5), p90: f2(xs, 0.9) }
+  }
+  const f = (q) => {
+    const v = cuantil(cuentos6, q)
+    return v >= 1e8 ? null : Math.ceil(v)
+  }
+  return {
+    minutos,
+    marcapaginas,
+    sesionesProgresoCuncuna: { p10: f2(progresos, 0.1), p50: f2(progresos, 0.5), p90: f2(progresos, 0.9) },
+    maxPagadoSobreReloj: r2(maxPagadoSobreReloj),
+    sesionesParaGrilla: Object.fromEntries(GRILLA_PRECIOS.map((p) => [p, sesPrecio(p)])),
+    monedasEn20: resumen(curvas.map((a) => a[19])),
+    monedasEn60: resumen(finales),
+    sesionesHasta6Cuentos: { p10: f(0.1), p50: f(0.5), p90: f(0.9), nunca: r2(cuentos6.filter((x) => x >= 1e8).length / cuentos6.length) },
+    sesionesHastaMinActivos: { p10: Math.ceil(cuantil(activosCuncuna, 0.1)), p50: Math.ceil(cuantil(activosCuncuna, 0.5)), p90: Math.ceil(cuantil(activosCuncuna, 0.9)) },
   }
 }
 
@@ -532,9 +685,47 @@ export const ARTICULOS = [
   { id: 'personaje100', nombre: 'Personaje nuevo (hipotético 100)', precio: 100, real: false },
   { id: 'personaje150', nombre: 'Personaje nuevo (hipotético 150)', precio: 150, real: false },
 ]
+/**
+ * Escenarios de precio (propuesta de ECONOMIA-V3.md §9, NO aplicada): escalones
+ * de la tienda, conjuntos reales, Dragón y la colección v3 en dos olas.
+ * Ola 1 = 16 piezas universales/adaptables de Fantasía, Naturaleza y Espacio;
+ * ola 2 = 4 exclusivos de especie + 3 mochilas (condicionadas a su rediseño).
+ */
+export const PRECIOS_V3 = { basico: 10, comun: 16, especial: 24, obra: 30, dragon: 80 }
+export const COLECCION_V3 = {
+  ola1: [
+    ['F1 Casco suave', 'especial'], ['F2 Acolchado', 'obra'], ['F3 Capa de páginas', 'obra'], ['F4 Botas caballero', 'comun'], ['F5 Antifaz grifo', 'especial'],
+    ['N1 Gorro pétalo', 'comun'], ['N2 Jardín', 'obra'], ['N4 Zuecos hongo', 'comun'], ['N5 Bufanda musgo', 'especial'], ['N6 Antifaz zorro', 'especial'],
+    ['E1 Casco burbuja', 'especial'], ['E2 Traje astral', 'obra'], ['E4 Botas lunares', 'comun'], ['E5 Capa cometa', 'obra'], ['E6 Antenas luz', 'basico'], ['E7 Lentes planeta', 'comun'],
+  ],
+  ola2: [
+    ['F7 Alas de cuento (Dragón)', 'obra'], ['F8 Cresta gema (Dragón)', 'comun'], ['E8 Cola cometa (Dragón)', 'basico'], ['N7 Mechones rocío (Cuncuna)', 'comun'],
+    ['F6 Mochila cofre', 'especial'], ['N3 Mochila hoja', 'especial'], ['E3 Mochila cohete', 'especial'],
+  ],
+}
+const sumaOla = (ola) => ola.reduce((s, [, e]) => s + PRECIOS_V3[e], 0)
+export const ESCENARIOS_PRECIO = [
+  { id: 'basico', nombre: 'Escalón básico', precio: PRECIOS_V3.basico },
+  { id: 'comun', nombre: 'Escalón común', precio: PRECIOS_V3.comun },
+  { id: 'especial', nombre: 'Escalón especial', precio: PRECIOS_V3.especial },
+  { id: 'obra', nombre: 'Escalón obra (traje, capa)', precio: PRECIOS_V3.obra },
+  { id: 'conjMin', nombre: 'Conjunto real más barato (Draco, Ratón)', precio: 53 },
+  { id: 'conjMax', nombre: 'Conjunto real más caro (Espíritu, AraLuz)', precio: 84 },
+  { id: 'dragon60', nombre: 'Dragón a 60', precio: 60 },
+  { id: 'dragon80', nombre: 'Dragón a 80 (recomendado)', precio: 80 },
+  { id: 'dragon100', nombre: 'Dragón a 100', precio: 100 },
+  { id: 'dragon120', nombre: 'Dragón a 120 (borrador anterior)', precio: 120 },
+  { id: 'ola1', nombre: 'Colección v3, ola 1 (16 piezas)', precio: sumaOla(COLECCION_V3.ola1) },
+  { id: 'ola2', nombre: 'Colección v3, ola 2 (7 piezas) + Dragón', precio: sumaOla(COLECCION_V3.ola2) + PRECIOS_V3.dragon },
+]
+
 // Catálogo completo comprable: piezas de pago, descontando las familias de colores (se compran una vez).
 const familiasExtra = 36 // paleta:harry + paleta:hermione (familia gryffindor) y paleta:minnie (familia rosa): 3 × 12
 export const CATALOGO_COMPLETO = CATALOGO.resumen.totalTodoSuelto - familiasExtra
+ESCENARIOS_PRECIO.push(
+  { id: 'catalogoOla1', nombre: 'Catálogo actual + ola 1', precio: CATALOGO_COMPLETO + sumaOla(COLECCION_V3.ola1) },
+  { id: 'catalogoV3', nombre: 'Catálogo actual + colección v3 completa + Dragón', precio: CATALOGO_COMPLETO + sumaOla(COLECCION_V3.ola1) + sumaOla(COLECCION_V3.ola2) + PRECIOS_V3.dragon },
+)
 
 // ─── El caso que describe el usuario: ~20 min por cuento en nivel 0 ─────────
 /**
@@ -570,7 +761,8 @@ function abuso(modelo) {
   if (modelo.reglaRitmo) {
     // Texto real verificado: «Mariposa amarilla.» × 300 → nivel 2 sugerido, sin tope (datos/abusos.json).
     const n2 = ABUSOS_REALES.find((a) => a.id === 'n2-sin-tope')
-    const tope2 = modelo.id === 'M0' ? Infinity : modelo.id === 'A' ? 14 : 14
+    // Corregido tras la revisión de Fable: A usa A_TOPE[2] = 9 (antes se usaba 14 por error).
+    const tope2 = modelo.id === 'M0' ? Infinity : modelo.id === 'A' ? A_TOPE[2] : 14
     const porUnidad2 = modelo.id === 'A' ? 1 : 1
     const pagoN2 = Math.min(tope2, n2.unidades * porUnidad2) + (modelo.hitos[2]?.reduce((s, h) => s + h.monedas, 0) ?? 0)
     const segN2 = n2.unidades * (0.5 + 0.45 + 0.6) + subir
@@ -599,6 +791,91 @@ function abuso(modelo) {
   return casos
 }
 
+// ─── Abusos ampliados (revisión de Fable y preferencias del usuario) ───────
+/**
+ * Pago determinista de un texto completo, leído de corrido y «a buen ritmo»
+ * (el que abusa no tropieza). `segActivo`: segundos activos por unidad;
+ * `falsificado`: la app declara el tope por unidad en vez del tiempo real.
+ */
+function pagoTexto(modelo, { nivel, sugerido, unidades, segActivo, propio, falsificado = false }) {
+  const total = unidades.length
+  let m = 0
+  let actMin = 0
+  let pagadoMin = 0
+  if (modelo.reglaRitmo) {
+    for (let k = 1; k <= total; k++) m += modelo.unidad({ nivel, k, total })
+    m += (modelo.hitos[nivel] ?? []).reduce((s, h) => s + h.monedas, 0)
+    actMin = (total * segActivo) / 60
+    m += modelo.libroTerminado({ esperadoLibro: unidades.reduce((s, u) => s + esperadoMin(u, nivel), 0), activoLibro: actMin })
+  } else {
+    const ref = modelo.ref ?? REF_SPM
+    const nivRef = modelo.dificultadReal ? Math.max(nivel, sugerido) : nivel
+    let acc = 0
+    let esp = 0
+    for (const u of unidades) {
+      const e = esperadoMin(u, nivRef, ref)
+      const tope = (modelo.capFactor ?? 1) * e
+      const a = falsificado ? tope : segActivo / 60
+      esp += e
+      actMin += a
+      const base = modelo.usaTiempoReal ? Math.min(tope, a) : e
+      pagadoMin += base
+      acc += modelo.tasa * base
+    }
+    m += Math.floor(acc + 1e-9)
+    if (!propio || modelo.libroPropio) m += modelo.libroTerminado({ esperadoLibro: esp, activoLibro: actMin })
+  }
+  if (modelo.bloque) m += Math.min(modelo.bloque.monedas * Math.floor(actMin / modelo.bloque.minutos), modelo.bloque.monedas * modelo.bloque.maxPorDia)
+  return { monedas: m, actMin, pagadoMin }
+}
+
+const SUBIR_SEG = 40 // pegar y guardar un texto
+const rep_ = (n, u) => Array.from({ length: n }, () => ({ ...u }))
+function abusoAmpliado(modelo) {
+  const filas = []
+  const fila = (id, accion, r, minutos, extra = {}) => filas.push({ id, accion, monedas: r1(r.monedas), minutos: r1(minutos), porMinuto: r1(r.monedas / minutos), ...extra })
+  // 1. 300 × «Mariposa amarilla.» (N2 sugerido), arrastrar (1,55 s por oración).
+  {
+    const r = pagoTexto(modelo, { nivel: 2, sugerido: 2, unidades: rep_(300, { silabas: 7, palabras: 2 }), segActivo: 1.55, propio: true })
+    fila('n2-largo', 'Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado', r, (SUBIR_SEG + 300 * 1.55) / 60)
+  }
+  // 2. Muchos textos propios distintos de UNA oración difícil (N2 sugerido): subir, leer, repetir con otro texto.
+  {
+    const r = pagoTexto(modelo, { nivel: 2, sugerido: 2, unidades: [{ silabas: 10, palabras: 3 }], segActivo: 2, propio: true })
+    fila('cortos', 'Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno', r, (SUBIR_SEG + 2) / 60, { porTexto: r.monedas })
+  }
+  // 3. Textos propios de ~1 min esperado (6 oraciones) leídos a la mitad del tiempo esperado (justo para cobrar el premio de E).
+  {
+    const u = { silabas: 10, palabras: 4 }
+    const seg = 0.5 * esperadoMin(u, 2) * 60
+    const r = pagoTexto(modelo, { nivel: 2, sugerido: 2, unidades: rep_(6, u), segActivo: seg, propio: true })
+    fila('un-minuto', 'Textos propios distintos de 6 oraciones (~1 min esperado), leídos a medio ritmo', r, (SUBIR_SEG + 6 * seg) / 60, { porTexto: r.monedas })
+  }
+  // 4. Texto difícil (sugerido N2) asignado en N0: 300 frases de 8 sílabas, arrastradas a 4 síl/s.
+  const dificil = { nivel: 0, sugerido: 2, unidades: rep_(300, { silabas: 8, palabras: 3 }), propio: false }
+  {
+    const seg = 8 / 4 + 0.45 + 0.6
+    const r = pagoTexto(modelo, { ...dificil, segActivo: seg })
+    fila('dificil-n0', 'Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas', r, (SUBIR_SEG + 300 * seg) / 60)
+  }
+  // 5. Lo mismo, con tiempo activo FALSIFICADO desde la cola offline (la app declara el tope de cada frase).
+  if (!modelo.reglaRitmo && modelo.usaTiempoReal) {
+    const r = pagoTexto(modelo, { ...dificil, segActivo: 0, falsificado: true })
+    // (a) Reloj actual de la rama de seguridad: solo exige 0,1 s/palabra y 0,5 s/unidad.
+    const minA = (SUBIR_SEG + 300 * Math.max(0.5, 3 * 0.1)) / 60
+    fila('falso-reloj-actual', 'Ídem con tiempo activo falsificado; reloj actual (0,1 s/palabra)', r, minA)
+    // (b) Reloj que se adelanta con los segundos PAGADOS: no puede cobrar más rápido que el tiempo real.
+    const minB = Math.max(minA, r.pagadoMin)
+    fila('falso-reloj-pagado', 'Ídem; reloj que se adelanta con los segundos pagados', r, minB, { rafagaMaxHora: r1(modelo.tasa * 60) })
+  }
+  // 6. App abierta sin completar frases (toques cada < 10 s), 60 min.
+  {
+    const m = modelo.bloque ? Math.min(modelo.bloque.monedas * Math.floor(60 / modelo.bloque.minutos), modelo.bloque.monedas * modelo.bloque.maxPorDia) : 0
+    filas.push({ id: 'abierta', accion: 'App abierta 60 min tocando la pantalla sin completar frases', monedas: m, minutos: 60, porMinuto: r1(m / 60) })
+  }
+  return filas
+}
+
 // ─── Equidad ───────────────────────────────────────────────────────────────
 function gini(xs) {
   const n = xs.length
@@ -617,6 +894,9 @@ const salida = {
   supuestos: SUPUESTOS,
   refSpm: REF_SPM,
   articulos: ARTICULOS,
+  escenariosPrecio: ESCENARIOS_PRECIO,
+  preciosV3: PRECIOS_V3,
+  coleccionV3: COLECCION_V3,
   catalogoCompleto: CATALOGO_COMPLETO,
   catalogoResumen: CATALOGO.resumen,
   conjuntos: CATALOGO.conjuntos,
@@ -658,6 +938,10 @@ for (const modelo of MODELOS) {
         curvaMediana: c.curvaMediana,
         agotaCuentos: c.agotaCuentos,
         sesionesPara: Object.fromEntries([...ARTICULOS, { id: 'catalogo', precio: CATALOGO_COMPLETO }].map((a) => [a.id, c.sesionesPara(a.precio)])),
+        sesionesParaPrecio: Object.fromEntries(ESCENARIOS_PRECIO.map((a) => [a.id, c.sesionesPara(a.precio)])),
+        sesionesHastaCuentos: c.sesionesHastaCuentos,
+        fuentes: c.fuentes,
+        sesionesParaGrilla: perfil.id === 'P0' ? Object.fromEntries(GRILLA_PRECIOS.map((p) => [p, c.sesionesPara(p)])) : undefined,
       }
     }
   }
@@ -671,10 +955,14 @@ for (const modelo of MODELOS) {
       ratioP4P0: r2(porMin15[4] / porMin15[0]),
       maxMin: r2(Math.max(...porMin15) / Math.min(...porMin15)),
       gini: r2(gini(porMin15)),
+      // Gini sobre los 2 000 niños simulados (400 por perfil), monedas por minuto en 15 min. Responde a la crítica de usar 5 medianas.
+      giniNinos: r2(gini(PERFILES.flatMap((p) => celdas[p.id][15]._muestra))),
     },
     abuso: abuso(modelo),
+    abusoAmpliado: abusoAmpliado(modelo),
     casoUsuario: casoUsuario(modelo),
     campanas,
+    p0Lento: [15, 25].map((min) => campanaLento(modelo, min)).concat(modelo.id === 'E2' || modelo.id === 'M0' ? [campanaLento(modelo, 15, true)] : []),
   })
   console.log(
     modelo.id.padEnd(5),
@@ -687,5 +975,6 @@ for (const modelo of MODELOS) {
   )
 }
 
+for (const m of salida.modelos) for (const p of Object.values(m.celdas)) for (const c of Object.values(p)) delete c._muestra
 writeFileSync(new URL('./datos/resultados.json', import.meta.url), JSON.stringify(salida) + '\n')
 console.log('datos/resultados.json escrito')
