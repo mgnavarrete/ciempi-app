@@ -1,6 +1,6 @@
 import { CiempiVivo, type EventoCiempi } from '../ciempi/v2/CiempiVivo'
 import { useEscenaCreciente } from '../ciempi/v2/Vestuario'
-import { COMER } from '../ciempi/v2/animacion/animaciones.js'
+import { COMER, type BocaComer } from '../ciempi/v2/animacion/animaciones.js'
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { AparienciaCiempi } from '../ciempi/catalogo'
 import { APARIENCIA_CLASICA, paletaDe } from '../ciempi/clasico'
@@ -19,6 +19,8 @@ const CENTRO_Y = 44
 export const CRECIMIENTO_REVELAR = true
 /** E08 Comer al leer cada unidad: EXPERIMENTAL, apagado en el juego (solo laboratorio y demo). */
 export const COMER_ANIMADO = false
+/** Boca de E08 (AD-018): sorprendida por omisión; 'carcajada' (versión 1) se conserva para comparar en el laboratorio. */
+export const BOCA_COMER: BocaComer = 'sorprendido'
 
 interface Props {
   /** Dónde está la comida de cada palabra (justo debajo de la palabra). */
@@ -38,6 +40,8 @@ interface Props {
   crecimiento?: 'revelar' | 'recomponer'
   /** E08 Comer (experimental): la fruta salta a su boca y se la come. */
   comerAnimado?: boolean
+  /** Variante de boca de E08 (laboratorio): 'sorprendido' (por omisión) o 'carcajada'. */
+  bocaComer?: BocaComer
 }
 
 /**
@@ -46,7 +50,7 @@ interface Props {
  * Cuando la cabeza llega a una, la palabra se enciende y suena, Ciempi se la
  * come y le crece un segmento.
  */
-export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false, moneda = false, crecimiento = CRECIMIENTO_REVELAR ? 'revelar' : 'recomponer', comerAnimado = COMER_ANIMADO }: Props) {
+export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false, moneda = false, crecimiento = CRECIMIENTO_REVELAR ? 'revelar' : 'recomponer', comerAnimado = COMER_ANIMADO, bocaComer = BOCA_COMER }: Props) {
   const contenedor = useRef<HTMLDivElement>(null)
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
@@ -103,7 +107,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const frutasComidas = soloUltima ? (palabrasLeidas >= pista.manzanas.length ? 1 : 0) : palabrasLeidas
   const xFruta = (pista.manzanas[palabrasLeidas - 1] ?? 0) * ancho
   const comer = comerAnimado && nuevo
-    ? { n: frutasComidas, origen: [Math.max(COMER.origen[0], 736 + (xFruta - xCabeza) / escalaNueva), 340 + 6 / escalaNueva] as [number, number] }
+    ? { n: frutasComidas, boca: bocaComer, origen: [Math.max(COMER.origen[0], 736 + (xFruta - xCabeza) / escalaNueva), 340 + 6 / escalaNueva] as [number, number] }
     : null
 
   // Mientras carga el nuevo Ciempi se dibuja el clásico (con la comida del niño).

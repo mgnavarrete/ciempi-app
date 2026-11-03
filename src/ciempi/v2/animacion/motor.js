@@ -63,6 +63,13 @@ export class ColaComer {
     this.activa = false
     this.pendiente = null
     this.opciones = {}
+    /**
+     * Opciones que no dependen de cada fruta sino de la apariencia vigente
+     * (variante de boca, máscara que tapa la boca). Se leen en cada cuadro: si
+     * el vestuario cambia a mitad de la animación, el cuadro siguiente ya usa
+     * la reacción que corresponde (nunca una boca sobre una máscara).
+     */
+    this.comunes = {}
   }
   /** Llega una unidad (una fruta). Devuelve qué hizo, para pruebas y medición. */
   llega(opciones = {}) {
@@ -89,7 +96,7 @@ export class ColaComer {
     }
   }
   aplicar(p, n) {
-    if (this.activa) this.capa(p, this.t, n, this.opciones)
+    if (this.activa) this.capa(p, this.t, n, { ...this.opciones, ...this.comunes })
     return p
   }
   detener() {

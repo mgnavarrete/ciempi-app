@@ -6,6 +6,8 @@ export interface Rig {
   capacidad: number
   tieneAntenas: boolean
   ojosVisibles(): boolean
+  /** Hay boca dibujada (una máscara completa la vacía). */
+  bocaVisible(): boolean
   /** Escena creciente: muestra n segmentos como `escena(svg, n)`, sin recomponer. false si n supera la capacidad. */
   crecer(n: number, posiciones: (n: number) => { role: number; x: number; y: number }[]): boolean
   precargarRostro(id: string): void

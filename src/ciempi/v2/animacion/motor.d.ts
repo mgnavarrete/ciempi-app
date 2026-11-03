@@ -35,6 +35,8 @@ export class ColaComer implements Capa {
   activa: boolean
   pendiente: OpcionesComer | null
   opciones: OpcionesComer
+  /** Opciones de la apariencia vigente (boca, bocaTapada), leídas en cada cuadro; mandan sobre las de la fruta. */
+  comunes: OpcionesComer
   llega(opciones?: OpcionesComer): 'inicia' | 'adelanta' | 'espera' | 'funde'
   avanzar(dt: number): void
   aplicar(p: Pose, n: number): Pose

@@ -249,7 +249,10 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       indices.forEach((i, k) => {
         segmentos[i].base = [pos[k].x, pos[k].y]
         segmentos[i].g.setAttribute('transform', `translate(${pos[k].x} ${pos[k].y})`)
-        patasDeSegmento[i].envoltura.setAttribute('transform', `translate(${pos[k].x - XS[pos[k].role]} 0)`)
+        // Con una forma de especie, la pata viene de otro rol del maestro: su x va anotada en la escena.
+        const env = patasDeSegmento[i].envoltura
+        const xPie = env.hasAttribute('data-x-pie') ? +env.getAttribute('data-x-pie') : XS[pos[k].role]
+        env.setAttribute('transform', `translate(${pos[k].x - xPie} 0)`)
       })
       // Lo que `escena` quita: sombras del maestro (solo con 5) y mochila/superficies con 0.
       ocultar(sombras, n !== 5)
@@ -259,6 +262,8 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       return true
     },
     ojosVisibles: () => rostro.ojos.length > 0,
+    /** Hay boca dibujada (una máscara completa la vacía: `data-hidden="costume"`). */
+    bocaVisible: () => !!cabezaG?.querySelector('[id="mouth"], [id$="-mouth"]')?.children.length,
     /**
      * Cambia ojos, cejas y boca por los de otra expresión B03, tomados de la
      * composición del mismo conjunto con esa expresión (`obtenerRostro(id)`).
