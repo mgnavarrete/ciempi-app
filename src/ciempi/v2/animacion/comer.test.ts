@@ -36,8 +36,12 @@ describe('E08 Comer', () => {
     const medio = fruta(E08.pose(0.23))!
     const antes = fruta(E08.pose(COMER.mordisco - 0.005))!
     expect(inicio.x).toBeCloseTo(COMER.origen[0], 0)
-    // El arco sube por sobre la recta entre origen y boca.
-    expect(medio.y).toBeLessThan(Math.min(COMER.origen[1], COMER.boca[1]) - 40)
+    // Arco bajo: sube por sobre la recta entre origen y boca, pero poco (no tapa los ojos).
+    expect(medio.y).toBeLessThan(Math.min(COMER.origen[1], COMER.boca[1]) - 20)
+    expect(medio.y).toBeGreaterThan(Math.min(COMER.origen[1], COMER.boca[1]) - 50)
+    // Se achica al acercarse a la boca y parte del tamaño de la comida de la pista.
+    expect(inicio.s).toBeCloseTo(1, 1)
+    expect(antes.s).toBeLessThan(0.5)
     expect(Math.hypot(antes.x - COMER.boca[0], antes.y - COMER.boca[1])).toBeLessThan(6)
     expect(fruta(E08.pose(COMER.mordisco + 0.1))).toBeUndefined()
   })

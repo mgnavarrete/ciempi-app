@@ -85,6 +85,20 @@ export function CiempiVivo({ escena, segmentos, base = 'A01', evento = null, tra
     if (rep.anim) rep.dibujar()
   }, [segmentos, creciente, rep])
 
+  // E08 activo: la expresión de boca abierta se prepara en un momento libre, no en
+  // la primera unidad (medición: ~35–55 ms con la CPU a 6×, una tarea larga).
+  const comerActivo = !!fruta
+  useEffect(() => {
+    if (!comerActivo) return
+    const preparar = () => rig.current?.precargarRostro(COMER.bocaAbierta)
+    if (typeof requestIdleCallback === 'function') {
+      const id = requestIdleCallback(preparar, { timeout: 1500 })
+      return () => cancelIdleCallback(id)
+    }
+    const id = setTimeout(preparar, 300)
+    return () => clearTimeout(id)
+  }, [comerActivo, escena])
+
   // E08 Comer: una fruta por unidad, como capa (sigue caminando mientras come).
   const cola = useRef<ColaComer | null>(null)
   const frutasVistas = useRef(fruta?.n ?? 0)

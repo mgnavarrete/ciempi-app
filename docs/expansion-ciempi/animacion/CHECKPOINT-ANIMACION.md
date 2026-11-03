@@ -1,5 +1,7 @@
 # Checkpoint · animación de comer y rendimiento (pausa ordenada, 2026-11-03)
 
+> **Actualización:** la medición "después", la demo, la hoja de E08 y la decisión de flags están en [RESULTADOS.md](RESULTADOS.md).
+
 Trabajo **incompleto**: se pausó a pedido del coordinador. Nada se integró al juego por defecto salvo lo indicado en "Riesgo".
 
 ## Mediciones obtenidas (antes, sin optimizar)

@@ -595,7 +595,7 @@ export const ANIMACIONES = [
   {
     id: 'E08', nombre: 'Comer', duracion: 0.8, bucle: false, extra: true,
     nota: 'La fruta da un saltito, vuela en arco a su boca; la mira, abre la boca, la muerde y el segmento nuevo aparece con un pop.',
-    expresiones: ['b03-carcajada'],
+    expresiones: ['b03-sorprendido'],
     pose(t, n = 5) {
       const p = poseNeutra(n)
       respirar(p, t, 2, 0.5)
@@ -617,8 +617,12 @@ export const COMER = {
   duracion: 0.8,
   boca: [765, 405],
   origen: [890, 400],
-  /** Expresión B03 con la boca abierta (solo entre `abre` y el mordisco; después vuelve la vigente). */
-  bocaAbierta: 'b03-carcajada',
+  /**
+   * Expresión B03 con la boca abierta (solo entre `abre` y el mordisco; después vuelve la vigente).
+   * Sorprendido y no carcajada: con carcajada los ojos se cierran y deja de seguir la fruta
+   * (hoja de cuadros, RESULTADOS.md); con sorprendido la mira con la boca en "o".
+   */
+  bocaAbierta: 'b03-sorprendido',
   abre: 0.16,
 }
 
@@ -632,13 +636,15 @@ export function comer(p, t, n = p.segmentos.length, opciones = {}) {
   const [ox, oy] = opciones.origen ?? COMER.origen
   if (t < 0 || t > COMER.duracion) return p
 
-  // 1. La fruta reacciona (aplastamiento suave) y salta en arco hasta la boca.
+  // 1. La fruta reacciona (aplastamiento suave) en su lugar y salta en un arco
+  //    bajo hasta la boca, achicándose: así no tapa los ojos ni la boca abierta
+  //    (revisión de la hoja v1: a tamaño de pista cubría medio rostro).
   if (t < M + 0.07) {
-    const u = entre(t, 0.1, M)
+    const u = entre(t, 0.14, M)
     const v = curvas.suave(u)
-    const sy = kf(t, [[0, 1], [0.05, 0.8, 'sale'], [0.11, 1.12, 'sale'], [0.18, 1]])
-    const s = kf(t, [[0, 0.7], [0.05, 1, 'sale'], [0.24, 1], [M, 0.8], [M + 0.07, 0, 'entra']])
-    p.efectos.push({ tipo: 'comida', x: ox + (bx - ox) * v, y: oy + (by - oy) * v - 85 * Math.sin(Math.PI * u), s, sx: 2 - sy, sy, rot: -25 * v, opacidad: 1 })
+    const sy = kf(t, [[0, 1], [0.05, 0.8, 'sale'], [0.11, 1.12, 'sale'], [0.16, 1]])
+    const s = kf(t, [[0, 1], [0.14, 1], [0.26, 0.6, 'sale'], [M, 0.42], [M + 0.07, 0, 'entra']])
+    p.efectos.push({ tipo: 'comida', x: ox + (bx - ox) * v, y: oy + (by - oy) * v - 35 * Math.sin(Math.PI * u), s, sx: 2 - sy, sy, rot: -25 * v, opacidad: 1 })
   }
   // Migas al morder.
   p.efectos.push(...rafaga(t, M, { x: bx + 12, y: by + 6, n: 4, tipo: 'miga', semilla: 8, fuerza: 170, gravedad: 900, vida: 0.32, escala: 0.75 }))
@@ -647,7 +653,7 @@ export function comer(p, t, n = p.segmentos.length, opciones = {}) {
   p.cabeza.rot += kf(t, [[0, 0], [0.16, 5], [M - 0.04, 6], [M + 0.04, 1.5, 'sale'], [0.6, 0]])
   p.cabeza.x += kf(t, [[0.05, 0], [M - 0.02, 7], [M + 0.12, 0]])
   p.ojos.mirarX += kf(t, [[0, 0], [0.1, 6], [M, 3], [M + 0.06, 0]])
-  p.ojos.mirarY += kf(t, [[0, 0], [0.1, 5], [0.24, -3], [M, 5], [M + 0.06, 0]])
+  p.ojos.mirarY += kf(t, [[0, 0], [0.1, 4], [0.24, 1], [M, 5], [M + 0.06, 0]])
 
   // 3. Abre la boca justo antes; al morder vuelve la expresión vigente (no se impone una sonrisa).
   if (t >= abre && t < M) p.expresion = COMER.bocaAbierta
