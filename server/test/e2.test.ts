@@ -313,6 +313,29 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect(rows[0].detalle.segundosPagados).toBeLessThan(2 * esperado(us[0].texto, 0))
     })
 
+    it('integración PIN + E2: un texto pendiente no paga, no gasta reloj ni marca avance; al aprobarse paga desde 0', async () => {
+      const n = await nino()
+      const frs = Array.from({ length: 6 }, (_, i) => `La niña ${['lee', 'canta', 'pinta', 'salta', 'come', 'ríe'][i]} en el patio.`)
+      const id = randomUUID()
+      await pedirCon(appE2, 'PUT', `/api/textos/${id}`, n.token, { titulo: 'Patio', textoOriginal: frs.join(' '), frases: frs, capitulos: [], origen: 'pegado' })
+      const a = (await pedirCon(appE2, 'POST', `/api/perfiles/${n.id}/asignaciones`, n.token, { textoId: id })).body
+      expect(a.autorizacion).toBe('pendiente')
+      const us = unidadesDe(frs, a.nivel)
+      const antes = await saldo(n.id)
+      for (const u of us) {
+        minutos(2)
+        const r = await pedirPremio(appE2, n.token, a.id, { tipo: 'avance', hasta: u.fin, conPremio: true, segundosActivos: 60 })
+        expect(r.body.otorgadas).toBe(0)
+      }
+      expect(await saldo(n.id)).toBe(antes)
+      const { rows: asg } = await pool.query(`select pagado_hasta from asignaciones where id = $1`, [a.id])
+      expect(asg[0].pagado_hasta ?? 0).toBe(0)
+      await pool.query(`update asignaciones set autorizacion = 'autorizada', autorizada_en = now() where id = $1`, [a.id])
+      minutos(2)
+      const r = await pedirPremio(appE2, n.token, a.id, { tipo: 'avance', hasta: us[0].fin, conPremio: true, segundosActivos: 60 })
+      expect(r.body.otorgadas).toBeGreaterThan(0)
+    })
+
     it('premio por terminar: una sola vez por huella (borrar y volver a subir no lo repite)', async () => {
       const n = await nino()
       const contenido = Array.from({ length: 10 }, (_, i) => `Mi gato Tito ${['come', 'salta', 'duerme', 'juega', 'corre', 'mira', 'toma', 'lame', 'busca', 'sube'][i]} en la casa.`)
@@ -320,6 +343,10 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
         const id = randomUUID()
         await pedirCon(appE2, 'PUT', `/api/textos/${id}`, n.token, { titulo: 'Tito', textoOriginal: frs.join(' '), frases: frs, capitulos: [], origen: 'pegado' })
         const a = (await pedirCon(appE2, 'POST', `/api/perfiles/${n.id}/asignaciones`, n.token, { textoId: id })).body
+        // Con el PIN de textos (integración), lo que sube el niño queda pendiente: aquí se simula que el adulto
+        // lo aprobó (el flujo de PIN se prueba en api.test.ts).
+        expect(a.autorizacion).toBe('pendiente')
+        await pool.query(`update asignaciones set autorizacion = 'autorizada', autorizada_en = now() where id = $1`, [a.id])
         return { textoId: id, asignacionId: a.id as string, nivel: a.nivel as number }
       }
       const primero = await subir(contenido)
