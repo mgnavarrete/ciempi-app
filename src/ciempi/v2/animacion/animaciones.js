@@ -592,4 +592,91 @@ export const ANIMACIONES = [
       return p
     },
   },
+  {
+    id: 'E08', nombre: 'Comer', duracion: 0.8, bucle: false, extra: true,
+    nota: 'La fruta da un saltito, vuela en arco a su boca; la mira, abre la boca, la muerde y el segmento nuevo aparece con un pop.',
+    expresiones: ['b03-sorprendido'],
+    pose(t, n = 5) {
+      const p = poseNeutra(n)
+      respirar(p, t, 2, 0.5)
+      return comer(p, t, n)
+    },
+  },
 ]
+
+// ── E08 Comer ───────────────────────────────────────────────────────────
+// Pensada como CAPA: se suma a la animación de fondo (caminar o reposo), así
+// Ciempi sigue caminando mientras come. `pose()` de arriba es la versión
+// suelta (laboratorio y pruebas). Unidades de la base: la boca está en
+// (765, 405); la fruta parte delante de la barbilla, a la altura de la pista.
+export const COMER = {
+  /** Instante del mordisco: si llega otra unidad antes, se salta aquí. */
+  mordisco: 0.36,
+  /** Desde aquí puede empezar la fruta pendiente (ya masticó; el pop del segmento queda a medias). */
+  reanudar: 0.56,
+  duracion: 0.8,
+  boca: [765, 405],
+  origen: [890, 400],
+  /**
+   * Expresión B03 con la boca abierta (solo entre `abre` y el mordisco; después vuelve la vigente).
+   * Sorprendido y no carcajada: con carcajada los ojos se cierran y deja de seguir la fruta
+   * (hoja de cuadros, RESULTADOS.md); con sorprendido la mira con la boca en "o".
+   */
+  bocaAbierta: 'b03-sorprendido',
+  abre: 0.16,
+}
+
+/**
+ * Suma la animación de comer a la pose `p` (de `n` segmentos) en el instante `t`.
+ * `opciones.origen`: dónde aparece la fruta; `opciones.segmento`: centro del
+ * segmento nuevo (para su brillo). Determinista: no guarda estado.
+ */
+export function comer(p, t, n = p.segmentos.length, opciones = {}) {
+  const { mordisco: M, boca: [bx, by], abre } = COMER
+  const [ox, oy] = opciones.origen ?? COMER.origen
+  if (t < 0 || t > COMER.duracion) return p
+
+  // 1. La fruta reacciona (aplastamiento suave) en su lugar y salta en un arco
+  //    bajo hasta la boca, achicándose: así no tapa los ojos ni la boca abierta
+  //    (revisión de la hoja v1: a tamaño de pista cubría medio rostro).
+  if (t < M + 0.07) {
+    const u = entre(t, 0.14, M)
+    const v = curvas.suave(u)
+    const sy = kf(t, [[0, 1], [0.05, 0.8, 'sale'], [0.11, 1.12, 'sale'], [0.16, 1]])
+    const s = kf(t, [[0, 1], [0.14, 1], [0.26, 0.6, 'sale'], [M, 0.42], [M + 0.07, 0, 'entra']])
+    p.efectos.push({ tipo: 'comida', x: ox + (bx - ox) * v, y: oy + (by - oy) * v - 35 * Math.sin(Math.PI * u), s, sx: 2 - sy, sy, rot: -25 * v, opacidad: 1 })
+  }
+  // Migas al morder.
+  p.efectos.push(...rafaga(t, M, { x: bx + 12, y: by + 6, n: 4, tipo: 'miga', semilla: 8, fuerza: 170, gravedad: 900, vida: 0.32, escala: 0.75 }))
+
+  // 2. Gira un poco la cabeza hacia la fruta y la sigue con la mirada.
+  p.cabeza.rot += kf(t, [[0, 0], [0.16, 5], [M - 0.04, 6], [M + 0.04, 1.5, 'sale'], [0.6, 0]])
+  p.cabeza.x += kf(t, [[0.05, 0], [M - 0.02, 7], [M + 0.12, 0]])
+  p.ojos.mirarX += kf(t, [[0, 0], [0.1, 6], [M, 3], [M + 0.06, 0]])
+  p.ojos.mirarY += kf(t, [[0, 0], [0.1, 4], [0.24, 1], [M, 5], [M + 0.06, 0]])
+
+  // 3. Abre la boca justo antes; al morder vuelve la expresión vigente (no se impone una sonrisa).
+  if (t >= abre && t < M) p.expresion = COMER.bocaAbierta
+
+  // 4. Mordisco: la cabeza da un golpecito, los ojos se aprietan un instante y mastica dos veces.
+  p.cabeza.y += kf(t, [[M - 0.05, 0], [M, -4], [M + 0.05, 5, 'sale'], [M + 0.12, 0]]) + (t > M + 0.12 && t < M + 0.32 ? 2.2 * Math.sin(PI2 * ((t - M - 0.12) / 0.1)) : 0)
+  const aprieta = kf(t, [[M, 0], [M + 0.04, 0.45], [M + 0.15, 0]])
+  p.ojos.parpadeo = p.ojos.parpadeo.map((v) => Math.max(v, aprieta))
+  p.antenas = p.antenas.map((a, i) => a + kf(t, [[M, 0], [M + 0.06, i ? -7 : 7, 'sale'], [M + 0.3, 0]]))
+  const golpe = kf(t, [[M, 1], [M + 0.05, 0.97], [M + 0.16, 1]])
+  p.raiz.sy *= golpe
+  p.raiz.sx *= 2 - golpe
+
+  // 5. El segmento nuevo (el que sigue al frente; con 1, el frente) espera algo
+  //    más pequeño y aparece con un pop al tragar, con un brillo encima.
+  const k = Math.max(0, n - 2)
+  const seg = p.segmentos[k]
+  if (seg) {
+    const f = t < M ? 0.86 : kf(t, [[M, 0.86], [M + 0.13, 1.13, 'sale'], [0.74, 1]])
+    seg.sx *= f
+    seg.sy *= f
+    const [sx0, sy0] = opciones.segmento ?? [470, 402]
+    p.efectos.push(...aparece(t, M + 0.06, COMER.duracion, { tipo: 'brillo', x: sx0 + 18, y: sy0 - 100, s: 1.3 }))
+  }
+  return p
+}

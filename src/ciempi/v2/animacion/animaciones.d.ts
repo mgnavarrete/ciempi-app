@@ -26,3 +26,20 @@ export interface Animacion {
 }
 export const ANIMACIONES: Animacion[]
 export function poseNeutra(segmentos?: number): Pose
+export interface OpcionesComer {
+  /** Dónde aparece la fruta (unidades de la base). */
+  origen?: [number, number]
+  /** Centro del segmento nuevo, para su brillo. */
+  segmento?: [number, number]
+}
+export const COMER: {
+  mordisco: number
+  reanudar: number
+  duracion: number
+  boca: [number, number]
+  origen: [number, number]
+  bocaAbierta: string
+  abre: number
+}
+/** Suma E08 Comer a una pose (capa sobre caminar o reposo). */
+export function comer(p: Pose, t: number, n?: number, opciones?: OpcionesComer): Pose

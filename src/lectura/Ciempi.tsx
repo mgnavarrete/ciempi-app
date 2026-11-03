@@ -1,6 +1,7 @@
 import { CiempiVivo, type EventoCiempi } from '../ciempi/v2/CiempiVivo'
-import { useEscena } from '../ciempi/v2/Vestuario'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEscenaCreciente } from '../ciempi/v2/Vestuario'
+import { COMER } from '../ciempi/v2/animacion/animaciones.js'
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { AparienciaCiempi } from '../ciempi/catalogo'
 import { APARIENCIA_CLASICA, paletaDe } from '../ciempi/clasico'
 import { Cabeza, Comida, Segmento } from '../ciempi/dibujos'
@@ -8,6 +9,16 @@ import type { Fase, Pista } from './motor'
 
 const ALTO = 84
 const CENTRO_Y = 44
+
+/**
+ * Crecimiento sin recomponer: la escena se compone una vez con tantos segmentos
+ * como manzanas tiene la pista y cada unidad leída solo muestra uno más
+ * (docs/expansion-ciempi/animacion/RESULTADOS.md). `false` vuelve a recomponer
+ * la escena con cada unidad, como hasta 2.4.1.
+ */
+export const CRECIMIENTO_REVELAR = true
+/** E08 Comer al leer cada unidad: EXPERIMENTAL, apagado en el juego (solo laboratorio y demo). */
+export const COMER_ANIMADO = false
 
 interface Props {
   /** Dónde está la comida de cada palabra (justo debajo de la palabra). */
@@ -23,6 +34,10 @@ interface Props {
   soloUltima?: boolean
   /** Después de la última comida, la moneda que gana al terminar la frase. */
   moneda?: boolean
+  /** 'recomponer': la escena se recompone con cada unidad (camino anterior, para comparar). */
+  crecimiento?: 'revelar' | 'recomponer'
+  /** E08 Comer (experimental): la fruta salta a su boca y se la come. */
+  comerAnimado?: boolean
 }
 
 /**
@@ -31,11 +46,14 @@ interface Props {
  * Cuando la cabeza llega a una, la palabra se enciende y suena, Ciempi se la
  * come y le crece un segmento.
  */
-export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false, moneda = false }: Props) {
+export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apariencia, soloUltima = false, moneda = false, crecimiento = CRECIMIENTO_REVELAR ? 'revelar' : 'recomponer', comerAnimado = COMER_ANIMADO }: Props) {
   const contenedor = useRef<HTMLDivElement>(null)
   const [ancho, setAncho] = useState(320)
   const caminando = useCaminando(progreso)
-  const nuevo = useEscena(apariencia, palabrasLeidas)
+  const vivo = useEscenaCreciente(apariencia, palabrasLeidas, crecimiento === 'revelar' ? pista.manzanas.length : null)
+  const nuevo = vivo?.escena ?? null
+  const idComida = useId().replace(/[^\w-]/g, '') + '-comida'
+  const dibujos = useMemo(() => (comerAnimado ? { comida: `<use href="#${idComida}"/>` } : undefined), [comerAnimado, idComida])
   // Ciempi nuevo: tropieza (E04) al ir muy rápido y celebra (A03) al terminar la frase.
   const [evento, setEvento] = useState<EventoCiempi | null>(null)
   const eventos = useRef(0)
@@ -60,7 +78,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   const xCabeza = Math.max(R, Math.min(ancho - R, progreso * ancho))
 
   // Escala uniforme: conserva las piezas y evita recortar cuerpos largos en móvil.
-  const escalaNueva = nuevo ? Math.min(R / 130, Math.max(0.015, (xCabeza - 2) / (736 - nuevo.left))) : 1
+  const escalaNueva = vivo ? Math.min(R / 130, Math.max(0.015, (xCabeza - 2) / (736 - vivo.left))) : 1
 
   // El cuerpo va compacto detrás de la cabeza: un segmento por palabra leída.
   const separacionIdeal = r * 1.45
@@ -70,7 +88,23 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
 
   // La comida de cada palabra que falta, en su lugar del camino.
   const tamanoManzana = Math.min(14, Math.max(10, r * 0.85))
-  const manzanas = pista.manzanas.map((x, i) => ({ i, x: x * ancho })).filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === pista.manzanas.length - 1))
+  // Memorizada: al mover el dedo (cada cuadro) no se vuelven a dibujar las comidas.
+  const comidas = useMemo(
+    () =>
+      pista.manzanas
+        .map((x, i) => ({ i, x: x * ancho }))
+        .filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === pista.manzanas.length - 1))
+        .map(({ i, x }) => <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />),
+    [pista.manzanas, ancho, palabrasLeidas, soloUltima, apariencia.comida, tamanoManzana],
+  )
+
+  // E08 Comer: cuenta solo las frutas que se veían (con `soloUltima`, la última).
+  // La fruta reaparece delante de la boca, a la altura de la pista (unidades de la base).
+  const frutasComidas = soloUltima ? (palabrasLeidas >= pista.manzanas.length ? 1 : 0) : palabrasLeidas
+  const xFruta = (pista.manzanas[palabrasLeidas - 1] ?? 0) * ancho
+  const comer = comerAnimado && nuevo
+    ? { n: frutasComidas, origen: [Math.max(COMER.origen[0], 736 + (xFruta - xCabeza) / escalaNueva), 340 + 6 / escalaNueva] as [number, number] }
+    : null
 
   // Mientras carga el nuevo Ciempi se dibuja el clásico (con la comida del niño).
   const clasica = { ...APARIENCIA_CLASICA, comida: apariencia.comida }
@@ -88,9 +122,14 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   return (
     <div ref={contenedor} className="w-full" aria-hidden>
       <svg width={ancho} height={ALTO} viewBox={`0 0 ${ancho} ${ALTO}`} className={`overflow-visible ${clases}`}>
-        {manzanas.map(({ i, x }) => (
-          <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />
-        ))}
+        {comidas}
+        {comerAnimado && nuevo && (
+          <defs>
+            <g id={idComida}>
+              <Comida comida={apariencia.comida} x={0} y={0} tamano={tamanoManzana / escalaNueva} />
+            </g>
+          </defs>
+        )}
         {/* La meta de la frase: una moneda después de la última manzana (se la gana al llegar). */}
         {moneda && fase !== 'completada' && (
           <g className={tranquilo ? '' : 'moneda-meta'} transform={`translate(${Math.min(ancho - tamanoManzana, (pista.manzanas.at(-1) ?? 1) * ancho + tamanoManzana * 2.1)} ${CENTRO_Y - tamanoManzana * 1.4})`}>
@@ -124,7 +163,7 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
           )}
         </g>}
         {nuevo && <g data-ciempi="v2" data-segments={palabrasLeidas} transform={`translate(${xCabeza} ${CENTRO_Y-4}) scale(${escalaNueva}) translate(-736 -340)`}>
-          <CiempiVivo escena={nuevo} segmentos={palabrasLeidas} base={caminando && fase === 'arrastrando' ? 'A02' : 'A01'} evento={evento} tranquilo={tranquilo} />
+          <CiempiVivo escena={nuevo} segmentos={palabrasLeidas} base={caminando && fase === 'arrastrando' ? 'A02' : 'A01'} evento={evento} tranquilo={tranquilo} comer={comer} dibujos={dibujos} />
           {fase==='tropiezo'&&<text x="736" y="100" textAnchor="middle" fontSize="90">💫</text>}
         </g>}
       </svg>

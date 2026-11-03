@@ -6,10 +6,10 @@ const numeros = (v: unknown): number[] =>
   typeof v === 'number' ? [v] : v && typeof v === 'object' ? Object.values(v).flatMap(numeros) : []
 
 describe('animaciones de Ciempi', () => {
-  it('hay 12 pedidas y 7 propuestas, con ids únicos', () => {
+  it('hay 12 pedidas y 8 propuestas (E08 Comer, experimental), con ids únicos', () => {
     expect(ANIMACIONES.filter((a) => !a.extra)).toHaveLength(12)
-    expect(ANIMACIONES.filter((a) => a.extra)).toHaveLength(7)
-    expect(new Set(ANIMACIONES.map((a) => a.id)).size).toBe(19)
+    expect(ANIMACIONES.filter((a) => a.extra)).toHaveLength(8)
+    expect(new Set(ANIMACIONES.map((a) => a.id)).size).toBe(20)
   })
 
   it('funcionan con cualquier largo de cuerpo (como en lectura), siempre con números válidos', () => {
