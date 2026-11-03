@@ -594,3 +594,30 @@ La FASE ARTÍSTICA sigue PENDIENTE y NO se empieza hasta que la integración est
 y entregada: rostros de Dragón y Cuncuna (IA real con Codex image_gen, sin cambiar los cuerpos aprobados
 en AD-017), Serpiente, Camaleón, mochilas y zapatos.
 ```
+
+---
+
+## 8. SESIÓN 4 (3-nov-2026): integración experimental V3 TERMINADA
+
+Los cuatro WIP de §7 se completaron, se probaron por línea y se integraron. Nada en `main`, sin push, despliegue ni APK, sin cambios en la economía ni en los precios reales.
+
+| Línea | Commit final de la rama | Pruebas de la línea |
+|---|---|---|
+| Seguridad + E2 + reloj + Cuncuna (`worktree-agent-a5e1c8d72e4a5aeb0`) | `21910b1` | tsc OK; src 242/242; servidor 59/59 (`ciempi_test_seguridad`) |
+| PIN (`expansion-v3-pin-textos`) | `3401161` | tsc OK; src 231/231; servidor 55/55 (`ciempi_test_pin`); 11 capturas a 390 px |
+| Economía (`worktree-agent-a925a3794da34fde2`) | `548ba79` | simulador reproducible (semilla 20261103); ECONOMIA-V3 §18 |
+| Tienda (`worktree-agent-a4c7575325914c12a`) | `ef867b3` | TIENDA-V3 corregida |
+| Animación (`worktree-agent-a103c0ae8e6a43da3`) | `e1945c5` | tsc OK; 208/208; capturas 108/108 |
+| Continuidad | `e22ca61` (PLAN-MAESTRO) y este commit | — |
+
+**Integración `expansion-v3-integracion` → `748959a`** (merges `aac98bf`, `055eccc`, `37c1dd7`, `36860d8`, `f80aa87`, `c1ac6dc`, merge de continuidad, informe).
+- Combinadas (verificadas): tsc cliente y servidor OK; `vitest run src` **279/279**; servidor **79/79** (`ciempi_test_integracion`); `capturas.mjs` **108/108**; especies con `escenaCreciente(…, forma)` **234/234**; Ciempi idéntico en el laboratorio **35/35**; demo E08 y hoja sin errores de consola.
+- **§7.3 resuelto:** `pose.ts` usa un solo `FormaCuerpo` importado de `especie.ts`. Falta solo conectar `useEscenaCreciente` del juego con la especie.
+- Informe: `docs/expansion-ciempi/INFORME-INTEGRACION-V3.md`. Índice de la demo: `docs/expansion-ciempi/demo-integrada.html`.
+- Nota: `.gitignore` ignora `dist`; los JS de `demo-comer/dist` se agregaron con `git add -f`.
+
+**Decisiones pendientes de la usuaria:** E2R + «nivel completo» retroactivo; vía lenta de la Cuncuna (60 min + 30 frases implementado, o 45 min, o un marcapáginas); boca definitiva de E08 y la reacción con máscara; «Gatita».
+
+**Pendiente técnico:** pantalla de celebración de la Cuncuna; especie en `useEscenaCreciente`; hitos de sílabas/palabras y nivel completo de E2; avisos al adulto; Android, Firefox, Safari y APK antigua.
+
+**Siguiente: FASE ARTÍSTICA** (autorizada para empezar una vez guardada la integración; los cuerpos de AD-017 no se tocan): rostros de Dragón y Cuncuna, Serpiente, Camaleón, mochilas y zapatos, en un laboratorio HTML con antes y después.
