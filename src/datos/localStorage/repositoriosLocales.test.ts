@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { CUENTOS } from '../../contenido/cuentos'
 import { crearTexto, prepararCuentaNueva } from '../inicio'
+import { hoy } from '../../lectura/monedas'
 import { crearRepositoriosLocales } from './repositoriosLocales'
 
 function almacenEnMemoria() {
@@ -156,5 +157,68 @@ describe('tienda de Ciempi', () => {
     const releido = await crearRepositoriosLocales(almacen).perfiles.obtener(perfil.id)
     expect(releido?.ciempi).toMatchObject({ nombre: 'Rayito', genero: 'nina', cabeza: 'cabeza:b06-ia-corona' })
     expect(releido?.monedas).toBe(5)
+  })
+})
+
+describe('premios sin conexión (mismo cálculo que el servidor)', () => {
+  async function conLibro(nivel: 0 | 1 | 2 | 3 | 4 = 1) {
+    const p = await preparado()
+    const libro = await p.repos.textos.guardar(
+      crearTexto(p.cuenta.id, { titulo: 'Libro', textoOriginal: 'Mi gato duerme. El sol sale. Ciempi come.', origen: 'pegado' }),
+    )
+    const a = await p.repos.asignaciones.asignar(p.perfil.id, libro.id, nivel)
+    const pedido = (operationId: string, solicitud: { tipo: 'avance'; hasta: number; conPremio: boolean } | { tipo: 'relectura'; dia: string }, esperadas = 1) => ({
+      ...solicitud,
+      operationId,
+      perfilId: p.perfil.id,
+      asignacionId: a.id,
+      esperadas,
+    })
+    return { ...p, libro, a, pedido }
+  }
+
+  it('calcula lo que corresponde (lo esperado por la app no cuenta) y el mismo pedido paga una vez', async () => {
+    const { almacen, repos, perfil, pedido } = await conLibro()
+    const avisos: unknown[] = []
+    repos.premios.alResolver((_, r) => avisos.push(r))
+    expect(await repos.premios.reclamar(pedido('op-00001', { tipo: 'avance', hasta: 1, conPremio: true }, 99))).toEqual({ estado: 'otorgado', otorgadas: 1, monedas: 1 })
+    // Repetido (reintento): responde lo mismo y no suma.
+    expect(await repos.premios.reclamar(pedido('op-00001', { tipo: 'avance', hasta: 1, conPremio: true }))).toEqual({ estado: 'otorgado', otorgadas: 1, monedas: 1 })
+    // Otro pedido por lo mismo (otra pestaña): nada.
+    expect(await repos.premios.reclamar(pedido('op-00002', { tipo: 'avance', hasta: 1, conPremio: true }))).toMatchObject({ otorgadas: 0, monedas: 1 })
+    expect(avisos).toHaveLength(3)
+    expect(repos.premios.pendientes(perfil.id)).toBe(0)
+    // Queda guardado: al abrir la app otra vez sigue igual.
+    const otraVez = crearRepositoriosLocales(almacen)
+    expect((await otraVez.perfiles.obtener(perfil.id))?.monedas).toBe(1)
+    expect(await otraVez.premios.reclamar(pedido('op-00001', { tipo: 'avance', hasta: 1, conPremio: true }))).toMatchObject({ otorgadas: 1, monedas: 1 })
+  })
+
+  it('relectura: solo con el libro terminado y una vez por día (también en el nivel 1, sin hitos)', async () => {
+    const { repos, a, pedido } = await conLibro(1)
+    const dia = hoy()
+    expect(await repos.premios.reclamar(pedido('op-relee-1', { tipo: 'relectura', dia }))).toMatchObject({ otorgadas: 0 })
+    await repos.premios.reclamar(pedido('op-avance-3', { tipo: 'avance', hasta: 3, conPremio: true }))
+    expect(await repos.premios.reclamar(pedido('op-relee-2', { tipo: 'relectura', dia }))).toMatchObject({ otorgadas: 1 })
+    expect(await repos.premios.reclamar(pedido('op-relee-3', { tipo: 'relectura', dia }))).toMatchObject({ otorgadas: 0 })
+    const guardada = (await repos.asignaciones.listarPorPerfil(a.perfilId)).find((x) => x.id === a.id)
+    expect(guardada).toMatchObject({ leidoHasta: 3, relecturaPremiadaEn: dia })
+  })
+
+  it('un libro leído antes de 2.5 (sin registro de premios) cuenta como ya pagado', async () => {
+    const { almacen, repos, perfil, a, pedido } = await conLibro(1)
+    await repos.asignaciones.guardarProgreso(a.id, { fraseActual: 2, fraseMaxima: 2, estado: 'en_curso', leidoHasta: 2 })
+    // Como si los datos fueran de 2.4.x: sin la tabla de premios.
+    almacen.setItem('ciempi:v1:premios', '[]')
+    const otraVez = crearRepositoriosLocales(almacen)
+    expect(await otraVez.premios.reclamar(pedido('op-viejo-2', { tipo: 'avance', hasta: 2, conPremio: true }))).toMatchObject({ otorgadas: 0 })
+    expect(await otraVez.premios.reclamar(pedido('op-viejo-3', { tipo: 'avance', hasta: 3, conPremio: true }))).toMatchObject({ otorgadas: 1, monedas: 1 })
+    expect((await otraVez.perfiles.obtener(perfil.id))?.monedas).toBe(1)
+  })
+
+  it('un libro que ya no está: descartado', async () => {
+    const { repos, a, pedido } = await conLibro()
+    await repos.asignaciones.quitar(a.id)
+    expect(await repos.premios.reclamar(pedido('op-quitado', { tipo: 'avance', hasta: 1, conPremio: true }))).toMatchObject({ estado: 'descartado' })
   })
 })

@@ -2,6 +2,8 @@ import { PARTES, comprarItem, loTiene, normalizarApariencia } from '../../ciempi
 import { PRECIOS_MOCHILAS_2_1, PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
 import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
+import { hoy } from '../../lectura/monedas'
+import { calcularPremio, combinarEstados, type EstadoPremios } from '../../lectura/premios'
 import { nuevoId } from '../../dominio/ids'
 import {
   AJUSTES_POR_DEFECTO,
@@ -16,11 +18,14 @@ import {
 } from '../../dominio/tipos'
 import type {
   Autenticacion,
+  PedidoPremio,
   RepositorioAsignaciones,
   RepositorioPerfiles,
+  RepositorioPremios,
   RepositorioSesiones,
   RepositorioTextos,
   Repositorios,
+  ResolucionPremio,
 } from '../repositorios'
 
 /**
@@ -73,12 +78,19 @@ class Tabla<T extends { id: Id }> {
   }
 }
 
+/** Lo ya pagado de cada libro (id = el de la asignación), como en el servidor. */
+type PremiosDeLibro = EstadoPremios & { id: Id }
+/** Pedidos de premio ya atendidos (id = operationId): repetir uno no paga otra vez. */
+type PremioAtendido = { id: Id; otorgadas: number }
+
 interface Tablas {
   cuentas: Tabla<Cuenta>
   perfiles: Tabla<PerfilNino>
   textos: Tabla<Texto>
   asignaciones: Tabla<Asignacion>
   sesiones: Tabla<SesionLectura>
+  premios: Tabla<PremiosDeLibro>
+  premiosAtendidos: Tabla<PremioAtendido>
 }
 
 /**
@@ -292,9 +304,21 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     textos: new Tabla<Texto>(almacen, 'textos'),
     asignaciones: new Tabla<Asignacion>(almacen, 'asignaciones'),
     sesiones: new Tabla<SesionLectura>(almacen, 'sesiones'),
+    premios: new Tabla<PremiosDeLibro>(almacen, 'premios'),
+    premiosAtendidos: new Tabla<PremioAtendido>(almacen, 'premios-atendidos'),
   }
   migrar(almacen, tablas)
   const { cuentas, perfiles, textos, asignaciones, sesiones } = tablas
+
+  /**
+   * Lo ya pagado de un libro. Antes de 2.5 no había tabla de premios: lo leído
+   * y lo premiado de la asignación ya estaban pagados (se toman la primera vez).
+   */
+  const premiosDe = (a: Asignacion): PremiosDeLibro =>
+    tablas.premios.obtener(a.id) ?? {
+      id: a.id,
+      ...combinarEstados({ pagadoHasta: a.leidoHasta ?? 0, hitosHasta: a.premioHasta ?? 0, relecturaDia: a.relecturaPremiadaEn ?? null }),
+    }
 
   /** Sin login: una única cuenta local que se crea sola. */
   const cuentaLocal = (): Cuenta =>
@@ -438,6 +462,8 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     async guardarProgreso(id, { fraseActual, fraseMaxima, estado, leidoHasta, premioHasta, relecturaPremiadaEn }) {
       const a = asignaciones.obtener(id)
       if (!a) throw new Error(`Asignación ${id} no existe`)
+      // Lo ya pagado queda anotado antes de que cambie lo leído.
+      if (!tablas.premios.obtener(id)) tablas.premios.guardar(premiosDe(a))
       const fecha = ahora()
       return asignaciones.guardar({
         ...a,
@@ -469,6 +495,48 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     },
   }
 
+  /**
+   * Sin conexión no hay servidor: los premios se calculan aquí, con las mismas
+   * reglas y el mismo cálculo (src/lectura/premios.ts), y se pagan al instante.
+   * (No hay revisión de ritmo: en este modo los datos son del dispositivo.)
+   */
+  const oyentesPremios = new Set<Parameters<RepositorioPremios['alResolver']>[0]>()
+  const repoPremios: RepositorioPremios = {
+    async reclamar(pedido: PedidoPremio): Promise<ResolucionPremio> {
+      const perfil = perfiles.obtener(pedido.perfilId)
+      const a = asignaciones.obtener(pedido.asignacionId)
+      const texto = a && textos.obtener(a.textoId)
+      let r: Exclude<ResolucionPremio, { estado: 'pendiente' }>
+      const atendido = tablas.premiosAtendidos.obtener(pedido.operationId)
+      if (!perfil || !a || !texto || a.perfilId !== perfil.id) r = { estado: 'descartado', motivo: 'Ese libro ya no está en la biblioteca' }
+      else if (atendido) r = { estado: 'otorgado', otorgadas: atendido.otorgadas, monedas: perfil.monedas }
+      else {
+        const previo = premiosDe(a)
+        const calculo = calcularPremio(texto, a.nivel ?? 1, previo, pedido, { hoy: hoy() })
+        const e = calculo.estado
+        tablas.premios.guardar({ id: a.id, ...e })
+        tablas.premiosAtendidos.guardar({ id: pedido.operationId, otorgadas: calculo.monedas })
+        asignaciones.guardar({
+          ...a,
+          leidoHasta: Math.max(a.leidoHasta ?? 0, e.pagadoHasta),
+          premioHasta: Math.max(a.premioHasta ?? 0, e.hitosHasta),
+          relecturaPremiadaEn: e.relecturaDia ?? a.relecturaPremiadaEn ?? null,
+        })
+        const monedas = perfil.monedas + calculo.monedas
+        perfiles.guardar({ ...perfil, monedas })
+        r = { estado: 'otorgado', otorgadas: calculo.monedas, monedas }
+      }
+      oyentesPremios.forEach((fn) => fn(pedido, r))
+      return r
+    },
+    async reintentar() {},
+    pendientes: () => 0,
+    alResolver(fn) {
+      oyentesPremios.add(fn)
+      return () => void oyentesPremios.delete(fn)
+    },
+  }
+
   return {
     enLinea: false,
     auth,
@@ -476,5 +544,6 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     textos: repoTextos,
     asignaciones: repoAsignaciones,
     sesiones: repoSesiones,
+    premios: repoPremios,
   }
 }

@@ -1,4 +1,5 @@
 import type { AparienciaCiempi } from '../ciempi/catalogo'
+import type { SolicitudPremio } from '../lectura/premios'
 import type {
   AjustesLectura,
   Asignacion,
@@ -47,8 +48,11 @@ export interface RepositorioPerfiles {
   /** Un admin cambia la clave del niño (solo en línea). */
   cambiarClave(perfilId: Id, clave: string): Promise<void>
   actualizarAjustes(id: Id, ajustes: AjustesLectura): Promise<PerfilNino>
-  /** Suma (o resta) monedas y devuelve el nuevo saldo. En el servidor: una transacción. */
-  sumarMonedas(id: Id, cantidad: number): Promise<number>
+  /**
+   * Un adulto suma (o resta) monedas a mano, con un motivo, y devuelve el nuevo
+   * saldo. Las monedas por leer no pasan por aquí: ver `premios`.
+   */
+  sumarMonedas(id: Id, cantidad: number, motivo?: string): Promise<number>
   /** Guarda cómo se ve su Ciempi. Solo puede ponerse cosas gratis o compradas. */
   actualizarCiempi(id: Id, apariencia: AparienciaCiempi): Promise<PerfilNino>
   /** Compra algo de la tienda de Ciempi con sus monedas (atómico). */
@@ -95,6 +99,39 @@ export interface RepositorioSesiones {
   listarPorPerfil(perfilId: Id): Promise<SesionLectura[]>
 }
 
+/**
+ * Un pedido de premio por leer (ver src/lectura/premios.ts): la app dice hasta
+ * dónde leyó y quien guarda los datos (el servidor, o este dispositivo sin
+ * conexión) calcula cuánto corresponde. `operationId` lo genera la app: el
+ * mismo pedido repetido paga una sola vez.
+ */
+export type PedidoPremio = SolicitudPremio & {
+  operationId: Id
+  perfilId: Id
+  asignacionId: Id
+  /** Lo que la app cree que gana, para mostrarlo al instante. No decide nada. */
+  esperadas: number
+}
+
+export type ResolucionPremio =
+  /** `monedas`: el saldo del niño después del premio, según quien guarda los datos. */
+  | { estado: 'otorgado'; otorgadas: number; monedas: number }
+  /** Sin conexión (o muy rápido): queda guardado en el dispositivo y se reintenta. */
+  | { estado: 'pendiente' }
+  /** No se puede pagar (por ejemplo, quitaron el libro): no se reintenta. */
+  | { estado: 'descartado'; motivo: string }
+
+export interface RepositorioPremios {
+  /** Pide el premio. Se guarda en el dispositivo hasta tener respuesta: sin conexión no se pierde. */
+  reclamar(pedido: PedidoPremio): Promise<ResolucionPremio>
+  /** Vuelve a enviar lo pendiente (al abrir la app, al volver la conexión, antes de comprar). */
+  reintentar(): Promise<void>
+  /** Monedas esperadas de lo que el servidor todavía no confirma. */
+  pendientes(perfilId: Id): number
+  /** Avisa cada vez que un pedido se resuelve, también los que estaban en la cola. Devuelve cómo dejar de escuchar. */
+  alResolver(fn: (pedido: PedidoPremio, resolucion: Exclude<ResolucionPremio, { estado: 'pendiente' }>) => void): () => void
+}
+
 export interface Repositorios {
   /** true con el servidor: hay login, invitaciones y sincronización entre dispositivos. */
   enLinea: boolean
@@ -103,4 +140,5 @@ export interface Repositorios {
   textos: RepositorioTextos
   asignaciones: RepositorioAsignaciones
   sesiones: RepositorioSesiones
+  premios: RepositorioPremios
 }

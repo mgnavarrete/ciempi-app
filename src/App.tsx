@@ -11,6 +11,7 @@ import { Presentacion } from './ciempi/Presentacion'
 import { PantallaBiblioteca, type LibroEnBiblioteca } from './biblioteca/PantallaBiblioteca'
 import { useRepositorios } from './datos/DatosProvider'
 import { prepararCuentaNueva } from './datos/inicio'
+import type { PedidoPremio } from './datos/repositorios'
 import type { AjustesLectura, Asignacion, Id, PerfilNino, Sesion } from './dominio/tipos'
 import type { IdFuente } from './fuentes/entradas'
 import { PantallaAcceso } from './inicio/PantallaAcceso'
@@ -67,7 +68,11 @@ export function App() {
     window.history.replaceState(null, '', window.location.pathname)
   }
 
-  const recargarPerfiles = useCallback(async () => setPerfiles(await repos.perfiles.listar()), [repos])
+  // El saldo que se muestra suma lo ganado que todavía no confirma el servidor (cola sin conexión).
+  const recargarPerfiles = useCallback(async () => {
+    const lista = await repos.perfiles.listar()
+    setPerfiles(lista.map((p) => ({ ...p, monedas: p.monedas + repos.premios.pendientes(p.id) })))
+  }, [repos])
 
   useEffect(() => {
     if (!sesion) return setPerfiles(null)
@@ -81,9 +86,33 @@ export function App() {
   const actualizarPerfil = (id: Id, cambios: Partial<PerfilNino>) =>
     setPerfiles((ps) => ps?.map((p) => (p.id === id ? { ...p, ...cambios } : p)) ?? null)
 
-  const ganarMonedas = async (id: Id, cantidad: number) => {
-    actualizarPerfil(id, { monedas: await repos.perfiles.sumarMonedas(id, cantidad) })
+  // ── Premios por leer (ver datos/colaPremios.ts) ──
+  // La moneda se suma al instante con lo que se espera; cuando el servidor
+  // responde, el saldo pasa a ser el suyo (más lo que siga en la cola).
+  const pedirPremio = (pedido: PedidoPremio) => {
+    if (pedido.esperadas) {
+      setPerfiles((ps) => ps?.map((p) => (p.id === pedido.perfilId ? { ...p, monedas: p.monedas + pedido.esperadas } : p)) ?? null)
+    }
+    void repos.premios.reclamar(pedido)
   }
+  useEffect(
+    () =>
+      repos.premios.alResolver((pedido, r) =>
+        setPerfiles(
+          (ps) =>
+            ps?.map((p) => {
+              if (p.id !== pedido.perfilId) return p
+              if (r.estado === 'otorgado') return { ...p, monedas: r.monedas + repos.premios.pendientes(p.id) }
+              return { ...p, monedas: Math.max(0, p.monedas - pedido.esperadas) }
+            }) ?? null,
+        ),
+      ),
+    [repos],
+  )
+  // Con sesión, lo que quedó sin enviar (por ejemplo, de antes de cerrar la app) sale de inmediato.
+  useEffect(() => {
+    if (sesion) void repos.premios.reintentar()
+  }, [repos, sesion])
 
   const cambiarAjustes = (id: Id, ajustes: AjustesLectura) => {
     actualizarPerfil(id, { ajustes })
@@ -192,7 +221,7 @@ export function App() {
             vistaPrevia={vista.vistaPrevia}
             leyendoConAdulto={esAdmin && !vista.vistaPrevia}
             alCambiarAjustes={(a) => cambiarAjustes(perfil.id, a)}
-            alGanarMonedas={(n) => void ganarMonedas(perfil.id, n)}
+            alPedirPremio={pedirPremio}
             alProgreso={(progreso) => {
               ultimoProgreso.current.set(asignacion.id, progreso)
               void repos.asignaciones.guardarProgreso(asignacion.id, progreso)
