@@ -366,21 +366,25 @@
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 6 | 0,7 | 8,6 |
 |  | Textos propios distintos de 6 oraciones (~1 min esperado), leídos a medio ritmo | 11 | 1,3 | 8,4 |
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 10 | 15,9 | 0,6 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 8 | 11,8 | 0,7 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 0 | 60,0 | 0,0 |
 | A · Multiplicadores por nivel | Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado | 11 | 8,4 | 1,3 |
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 3 | 0,7 | 4,3 |
 |  | Textos propios distintos de 6 oraciones (~1 min esperado), leídos a medio ritmo | 8 | 1,3 | 6,1 |
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 30 | 15,9 | 1,9 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 24 | 11,8 | 2,0 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 0 | 60,0 | 0,0 |
 | B · Hitos pedagógicos | Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado | 22 | 8,4 | 2,6 |
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 9 | 0,7 | 12,9 |
 |  | Textos propios distintos de 6 oraciones (~1 min esperado), leídos a medio ritmo | 14 | 1,3 | 10,6 |
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 13 | 15,9 | 0,8 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 11 | 11,8 | 0,9 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 0 | 60,0 | 0,0 |
 | D · Esfuerzo esperado | Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado | 100 | 8,4 | 11,9 |
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 0 | 0,7 | 0,0 |
 |  | Textos propios distintos de 6 oraciones (~1 min esperado), leídos a medio ritmo | 2 | 1,3 | 1,5 |
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 715 | 15,9 | 44,9 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 23 | 11,8 | 1,9 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 0 | 60,0 | 0,0 |
 | E · Híbrido (versión del checkpoint) | Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado | 17 | 8,4 | 2,0 |
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 0 | 0,7 | 0,0 |
@@ -388,6 +392,7 @@
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 36 | 15,9 | 2,3 |
 |  | Ídem con tiempo activo falsificado; reloj actual (0,1 s/palabra) | 730 | 3,2 | 230,5 |
 |  | Ídem; reloj que se adelanta con los segundos pagados | 730 | 357,9 | 2,0 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 30 | 11,8 | 2,5 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 12 | 60,0 | 0,2 |
 | E2 · Híbrido ajustado (recomendado v3) | Texto propio de 300 «Mariposa amarilla.» (N2), arrastrado | 15 | 8,4 | 1,8 |
 |  | Muchos textos propios distintos de 1 oración (N2): subir y leer cada uno | 0 | 0,7 | 0,0 |
@@ -395,6 +400,7 @@
 |  | Texto difícil (sugerido N2) asignado en N0, 300 frases arrastradas | 30 | 15,9 | 1,9 |
 |  | Ídem con tiempo activo falsificado; reloj actual (0,1 s/palabra) | 223 | 3,2 | 70,4 |
 |  | Ídem; reloj que se adelanta con los segundos pagados | 223 | 110,0 | 2,0 |
+|  | Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable | 68 | 32,8 | 2,1 |
 |  | App abierta 60 min tocando la pantalla sin completar frases | 0 | 60,0 | 0,0 |
 
 
@@ -429,3 +435,74 @@
 | D · Esfuerzo esperado | Subir un texto de 300 frases de 8 sílabas (nivel 0) y arrastrar a 4 sílabas/s | 716 | 15,9 | 45,0 |
 | E · Híbrido (versión del checkpoint) | Subir un texto de 300 frases de 8 sílabas (nivel 0) y arrastrar a 4 sílabas/s | 37 | 15,9 | 2,3 |
 | E2 · Híbrido ajustado (recomendado v3) | Subir un texto de 300 frases de 8 sílabas (nivel 0) y arrastrar a 4 sílabas/s | 31 | 15,9 | 1,9 |
+
+
+## Verificación · sensibilidad
+
+| Escenario | Grupo | P0 | P1 | P2 | P3 | P4 | Brecha | Gini | Caso 20 min | P0 Dragón 80 (p50/p90) | Muy lento Dragón 80 | Muy lento Cuncuna vía 3 | Peor abuso/min |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| E2 tal como está (§6.3) | Base | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 34 | 4/5 | 5/6 | 11 (9–11) | 2,1 |
+| Todos leen 30 % más lento | Ritmo | 21 | 27 | 25 | 23 | 26 | 1,29 | 0,09 | 30 | 5/5 | 6/7 | 15 (14–18) | 2,1 |
+| Todos leen 30 % más rápido | Ritmo | 21 | 30 | 26 | 24 | 27 | 1,43 | 0,10 | 34 | 4/5 | 5/5 | 7 (7–8) | 2,1 |
+| P0–P1 30 % más lentos y P3–P4 30 % más rápidos | Ritmo | 21 | 27 | 26 | 24 | 27 | 1,29 | 0,09 | 30 | 5/5 | 6/7 | 15 (14–18) | 2,1 |
+| P0–P1 30 % más rápidos y P3–P4 30 % más lentos | Ritmo | 21 | 30 | 26 | 23 | 26 | 1,43 | 0,09 | 34 | 4/5 | 5/5 | 7 (7–8) | 2,1 |
+| Más dispersión entre niños (σ 0,35 → 0,50) | Ritmo | 21 | 27 | 26 | 24 | 26 | 1,29 | 0,10 | 34 | 4/5 | 5/6 | 11 (9–11) | 2,1 |
+| Tropiezos a la mitad | Tropiezos | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 34 | 4/5 | 5/6 | 11 (9–11) | 2,1 |
+| Tropiezos al doble | Tropiezos | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 34 | 4/5 | 5/6 | 11 (9–11) | 2,1 |
+| Tropiezos al triple (P0 = 30 %) | Tropiezos | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 34 | 4/5 | 5/6 | 11 (10–11) | 2,1 |
+| Tiempo fuera de la lectura −30 % | Tiempo fuera | 23 | 32 | 28 | 26 | 29 | 1,37 | 0,08 | 37 | 4/5 | 5/5 | 9 (7–11) | 2,1 |
+| Tiempo fuera de la lectura +30 % | Tiempo fuera | 19 | 26 | 24 | 23 | 26 | 1,36 | 0,09 | 32 | 5/6 | 6/7 | 11 (11–13) | 2,1 |
+| Sesiones de 10 min | Duración | 13 | 18 | 17 | 15 | 17 | 1,38 | 0,10 | 34 | 7/8 | 9/9 | 21 (15–37) | 2,1 |
+| Sesiones de 20 min | Duración | 29 | 39 | 35 | 34 | 37 | 1,34 | 0,08 | 34 | 3/4 | 4/4 | 6 (5–7) | 2,1 |
+| Sesiones de 30 min | Duración | 44 | 59 | 55 | 57 | 58 | 1,34 | 0,09 | 34 | 2/3 | 2/3 | 4 (4–4) | 2,1 |
+| Referencias de E2 −30 % (todas) | Referencia E2 | 20 | 27 | 25 | 23 | 24 | 1,35 | 0,10 | 34 | 5/5 | 5/6 | 11 (9–11) | 2,1 |
+| Referencias de E2 +30 % (todas) | Referencia E2 | 22 | 27 | 24 | 22 | 24 | 1,22 | 0,07 | 33 | 4/5 | 6/6 | 11 (9–11) | 2,1 |
+| N0 = 7 síl/min (valor de E) | Referencia E2 | 22 | 28 | 26 | 24 | 27 | 1,27 | 0,08 | 32 | 4/5 | 6/6 | 11 (9–11) | 2,1 |
+| Tope por unidad 1,5× (en vez de 2×) | Tope | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,09 | 32 | 4/5 | 6/6 | 11 (9–11) | 2,1 |
+| Tope por unidad 3× | Tope | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 34 | 4/5 | 5/6 | 11 (9–11) | 2,1 |
+
+
+## Verificación · tope por unidad
+
+| Tope | P0 | P1 | P2 | P3 | P4 | Muy lento |
+|---|---:|---:|---:|---:|---:|---:|
+| 1,25× | 0,7 % (p90 2,1 %) | 3,7 % (p90 9,5 %) | 3,8 % (p90 10,4 %) | 3,7 % (p90 11,5 %) | 3,7 % (p90 11,7 %) | 14,1 % (p90 17,2 %) |
+| 1,50× | 0,2 % (p90 0,6 %) | 1,6 % (p90 3,7 %) | 1,6 % (p90 4,0 %) | 1,5 % (p90 4,3 %) | 1,6 % (p90 4,8 %) | 6,3 % (p90 8,8 %) |
+| 2,00× | 0,0 % (p90 0,0 %) | 0,3 % (p90 0,5 %) | 0,3 % (p90 0,4 %) | 0,2 % (p90 0,4 %) | 0,3 % (p90 0,5 %) | 1,0 % (p90 2,2 %) |
+
+
+## Verificación · mitigaciones N3–N4
+
+| Modelo | P0 15 min | P1 15 min | P2 15 min | P3 15 min | P4 15 min | Brecha | Gini | Peor abuso/min | P0 144 ses. relee | P1 144 ses. relee | P2 144 ses. relee | P3 144 ses. relee | P4 144 ses. relee | P0 ola 1 relee | P1 ola 1 relee | P2 ola 1 relee | P3 ola 1 relee | P4 ola 1 relee |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Actual (2.4.1) | 8 | 25 | 43 | 67 | 120 | 15,09 | 0,45 | 36,2 | 59 | 74 | 390 | 120 | 1.583 | no alcanza | no alcanza | 130 | no alcanza | 8 |
+| E2 · Híbrido ajustado (recomendado v3) | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 2,1 | 1.953 | 2.054 | 1.477 | 1.383 | 1.507 | 23 | 22 | 31 | 34 | 30 |
+| E2 + palabras nuevas en N2–N4 (+2 cada 40) | 21 | 28 | 34 | 38 | 48 | 2,29 | 0,16 | 2,1 | 1.953 | 2.054 | 1.493 | 1.403 | 1.547 | 23 | 22 | 29 | 32 | 26 |
+| E2 + relectura 1,5/min en todos los niveles | 21 | 28 | 26 | 24 | 27 | 1,34 | 0,08 | 2,1 | 1.953 | 2.054 | 2.170 | 2.042 | 2.220 | 23 | 22 | 21 | 24 | 21 |
+
+
+## Verificación · migración
+
+| Modo · modelo | P0: saldo al migrar · 10 antes → 10 después | P1: saldo al migrar · 10 antes → 10 después | P2: saldo al migrar · 10 antes → 10 después | P3: saldo al migrar · 10 antes → 10 después | P4: saldo al migrar · 10 antes → 10 después | Niños que pierden saldo |
+|---|---:|---:|---:|---:|---:|---:|
+| relee · M0 | 57 · 2 → 0 | 74 · 0 → 0 | 147 · 19 → 18 | 120 · 0 → 0 | 470 · 87 → 87 | 0 |
+| relee · E2 | 57 · 2 → 143 | 74 · 0 → 151 | 147 · 19 → 98 | 120 · 0 → 90 | 470 · 87 → 97 | 0 |
+| relee · E2retro | 57 · 2 → 145 | 74 · 0 → 154 | 147 · 19 → 113 | 120 · 0 → 105 | 470 · 87 → 112 | 0 |
+| relee · E2Hretro | 57 · 2 → 145 | 74 · 0 → 154 | 147 · 19 → 113 | 120 · 0 → 105 | 470 · 87 → 112 | 0 |
+| relee · E2Rretro | 57 · 2 → 145 | 74 · 0 → 154 | 147 · 19 → 162 | 120 · 0 → 152 | 470 · 87 → 162 | 0 |
+| subidos · M0 | 152 · 78 → 78 | 355 · 175 → 174 | 729 · 358 → 361 | 913 · 430 → 431 | 1.553 · 695 → 715 | 0 |
+| subidos · E2 | 152 · 78 → 186 | 355 · 175 → 243 | 729 · 358 → 247 | 913 · 430 → 272 | 1.553 · 695 → 256 | 0 |
+| subidos · E2retro | 152 · 78 → 186 | 355 · 175 → 243 | 729 · 358 → 247 | 913 · 430 → 272 | 1.553 · 695 → 256 | 0 |
+| subidos · E2Hretro | 152 · 78 → 186 | 355 · 175 → 243 | 729 · 358 → 247 | 913 · 430 → 272 | 1.553 · 695 → 256 | 0 |
+| subidos · E2Rretro | 152 · 78 → 186 | 355 · 175 → 243 | 729 · 358 → 258 | 913 · 430 → 278 | 1.553 · 695 → 264 | 0 |
+
+
+## Verificación · relectura con mejora
+
+| Nivel | Cuento más corto (min esperados) | Relectura/min | Relectura con mejora/min (peor caso) | Reserva si se cuenta 1 tropiezo por unidad |
+|---|---:|---:|---:|---:|
+| N0 | 8,4 | 1,50 | 1,98 | 16 monedas |
+| N1 | 3,2 | 1,50 | 2,74 | 20 monedas |
+| N2 | 3,1 | 1,00 | 2,28 | 18 monedas |
+| N3 | 1,3 | 1,00 | 4,00 | 8 monedas |
+| N4 | 3,1 | 1,00 | 2,27 | 4 monedas |

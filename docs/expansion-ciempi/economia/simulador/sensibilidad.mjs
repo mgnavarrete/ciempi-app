@@ -11,7 +11,7 @@
 import { writeFileSync } from 'node:fs'
 import {
   SEMILLA, PERFILES, SUPUESTOS, MODELOS, REF_SPM_E2, CASO_USUARIO,
-  mulberry32, cuantil, nuevoNino, sesion, primeraSesion, campana, campanaLento, casoUsuario, abusoAmpliado, gini, resumen,
+  CUENTOS, esperadoMin, mulberry32, cuantil, nuevoNino, sesion, primeraSesion, campana, campanaLento, casoUsuario, abusoAmpliado, gini, resumen,
 } from './simular.mjs'
 
 const E2 = MODELOS.find((m) => m.id === 'E2')
@@ -150,7 +150,13 @@ function compararModelos(modelos) {
     }
   })
 }
-const mitigacion = compararModelos([M0, E2, E2H])
+/**
+ * Mitigación recomendada: relectura a 1,5 por minuto en todos los niveles (en E2, 1,5 solo en N0–N1).
+ * Paga por minuto de actividad completada, igual para todos los ritmos: no favorece la velocidad
+ * ni paga la app abierta. Corrige la desventaja de largo plazo de N2–N4 frente a N0 releyendo.
+ */
+const E2R = { ...E2, id: 'E2R', nombre: 'E2 + relectura 1,5/min en todos los niveles', relecturaTasa: { 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 } }
+const mitigacion = compararModelos([M0, E2, E2H, E2R])
 
 // ─── Migración: 20 sesiones en 2.4.1 y luego 40 en el modelo nuevo ────────
 /**
@@ -166,6 +172,7 @@ function migracion(modeloNuevo, modo, { retro = false, antes = 20, despues = 40 
     const ganado10 = []
     const ganadoAntes10 = []
     const ola1 = []
+    const perdidas = []
     const nuevasRepetidas = []
     const retroPagado = []
     for (let i = 0; i < N; i++) {
@@ -193,12 +200,17 @@ function migracion(modeloNuevo, modo, { retro = false, antes = 20, despues = 40 
       let g = 0
       let nuevas = 0
       let compra = null
+      const saldoPrevio = n.monedas - extra
+      let minimo = n.monedas
       for (let k = 0; k < despues; k++) {
         const r = sesion(n, modeloNuevo, 15)
+        minimo = Math.min(minimo, n.monedas)
         if (k < 10) g += r.monedas
         nuevas += r.porFuente.nuevas
         if (compra === null && n.monedas >= saldos.at(-1) + 360) compra = k + 1
       }
+      // Conservación: el saldo nunca baja del que tenía al migrar (nadie gasta en la simulación).
+      perdidas.push(Math.max(0, saldoPrevio - minimo))
       ganado10.push(g + extra)
       ola1.push(compra ?? 1e9)
       nuevasRepetidas.push(nuevas)
@@ -219,6 +231,7 @@ function migracion(modeloNuevo, modo, { retro = false, antes = 20, despues = 40 
       saldoCubreDragon: r2(saldos.filter((s) => s >= 80).length / saldos.length),
       nuevasPost: r1(nuevasRepetidas.reduce((s, x) => s + x, 0) / N),
       retroMedia: r1(retroPagado.reduce((s, x) => s + x, 0) / N),
+      ninosQuePierden: perdidas.filter((x) => x > 0).length,
     }
   })
 }
@@ -229,9 +242,37 @@ for (const modo of ['relee', 'subidos']) {
     E2: migracion(E2, modo),
     E2retro: migracion(E2, modo, { retro: true }),
     E2Hretro: migracion(E2H, modo, { retro: true }),
+    E2Rretro: migracion(E2R, modo, { retro: true }),
   }
 }
 
-const salida = { semilla: SEMILLA, nNinos: N, escenarios, tope, mitigacion, migraciones }
+// ─── Abusos de la mitigación (mismos escenarios deterministas) ─────────────
+const abusosMitigacion = Object.fromEntries([E2, E2H, E2R].map((m) => [m.id, abusoAmpliado(m)]))
+
+// ─── «Relectura con mejora»: cota de lo que rinde tropezar a propósito ────
+/**
+ * Determinista. Peor caso por nivel: el cuento de Ciempi más corto (en minutos esperados).
+ * La primera lectura completa se hace tropezando a propósito (crea una «reserva» de mejoras);
+ * después se relee una vez al día con un tropiezo menos, al mínimo que exige la implementación
+ * (relectura registrada ≥ 50 % de lo esperado). Cobra la relectura por tiempo + 2.
+ * La reserva es 1 mejora por tropiezo inicial: si los tropiezos se cuentan por unidad, ≤ unidades;
+ * la implementación en curso acepta hasta 10 000 (ver §18).
+ */
+function cotaMejora(modelo) {
+  return [0, 1, 2, 3, 4].map((nivel) => {
+    const cs = CUENTOS.filter((c) => c.nivel === nivel).map((c) => ({ c, esp: c.unidades.reduce((s, u) => s + esperadoMin(u, nivel, modelo.ref), 0) }))
+    const { c, esp } = cs.reduce((a, b) => (b.esp < a.esp ? b : a))
+    const tasa = modelo.relecturaTasa[nivel]
+    const min = 0.5 * esp
+    return {
+      nivel, cuento: c.id, unidades: c.totalUnidades, minutosEsperados: r1(esp),
+      relecturaSinMejoraPorMin: r2(tasa), relecturaConMejoraPorMin: r2((tasa * min + modelo.mejora) / min),
+      reservaSiPorUnidad: c.totalUnidades * modelo.mejora,
+    }
+  })
+}
+const mejora = { E2: cotaMejora(E2), E2R: cotaMejora(E2R) }
+
+const salida = { semilla: SEMILLA, nNinos: N, escenarios, tope, mitigacion, migraciones, abusosMitigacion, mejora }
 writeFileSync(new URL('./datos/sensibilidad.json', import.meta.url), JSON.stringify(salida, null, 1) + '\n')
 console.log('datos/sensibilidad.json escrito')
