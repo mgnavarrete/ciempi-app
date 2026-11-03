@@ -1,6 +1,8 @@
 # Checkpoint: seguridad de monedas (pausa ordenada, 2026-11-03)
 
-Trabajo **incompleto**. El commit de pausa contiene código que **no compila del todo en el cliente**: falta adaptar `src/App.tsx`.
+> **Actualización (2026-11-03, retomado):** completado. `App.tsx` adaptado, pruebas del cliente escritas, los cuatro comandos en verde (tsc cliente y servidor limpios; `vitest src` 229/229; servidor 36/36 ×3). Ver `SEGURIDAD-MONEDAS.md`. Lo que sigue es el registro histórico de la pausa.
+
+Trabajo **incompleto** (en el momento de la pausa). El commit de pausa contiene código que **no compila del todo en el cliente**: falta adaptar `src/App.tsx`.
 
 ## Completado
 

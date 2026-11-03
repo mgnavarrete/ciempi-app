@@ -224,7 +224,9 @@ export function crearRepositoriosApi(base: string): Repositorios {
       async comprar(id, itemId, precioVisto) {
         // Primero lo ganado que quedó sin enviar: así alcanza para lo que el niño ve en su contador.
         await premios.reintentar()
-        return pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId, precioVisto })
+        const r = await pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId, precioVisto })
+        // Como en el resto de la app, el saldo que se muestra incluye lo que sigue en la cola.
+        return { ...r, monedas: r.monedas + premios.pendientes(id) }
       },
       async crearInvitacion(perfilId) {
         return pedir<InvitacionNino>('POST', `/api/perfiles/${perfilId}/invitaciones`)
