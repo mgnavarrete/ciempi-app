@@ -391,3 +391,206 @@ Las cinco líneas están terminadas en sus ramas. Nada se fusionó a `main` y no
 - **El usuario pidió revisar** los resultados, las demos y la propuesta económica **antes de autorizar** la rama `expansion-v3-integracion`. No crearla sin su autorización.
 - **Pendiente técnico si se aprueba E2:** reloj del servidor sobre los segundos pagados, en la rama de seguridad. Sin él, un cliente alterado cobra unas 70 monedas por minuto con E2.
 - **Pendiente de documentación:** actualizar TIENDA-V3 (condición de la Cuncuna y precios de E2) y PLAN-MAESTRO §6.5 y D4 (tope silencioso rechazado).
+
+---
+
+## 7. PAUSA DE EMERGENCIA (sesión 3, 3-nov-2026): estado exacto
+
+Los cuatro agentes de la sesión 3 **se cortaron por el límite de uso de la API** a mitad de su trabajo. No alcanzaron a escribir sus checkpoints. El coordinador guardó sus cambios tal cual, en commits `checkpoint WIP`, **sin compilar ni probar**. No se modificó `main`, no hubo push, despliegue ni APK, y no se tocaron datos reales ni la economía de producción.
+
+### 7.1 Aprobaciones del usuario (sesión 3), vigentes
+- **E2 aprobado** como modelo de referencia, con precios provisionales en dos olas. Antes de llevarlo a producción hay que:
+  - verificar las simulaciones;
+  - evaluar el impacto en los niveles 3 y 4;
+  - conservar los saldos;
+  - revisar la relectura y los abusos;
+  - corregir las contradicciones entre documentos;
+  - no cambiar los precios reales.
+- **Seguridad para E2**, autorizada en modo experimental:
+  - reloj del servidor, validación de progreso, idempotencia, cola sin conexión, compras simultáneas, restauración y compatibilidad;
+  - pruebas con clientes modificados;
+  - no desplegar.
+- **Textos del niño:** el niño los sigue pudiendo agregar, pero el **adulto los autoriza con PIN**, verificado en el servidor. Corregir el PIN, que hoy no protege nada, sin bloquear funciones legítimas.
+- **Cuncuna:** se desbloquea con 6 de los 8 cuentos originales de nivel 0. También valen:
+  - una condición equivalente para quien empieza en otros niveles;
+  - una alternativa para lectores lentos, que reconozca progreso educativo y no solo tiempo.
+  - Se conserva el progreso y hay una celebración especial.
+- **AD-017**, registrado en `CIEMPI_ART_DIRECTION.md` del repo principal (sin commitear):
+  - **cuerpos** de Dragón d2 y Cuncuna c2 **aprobados** (segmentos, siluetas, patas, texturas, colores, patrones, sombras y crecimiento modular);
+  - **rostros NO aprobados**.
+- **AD-018:** E08 «Comer» aprobada para la integración experimental, desactivada en producción.
+  - Boca inicial: sorprendida. Se conserva la de carcajada para comparar en el laboratorio.
+  - Con máscaras que tapan la boca: no dibujar una segunda boca; usar una reacción alternativa (cabeza, cuerpo o efecto) sin cambiar la apariencia equipada.
+- **Rama `expansion-v3-integracion` autorizada.** No fusionar a `main`, no hacer push, no desplegar, no cambiar la economía real ni generar APK.
+- **Fase artística posterior, PENDIENTE.** No empezar hasta guardar y verificar la integración. Incluye:
+  - rostros de Dragón y Cuncuna, con IA real;
+  - Serpiente;
+  - Camaleón;
+  - mochilas (que no parezcan pegadas: correas, volumen, perspectiva, anclajes, sombra de contacto);
+  - zapatos (que el pie entre de verdad: abertura, tobillo, suela, orientación, crecimiento);
+  - todo en un laboratorio HTML con comparación antes y después.
+
+### 7.2 Ramas, worktrees y commits
+Worktrees en `/mnt/d/Proyectos/ciempi-app/.claude/worktrees/<nombre>`. No usar `git worktree remove`.
+
+| Línea | Rama | Worktree | Último bueno (probado) | Checkpoint WIP (sin probar) |
+|---|---|---|---|---|
+| Seguridad + E2 + reloj + Cuncuna | `worktree-agent-a5e1c8d72e4a5aeb0` | `agent-a5e1c8d72e4a5aeb0` | `dcab7d5` | `da87153`: monedas.ts, premios.ts, repositoriosApi.ts |
+| PIN para textos (nueva) | `expansion-v3-pin-textos` (desde `dcab7d5`) | `pin-textos` | — | `f1c9401`: `server/sql/014_pin_textos_propios.sql`, `server/src/autorizacion.ts`, app.ts, premios.ts, api.test.ts |
+| Economía | `worktree-agent-a925a3794da34fde2` | `agent-a925a3794da34fde2` | `76c9367` | `e4e6d3b`: `simulador/sensibilidad.mjs` y `.json`; simular.mjs y resultados.json modificados |
+| Animación | `worktree-agent-a103c0ae8e6a43da3` | `agent-a103c0ae8e6a43da3` | `1bf79c6` | `da13860`: `animacion/boca.ts`, animaciones, motor, rig, CiempiVivo, Vestuario, Ciempi.tsx, pose.ts (`FormaEscena` + `escenaCreciente` con `forma`), `v2-antes/` |
+| Dragón y Cuncuna | `worktree-agent-ab5e3926402cffc21` | `agent-ab5e3926402cffc21` | `bba72d3` | — (sin cambios en la sesión 3) |
+| Tienda | `worktree-agent-a4c7575325914c12a` | `agent-a4c7575325914c12a` | `da6dc0d` | — (TIENDA-V3 sin corregir aún) |
+| Continuidad | `expansion-v3-continuidad` | `continuidad` | este commit | — |
+| **Integración** | `expansion-v3-integracion` (desde `3e188ce`) | `integracion` | `bfd83c4` | — |
+
+**Integración (`bfd83c4`):** fusionó los commits *probados* `dcab7d5`, `76c9367`, `bba72d3`, `1bf79c6`, `da6dc0d` y `de61950`, sin conflictos.
+- **Pruebas combinadas (verificadas):** tsc del cliente y del servidor OK; `vitest run src` **254/254** (186 base + 43 seguridad + 13 especies + 12 animación); servidor **36/36** contra la base `ciempi_test_integracion`.
+- **NO incluye** los checkpoints WIP de la tabla.
+- Tiene enlaces `node_modules` y `server/node_modules`, ignorados por git.
+
+### 7.3 Problema conocido: crecimiento optimizado frente a especies
+En `pose.ts` combinado, `roles`, `posiciones` y `escena` aceptan `forma?` (especies), pero **`escenaCreciente(svg, nMax, prefix)` no**. Por eso Dragón y Cuncuna no pueden usar el modo `revelar` (`CRECIMIENTO_REVELAR = true`) ni E08 con crecimiento: el laboratorio de especies usa `escena` con recomposición.
+- El WIP de animación `da13860` empieza a resolverlo: agrega una interfaz estructural `FormaEscena` en pose.ts y `escenaCreciente(..., forma?)`.
+- **Falta:**
+  - compilar;
+  - comprobar que `FormaCuerpo` (de `especie.ts`) se puede asignar a `FormaEscena`;
+  - aplicar `pieDeRol`, `xMaestro`, `siempreClonar` y `margenCola` en `encuadre`;
+  - repetir `capturas.mjs` (108/108 sin `forma`);
+  - probar las especies con `revelar` comparando contra `escena(…, forma)`.
+- **Al fusionar hay conflicto probable en pose.ts** entre `FormaEscena` (animación) y `import type {FormaCuerpo}` (especies): unificar en un solo tipo.
+
+### 7.4 Tareas por línea
+**Seguridad / E2 (WIP `da87153`):**
+- Hecho: cambios iniciales en monedas.ts, premios.ts y repositoriosApi.ts, **sin revisar**.
+- Falta todo lo demás:
+  - E2 detrás de una bandera (`ECONOMIA=e2`), con 2.4.1 por defecto y una prueba que lo verifique;
+  - reloj del servidor sobre los segundos pagados (ráfaga ~1 h);
+  - dificultad real del texto y premio por terminar uno por huella;
+  - desbloqueo de la Cuncuna en el servidor, con la migración `013_*.sql` (no destructiva), idempotente, retroactivo y con un estado «por celebrar»;
+  - pruebas de abuso con clientes modificados;
+  - actualizar SEGURIDAD-MONEDAS.md;
+  - correr los 4 comandos.
+- Parámetros: ECONOMIA-V3 §6.3 (rama de economía).
+
+**PIN (WIP `f1c9401`):**
+- Hecho: migración 014, módulo `autorizacion.ts`, inicio de los cambios en app.ts, premios.ts y api.test.ts. **Sin compilar.**
+- Falta:
+  - documentar el flujo actual con archivos y líneas;
+  - terminar las rutas;
+  - pantallas del cliente: el niño agrega un texto que queda pendiente y el adulto lo aprueba con PIN;
+  - PIN con hash `crypto.scrypt`, límite de intentos y verificación en el servidor;
+  - un texto pendiente no paga, y al aprobarse empieza a pagar sin pagar dos veces;
+  - textos existentes tratados como autorizados;
+  - pruebas que intenten eludir el PIN;
+  - base `ciempi_test_pin`;
+  - capturas a 390 px;
+  - `docs/expansion-ciempi/seguridad/PIN-TEXTOS.md`.
+- Las dos ramas tocan app.ts y premios.ts: **es probable que choquen** con la de seguridad.
+
+**Economía (WIP `e4e6d3b`):**
+- Hecho: script de sensibilidad (parcial).
+- Falta:
+  - comprobar que el simulador sigue reproduciendo las cifras: `simular.mjs` cambió, así que repetirlo con la semilla 20261103 y comparar con `76c9367`;
+  - auditoría y sensibilidad (ritmos ±30 %, tropiezos, duración, ritmos de referencia);
+  - impacto en los niveles 3 y 4 (de 67 a 24 y de 120 a 27) con una mitigación simulada;
+  - conservación de saldos;
+  - revisión de relectura y abusos;
+  - **corregir TIENDA-V3** en la rama de la tienda: Cuncuna 6/8 de nivel 0 con alternativas, precios E2 provisionales y Dragón a 80;
+  - **corregir PLAN-MAESTRO** §6.5, D4 y §17, en la rama de continuidad;
+  - regenerar index.html;
+  - cotejar los parámetros con la implementación de E2.
+
+**Animación (WIP `da13860`):**
+- Hecho (sin probar):
+  - `boca.ts` (variantes sorprendido y carcajada);
+  - lógica de máscaras en animaciones, motor y rig;
+  - `escenaCreciente` con `forma`;
+  - respaldo del estado anterior en `v2-antes/`.
+- Falta:
+  - compilar y corregir;
+  - selector de boca en la demo y en la hoja;
+  - revisar todas las máscaras de boca tapada usando los metadatos del catálogo;
+  - interrupciones (varias frutas, tropezar, celebrar, victoria, cambio de vestuario, N de 0 a 2, modo tranquilo);
+  - medición intercalada a 4× y 6×;
+  - hoja de cuadros nueva, inspeccionada, con la rúbrica;
+  - reconstruir `demo-comer/dist`;
+  - actualizar RESULTADOS.md.
+- `COMER_ANIMADO` sigue en `false`.
+
+### 7.5 Pruebas pendientes
+- tsc y vitest en los cuatro WIP.
+- Servidor contra `*_test*`.
+- Pruebas combinadas después de la nueva fusión.
+- Playwright del laboratorio de especies y de la demo E08 en la rama de integración.
+- Android real, Firefox y Safari, y una APK antigua contra el servidor nuevo.
+
+### 7.6 Otros problemas conocidos
+- **Nivel 2 sin tope por libro en 2.4.1:** E2 lo resuelve, pero está apagado.
+- **Monedas que se pueden perder:** libro quitado con la cola pendiente, o cola borrada al reinstalar.
+- **Máscara «Gatita»:** riesgo alto de parecerse a Hello Kitty; decisión aparte.
+- **Dragón:** monótono con N ≥ 12.
+- **Cuncuna:** los penachos laterales quedan recortados.
+- **A10 Victoria:** sale del encuadre.
+
+---
+
+## PROMPT PARA CONTINUAR DESDE LA PAUSA DE EMERGENCIA (sesión 4)
+
+```text
+Proyecto CIEMPI (/mnt/d/Proyectos/ciempi-app, WSL; React+TS+Vite+Capacitor, servidor Fastify+PostgreSQL).
+Producción = 2.4.1, commit 3e188ce en main. Estoy retomando la expansión v3 después de una pausa de emergencia
+por límite de créditos. NO conoces la conversación anterior: reconstruye el estado SOLO desde los archivos.
+
+1. Recupera el contexto. Lee:
+   - docs/expansion-ciempi/CONTINUIDAD-SESION.md de la rama expansion-v3-continuidad
+     (worktree .claude/worktrees/continuidad), COMPLETO, en especial §6 y §7.
+   - AGENTS.md y CIEMPI_ART_DIRECTION.md del repo principal (sin commitear; registro AD-017 y AD-018).
+   - ECONOMIA-V3.md (rama worktree-agent-a925a3794da34fde2) y SEGURIDAD-MONEDAS.md
+     (rama worktree-agent-a5e1c8d72e4a5aeb0).
+
+2. Verifica los checkpoints: `git worktree list`; `git log --oneline -3 <rama>` en cada rama de la tabla §7.2;
+   `git status` limpio en cada worktree. Los commits "checkpoint WIP" NO están probados.
+
+3. Retoma las tareas incompletas de §7.4, cada una en SU worktree y rama, con subagentes en paralelo:
+   a) Seguridad/E2/reloj/Cuncuna (worktree agent-a5e1c8d72e4a5aeb0, migración 013).
+   b) PIN para textos (worktree pin-textos, rama expansion-v3-pin-textos, migración 014).
+   c) Economía: verificación, sensibilidad, niveles 3 y 4, saldos, TIENDA-V3 (rama de la tienda) y
+      PLAN-MAESTRO (rama de continuidad).
+   d) Animación: bocas, máscaras, escenaCreciente+forma, interrupciones, rendimiento, demo.
+   Empieza cada una compilando el WIP y corrigiéndolo. Usa SOLO bases *_test* del contenedor ciempi-db-1
+   (127.0.0.1:5434, ciempi/ciempi). Playwright: NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules.
+
+4. Integra en expansion-v3-integracion (worktree .claude/worktrees/integracion, hoy en bfd83c4):
+   fusiona con --no-ff, en este orden: seguridad, PIN, economía, especies, animación, tienda, continuidad.
+
+5. Resuelve los conflictos. Probables: server/src/app.ts y premios.ts (seguridad vs PIN) y src/ciempi/v2/pose.ts
+   (FormaEscena de animación vs FormaCuerpo de especies: unificar el tipo). Comportamiento por defecto de
+   Ciempi idéntico.
+
+6. Ejecuta las pruebas COMBINADAS:
+   - npx tsc --noEmit -p . ; (cd server && npx tsc --noEmit) ; npx vitest run src ;
+   - DATABASE_URL=postgres://ciempi:ciempi@localhost:5434/ciempi_test_integracion npx vitest run server/test ;
+   - Ciempi idéntico (capturas.mjs 108/108 y la comparación de escena de especies 35/35);
+   - Dragón y Cuncuna con crecimiento revelar y E08;
+   - Playwright de los laboratorios sin errores de consola.
+   No declares nada funcionando solo porque las ramas compilan por separado.
+
+7. Prepara la demostración integrada: laboratorio de Dragón y Cuncuna, demo E08 con selector de boca y
+   máscaras, celebración de la Cuncuna y flujo de PIN.
+
+8. Entrégame para aprobación:
+   - la rama integrada y la lista de commits;
+   - las pruebas de app y servidor, y las de crecimiento y accesorios;
+   - la demo E08, el laboratorio de especies y el informe E2;
+   - los pendientes, los riesgos antes del despliegue y las instrucciones para revisar.
+   Distingue lo verificado, lo inferido y lo pendiente.
+
+Prohibido sin mi autorización: tocar main (tiene cambios sin commitear ajenos que hay que conservar),
+merge a main, push, desplegar, ciempi.minttu.cl, datos reales, economía o precios reales, APK, borrar
+ramas o worktrees, limpieza destructiva de git.
+
+La FASE ARTÍSTICA sigue PENDIENTE y NO se empieza hasta que la integración esté guardada, verificada
+y entregada: rostros de Dragón y Cuncuna (IA real con Codex image_gen, sin cambiar los cuerpos aprobados
+en AD-017), Serpiente, Camaleón, mochilas y zapatos.
+```

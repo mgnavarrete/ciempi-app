@@ -1,7 +1,7 @@
 # CIEMPI · Plan maestro de expansión: transformaciones, colecciones, animaciones, tienda y herramientas
 
 **Fecha:** 3 de noviembre de 2026.
-**Estado:** propuesta pendiente de aprobación. Solo es análisis, investigación y planificación. No se modificaron código, recursos, compras, monedas ni inventarios. No se instaló nada, no se hizo commit ni push y no se generó APK.
+**Estado:** propuesta pendiente de aprobación. Solo es análisis, investigación y planificación. **Actualización del 3-nov-2026 (economía):** §6, §16 (Fase 0) y §17 (D3, D4, D5) se alinearon con lo que el usuario aprobó: **modelo E2** como referencia, **sin tope diario silencioso ni media tasa**, precios provisionales en dos olas y Cuncuna con 6 de 8 cuentos de nivel 0. Fuente: `economia/ECONOMIA-V3.md` (rama `worktree-agent-a925a3794da34fde2`). No se modificaron código, recursos, compras, monedas ni inventarios. No se instaló nada, no se hizo commit ni push y no se generó APK.
 
 **Cómo se hizo**
 - **Lectura del repositorio**, del código y de los documentos: `AGENTS.md`, `CIEMPI_ART_DIRECTION.md` v1.7, la skill `ciempi-art-director`, los laboratorios y el plan maestro v1.
@@ -189,13 +189,18 @@ Todas se pasan por la rúbrica y la sección 8 de la guía (familias con defecto
 | Pantalla final | **Bug:** en los niveles 0, 1 y 3 muestra como "premio" solo la moneda de la última frase. |
 
 **Propuesta: Fase 0, antes de ampliar la tienda**
+
+> **Actualizado (3-nov-2026).** Los puntos 4, 5 y 6 quedaron reemplazados por el **modelo E2** de `economia/ECONOMIA-V3.md` §6, aprobado por el usuario como referencia (no aplicado en producción). El usuario **rechazó** el tope diario silencioso y la media tasa: prefiere antiabusos que no castiguen a los niños lentos. Se conservan los textos originales tachados para trazabilidad.
+
 1. **Registro de premios en el servidor.** Un `POST /premios {textoId, nivel, hasta, total, operationId}` donde el servidor calcula el pago con el mismo `monedas.ts`, que es puro. Una tabla `premios` con `operation_id` único. `/monedas` queda solo para adultos, con motivo.
 2. **Cola offline e idempotente** para que no se pierdan monedas.
 3. **Corregir la pantalla final y la relectura.**
-4. **Tope en el nivel 2**: 14 por libro.
-5. **Tope diario silencioso** en el servidor, por ejemplo 60 monedas. No es una racha ni se muestra en la interfaz.
-6. **Nivel 0: 2 monedas por frase, con tope de 10 por cuento.** Cada cuento de nivel 0 daría unas 10, a la par con el nivel 1. **La sílaba se celebra con la animación de comer, no con moneda**, porque la recompensa debe estar cerca del acto de leer (Marinak y Gambrell, 2008).
-7. **Recompensas especiales**, anunciadas después y no antes. Por ejemplo, terminar los 8 cuentos de un nivel regala una pieza exclusiva.
+4. ~~**Tope en el nivel 2**: 14 por libro.~~ Con E2 el nivel 2 no necesita tope propio: cada oración paga por su tiempo activo, hasta 2× lo esperado (el texto de 300 oraciones baja de 305 a ~15 monedas). `topePorLibro[2] = 14` queda solo como interino si E2 no llegara a producción (ECONOMIA-V3 §7).
+5. ~~**Tope diario silencioso** en el servidor, por ejemplo 60 monedas.~~ **Rechazado por el usuario**, igual que la media tasa después de 45 min. En su lugar (ECONOMIA-V3 §8 y §11): **reloj del servidor que se adelanta con los segundos pagados** (nadie cobra más rápido que el tiempo real; ráfaga máxima ~1 h), **dificultad real** en los textos que no son de la biblioteca, huella contra duplicados, premio de terminar proporcional, plausibilidad mínima y **avisos visibles al adulto**. Ninguno frena al lector lento. Límite reconocido: el reloj no demuestra lectura real.
+6. ~~**Nivel 0: 2 monedas por frase, con tope de 10 por cuento.**~~ Reemplazado por **E2**: cada frase completada paga 2 monedas por minuto activo (hasta 2× lo esperado; referencia N0 = 5 síl/min), más terminar cuento (min(3, minutos esperados)), sílabas o palabras nuevas, relectura por minuto, relectura con mejora y nivel completo. Nunca paga por tener la app abierta. P0 pasa de ~8 a ~21 monedas en 15 min y la brecha por minuto entre perfiles baja de 15× a 1,34× [I, simulado]. **La sílaba se sigue celebrando con la animación de comer, no con moneda** (Marinak y Gambrell, 2008).
+7. **Recompensas especiales**, anunciadas después y no antes. Por ejemplo, terminar los 8 cuentos de un nivel regala una pieza exclusiva (en E2, además, +15 monedas por nivel completo; la pieza sigue pendiente de decisión).
+8. **Precios provisionales E2, en dos olas** (aprobados como referencia, no aplicados): básico **10**, común **16**, especial **24**, obra **30**, conjuntos **~60–85**, **Dragón 80**; catálogo actual sin cambios. Se calcularon con las sesiones de un niño de nivel 0 (ECONOMIA-V3 §9).
+9. **Cuncuna gratis** con **6 de los 8 cuentos de nivel 0** (registro de premios del servidor), o 6 cuentos de Ciempi de cualquier nivel para quien empieza en N1+, o 60 min activos + 30 frases distintas de N0 para lectores lentos, o regalo del adulto (ECONOMIA-V3 §10; TIENDA-V3 §4.6).
 
 ## 7. Ideas para que Ciempi sea más protagonista
 
@@ -387,7 +392,7 @@ Todo se verificó en su fuente [D]; **ninguno se instaló ni se probó**.
 
 | Fase | Objetivo | Funcionalidades y recursos | Herramientas y skills | Depende de | Riesgos | Complejidad | Pruebas | Criterio de aprobación | La desbloquea |
 |---|---|---|---|---|---|---|---|---|---|
-| **0 · Saneamiento económico y legal** | Que la expansión no se monte sobre monedas manipulables ni sobre marcas registradas | Registro de premios en el servidor, cola offline, bugs de relectura y pantalla final, tope del nivel 2, tope diario, monedas del nivel 0, documentos de economía al día. Reescribir los cuentos 21–40 y renombrar las variantes de Hogwarts (si lo apruebas) | Vitest, Fastify, SQL `012`; `code-review`, `security-review` | — | Una APK vieja contra el servidor nuevo: mantener `/monedas` acotado durante una versión | M | Idempotencia, relectura en los niveles 0, 1 y 3, pantalla final, modo avión | El saldo nunca es negativo, un reenvío no duplica, la cola se reproduce | D3, D4, D7, D8 |
+| **0 · Saneamiento económico y legal** | Que la expansión no se monte sobre monedas manipulables ni sobre marcas registradas | Registro de premios en el servidor, cola offline, bugs de relectura y pantalla final, modelo E2 detrás de una bandera (sin tope diario; reloj sobre segundos pagados), Cuncuna en el servidor, documentos de economía al día. Reescribir los cuentos 21–40 y renombrar las variantes de Hogwarts (si lo apruebas) | Vitest, Fastify, SQL `012`; `code-review`, `security-review` | — | Una APK vieja contra el servidor nuevo: mantener `/monedas` acotado durante una versión | M | Idempotencia, relectura en los niveles 0, 1 y 3, pantalla final, modo avión | El saldo nunca es negativo, un reenvío no duplica, la cola se reproduce | D3, D4, D7, D8 |
 | **A · Investigación y herramientas** | Contrato de especie y medición | `especie.ts` (Ciempi como primera especie, sin cambio visual), `compatibilidad.ts` con tests, marcas de rendimiento, Playwright `toHaveScreenshot` solo en desarrollo, kit de prompts para Codex, instalación de las skills que apruebes | Codex `image_gen`, `typescript-lsp`, `animation-performance` | — | Sobrediseñar el contrato: limitarlo a lo que piden Dragón y Cuncuna | S | `pose.test` parametrizado | **Ciempi idéntico píxel a píxel** con la nueva firma | D2, D13 |
 | **B · Exploración artística** | Dragón y Cuncuna aprobados en silueta y lámina | 3 siluetas por especie a 84 y 320 px, lámina completa, despiece por roles; pies adaptables, cresta y alas del Dragón, pelaje de Cuncuna; maestros vectoriales | Codex `image_gen`, Illustrator COM (SVG 1.1), SVGO, sharp, `ciempi-art-director` | A (en paralelo) | La IA se aleja del estilo: siempre editar sobre la v2. Dragón genérico: pedir 3 direcciones | M | Láminas a 84, 240 y 320; ficha con la rúbrica | Criterios de §10 y §12 de la guía, más **tu aprobación** (AD-017 y siguientes) | D1, D2 |
 | **C · Prototipos y laboratorio** | Todo funcionando fuera del juego | `pose`, `rig` y `componer` parametrizados; `nMax` con segmentos visibles; E08 Comer; variante de marcha por especie; laboratorio de transformaciones | Vite, sharp, `chrome-devtools-mcp` (opcional) | A, B | El rig confunde partes de la especie (alas tratadas como cabeza) | L | `pose`, `compatibilidad` y `animaciones` con test, *snapshots* | Ciempi base idéntico; Dragón con 8 universales, 2 adaptables y 1 exclusivo sin piezas flotando; E08 por debajo de 16 ms | D9, D12 |
@@ -397,13 +402,15 @@ Todo se verificó en su fuente [D]; **ninguno se instaló ni se probó**.
 
 ## 17. Decisiones pendientes de tu aprobación
 
+Las decisiones D3, D4 y D5 ya se resolvieron (3-nov-2026). Los precios reales y la economía de producción siguen sin cambiarse hasta una aprobación aparte.
+
 | # | Decisión | Opciones | Recomendación |
 |---|---|---|---|
 | D1 | Especies del piloto | (a) Dragón + Cuncuna · (b) Dragón + Serpiente · (c) solo Dragón | **(a)** |
 | D2 | **La cabeza no cambia entre especies** (decisión de identidad, §13) | Sí: los accesorios de cabeza sirven para todas · No: accesorios por especie | **Sí**, registrada como AD-017 |
-| D3 | Monedas del nivel 0 | 2 por frase con tope 10 · mantener 1 con tope 10 · pagar por sílaba | **2 por frase, tope 10**; la sílaba se celebra con E08 |
-| D4 | Tope diario silencioso en el servidor | Sí (60) · No | **Sí** |
-| D5 | Cómo se consiguen las especies | Comprables (Dragón 80, Cuncuna 50, bundle −20 %) · gratis por lectura · mixto | **Mixto**: Cuncuna gratis al terminar el nivel 0, Dragón comprable |
+| D3 | Monedas del nivel 0 | 2 por frase con tope 10 · mantener 1 con tope 10 · pagar por sílaba · modelo E2 | **Resuelta: E2** aprobado por el usuario como referencia (ECONOMIA-V3 §6); 2 por frase con tope 10 solo como mínimo si E2 no llega a producción. Pagar por sílaba, descartado. La sílaba se celebra con E08 |
+| D4 | Tope diario silencioso en el servidor | Sí (60) · No | **Resuelta: No.** El usuario rechazó el tope diario silencioso y la media tasa. Antiabusos que no castigan al lento: reloj del servidor sobre los segundos pagados, dificultad real, huella, premio proporcional y avisos al adulto (ECONOMIA-V3 §8) |
+| D5 | Cómo se consiguen las especies | Comprables (Dragón 80, Cuncuna 50, bundle −20 %) · gratis por lectura · mixto | **Resuelta: mixto.** Cuncuna gratis con 6 de 8 cuentos de N0, con alternativas para N1+ y lectores lentos; Dragón comprable a **80** (provisional E2); precios provisionales 10/16/24/30, conjuntos ~60–85, dos olas |
 | D6 | Colecciones de la primera ola | Elegir 3 de 9 | **Fantasía, Naturaleza y Espacio** |
 | D7 | Marcas registradas (cuentos 21–40 y nombres de Hogwarts) | Reescribir antes de la Fase E · posponer | **Reescribir** si se va a publicar |
 | D8 | Registro de premios en el servidor, con cambio de endpoint (obliga a actualizar la APK) | Sí · No | **Sí** |
