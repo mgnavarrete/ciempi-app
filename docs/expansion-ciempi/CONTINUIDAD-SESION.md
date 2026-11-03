@@ -370,3 +370,24 @@ reconstruye el estado SOLO desde los archivos.
    mi aprobación y qué falta para integrarlo al juego. Distingue verificado, inferido y pendiente; no
    declares aprobado artísticamente nada que yo no haya aprobado.
 ```
+
+---
+
+## 6. Estado al cierre de la sesión 2 (3-nov-2026, tarde)
+
+Las cinco líneas están terminadas en sus ramas. Nada se fusionó a `main` y no hubo push, despliegue ni APK. La economía de producción no se modificó.
+
+| Línea | Rama | Commit final | Verificación (repetida por el coordinador) |
+|---|---|---|---|
+| Seguridad | `worktree-agent-a5e1c8d72e4a5aeb0` | `dcab7d5` | tsc cliente y servidor OK; vitest src 229/229; servidor 36/36 (3 corridas) |
+| Economía | `worktree-agent-a925a3794da34fde2` | `76c9367` | El simulador reproduce `resultados.json` byte a byte |
+| Dragón/Cuncuna | `worktree-agent-ab5e3926402cffc21` | `bba72d3` | tsc OK; vitest src 199/199; Ciempi idéntico 35/35 (Playwright) |
+| Animación | `worktree-agent-a103c0ae8e6a43da3` | `1bf79c6` | tsc OK; vitest src 198/198; 108/108 idénticos píxel a píxel |
+| Tienda | `worktree-agent-a4c7575325914c12a` | `da6dc0d` | Solo documentos (sin cambios en esta sesión) |
+
+- **Conflictos:** `git merge-tree` por pares no da conflictos textuales entre las cinco ramas. `pose.ts` lo cambian animación y transformaciones, así que hay que verificar su comportamiento al integrarlas.
+- **Revisión de Fable** (Plan con modelo fable, porque `super-planner` no está registrado en esta cuenta): incorporada en ECONOMIA-V3 §13.
+- **Preferencias del usuario** (economía, Cuncuna al completar el nivel 0, PIN para textos, sin media tasa ni topes silenciosos, recompensas mixtas, contenido nuevo, límites del reloj del servidor, precios según P0): incorporadas en ECONOMIA-V3. Recomendación: modelo **E2**.
+- **El usuario pidió revisar** los resultados, las demos y la propuesta económica **antes de autorizar** la rama `expansion-v3-integracion`. No crearla sin su autorización.
+- **Pendiente técnico si se aprueba E2:** reloj del servidor sobre los segundos pagados, en la rama de seguridad. Sin él, un cliente alterado cobra unas 70 monedas por minuto con E2.
+- **Pendiente de documentación:** actualizar TIENDA-V3 (condición de la Cuncuna y precios de E2) y PLAN-MAESTRO §6.5 y D4 (tope silencioso rechazado).
