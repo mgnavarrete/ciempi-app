@@ -1,0 +1,14 @@
+{
+  "herramienta": "Codex CLI 0.166.0, image_gen integrado (codex exec, sandbox workspace-write)",
+  "fecha": "2026-11-03",
+  "estado": "Conceptos de dirección IA. NO son recursos del juego ni piezas aprobadas.",
+  "referencias": ["referencias/ciempi-ilustracion-v2-presentacion.png"],
+  "nota": "La corrida de fantasia-v2 produjo internamente dos imágenes; Codex guardó la segunda. Total de imágenes generadas: 5 (límite 6).",
+  "generaciones": [
+    { "id": "fantasia", "archivo": "fantasia-concepto.png", "prompt": "fantasia-prompt.txt", "source": "/home/menta/.codex/generated_images/01a1a1bc-5af5-7553-901c-737d3a87f6ad/exec-618f0c9a-a20d-44e1-a75f-8e187783b7b6.png", "decision": "descartada como dirección (segmentos fundidos, capa como falda)" },
+    { "id": "naturaleza", "archivo": "naturaleza-concepto.png", "prompt": "naturaleza-prompt.txt", "source": "/home/menta/.codex/generated_images/01a1a1bc-5b37-7d43-9060-38b3df610fd5/exec-9d247185-1ded-43f0-a4d5-34413c1dbfff.png", "decision": "dirección con ajustes (traje denso, hongo rojo)" },
+    { "id": "espacio", "archivo": "espacio-concepto.png", "prompt": "espacio-prompt.txt", "source": "/home/menta/.codex/generated_images/01a1a1bc-5aee-7c82-a6c7-567fae04b8e8/exec-eda9e805-413a-40c1-a4d6-69fefcc4f552.png", "decision": "dirección (mochila cohete mal colocada)" },
+    { "id": "fantasia-v2-intermedia", "archivo": null, "prompt": "fantasia-v2-prompt.txt", "source": "/home/menta/.codex/generated_images/01a1a1be-f6c4-7173-88d5-bba828302780/exec-691c806b-c60e-49e0-b72d-e610e8c79b88.png", "decision": "no conservada en el repo; Codex la reemplazó por la siguiente en la misma corrida" },
+    { "id": "fantasia-v2", "archivo": "fantasia-v2-concepto.png", "prompt": "fantasia-v2-prompt.txt", "source": "/home/menta/.codex/generated_images/01a1a1be-f6c4-7173-88d5-bba828302780/exec-a812c726-c7c3-4d05-b3ed-fb1ec9a6b2f8.png", "decision": "casco y botas válidos como dirección; traje y capa no" }
+  ]
+}
