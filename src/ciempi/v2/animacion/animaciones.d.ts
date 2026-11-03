@@ -26,11 +26,17 @@ export interface Animacion {
 }
 export const ANIMACIONES: Animacion[]
 export function poseNeutra(segmentos?: number): Pose
+/** Variante de boca abierta de E08 (AD-018): sorprendido por omisión, carcajada para comparar. */
+export type BocaComer = 'sorprendido' | 'carcajada'
 export interface OpcionesComer {
   /** Dónde aparece la fruta (unidades de la base). */
   origen?: [number, number]
   /** Centro del segmento nuevo, para su brillo. */
   segmento?: [number, number]
+  /** Variante de boca abierta ('sorprendido' por omisión). */
+  boca?: BocaComer
+  /** La apariencia equipada tapa la boca (`ocultaRostro` del catálogo): sin boca, reacción de cabeza y cuerpo. */
+  bocaTapada?: boolean
 }
 export const COMER: {
   mordisco: number
@@ -38,8 +44,13 @@ export const COMER: {
   duracion: number
   boca: [number, number]
   origen: [number, number]
+  bocas: Record<BocaComer, string>
+  /** Expresión de la variante por omisión. */
   bocaAbierta: string
   abre: number
+  mascara: { destino: [number, number]; arco: number }
 }
+/** Expresión B03 de boca abierta de una variante (la de omisión si no se indica). */
+export function bocaAbiertaDe(boca?: BocaComer): string
 /** Suma E08 Comer a una pose (capa sobre caminar o reposo). */
 export function comer(p: Pose, t: number, n?: number, opciones?: OpcionesComer): Pose

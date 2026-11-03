@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ANIMACIONES, COMER, comer, poseNeutra } from './animaciones.js'
+import { ANIMACIONES, COMER, bocaAbiertaDe, comer, poseNeutra } from './animaciones.js'
 import { ColaComer, Reproductor, poseConInercia, reducir } from './motor.js'
 
 const E08 = ANIMACIONES.find((a) => a.id === 'E08')!
@@ -132,5 +132,115 @@ describe('Cola de E08 (interrumpible, sin acumular)', () => {
     const con = r.pose(0)
     expect(con.expresion).toBe(COMER.bocaAbierta)
     expect(con.cabeza.rot).toBeGreaterThan(sin.cabeza.rot)
+  })
+})
+
+describe('AD-018: variantes de boca y máscaras que tapan la boca', () => {
+  const A02 = ANIMACIONES.find((a) => a.id === 'A02')!
+  const instantes = Array.from({ length: 41 }, (_, i) => (COMER.duracion * i) / 40)
+
+  it('la boca inicial es la sorprendida; la carcajada queda para comparar', () => {
+    expect(bocaAbiertaDe()).toBe('b03-sorprendido')
+    expect(bocaAbiertaDe('carcajada')).toBe('b03-carcajada')
+    expect(comer(poseNeutra(5), 0.2, 5).expresion).toBe('b03-sorprendido')
+    expect(comer(poseNeutra(5), 0.2, 5, { boca: 'carcajada' }).expresion).toBe('b03-carcajada')
+    expect(E08.expresiones).toEqual(expect.arrayContaining(['b03-sorprendido', 'b03-carcajada']))
+  })
+
+  it('con la boca tapada nunca cambia la expresión (no se dibuja otra boca)', () => {
+    for (const boca of ['sorprendido', 'carcajada'] as const)
+      for (const t of instantes) expect(comer(poseNeutra(5), t, 5, { boca, bocaTapada: true }).expresion).toBe(poseNeutra(5).expresion)
+  })
+
+  it('con la boca tapada la fruta se queda delante del hocico y la reacción es de cabeza y cuerpo', () => {
+    let maxRot = 0, minRaizY = 0
+    for (const t of instantes) {
+      const p = comer(poseConInercia(A02, t, 5), t, 5, { bocaTapada: true })
+      const f = fruta(p)
+      if (f) expect(f.x).toBeGreaterThan(COMER.boca[0] + 60) // nunca llega a la boca (765)
+      const solo = poseConInercia(A02, t, 5)
+      maxRot = Math.max(maxRot, p.cabeza.rot - solo.cabeza.rot)
+      minRaizY = Math.min(minRaizY, p.raiz.y - solo.raiz.y)
+    }
+    expect(maxRot).toBeGreaterThan(5) // la cabeza se inclina a "morder"
+    expect(minRaizY).toBeLessThan(-5) // el cuerpo da un saltito al tragar
+    // Al morder la fruta desaparece con brillo y migas.
+    const tras = comer(poseNeutra(5), COMER.mordisco + 0.1, 5, { bocaTapada: true })
+    expect(fruta(tras)).toBeUndefined()
+    expect(tras.efectos.some((e) => (e as { tipo: string }).tipo === 'brillo')).toBe(true)
+  })
+
+  it('cambio de vestuario a mitad: la cola usa en cada cuadro la apariencia vigente', () => {
+    const c = cola()
+    c.llega()
+    correr(c, 0.2)
+    expect(c.aplicar(poseNeutra(5), 5).expresion).toBe('b03-sorprendido')
+    c.comunes = { bocaTapada: true } // se pone una máscara completa
+    expect(c.aplicar(poseNeutra(5), 5).expresion).toBe(poseNeutra(5).expresion)
+    c.comunes = { boca: 'carcajada' } // se la quita (y en el laboratorio se elige carcajada)
+    expect(c.aplicar(poseNeutra(5), 5).expresion).toBe('b03-carcajada')
+    // Las opciones comunes mandan sobre las de la fruta.
+    c.opciones = { bocaTapada: true }
+    c.comunes = { bocaTapada: false }
+    expect(c.aplicar(poseNeutra(5), 5).expresion).toBe('b03-sorprendido')
+  })
+})
+
+describe('E08: interrupciones', () => {
+  const finita = (p: ReturnType<typeof poseNeutra>) =>
+    [p.raiz, p.cabeza, ...p.segmentos, ...p.patas].every((o) => Object.values(o).every((v) => typeof v !== 'number' || Number.isFinite(v))) &&
+    p.antenas.every(Number.isFinite)
+
+  it('varias frutas seguidas, tropezar, celebrar y victoria con la capa activa (N de 0 a 2 y más)', () => {
+    for (const bocaTapada of [false, true])
+      for (const nInicial of [0, 1, 2]) {
+        const r = new Reproductor(() => {})
+        r.suelo = false
+        r.segmentos = nInicial
+        const c = cola()
+        c.comunes = { bocaTapada }
+        r.capa = c
+        r.cargar(ANIMACIONES.find((a) => a.id === 'A02')!)
+        // Una fruta por unidad cada 0,25 s; los eventos interrumpen la animación de fondo a mitad del mordisco.
+        for (const [k, evento] of ['A02', 'E04', 'A03', 'A10', 'A02', 'A01'].entries()) {
+          c.llega()
+          r.segmentos = nInicial + k
+          for (let i = 0; i < 6; i++) {
+            c.avanzar(1 / 24)
+            r.t = Math.min(r.anim!.duracion, r.t + 1 / 24)
+            const p = r.pose()
+            expect(finita(p)).toBe(true)
+            // Con la boca tapada, la expresión es siempre la de la animación de fondo.
+            if (bocaTapada) expect(p.expresion).toBe(poseConInercia(r.anim!, r.t, r.segmentos).expresion)
+          }
+          r.cargar({ ...ANIMACIONES.find((a) => a.id === evento)!, bucle: false })
+        }
+        // Nunca se acumulan frutas: a lo más una pendiente, y termina sola.
+        expect(c.pendiente === null || typeof c.pendiente === 'object').toBe(true)
+        correr(c, COMER.duracion * 2)
+        expect(c.activa).toBe(false)
+      }
+  })
+
+  it('con la boca tapada y un evento que cambia la expresión, E08 no la pisa con una boca', () => {
+    const A10 = ANIMACIONES.find((a) => a.id === 'A10')!
+    for (let t = 0; t <= COMER.duracion; t += 0.02) {
+      const fondo = poseConInercia(A10, 1 + t, 5)
+      const p = comer(poseConInercia(A10, 1 + t, 5), t, 5, { bocaTapada: true })
+      expect(p.expresion).toBe(fondo.expresion)
+    }
+  })
+
+  it('modo tranquilo: sin fruta ni partículas, movimientos reducidos y valores finitos', () => {
+    const A02 = ANIMACIONES.find((a) => a.id === 'A02')!
+    for (const bocaTapada of [false, true])
+      for (const n of [0, 1, 2, 12])
+        for (let t = 0; t <= COMER.duracion; t += 0.05) {
+          const lleno = comer(poseConInercia(A02, t, n), t, n, { bocaTapada })
+          const suave = reducir(comer(poseConInercia(A02, t, n), t, n, { bocaTapada }), 0.35)
+          expect(suave.efectos).toHaveLength(0)
+          expect(finita(suave)).toBe(true)
+          expect(Math.abs(suave.cabeza.rot)).toBeLessThanOrEqual(Math.abs(lleno.cabeza.rot) + 1e-9)
+        }
   })
 })

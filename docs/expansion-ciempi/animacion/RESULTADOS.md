@@ -157,13 +157,119 @@ Criterios obligatorios (§12 de la guía):
 - Evidencia: antes/después en `hoja-e08/v1-antes/` y `hoja-e08/`.
 - Aprobación del usuario: **pendiente**. E08 no está aprobado artísticamente.
 
-## 4. Pruebas
+## 4. Sesión 4: AD-018, crecimiento con especies e interrupciones (2026-11-03)
+
+Parte del WIP `da13860` (otro agente, cortado a mitad). Se revisó con `git diff 1bf79c6 da13860`: compilaba y pasaba 198/198 sin cambios. Commits de esta sesión: ver `git log da13860..HEAD`.
+
+### 4.1 `escenaCreciente` con forma de especie — **verificado**
+
+- `pose.ts`: `roles`, `posiciones` y `escena` aceptan `forma?` y son **textualmente idénticos** a los de la rama de especies (`worktree-agent-ab5e3926402cffc21`); `escenaCreciente(svg, nMax, prefix, forma?)` usa la misma regla.
+  - Patas: `pieDeRol` y `xMaestro` (anotado en `data-x-pie` para que `rig.crecer` traslade la pata desde el maestro correcto).
+  - Encuadre: `siempreClonar` (sin sombras del maestro y sin el encuadre fijo de N = 5) y `margenCola`.
+  - `EscenaCreciente.posiciones(n)` devuelve las posiciones con la forma; `CiempiVivo` las usa en `rig.crecer` y para el brillo del segmento nuevo.
+- El tipo se llama `FormaCuerpo` y es copia **campo por campo** del de `especie.ts` (`ciclo, cola, frente, xFrente, y, separacion, xMaestro, pieDeRol, siempreClonar, margenCola?`). Desaparece `FormaEscena`.
+- **Sin forma, idéntico:** `medicion/capturas.mjs` → **108/108 casos idénticos píxel a píxel** (rig aislado y carril real; base, típico y máscara; N 0–40).
+- **Con forma (Dragón y Cuncuna):** en el árbol fusionado (ver 4.2), [`fusion-especies/comprobar-fusion.mjs`](fusion-especies/comprobar-fusion.mjs) compara `escena(svg, n, p, forma)` + rig contra `escenaCreciente(svg, 40, p, forma)` + `rig.crecer(n, e.posiciones)`:
+  - Dragón, Cuncuna y Ciempi; conjuntos base, mago+capa+superficie, mochila+botas, máscara Robot y (Dragón) alas; N = 0, 1, 2, 3, 4, 5, 6, 12, 40; sin animar y con A02 a 0,37 s.
+  - **234/234 idénticos píxel a píxel**, mismo `viewBox`, consola sin errores. Evidencia: [`fusion-especies/evidencia/`](fusion-especies/evidencia/) y `fusion.json`.
+  - Una primera pasada con los dos SVG apilados en la página dio diferencias de antialiasing también en Ciempi (posición subpíxel); se repitió como `capturas.mjs`, uno por vez en el mismo lugar.
+- No se tocó ningún archivo de arte de la rama de especies (AD-017): la comprobación se hizo en una copia fuera del repositorio.
+- **Pendiente (integración):** `useEscenaCreciente` sigue componiendo con `renderCiempi` y sin forma. Para que Dragón y Cuncuna usen `revelar` en el juego hay que pasarle el SVG de la especie (`componerCriatura` del laboratorio, hoy solo en docs/) y `ESPECIES[id].forma`. El laboratorio de especies puede pasar ya a `escenaCreciente`.
+
+### 4.2 Fusión con la rama de especies: receta — **verificada en copia**
+
+`git merge-tree --write-tree` (sin tocar ramas) da **un solo conflicto**, en la línea 1 de `src/ciempi/v2/pose.ts` (vacío de este lado, `import type {FormaCuerpo} from './especie'` del otro). El resto (incluido `Ciempi.tsx`) se fusiona solo.
+
+1. Resolver el conflicto quedándose con `import type {FormaCuerpo} from './especie'`.
+2. Borrar de `pose.ts` el bloque `/** Forma del cuerpo de una especie: copia… */ export interface FormaCuerpo {…}` (si no, tsc da "Import declaration conflicts with local declaration").
+3. Nada más: `escenaCreciente` ya usa `FormaCuerpo` y `posiciones(n, forma)`.
+
+Comprobado con [`fusion-especies/preparar-fusion.sh`](fusion-especies/preparar-fusion.sh), que arma el árbol fusionado en una carpeta temporal y aplica la receta: **tsc OK y `vitest run src` 221/221** (23 archivos: las 208 de esta rama + 13 de especies). La primera comprobación, antes de las pruebas nuevas, dio 211/211.
+
+### 4.3 AD-018: bocas y máscaras — **verificado**
+
+- Boca inicial `b03-sorprendido` (`BOCA_COMER` en `Ciempi.tsx`); `b03-carcajada` se conserva y se elige con la prop `bocaComer`, el **selector "Boca"** de la demo (`?boca=carcajada` también) y el **selector de la hoja**.
+- Máscaras que tapan la boca: `tapaBoca(env, cabeza)` (`animacion/boca.ts`) lee `ocultaRostro` del catálogo, con el mismo orden de búsqueda que el compositor (`[...hats, ...masks]`; antes estaba al revés). Con boca tapada, `comer()` usa `comerSinBoca`: no toca la expresión; la fruta salta hasta delante del hocico, la cabeza se inclina y avanza a "morderla", golpe y dos masticadas, la fruta desaparece con destello y migas y el cuerpo da un saltito. La apariencia equipada no cambia.
+- Revisión desde metadatos (sin lista a mano):
+  - `boca.test.ts`: `tapaBoca` = `ocultaRostro` para las 13 piezas de cabeza de `public/ciempi-v2/catalogo.json`. Hoy tapan: **Robot Lumen (`b07-ia-robot`), Espíritu de los cuentos (`b07-ia-espiritu`) y Máscara AraLuz (`b12-araluz`)**. Gatita, Draco, Búho, Ratón y los seis gorros dejan la boca a la vista.
+  - Navegador (`comprobar-crecer.js`, función `bocas`): para Ciempi, Dragón y Cuncuna × sin gorro + las 13 piezas × sorprendido/carcajada, E08 recorrido cada 0,02 s con `rig.cambiarRostro` como en el juego. Con las 3 que tapan: **0 elementos en `#…-mouth` en todos los cuadros** y nunca más de un grupo de boca. Incluso forzando el camino con boca (`bocaTapada: false`), la composición del rostro con máscara también trae la boca vacía: no aparece una segunda boca (doble seguro). Sin máscara: siempre 1 grupo con 2 hijos.
+  - Demo real (Playwright): robot, espíritu y AraLuz con 0 hijos de boca en todos los cuadros; base y gatita cambian de forma de boca; 0 errores de consola.
+- Las máscaras Espíritu y AraLuz traen dibujada su propia boca en el arte de la máscara: es parte de la pieza aprobada, no una segunda boca de Ciempi.
+
+### 4.4 Interrupciones de E08 — **verificado (pruebas) / inferido (juego)**
+
+Pruebas nuevas en `comer.test.ts` (todas pasan):
+- **Varias frutas seguidas:** cola con una fruta cada 0,25 s, a lo más una pendiente, termina sola (además de las pruebas previas de 100 ms durante 4 s).
+- **Tropezar (E04), celebrar (A03) y victoria (A10)** cargados a mitad del mordisco con la capa activa, para N inicial 0, 1 y 2 y creciendo: poses finitas; con boca tapada la expresión es siempre la de la animación de fondo (E08 no pisa la de victoria con una boca).
+- **Cambio de vestuario a mitad:** `ColaComer.comunes` se lee en cada cuadro; ponerse una máscara a mitad elimina la boca abierta en el cuadro siguiente, quitársela la recupera; las opciones comunes mandan sobre las de la fruta. En la demo: cambiar a Robot a mitad de E08 deja 0 hijos de boca en el cuadro siguiente.
+- **N de 0 a 2:** cubierto en las pruebas anteriores y en la hoja/rig (n = 0 sin segmento que hacer pop, n = 1 el frente).
+- **Modo tranquilo:** sin fruta ni partículas, movimientos ≤ los completos, valores finitos (con y sin máscara). Con `prefers-reduced-motion` del sistema no hay E08 (la demo con `reducedMotion: 'reduce'` no cambia la boca en ningún cuadro).
+- **Inferido:** en el juego (`COMER_ANIMADO = false`) no se ejercitó nada de esto; solo laboratorio y demo.
+- **Observación:** en modo tranquilo la fruta no se dibuja (se quitan todos los efectos) pero la boca sí se abre: abre la boca "sin nada". Ver pendientes.
+
+### 4.5 Rendimiento antes / después (intercalado) — **verificado, con ruido**
+
+[`medicion/versiones.mjs`](medicion/versiones.mjs): compila el banco de `1bf79c6` ("antes", copia `git archive`) y de este árbol ("después"), los sirve en dos puertos y alterna versión y caso en la misma sesión de Chromium, rotando el orden; N 0→40, 500 ms/unidad. Resultados: `medicion/resultados/e08-v3-versiones*.json`.
+
+| CPU | Caso | Antes: unidad med/p95/máx (ms) · perdidos med (rango) | Después | Corridas |
+|---|---|---|---|---|
+| 4× | revelar / típico | 3,4 / 5,9 / 9,3 · 0 % (0–0) | 3,4 / 4,9 / 6,9 · 0 % (0–0) | 3 + 3 |
+| 4× | revelar+comer / típico | 3,5 / 5,0 / 7,3 · 0 % (0–0) | 3,4 / 5,3 / 23,7 · 0 % (0–0,1) | 3 + 3 |
+| 4× | revelar+comer / máscara Robot | 3,6 / 5,0 / 7,8 · 0 % | 3,8 / 6,1 / 14,0 · 0 % (0–0,2) | 3 + 3 |
+| 6× | revelar / típico | 5,7 / 8,6 / 28,2 · 0,8 % (0–10,9) | 4,7 / 8,7 / 16,7 · 0,1 % (0–0,8) | 3 + 3 |
+| 6× | revelar+comer / típico | 4,6–5,4 / 7,5–8,4 · 0,3–0,6 % (0–31,2) | 5,0–5,2 / 8,3–8,6 · 0,4–4,7 % (0,1–34,4) | 11 + 11 (3 tandas) |
+| 6× | revelar+comer / máscara Robot | 5,0 / 8,9 / 18,4 · 0,1 % | 4,8 / 8,4 / 11,6 · 0,2 % | 3 + 3 |
+
+- **Lectura:** sin regresión observable. Con carga estable las parejas antes/después coinciden (p. ej. 6× comer típico, rondas con carga < 5: antes 0–0,6 %, después 0,2–0,4 %). Las corridas malas (31–34 % perdidos, 6–9 tareas largas) coinciden con picos de carga de la máquina compartida (2,5→7,6) y le tocaron **a ambas versiones** (antes 31,2 % en la tanda 3). Ninguna tarea larga en las corridas con carga estable. La reacción con máscara cuesta lo mismo que la boca.
+- El 404 que aparece en la primera página de cada sesión es el `favicon.ico` del banco, en ambas versiones.
+- **Límites:** CPU frenada en Chromium de escritorio; no Android, GPU ni WebView. 3–11 corridas por celda.
+
+### 4.6 Hoja de cuadros v3 y rúbrica
+
+- `demo-comer/capturar.mjs` (con `servir.mjs`): `hoja-e08/hoja-{grande,pista}-{claro,oscuro}.png` y dos videos. Estado previo conservado en `hoja-e08/v2-antes/` (idéntico byte a byte a la hoja de `1bf79c6`) y `demo-comer/v2-antes/`.
+- Filas: base sorprendido, base carcajada, dormilón, mago+capa+plátano, gatita+frutilla, set Robot, base tranquilo, Robot tranquilo y **una fila por cada pieza con `ocultaRostro` del catálogo** (Robot Lumen, Espíritu, AraLuz). Grande a 1× (2438×3024) y pista a la escala real (84 px de alto, DPR 2). Las etiquetas de las filas con máscara dicen "tapa la boca: sin boca".
+- Inspección del agente (Read de las PNG, recortes ampliados de 0,16–0,48 s):
+  - Base sorprendido: a 0,16 s la boca "o" y los ojos siguen la fruta; a 0,24–0,32 s la manzana tapa la boca abierta (va **encima** del labio, no detrás); a 0,38 s queda pequeña sobre la boca; a 0,48 s vuelve la sonrisa con un destello pequeño junto al segmento.
+  - Carcajada: ojos cerrados de 0,16 a 0,32 s; en pista parece un guiño y no mira la fruta (se confirma la preferencia por sorprendido).
+  - Máscaras (grande): la fruta llega a la mejilla derecha de la máscara y a 0,32–0,38 s se superpone a su borde inferior mientras la cabeza baja; a 0,48 s destello y migas delante del hocico. Ninguna boca de Ciempi aparece. En pista (84 px) se lee "la acerca y desaparece con brillo"; el salto del cuerpo (−10 u.) casi no se percibe.
+  - Fondo oscuro: el contorno azul de Ciempi y de la fruta se pierde, igual que en v2.
+
+| Dimensión | Nota (agente, orientativa) | Observación concreta |
+|---|---|---|
+| Coherencia con Ciempi | 4/5 | Sin redibujar: rig aprobado, B03 sorprendido y la comida equipada. Con máscara no se altera la pieza ni aparece un rostro ajeno; la reacción (inclinar y avanzar la cabeza) es un gesto que Ciempi ya hace en otras animaciones. |
+| Calidad de ilustración | 3/5 | La fruta sigue pintada encima de la boca a 0,24–0,38 s (no "entra"); migas casi invisibles en pista; brillo del segmento crema sobre crema. Con máscara la fruta se apoya sobre la placa a 0,32–0,38 s y se lee algo pegada. |
+| Integración con el cuerpo | 3/5 | Apertura y mordisco sincronizados con la llegada; con máscaras el golpe de cabeza coincide con la desaparición de la fruta. El saltito del cuerpo y el pop del segmento no se perciben a 84 px. |
+| Legibilidad | 4/5 | En pista se leen salto, boca "o" y desaparición; con máscara se lee "acerca y come" por la cabeza y el destello, menos claro que con boca. Sobre oscuro baja el contraste. |
+| Originalidad | 3/5 | Gag clásico; su aporte es comer la comida comprada y la variante sin boca para máscaras, que evita el recurso fácil de pintar una boca encima. |
+
+Criterios §12: respeto de base — cumple (108/108 y 234/234; no se tocó arte). Anclaje y capas — cumple respecto a bocas duplicadas (0 en máscaras); la fruta delante del labio es una limitación conocida. Compatibilidad — revisadas las 13 piezas de cabeza × 3 criaturas por DOM, y en imagen base, dormilón, mago, gatita y las 3 máscaras; pendientes lentes opacos, resto de comidas y especies en imagen. Evidencia — antes/después en `hoja-e08/v2-antes/` y `hoja-e08/`. **Aprobación artística del usuario de la variante con máscara: pendiente** (AD-018 aprobó la regla, no esta ejecución).
+
+## 5. Pruebas (sesión 4)
+
+- `npx tsc --noEmit -p .`: sin errores.
+- `npx vitest run src`: **21 archivos, 208/208** (198 previas + `boca.test.ts` 3 + 7 nuevas en `comer.test.ts`).
+- `medicion/capturas.mjs`: **108/108** idénticos (sin forma).
+- Fusión con especies (copia, `preparar-fusion.sh` desde HEAD): tsc OK, **221/221**, `comprobar-fusion.mjs` **234/234** idénticos y revisión de bocas sin fallos; 0 errores de consola.
+- Demo: `demo-comer/dist` reconstruido (0,9 MB); Playwright con selector de boca, 6 vestuarios, cambio a Robot a mitad y `reducedMotion`: 0 errores de consola.
+
+### Pruebas de la sesión anterior
 
 - `npx tsc --noEmit -p .`: sin errores (código de salida 0).
 - `npx vitest run src`: **20 archivos, 198/198 pruebas pasan**. `src/ciempi`: 35/35.
 - `medicion/capturas.mjs`: 108/108 casos idénticos píxel a píxel entre `revelar` y `recomponer`.
 
-## 5. Pendientes
+## 6. Pendientes
+
+1. **Android real**, Firefox y Safari: no probados (sin dispositivo).
+2. **Usuario:** elegir definitivamente sorprendido o carcajada (comparar en la demo/hoja con el selector); aprobar o ajustar la reacción con máscara; decidir si se activa `COMER_ANIMADO` (sigue en `false`).
+3. Modo tranquilo: hoy abre la boca sin fruta visible (se quitan todos los efectos). Propuesta, no aplicada: conservar la fruta (no es una partícula) o no abrir la boca.
+4. Fruta delante del labio a 0,24–0,38 s; pop del segmento y brillo poco visibles; contraste sobre oscuro.
+5. **Integración de especies con `revelar`:** pasar SVG de especie y `forma` a `useEscenaCreciente`; probar E08 sobre Dragón/Cuncuna en imagen (la revisión de bocas por DOM ya pasó).
+6. Seguimiento del costo de prepintado de los segmentos ocultos con `revelar`.
+7. `PantallaLectura.tsx` no necesita cambios.
+
+<details><summary>Pendientes de la sesión anterior (texto original)</summary>
+
 
 1. **Android real** (WebView de la APK, gama baja): repetir `intercalado.mjs` o medir con `performance.mark`. No había dispositivo conectado.
 2. **Firefox y Safari/WebKit**: no se probaron.
@@ -175,3 +281,5 @@ Criterios obligatorios (§12 de la guía):
    - el sonido corto del plan (§8), que no está implementado.
 4. Seguimiento del costo de prepintado de los segmentos ocultos con `revelar`. Se podría probar `visibility` o quitar los nodos del árbol, siempre midiendo antes.
 5. `PantallaLectura.tsx` no necesita cambios.
+
+</details>

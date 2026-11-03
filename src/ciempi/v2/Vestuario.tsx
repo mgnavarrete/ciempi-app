@@ -3,6 +3,7 @@ import type {AparienciaCiempi} from '../catalogo'
 import {load} from './arte/cargar.js'
 import {renderCiempi} from './arte/componer.js'
 import {aSeleccion,type Entorno} from './seleccion'
+import {tapaBoca} from './animacion/boca'
 import {escena,escenaCreciente,type Escena,type EscenaCreciente} from './pose'
 interface Estado{env:Entorno|null;error:string}
 const Context=createContext<Estado>({env:null,error:''})
@@ -15,16 +16,18 @@ export function VestuarioProvider({children}:{children:ReactNode}){
 /** El vestuario cargado (null mientras carga). */
 export const useEntornoCiempi=()=>useContext(Context)
 /** La escena y lo que necesita la animación: el conjunto y sus expresiones B03. */
-export interface EscenaViva extends Escena {prefijo:string;clave:string;cabeza:string;expresion:string;rostro:(expresion:string)=>string}
+export interface EscenaViva extends Escena {prefijo:string;clave:string;cabeza:string;expresion:string;rostro:(expresion:string)=>string
+ /** La pieza de cabeza tapa la boca (`ocultaRostro` del catálogo): E08 no dibuja boca y usa la reacción alternativa (AD-018). */
+ bocaTapada:boolean}
 export function useEscena(a:AparienciaCiempi,n:number):EscenaViva|null{
  const state=useContext(Context),id=useId().replace(/[^\w-]/g,'');const s=aSeleccion(a);const key=JSON.stringify(s)
  const svg=useMemo(()=>{try{return state.env?renderCiempi(state.env,s):null}catch(e){console.error("Composición Ciempi:",e);return null}},[state.env,key]) // composición solo cuando cambia selección
  // El mismo conjunto con otra expresión, para que la animación cambie el gesto (se compone una vez por expresión).
  const rostro=useMemo(()=>{const cache=new Map<string,string>();return (exp:string)=>{if(!cache.has(exp))cache.set(exp,renderCiempi(state.env!,{...s,expresion:exp}));return cache.get(exp)!}},[state.env,key])
- return useMemo(()=>{try{return svg?{...escena(svg,n,id),prefijo:id+'-',clave:key,cabeza:String(s.cabeza),expresion:String(s.expresion),rostro}:null}catch(e){console.error("Pose Ciempi:",e);return null}},[svg,n,id])
+ return useMemo(()=>{try{return svg?{...escena(svg,n,id),prefijo:id+'-',clave:key,cabeza:String(s.cabeza),expresion:String(s.expresion),rostro,bocaTapada:tapaBoca(state.env,s.cabeza)}:null}catch(e){console.error("Pose Ciempi:",e);return null}},[svg,n,id])
 }
 /** Escena creciente: se compone una vez para `nMax` segmentos y el rig muestra `n` (ver `escenaCreciente`). */
-export interface EscenaVivaCreciente extends EscenaViva {nMax:number;encuadre:EscenaCreciente['encuadre']}
+export interface EscenaVivaCreciente extends EscenaViva {nMax:number;encuadre:EscenaCreciente['encuadre'];posiciones:EscenaCreciente['posiciones']}
 /**
  * Como `useEscena`, pero sin recomponer con cada unidad leída: la escena solo
  * cambia con el vestuario o con `nMax` (las manzanas de la frase). `left` es el
@@ -35,7 +38,7 @@ export function useEscenaCreciente(a:AparienciaCiempi,n:number,nMax:number|null)
  const state=useContext(Context),id=useId().replace(/[^\w-]/g,'');const s=aSeleccion(a);const key=JSON.stringify(s)
  const svg=useMemo(()=>{try{return state.env?renderCiempi(state.env,s):null}catch(e){console.error("Composición Ciempi:",e);return null}},[state.env,key])
  const rostro=useMemo(()=>{const cache=new Map<string,string>();return (exp:string)=>{if(!cache.has(exp))cache.set(exp,renderCiempi(state.env!,{...s,expresion:exp}));return cache.get(exp)!}},[state.env,key])
- const datos=(e:{viewBox:string;left:number})=>({...e,prefijo:id+'-',clave:key,cabeza:String(s.cabeza),expresion:String(s.expresion),rostro})
+ const datos=(e:{viewBox:string;left:number})=>({...e,prefijo:id+'-',clave:key,cabeza:String(s.cabeza),expresion:String(s.expresion),rostro,bocaTapada:tapaBoca(state.env,s.cabeza)})
  // Si llegan más unidades que manzanas (no debería), se recompone con más capacidad.
  const capacidad=nMax===null?null:Math.max(nMax,n,0)
  const viva=useMemo<EscenaVivaCreciente|null>(()=>{try{if(!svg||capacidad===null)return null;const e=escenaCreciente(svg,capacidad,id);return {...e,...datos(e.encuadre(capacidad)),html:e.html}}catch(e){console.error("Pose Ciempi:",e);return null}},[svg,capacidad,id])
