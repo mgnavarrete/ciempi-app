@@ -102,20 +102,27 @@ export function crearRepositoriosApi(base: string): Repositorios {
    * endpoint viejo con lo que la app esperaba, como antes.
    */
   async function enviarPremio(p: PedidoEnCola): Promise<RespuestaEnvio> {
+    // Solo lo que el servidor lee (no el resto del pedido en cola). `segundosActivos` y `tropiezos`
+    // los ignora un servidor con la economía 2.4.1; con E2 los acota él (tope y reloj).
     const cuerpo =
-      p.tipo === 'avance'
-        ? { operationId: p.operationId, tipo: p.tipo, hasta: p.hasta, conPremio: p.conPremio, esperadas: p.esperadas }
-        : { operationId: p.operationId, tipo: p.tipo, dia: p.dia, esperadas: p.esperadas }
+      p.tipo === 'relectura'
+        ? { operationId: p.operationId, tipo: p.tipo, dia: p.dia, tropiezos: p.tropiezos, esperadas: p.esperadas }
+        : { operationId: p.operationId, tipo: p.tipo, hasta: p.hasta, conPremio: p.conPremio, segundosActivos: p.segundosActivos, ...(p.tipo === 'avance' ? { tropiezos: p.tropiezos } : {}), esperadas: p.esperadas }
     let r: Awaited<ReturnType<typeof pedirCrudo>>
     try {
       r = await pedirCrudo('POST', `/api/asignaciones/${p.asignacionId}/premios`, cuerpo)
     } catch {
       return { tipo: 'reintentar' }
     }
-    const datos = (r.datos ?? {}) as { otorgadas?: number; monedas?: number; reintentarEnSegundos?: number; error?: string; message?: string }
-    if (r.ok) return { tipo: 'ok', otorgadas: datos.otorgadas ?? 0, monedas: datos.monedas ?? 0 }
+    const datos = (r.datos ?? {}) as { otorgadas?: number; monedas?: number; reintentarEnSegundos?: number; error?: string; message?: string; economia?: string }
+    if (r.ok) {
+      recordarEconomia(datos.economia)
+      return { tipo: 'ok', otorgadas: datos.otorgadas ?? 0, monedas: datos.monedas ?? 0 }
+    }
     if (r.status === 429) return { tipo: 'reintentar', esperarMs: Math.max(1, datos.reintentarEnSegundos ?? 30) * 1000 }
     if (r.status === 404 && typeof datos.message === 'string' && datos.message.startsWith('Route ')) {
+      // Releer una unidad no paga en un servidor anterior: no hay nada que pedir por el endpoint viejo.
+      if (p.tipo === 'releida') return { tipo: 'descartar', motivo: 'servidor anterior' }
       try {
         const viejo = await pedirCrudo('POST', `/api/perfiles/${p.perfilId}/monedas`, { cantidad: p.esperadas })
         if (viejo.ok) return { tipo: 'ok', otorgadas: p.esperadas, monedas: (viejo.datos as { monedas: number }).monedas }
@@ -127,6 +134,24 @@ export function crearRepositoriosApi(base: string): Repositorios {
     // Sesión vencida o servidor con problemas: se guarda y se reintenta (con la sesión nueva).
     if (r.status === 401 || r.status === 408 || r.status >= 500) return { tipo: 'reintentar' }
     return { tipo: 'descartar', motivo: datos.error ?? `HTTP ${r.status}` }
+  }
+
+  /** Qué economía usa el servidor (lo dice en cada premio): con E2 la app pide también las relecturas por unidad. */
+  const CLAVE_ECONOMIA = 'ciempi-economia'
+  let economia: 'actual' | 'e2' = 'actual'
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem(CLAVE_ECONOMIA) === 'e2') economia = 'e2'
+  } catch {
+    /* sin almacenamiento: se aprende de la próxima respuesta */
+  }
+  function recordarEconomia(valor: unknown) {
+    if (valor !== 'e2' && valor !== 'actual') return
+    economia = valor
+    try {
+      localStorage.setItem(CLAVE_ECONOMIA, valor)
+    } catch {
+      /* no importa */
+    }
   }
 
   const almacen = (() => {

@@ -2,15 +2,20 @@ import type { NivelLectura, Texto } from '../dominio/tipos.ts'
 import { fraseDeUnidad, vistaPorNivel, type VistaPorNivel } from '../lenguaje/unidades.ts'
 import {
   REGLAS_MONEDAS,
+  REGLAS_MONEDAS_E2,
   RITMO_PLAUSIBLE,
   contarPalabras,
+  contarSilabas,
   hitosNuevos,
   monedasDeUnidad,
   porcentajeLeido,
+  segundosEsperados,
   type Hito,
+  type ReglasEsfuerzo,
   type ReglasMonedas,
   type RitmoPlausible,
 } from './monedas.ts'
+import { separarSilabas } from '../lenguaje/silabas.ts'
 
 /**
  * Cuánto se paga por leer: el cálculo que hace el servidor (server/src/app.ts)
@@ -25,17 +30,32 @@ export interface EstadoPremios {
   pagadoHasta: number
   /** Porcentaje del libro hasta el que ya se pagaron los hitos. */
   hitosHasta: number
-  /** Último día (AAAA-MM-DD) en que se pagó una relectura. */
+  /** Último día (AAAA-MM-DD) en que se pagó una relectura (en E2: una relectura con mejora). */
   relecturaDia: string | null
+  // ── Solo E2 (opcionales: con 2.4.1 no se usan ni cambian) ──
+  /** Fracción de moneda acumulada en el libro (se paga al juntar una entera). */
+  fraccion?: number
+  /** Ya se pagó (o ya se decidió) el premio por terminarlo la primera vez. En textos propios, por huella. */
+  libroPremiado?: boolean
+  /** Segundos pagados en la primera lectura (para exigir ≥ 50 % de lo esperado al terminar). */
+  activoLibroSegundos?: number
+  /** Menos tropiezos en una lectura completa (para «relectura con mejora»). */
+  mejorTropiezos?: number | null
 }
 
 export const ESTADO_INICIAL: EstadoPremios = { pagadoHasta: 0, hitosHasta: 0, relecturaDia: null }
 
 export type SolicitudPremio =
-  /** Leyó de corrido hasta la frase `hasta`; `conPremio` falso: la última frase fue muy rápida (avanza, pero esa no paga). */
-  | { tipo: 'avance'; hasta: number; conPremio: boolean }
-  /** Volvió a leer entero un libro ya terminado; `dia`: su fecha local. */
-  | { tipo: 'relectura'; dia: string }
+  /**
+   * Leyó de corrido hasta la frase `hasta`; `conPremio` falso: la última frase fue muy rápida (avanza, pero esa no paga).
+   * `segundosActivos` (desde el pedido anterior, sin pausas largas) y `tropiezos` (al terminar el libro) los mide la app:
+   * con 2.4.1 no cambian nada; con E2 el servidor los acota (tope por unidad y reloj).
+   */
+  | { tipo: 'avance'; hasta: number; conPremio: boolean; segundosActivos?: number; tropiezos?: number }
+  /** Volvió a leer entero un libro ya terminado; `dia`: su fecha local. En E2, `tropiezos` decide la «relectura con mejora». */
+  | { tipo: 'relectura'; dia: string; tropiezos?: number }
+  /** Releyó la unidad que termina en la frase `hasta` (ya pagada antes). Con 2.4.1 no paga; con E2 paga por tiempo a la tasa de relectura. */
+  | { tipo: 'releida'; hasta: number; conPremio: boolean; segundosActivos?: number }
 
 export type MotivoPremio =
   | 'avance'
@@ -48,6 +68,18 @@ export type MotivoPremio =
   | 'no_terminado'
   /** La fecha de la relectura no es de estos días. */
   | 'dia_invalido'
+  /** Releyó una unidad (con 2.4.1 no paga, pero cuenta como lectura para los logros). */
+  | 'releida'
+  /** Una relectura de algo que todavía no se leía (o no se pagó): primero va el avance. */
+  | 'no_leida'
+  /** `hasta` no es el final de ninguna unidad del libro (E2). */
+  | 'unidad_inexistente'
+  /** Relectura completa sin menos tropiezos que la mejor (E2). */
+  | 'sin_mejora'
+  /** Relectura completa con menos tropiezos que la mejor (E2). */
+  | 'mejora'
+  /** «Releí el libro entero», pero el servidor no registró esa relectura (E2). */
+  | 'sin_relectura'
 
 export interface CalculoPremio {
   monedas: number
@@ -58,7 +90,24 @@ export interface CalculoPremio {
   /** Frases (u oraciones, párrafos) que pagaron (0 o 1). */
   unidades: number
   hitos: Hito[]
+  /**
+   * Segundos de lectura que cuentan como actividad (para los logros, en los dos
+   * modelos): los activos que manda la app, hasta 2× lo esperado de lo leído.
+   * El servidor además los acota con su reloj.
+   */
+  segundosActividad: number
+  /** E2: segundos que se pagaron (adelantan el reloj del servidor). 0 con 2.4.1. */
+  segundosPagados: number
+  /** Las unidades leídas por primera vez en este pedido (para las sílabas o palabras nuevas). */
+  unidadesNuevas: string[]
+  /** Este pedido terminó el libro por primera vez. */
+  terminoLibro: boolean
+  /** E2: lo que vino de cada fuente (para el registro). */
+  desglose?: { tiempo: number; libro: number; mejora: number }
 }
+
+/** Constantes de la actividad para los logros: las del modelo E2 (también con la economía 2.4.1). */
+const ACTIVIDAD: ReglasEsfuerzo = REGLAS_MONEDAS_E2.esfuerzo
 
 type TextoParaPremio = Pick<Texto, 'frases' | 'capitulos' | 'parrafos'>
 
@@ -86,15 +135,52 @@ export function diaValido(dia: string, hoy: string): boolean {
 
 /** Lo ya pagado según varias fuentes (la asignación y el mismo texto leído antes): lo mayor de cada una. */
 export function combinarEstados(...estados: (Partial<EstadoPremios> | null | undefined)[]): EstadoPremios {
-  const r = { ...ESTADO_INICIAL }
+  const r: EstadoPremios = { ...ESTADO_INICIAL }
   for (const e of estados) {
     if (!e) continue
     r.pagadoHasta = Math.max(r.pagadoHasta, e.pagadoHasta ?? 0)
     r.hitosHasta = Math.max(r.hitosHasta, e.hitosHasta ?? 0)
     if (e.relecturaDia && (!r.relecturaDia || e.relecturaDia > r.relecturaDia)) r.relecturaDia = e.relecturaDia
+    // E2: solo si alguna fuente lo trae (con 2.4.1 el estado queda igual que antes).
+    if (e.fraccion !== undefined) r.fraccion = Math.max(r.fraccion ?? 0, e.fraccion)
+    if (e.libroPremiado !== undefined) r.libroPremiado = !!(r.libroPremiado || e.libroPremiado)
+    if (e.activoLibroSegundos !== undefined) r.activoLibroSegundos = Math.max(r.activoLibroSegundos ?? 0, e.activoLibroSegundos)
+    if (e.mejorTropiezos != null) r.mejorTropiezos = r.mejorTropiezos == null ? e.mejorTropiezos : Math.min(r.mejorTropiezos, e.mejorTropiezos)
   }
   return r
 }
+
+/** Un número de la app: finito y no negativo, o `undefined`. */
+const medida = (v: unknown, max = 86_400): number | undefined =>
+  typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(v, max) : undefined
+
+/** Las unidades de la vista que terminan después de `desde` y hasta `hasta` (con palabras). */
+function unidadesEntre(vista: VistaPorNivel, totalFrases: number, desde: number, hasta: number): { i: number; fin: number; texto: string }[] {
+  const r: { i: number; fin: number; texto: string }[] = []
+  for (let i = 0; i < vista.unidades.length; i++) {
+    const fin = fraseDeUnidad(vista, i + 1, totalFrases)
+    if (fin <= desde) continue
+    if (fin > hasta) break
+    if (contarPalabras(vista.unidades[i]) === 0) continue
+    r.push({ i, fin, texto: vista.unidades[i] })
+  }
+  return r
+}
+
+/** ¿`hasta` es el final de alguna unidad? (E2 no acepta avances a mitad de unidad ni más allá del libro.) */
+function esFinDeUnidad(vista: VistaPorNivel, totalFrases: number, hasta: number): boolean {
+  if (hasta === 0) return true
+  for (let i = 0; i < vista.unidades.length; i++) if (fraseDeUnidad(vista, i + 1, totalFrases) === hasta) return true
+  return false
+}
+
+/** Segundos esperados de varias unidades en el nivel de referencia. */
+const esperadoDe = (unidades: string[], nivelRef: NivelLectura, e: ReglasEsfuerzo) =>
+  unidades.reduce((s, u) => s + segundosEsperados(nivelRef, contarSilabas(u), e), 0)
+
+/** Los segundos activos que cuentan: los medidos (o, si una app anterior no los manda, lo esperado), hasta el tope. */
+const segundosQueCuentan = (activos: number | undefined, esperado: number, e: ReglasEsfuerzo) =>
+  Math.min(e.topeSobreEsperado * esperado, activos ?? esperado)
 
 /**
  * Monedas de una solicitud, con las reglas vigentes. Nunca paga dos veces lo
@@ -109,14 +195,28 @@ export function calcularPremio(
   nivel: NivelLectura,
   previo: EstadoPremios,
   solicitud: SolicitudPremio,
-  opciones: { hoy: string; reglas?: ReglasMonedas; ritmo?: RitmoPlausible; vista?: VistaPorNivel },
+  opciones: OpcionesPremio,
 ): CalculoPremio {
   const reglas = opciones.reglas ?? REGLAS_MONEDAS
+  if (reglas.esfuerzo) return calcularPremioE2(texto, nivel, previo, solicitud, { ...opciones, reglas }, reglas.esfuerzo)
   const ritmo = opciones.ritmo ?? RITMO_PLAUSIBLE
   const vista = opciones.vista ?? vistaPorNivel(texto, nivel)
   const totalFrases = texto.frases.length
   const total = vista.unidades.length
-  const nada = (motivo: MotivoPremio, estado = previo): CalculoPremio => ({ monedas: 0, estado, motivo, costoSegundos: 0, unidades: 0, hitos: [] })
+  const nivelRef = opciones.nivelReferencia ?? nivel
+  const nada = (motivo: MotivoPremio, estado = previo): CalculoPremio => ({
+    monedas: 0, estado, motivo, costoSegundos: 0, unidades: 0, hitos: [], segundosActividad: 0, segundosPagados: 0, unidadesNuevas: [], terminoLibro: false,
+  })
+
+  // Releer una unidad: con 2.4.1 no paga (la relectura se premia al terminar el libro), pero es lectura (logros).
+  if (solicitud.tipo === 'releida') {
+    const hasta = Math.floor(solicitud.hasta)
+    if (!(hasta > 0 && hasta <= totalFrases) || !esFinDeUnidad(vista, totalFrases, hasta)) return nada('unidad_inexistente')
+    if (hasta > previo.pagadoHasta) return nada('no_leida')
+    const u = unidadesEntre(vista, totalFrases, 0, hasta).at(-1)
+    const actividad = u && solicitud.conPremio ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe([u.texto], nivelRef, ACTIVIDAD), ACTIVIDAD) : 0
+    return { ...nada('releida'), segundosActividad: actividad }
+  }
 
   if (solicitud.tipo === 'relectura') {
     if (!diaValido(solicitud.dia, opciones.hoy)) return nada('dia_invalido')
@@ -131,6 +231,10 @@ export function calcularPremio(
       costoSegundos: vista.unidades.reduce((s, u) => s + segundosDe(u, ritmo), 0),
       unidades: 0,
       hitos: [],
+      segundosActividad: 0,
+      segundosPagados: 0,
+      unidadesNuevas: [],
+      terminoLibro: false,
     }
   }
 
@@ -156,6 +260,9 @@ export function calcularPremio(
   const unidades = monedas > 0 ? 1 : 0
   const hitos = hitosNuevos(nivel, previo.hitosHasta, porcentajeLeido(hasta, totalFrases), reglas)
   monedas += hitos.reduce((s, h) => s + h.monedas, 0)
+  // Lo que no cambia las monedas de 2.4.1: actividad para los logros.
+  const nuevas = unidadesEntre(vista, totalFrases, previo.pagadoHasta, hasta).map((u) => u.texto)
+  const actividad = solicitud.conPremio && nuevas.length ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe(nuevas, nivelRef, ACTIVIDAD), ACTIVIDAD) : 0
   return {
     monedas,
     estado: { ...previo, pagadoHasta: hasta, hitosHasta: hitos.length ? hitos[hitos.length - 1].porcentaje : previo.hitosHasta },
@@ -163,8 +270,157 @@ export function calcularPremio(
     costoSegundos,
     unidades,
     hitos,
+    segundosActividad: actividad,
+    segundosPagados: 0,
+    unidadesNuevas: nuevas,
+    terminoLibro: previo.pagadoHasta < totalFrases && hasta >= totalFrases,
   }
 }
+
+export interface OpcionesPremio {
+  /** Fecha (AAAA-MM-DD) de quien calcula, para validar la relectura. */
+  hoy: string
+  reglas?: ReglasMonedas
+  ritmo?: RitmoPlausible
+  /** Las unidades del texto en el nivel asignado (se calculan si no se dan). */
+  vista?: VistaPorNivel
+  /** Dificultad real: el nivel con que se calcula lo esperado (ver nivelDeReferencia). Por defecto, el asignado. */
+  nivelReferencia?: NivelLectura
+  /** E2: segundos de relectura (unidades releídas) pagados hace poco en este libro, para la relectura con mejora. */
+  segundosReleidosRecientes?: number
+}
+
+/**
+ * Modelo E2 (experimental). Cada unidad completada paga
+ * `tasa × min(activos, 2 × esperado)` por minuto (la fracción se acumula en el
+ * libro); terminar por primera vez paga en proporción a lo largo que es; releer
+ * paga a la tasa de relectura; releer entero con menos tropiezos, +2 una vez al
+ * día. Lo que depende de la base (sílabas o palabras nuevas, nivel completo, el
+ * reloj) lo agrega el servidor.
+ */
+function calcularPremioE2(
+  texto: TextoParaPremio,
+  nivel: NivelLectura,
+  previo: EstadoPremios,
+  solicitud: SolicitudPremio,
+  opciones: OpcionesPremio & { reglas: ReglasMonedas },
+  e: ReglasEsfuerzo,
+): CalculoPremio {
+  const ritmo = opciones.ritmo ?? RITMO_PLAUSIBLE
+  const vista = opciones.vista ?? vistaPorNivel(texto, nivel)
+  const totalFrases = texto.frases.length
+  const nivelRef = e.dificultadReal ? (opciones.nivelReferencia ?? nivel) : nivel
+  const nada = (motivo: MotivoPremio, extra: Partial<CalculoPremio> = {}): CalculoPremio => ({
+    monedas: 0, estado: previo, motivo, costoSegundos: 0, unidades: 0, hitos: [], segundosActividad: 0, segundosPagados: 0, unidadesNuevas: [], terminoLibro: false, ...extra,
+  })
+  /** Suma minutos pagados a la fracción del libro: devuelve las monedas enteras y la fracción que queda. */
+  const acumular = (segundos: number, tasa: number) => {
+    const acarreo = (previo.fraccion ?? 0) + (tasa * segundos) / 60
+    const monedas = Math.floor(acarreo + 1e-9)
+    return { monedas, fraccion: Math.max(0, acarreo - monedas) }
+  }
+  const esperadoLibro = () => esperadoDe(vista.unidades.filter((u) => contarPalabras(u) > 0), nivelRef, e)
+
+  if (solicitud.tipo === 'relectura') {
+    if (!diaValido(solicitud.dia, opciones.hoy)) return nada('dia_invalido')
+    if (previo.pagadoHasta < totalFrases) return nada('no_terminado')
+    if (previo.relecturaDia && solicitud.dia <= previo.relecturaDia) return nada('relectura_repetida')
+    const tropiezos = medida(solicitud.tropiezos, 10_000)
+    if (tropiezos === undefined) return nada('sin_mejora')
+    // Tiene que haberse releído de verdad (unidades releídas pagadas en estas horas), no solo decirlo.
+    if ((opciones.segundosReleidosRecientes ?? 0) < e.libroTerminado.fraccionActivaMinima * esperadoLibro()) return nada('sin_relectura')
+    const t = Math.floor(tropiezos)
+    if (previo.mejorTropiezos == null || t >= previo.mejorTropiezos) {
+      return nada('sin_mejora', { estado: { ...previo, mejorTropiezos: previo.mejorTropiezos == null ? t : previo.mejorTropiezos } })
+    }
+    const monedas = e.relecturaConMejora.monedas
+    return nada('mejora', { monedas, estado: { ...previo, mejorTropiezos: t, relecturaDia: solicitud.dia }, desglose: { tiempo: 0, libro: 0, mejora: monedas } })
+  }
+
+  const hasta = Math.floor(solicitud.hasta)
+  // Las unidades deben existir: nada más allá del libro ni a mitad de una unidad.
+  if (!(hasta >= 0 && hasta <= totalFrases) || !esFinDeUnidad(vista, totalFrases, hasta)) return nada('unidad_inexistente')
+  const activos = medida(solicitud.segundosActivos)
+
+  if (solicitud.tipo === 'releida') {
+    if (hasta === 0) return nada('unidad_inexistente')
+    if (hasta > previo.pagadoHasta) return nada('no_leida')
+    const u = unidadesEntre(vista, totalFrases, 0, hasta).at(-1)
+    if (!u || !solicitud.conPremio) return nada('releida', { costoSegundos: 0 })
+    const pagados = segundosQueCuentan(activos, esperadoDe([u.texto], nivelRef, e), e)
+    const { monedas, fraccion } = acumular(pagados, e.tasaPorMinuto.relectura[nivel])
+    return {
+      ...nada('releida'),
+      monedas,
+      estado: { ...previo, fraccion },
+      costoSegundos: Math.max(segundosDe(u.texto, ritmo), pagados),
+      segundosActividad: pagados,
+      segundosPagados: pagados,
+      desglose: { tiempo: monedas, libro: 0, mejora: 0 },
+    }
+  }
+
+  if (hasta <= previo.pagadoHasta) return nada('ya_pagado')
+  const nuevas = unidadesEntre(vista, totalFrases, previo.pagadoHasta, hasta)
+  const textos = nuevas.map((u) => u.texto)
+  const plausible = textos.reduce((s, u) => s + segundosDe(u, ritmo), 0)
+  // La frase «muy rápida» (conPremio falso) no paga; el tropiezo ya no quita la moneda.
+  const pagados = solicitud.conPremio && nuevas.length ? segundosQueCuentan(activos, esperadoDe(textos, nivelRef, e), e) : 0
+  const tiempo = acumular(pagados, e.tasaPorMinuto.primeraLectura)
+  const activoLibro = (previo.activoLibroSegundos ?? 0) + pagados
+  const estado: EstadoPremios = { ...previo, pagadoHasta: hasta, fraccion: tiempo.fraccion, activoLibroSegundos: activoLibro }
+  const terminoLibro = previo.pagadoHasta < totalFrases && hasta >= totalFrases
+  let libro = 0
+  if (terminoLibro) {
+    if (!previo.libroPremiado) {
+      const minutos = esperadoLibro() / 60
+      const lt = e.libroTerminado
+      if (minutos >= lt.minutosEsperadosMinimos && activoLibro / 60 >= lt.fraccionActivaMinima * minutos) libro = Math.min(lt.maximo, Math.floor(minutos * lt.porMinuto))
+      // Una sola vez: aunque no alcance (texto corto, arrastrado), ya no se vuelve a evaluar.
+      estado.libroPremiado = true
+    }
+    const t = medida(solicitud.tropiezos, 10_000)
+    if (t !== undefined) estado.mejorTropiezos = previo.mejorTropiezos == null ? Math.floor(t) : Math.min(previo.mejorTropiezos, Math.floor(t))
+  }
+  const monedas = tiempo.monedas + libro
+  return {
+    monedas,
+    estado,
+    motivo: monedas > 0 ? 'avance' : 'ya_pagado',
+    costoSegundos: Math.max(plausible, pagados),
+    unidades: tiempo.monedas > 0 ? 1 : 0,
+    hitos: [],
+    segundosActividad: pagados,
+    segundosPagados: pagados,
+    unidadesNuevas: textos,
+    terminoLibro,
+    desglose: { tiempo: tiempo.monedas, libro, mejora: 0 },
+  }
+}
+
+/**
+ * Sílabas (nivel 0) o palabras (nivel 1) de unas unidades, normalizadas (sin
+ * mayúsculas, tildes ni signos): las que el niño ve por primera vez dan monedas en E2.
+ */
+export function piezasDe(unidades: string[], cuenta: 'silabas' | 'palabras'): string[] {
+  const limpiar = (x: string) => x.normalize('NFKD').replace(/\p{M}+/gu, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')
+  const r = new Set<string>()
+  for (const u of unidades) {
+    for (const palabra of u.split(/\s+/)) {
+      if (!/[\p{L}\p{N}]/u.test(palabra)) continue
+      const piezas = cuenta === 'silabas' ? separarSilabas(palabra) : [palabra]
+      for (const p of piezas) {
+        const l = limpiar(p)
+        if (l && l.length <= 60) r.add(l)
+      }
+    }
+  }
+  return [...r]
+}
+
+/** Monedas por piezas nuevas: cada `cada` piezas distintas vistas, `monedas`. */
+export const monedasPorNuevas = (antes: number, despues: number, regla: { cada: number; monedas: number }) =>
+  (Math.floor(despues / regla.cada) - Math.floor(antes / regla.cada)) * regla.monedas
 
 /**
  * ¿Pudo leerse esto en el tiempo que pasó? Cada niño tiene un «reloj» de
@@ -186,6 +442,25 @@ export function revisarRitmo(
   const exceso = nuevo - (ahora + ritmo.toleranciaSegundos * 1000)
   if (exceso > 0) return { ok: false, esperarSegundos: Math.ceil(exceso / 1000) }
   return { ok: true, reloj: nuevo }
+}
+
+/**
+ * Reloj de actividad (para los logros): acredita los segundos de lectura que
+ * caben en el tiempo real, con la misma ventana de una hora. A diferencia de
+ * `revisarRitmo` no rechaza: lo que no cabe simplemente no se acredita (no
+ * hay monedas en juego, y un lector real nunca lee más que el tiempo que pasa).
+ */
+export function acreditarActividad(
+  reloj: number | null,
+  ahora: number,
+  segundos: number,
+  ritmo: RitmoPlausible = RITMO_PLAUSIBLE,
+): { acreditados: number; reloj: number | null } {
+  if (!(segundos > 0)) return { acreditados: 0, reloj }
+  const base = Math.max(reloj ?? -Infinity, ahora - ritmo.ventanaSegundos * 1000)
+  const cabe = Math.max(0, (ahora + ritmo.toleranciaSegundos * 1000 - base) / 1000)
+  const acreditados = Math.min(segundos, cabe)
+  return { acreditados, reloj: base + acreditados * 1000 }
 }
 
 /**
