@@ -288,6 +288,12 @@ export interface OpcionesPremio {
   nivelReferencia?: NivelLectura
   /** E2: segundos de relectura (unidades releídas) pagados hace poco en este libro, para la relectura con mejora. */
   segundosReleidosRecientes?: number
+  /**
+   * E2: lo más que el reloj del servidor deja pagar en este pedido (ver
+   * revisarRelojE2). Solo se usa con un pedido más grande que toda la ventana:
+   * un pedido normal que no cabe recibe 429 y se paga después, entero.
+   */
+  maxSegundosPagables?: number
 }
 
 /**
@@ -313,6 +319,8 @@ function calcularPremioE2(
   const nada = (motivo: MotivoPremio, extra: Partial<CalculoPremio> = {}): CalculoPremio => ({
     monedas: 0, estado: previo, motivo, costoSegundos: 0, unidades: 0, hitos: [], segundosActividad: 0, segundosPagados: 0, unidadesNuevas: [], terminoLibro: false, ...extra,
   })
+  // Lo mide la app (sin pausas largas); el servidor no lo cree: lo acota a 2× lo esperado y con su reloj.
+  const activos = solicitud.tipo === 'relectura' ? undefined : medida(solicitud.segundosActivos)
   /** Suma minutos pagados a la fracción del libro: devuelve las monedas enteras y la fracción que queda. */
   const acumular = (segundos: number, tasa: number) => {
     const acarreo = (previo.fraccion ?? 0) + (tasa * segundos) / 60
@@ -320,6 +328,9 @@ function calcularPremioE2(
     return { monedas, fraccion: Math.max(0, acarreo - monedas) }
   }
   const esperadoLibro = () => esperadoDe(vista.unidades.filter((u) => contarPalabras(u) > 0), nivelRef, e)
+  /** Los segundos pagables: los activos (o lo esperado), hasta 2× lo esperado y hasta lo que deja el reloj del servidor. */
+  const pagablesDe = (textos: string[]) =>
+    Math.max(0, Math.min(opciones.maxSegundosPagables ?? Infinity, segundosQueCuentan(activos, esperadoDe(textos, nivelRef, e), e)))
 
   if (solicitud.tipo === 'relectura') {
     if (!diaValido(solicitud.dia, opciones.hoy)) return nada('dia_invalido')
@@ -340,14 +351,13 @@ function calcularPremioE2(
   const hasta = Math.floor(solicitud.hasta)
   // Las unidades deben existir: nada más allá del libro ni a mitad de una unidad.
   if (!(hasta >= 0 && hasta <= totalFrases) || !esFinDeUnidad(vista, totalFrases, hasta)) return nada('unidad_inexistente')
-  const activos = medida(solicitud.segundosActivos)
 
   if (solicitud.tipo === 'releida') {
     if (hasta === 0) return nada('unidad_inexistente')
     if (hasta > previo.pagadoHasta) return nada('no_leida')
     const u = unidadesEntre(vista, totalFrases, 0, hasta).at(-1)
     if (!u || !solicitud.conPremio) return nada('releida', { costoSegundos: 0 })
-    const pagados = segundosQueCuentan(activos, esperadoDe([u.texto], nivelRef, e), e)
+    const pagados = pagablesDe([u.texto])
     const { monedas, fraccion } = acumular(pagados, e.tasaPorMinuto.relectura[nivel])
     return {
       ...nada('releida'),
@@ -365,7 +375,7 @@ function calcularPremioE2(
   const textos = nuevas.map((u) => u.texto)
   const plausible = textos.reduce((s, u) => s + segundosDe(u, ritmo), 0)
   // La frase «muy rápida» (conPremio falso) no paga; el tropiezo ya no quita la moneda.
-  const pagados = solicitud.conPremio && nuevas.length ? segundosQueCuentan(activos, esperadoDe(textos, nivelRef, e), e) : 0
+  const pagados = solicitud.conPremio && nuevas.length ? pagablesDe(textos) : 0
   const tiempo = acumular(pagados, e.tasaPorMinuto.primeraLectura)
   const activoLibro = (previo.activoLibroSegundos ?? 0) + pagados
   const estado: EstadoPremios = { ...previo, pagadoHasta: hasta, fraccion: tiempo.fraccion, activoLibroSegundos: activoLibro }
@@ -386,7 +396,8 @@ function calcularPremioE2(
   return {
     monedas,
     estado,
-    motivo: monedas > 0 ? 'avance' : 'ya_pagado',
+    // Avanzó aunque no junte todavía una moneda entera (la fracción queda en el libro).
+    motivo: 'avance',
     costoSegundos: Math.max(plausible, pagados),
     unidades: tiempo.monedas > 0 ? 1 : 0,
     hitos: [],
@@ -442,6 +453,36 @@ export function revisarRitmo(
   const exceso = nuevo - (ahora + ritmo.toleranciaSegundos * 1000)
   if (exceso > 0) return { ok: false, esperarSegundos: Math.ceil(exceso / 1000) }
   return { ok: true, reloj: nuevo }
+}
+
+/**
+ * El reloj del servidor con E2: los segundos pagados (no solo el mínimo para
+ * pasar el dedo) adelantan el reloj del niño. Así no se cobra más tiempo del
+ * que pasó de verdad: lo acumulado sin pedir premios vale como mucho una hora
+ * (`ventanaSegundos`: una lectura sin conexión se paga de golpe al volver),
+ * y después, al ritmo del reloj. No hay tope diario ni media tasa: solo el
+ * tiempo real. No demuestra que hubo lectura (no hay audio).
+ *
+ * - Cabe: se paga entero.
+ * - No cabe y es un pedido normal (≤ la ventana): 429, se paga entero después.
+ * - Un solo pedido más grande que toda la ventana (ningún lector lo manda: la
+ *   app pide por unidad): espera a tener la ventana entera y paga solo lo que
+ *   cabe en ella; el resto se pierde.
+ */
+export function revisarRelojE2(
+  reloj: number | null,
+  ahora: number,
+  plausibleSegundos: number,
+  pagadosSegundos: number,
+  ritmo: RitmoPlausible = RITMO_PLAUSIBLE,
+): { ok: true; reloj: number; pagables: number } | { ok: false; esperarSegundos: number } {
+  const base = Math.max(reloj ?? -Infinity, ahora - ritmo.ventanaSegundos * 1000)
+  const cabe = (ahora + ritmo.toleranciaSegundos * 1000 - base) / 1000
+  const costo = Math.max(plausibleSegundos, pagadosSegundos)
+  if (costo <= cabe) return { ok: true, reloj: base + costo * 1000, pagables: pagadosSegundos }
+  if (costo <= ritmo.ventanaSegundos) return { ok: false, esperarSegundos: Math.max(1, Math.ceil(costo - cabe)) }
+  if (cabe < ritmo.ventanaSegundos) return { ok: false, esperarSegundos: Math.max(1, Math.ceil(ritmo.ventanaSegundos - cabe)) }
+  return { ok: true, reloj: base + cabe * 1000, pagables: Math.min(pagadosSegundos, cabe) }
 }
 
 /**

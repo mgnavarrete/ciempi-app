@@ -28,6 +28,8 @@ import { darCuentos } from './cuentos.ts'
 import { audioDe, leerVozPedida, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
 import { Esperar, SinAsignacion, ajustarMonedas, anotarLegado, fechaDia, huellaDe, otorgarPremio, recordarLecturas, type PedidoPremio } from './premios.ts'
+import { leerModeloEconomia, type ModeloEconomia } from '../../src/lectura/monedas.ts'
+import { CUNCUNA, listarDesbloqueos, marcarCelebrado, regalarCuncuna, revisarCuncuna } from './desbloqueos.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
 /** Error con mensaje para mostrarle al usuario (400 por defecto). */
@@ -169,9 +171,15 @@ const LARGO_VOZ = 300
 /** Un operationId: lo genera la app (un uuid) y sirve para no pagar dos veces el mismo pedido. */
 const ID_OPERACION = /^[A-Za-z0-9:_-]{8,100}$/
 
-export async function crearApp(opciones: { ahora?: () => number } = {}) {
+/** Lo que mide la app (segundos activos, tropiezos): un número finito y no negativo, o nada. */
+const medidaOpcional = (v: unknown, max: number): number | undefined =>
+  typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(v, max) : undefined
+
+export async function crearApp(opciones: { ahora?: () => number; economia?: ModeloEconomia } = {}) {
   // La hora del servidor (las pruebas la mueven para revisar la plausibilidad).
   const ahora = opciones.ahora ?? Date.now
+  // Bandera ECONOMIA: vacía = 2.4.1 (por defecto); 'e2' = modelo experimental. Otro valor no arranca.
+  const economia = opciones.economia ?? leerModeloEconomia(process.env.ECONOMIA)
   const app = Fastify({
     logger: process.env.NODE_ENV === 'test' ? false : { level: process.env.LOG_LEVEL ?? 'info' },
     // Detrás de Nginx: la IP real llega en X-Forwarded-For.
@@ -648,7 +656,7 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
       for (const p of pedidos) {
         try {
           const pedido: PedidoPremio = { ...p, perfilId: a.perfil_id, asignacionId: id, usuarioId: yo(req).id, solicitadas: null, origen: 'legado' }
-          ultima = (await enTransaccion((c) => otorgarPremio(c, pedido, ahora()))).asignacion
+          ultima = (await enTransaccion((c) => otorgarPremio(c, pedido, ahora(), economia))).asignacion
         } catch (e) {
           // Muy rápido: se pagará con el próximo progreso que mande (mismo operationId, no paga dos veces).
           if (!(e instanceof Esperar)) throw e
@@ -674,17 +682,10 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
     const b = cuerpo(req)
     const operationId = texto(b.operationId, 'operationId', 100)
     if (!ID_OPERACION.test(operationId)) throw new Problema('operationId no válido')
-    let solicitud: PedidoPremio['solicitud']
-    if (b.tipo === 'avance') {
-      solicitud = { tipo: 'avance', hasta: Math.max(0, entero(b.hasta, 'hasta')), conPremio: b.conPremio !== false }
-    } else if (b.tipo === 'relectura') {
-      const dia = texto(b.dia, 'dia', 10)
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) throw new Problema('dia debe ser AAAA-MM-DD')
-      solicitud = { tipo: 'relectura', dia }
-    } else throw new Problema('tipo debe ser avance o relectura')
+    const solicitud = leerSolicitud(b)
     const solicitadas = typeof b.esperadas === 'number' && Number.isInteger(b.esperadas) ? Math.max(-1, Math.min(1_000_000, b.esperadas)) : null
     const pedido: PedidoPremio = { perfilId: a.perfil_id, asignacionId: id, usuarioId: yo(req).id, operationId, solicitud, solicitadas, origen: 'app' }
-    const r = await enTransaccion((c) => otorgarPremio(c, pedido, ahora()))
+    const r = await enTransaccion((c) => otorgarPremio(c, pedido, ahora(), economia))
     const asignacion = aAsignacion(r.asignacion)
     return {
       estado: r.estado,
@@ -695,7 +696,71 @@ export async function crearApp(opciones: { ahora?: () => number } = {}) {
       premioHasta: asignacion.premioHasta,
       relecturaPremiadaEn: asignacion.relecturaPremiadaEn,
       pagadoHasta: asignacion.pagadoHasta,
+      // Qué economía pagó (la app ajusta lo que pide) y lo recién desbloqueado (para celebrarlo).
+      economia: r.economia,
+      desbloqueos: r.desbloqueos,
     }
+  })
+
+  /**
+   * Lo que pide la app. `segundosActivos` y `tropiezos` los mide ella: con 2.4.1
+   * no cambian nada; con E2 el servidor los acota (2× lo esperado y su reloj).
+   * `releida`: releyó una unidad ya pagada (E2 la paga por tiempo).
+   */
+  function leerSolicitud(b: Fila): PedidoPremio['solicitud'] {
+    const segundosActivos = medidaOpcional(b.segundosActivos, 86_400)
+    const tropiezos = medidaOpcional(b.tropiezos, 10_000)
+    const extra = { ...(segundosActivos !== undefined ? { segundosActivos } : {}) }
+    if (b.tipo === 'avance' || b.tipo === 'releida') {
+      const hasta = Math.max(0, entero(b.hasta, 'hasta'))
+      const conPremio = b.conPremio !== false
+      if (b.tipo === 'releida') return { tipo: 'releida', hasta, conPremio, ...extra }
+      return { tipo: 'avance', hasta, conPremio, ...extra, ...(tropiezos !== undefined ? { tropiezos } : {}) }
+    }
+    if (b.tipo === 'relectura') {
+      const dia = texto(b.dia, 'dia', 10)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) throw new Problema('dia debe ser AAAA-MM-DD')
+      return { tipo: 'relectura', dia, ...(tropiezos !== undefined ? { tropiezos } : {}) }
+    }
+    throw new Problema('tipo debe ser avance, releida o relectura')
+  }
+
+  // ── Desbloqueos (la Cuncuna) ────────────────────────────────────────────
+  // Los decide el servidor con lo que pagó (ver server/src/desbloqueos.ts).
+
+  /** Lo desbloqueado; `por_celebrar` = la app todavía no mostró la celebración especial. */
+  app.get('/api/perfiles/:id/desbloqueos', conUsuario, async (req) => {
+    const id = param(req, 'id')
+    await exigirVerNino(yo(req), id)
+    // Retroactivo también aquí: si ya cumplía (por ejemplo, con lo leído antes), se le da ahora.
+    await enTransaccion(async (c) => {
+      await c.query('select 1 from perfiles_ninos where id = $1 for update', [id])
+      await revisarCuncuna(c, id)
+    })
+    return listarDesbloqueos(pool, id)
+  })
+
+  app.post('/api/perfiles/:id/desbloqueos/:item/celebrado', conUsuario, async (req) => {
+    const id = param(req, 'id')
+    await exigirVerNino(yo(req), id)
+    const d = await marcarCelebrado(pool, id, param(req, 'item'))
+    if (!d) throw new Problema('Eso no está desbloqueado', 404)
+    return d
+  })
+
+  /** Un adulto del niño le regala la Cuncuna, con un motivo. */
+  app.post('/api/perfiles/:id/desbloqueos', conAdulto, async (req) => {
+    const id = param(req, 'id')
+    await exigirAdminDe(yo(req), id)
+    const b = cuerpo(req)
+    if (b.item !== CUNCUNA) throw new Problema('Solo se puede regalar la Cuncuna')
+    const nota = texto(b.motivo, 'el motivo', 200).trim()
+    if (!nota) throw new Problema('Falta el motivo')
+    await enTransaccion(async (c) => {
+      await c.query('select 1 from perfiles_ninos where id = $1 for update', [id])
+      await regalarCuncuna(c, id, yo(req).id, nota)
+    })
+    return listarDesbloqueos(pool, id)
   })
 
   // Un adulto puede quitar cualquier libro; el niño, solo lo que subió él.
