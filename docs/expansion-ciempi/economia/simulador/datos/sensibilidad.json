@@ -1,0 +1,2658 @@
+{
+ "semilla": 20261103,
+ "nNinos": 400,
+ "escenarios": [
+  {
+   "id": "base",
+   "nombre": "E2 tal como está (§6.3)",
+   "grupo": "Base",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 15.09,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 328,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ritmo-70",
+   "nombre": "Todos leen 30 % más lento",
+   "grupo": "Ritmo",
+   "monedas": {
+    "P0": 21,
+    "P1": 27,
+    "P2": 25,
+    "P3": 23,
+    "P4": 26
+   },
+   "brecha": 1.29,
+   "brechaM0": 15.83,
+   "giniNinos": 0.09,
+   "casoUsuario": 30,
+   "p0En20": 328,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 7
+   },
+   "lentoCuncunaVia3": {
+    "p10": 14,
+    "p50": 15,
+    "p90": 18
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ritmo-130",
+   "nombre": "Todos leen 30 % más rápido",
+   "grupo": "Ritmo",
+   "monedas": {
+    "P0": 21,
+    "P1": 30,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.43,
+   "brechaM0": 15.93,
+   "giniNinos": 0.1,
+   "casoUsuario": 34,
+   "p0En20": 314,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoCuncunaVia3": {
+    "p10": 7,
+    "p50": 7,
+    "p90": 8
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ritmo-abre",
+   "nombre": "P0–P1 30 % más lentos y P3–P4 30 % más rápidos",
+   "grupo": "Ritmo",
+   "monedas": {
+    "P0": 21,
+    "P1": 27,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.29,
+   "brechaM0": 26.67,
+   "giniNinos": 0.09,
+   "casoUsuario": 30,
+   "p0En20": 328,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 7
+   },
+   "lentoCuncunaVia3": {
+    "p10": 14,
+    "p50": 15,
+    "p90": 18
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ritmo-cierra",
+   "nombre": "P0–P1 30 % más rápidos y P3–P4 30 % más lentos",
+   "grupo": "Ritmo",
+   "monedas": {
+    "P0": 21,
+    "P1": 30,
+    "P2": 26,
+    "P3": 23,
+    "P4": 26
+   },
+   "brecha": 1.43,
+   "brechaM0": 9.45,
+   "giniNinos": 0.09,
+   "casoUsuario": 34,
+   "p0En20": 314,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoCuncunaVia3": {
+    "p10": 7,
+    "p50": 7,
+    "p90": 8
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "sigma-050",
+   "nombre": "Más dispersión entre niños (σ 0,35 → 0,50)",
+   "grupo": "Ritmo",
+   "monedas": {
+    "P0": 21,
+    "P1": 27,
+    "P2": 26,
+    "P3": 24,
+    "P4": 26
+   },
+   "brecha": 1.29,
+   "brechaM0": 15.09,
+   "giniNinos": 0.1,
+   "casoUsuario": 34,
+   "p0En20": 322,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "tropiezo-50",
+   "nombre": "Tropiezos a la mitad",
+   "grupo": "Tropiezos",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 13.33,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 327,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "tropiezo-200",
+   "nombre": "Tropiezos al doble",
+   "grupo": "Tropiezos",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 20,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 330,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "tropiezo-300",
+   "nombre": "Tropiezos al triple (P0 = 30 %)",
+   "grupo": "Tropiezos",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 29.63,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 332,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 10,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "fuera-70",
+   "nombre": "Tiempo fuera de la lectura −30 %",
+   "grupo": "Tiempo fuera",
+   "monedas": {
+    "P0": 23,
+    "P1": 31.5,
+    "P2": 28,
+    "P3": 26,
+    "P4": 29
+   },
+   "brecha": 1.37,
+   "brechaM0": 14.61,
+   "giniNinos": 0.08,
+   "casoUsuario": 37,
+   "p0En20": 355,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoCuncunaVia3": {
+    "p10": 7,
+    "p50": 9,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "fuera-130",
+   "nombre": "Tiempo fuera de la lectura +30 %",
+   "grupo": "Tiempo fuera",
+   "monedas": {
+    "P0": 19,
+    "P1": 26,
+    "P2": 24,
+    "P3": 23,
+    "P4": 26
+   },
+   "brecha": 1.36,
+   "brechaM0": 17.02,
+   "giniNinos": 0.09,
+   "casoUsuario": 32,
+   "p0En20": 301,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 7
+   },
+   "lentoCuncunaVia3": {
+    "p10": 11,
+    "p50": 11,
+    "p90": 13
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "sesion-10",
+   "nombre": "Sesiones de 10 min",
+   "grupo": "Duración",
+   "monedas": {
+    "P0": 13,
+    "P1": 18,
+    "P2": 17,
+    "P3": 15,
+    "P4": 17
+   },
+   "brecha": 1.38,
+   "brechaM0": 13.33,
+   "giniNinos": 0.1,
+   "casoUsuario": 34,
+   "p0En20": 214,
+   "p0Dragon80": {
+    "p10": 6,
+    "p50": 7,
+    "p90": 8
+   },
+   "lentoDragon80": {
+    "p50": 9,
+    "p90": 9
+   },
+   "lentoCuncunaVia3": {
+    "p10": 15,
+    "p50": 21,
+    "p90": 37
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "sesion-20",
+   "nombre": "Sesiones de 20 min",
+   "grupo": "Duración",
+   "monedas": {
+    "P0": 29,
+    "P1": 39,
+    "P2": 35,
+    "P3": 34,
+    "P4": 37
+   },
+   "brecha": 1.34,
+   "brechaM0": 14.55,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 428,
+   "p0Dragon80": {
+    "p10": 3,
+    "p50": 3,
+    "p90": 4
+   },
+   "lentoDragon80": {
+    "p50": 4,
+    "p90": 4
+   },
+   "lentoCuncunaVia3": {
+    "p10": 5,
+    "p50": 6,
+    "p90": 7
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "sesion-30",
+   "nombre": "Sesiones de 30 min",
+   "grupo": "Duración",
+   "monedas": {
+    "P0": 44,
+    "P1": 59,
+    "P2": 55,
+    "P3": 57,
+    "P4": 58
+   },
+   "brecha": 1.34,
+   "brechaM0": 15.49,
+   "giniNinos": 0.09,
+   "casoUsuario": 34,
+   "p0En20": 616,
+   "p0Dragon80": {
+    "p10": 2,
+    "p50": 2,
+    "p90": 3
+   },
+   "lentoDragon80": {
+    "p50": 2,
+    "p90": 3
+   },
+   "lentoCuncunaVia3": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 4
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ref-70",
+   "nombre": "Referencias de E2 −30 % (todas)",
+   "grupo": "Referencia E2",
+   "monedas": {
+    "P0": 20,
+    "P1": 27,
+    "P2": 25,
+    "P3": 23,
+    "P4": 24
+   },
+   "brecha": 1.35,
+   "brechaM0": 15.09,
+   "giniNinos": 0.1,
+   "casoUsuario": 34,
+   "p0En20": 314,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 5,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ref-130",
+   "nombre": "Referencias de E2 +30 % (todas)",
+   "grupo": "Referencia E2",
+   "monedas": {
+    "P0": 22,
+    "P1": 27,
+    "P2": 24,
+    "P3": 22,
+    "P4": 24
+   },
+   "brecha": 1.22,
+   "brechaM0": 15.09,
+   "giniNinos": 0.07,
+   "casoUsuario": 33,
+   "p0En20": 332,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "ref-n0-7",
+   "nombre": "N0 = 7 síl/min (valor de E)",
+   "grupo": "Referencia E2",
+   "monedas": {
+    "P0": 22,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.27,
+   "brechaM0": 15.09,
+   "giniNinos": 0.08,
+   "casoUsuario": 32,
+   "p0En20": 332,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "cap-150",
+   "nombre": "Tope por unidad 1,5× (en vez de 2×)",
+   "grupo": "Tope",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 15.09,
+   "giniNinos": 0.09,
+   "casoUsuario": 32,
+   "p0En20": 327,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 6,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  },
+  {
+   "id": "cap-300",
+   "nombre": "Tope por unidad 3×",
+   "grupo": "Tope",
+   "monedas": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "brechaM0": 15.09,
+   "giniNinos": 0.08,
+   "casoUsuario": 34,
+   "p0En20": 328,
+   "p0Dragon80": {
+    "p10": 4,
+    "p50": 4,
+    "p90": 5
+   },
+   "lentoDragon80": {
+    "p50": 5,
+    "p90": 6
+   },
+   "lentoCuncunaVia3": {
+    "p10": 9,
+    "p50": 11,
+    "p90": 11
+   },
+   "peorAbuso": {
+    "id": "rondar",
+    "porMinuto": 2.1
+   }
+  }
+ ],
+ "tope": [
+  {
+   "capFactor": 1.25,
+   "filas": [
+    {
+     "grupo": "P0",
+     "sinPagarPorTope": 0.69,
+     "p90Nino": 2.1,
+     "repeticionNoPagada": 8.4
+    },
+    {
+     "grupo": "P1",
+     "sinPagarPorTope": 3.72,
+     "p90Nino": 9.5,
+     "repeticionNoPagada": 5.4
+    },
+    {
+     "grupo": "P2",
+     "sinPagarPorTope": 3.8,
+     "p90Nino": 10.4,
+     "repeticionNoPagada": 3.7
+    },
+    {
+     "grupo": "P3",
+     "sinPagarPorTope": 3.71,
+     "p90Nino": 11.5,
+     "repeticionNoPagada": 2.9
+    },
+    {
+     "grupo": "P4",
+     "sinPagarPorTope": 3.67,
+     "p90Nino": 11.7,
+     "repeticionNoPagada": 1.7
+    },
+    {
+     "grupo": "Muy lento",
+     "sinPagarPorTope": 14.12,
+     "p90Nino": 17.2,
+     "repeticionNoPagada": 7.6
+    }
+   ]
+  },
+  {
+   "capFactor": 1.5,
+   "filas": [
+    {
+     "grupo": "P0",
+     "sinPagarPorTope": 0.22,
+     "p90Nino": 0.6,
+     "repeticionNoPagada": 8.4
+    },
+    {
+     "grupo": "P1",
+     "sinPagarPorTope": 1.6,
+     "p90Nino": 3.7,
+     "repeticionNoPagada": 5.4
+    },
+    {
+     "grupo": "P2",
+     "sinPagarPorTope": 1.59,
+     "p90Nino": 4,
+     "repeticionNoPagada": 3.7
+    },
+    {
+     "grupo": "P3",
+     "sinPagarPorTope": 1.48,
+     "p90Nino": 4.3,
+     "repeticionNoPagada": 2.9
+    },
+    {
+     "grupo": "P4",
+     "sinPagarPorTope": 1.58,
+     "p90Nino": 4.8,
+     "repeticionNoPagada": 1.7
+    },
+    {
+     "grupo": "Muy lento",
+     "sinPagarPorTope": 6.32,
+     "p90Nino": 8.8,
+     "repeticionNoPagada": 7.6
+    }
+   ]
+  },
+  {
+   "capFactor": 2,
+   "filas": [
+    {
+     "grupo": "P0",
+     "sinPagarPorTope": 0.02,
+     "p90Nino": 0,
+     "repeticionNoPagada": 8.4
+    },
+    {
+     "grupo": "P1",
+     "sinPagarPorTope": 0.32,
+     "p90Nino": 0.5,
+     "repeticionNoPagada": 5.4
+    },
+    {
+     "grupo": "P2",
+     "sinPagarPorTope": 0.3,
+     "p90Nino": 0.4,
+     "repeticionNoPagada": 3.7
+    },
+    {
+     "grupo": "P3",
+     "sinPagarPorTope": 0.24,
+     "p90Nino": 0.4,
+     "repeticionNoPagada": 2.9
+    },
+    {
+     "grupo": "P4",
+     "sinPagarPorTope": 0.32,
+     "p90Nino": 0.5,
+     "repeticionNoPagada": 1.7
+    },
+    {
+     "grupo": "Muy lento",
+     "sinPagarPorTope": 1,
+     "p90Nino": 2.2,
+     "repeticionNoPagada": 7.6
+    }
+   ]
+  }
+ ],
+ "mitigacion": [
+  {
+   "id": "M0",
+   "nombre": "Actual (2.4.1)",
+   "monedas15": {
+    "P0": 8,
+    "P1": 25,
+    "P2": 43,
+    "P3": 67,
+    "P4": 120
+   },
+   "brecha": 15.09,
+   "giniNinos": 0.45,
+   "peorAbuso": 36.2,
+   "campanas": {
+    "P0": {
+     "relee": {
+      "en3": 23,
+      "en10": 55,
+      "en20": 57,
+      "en144": 59,
+      "dragon80": null,
+      "conj84": null,
+      "ola1": null,
+      "fuentes": {
+       "unidad": 58.4,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     },
+     "subidos": {
+      "en3": 23,
+      "en10": 74,
+      "en20": 151,
+      "en144": 1133,
+      "dragon80": 11,
+      "conj84": 12,
+      "ola1": 46,
+      "fuentes": {
+       "unidad": 1244.3,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P1": {
+     "relee": {
+      "en3": 60,
+      "en10": 73,
+      "en20": 74,
+      "en144": 74,
+      "dragon80": null,
+      "conj84": null,
+      "ola1": null,
+      "fuentes": {
+       "unidad": 73.2,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     },
+     "subidos": {
+      "en3": 62,
+      "en10": 185,
+      "en20": 361,
+      "en144": 2533,
+      "dragon80": 5,
+      "conj84": 5,
+      "ola1": 20,
+      "fuentes": {
+       "unidad": 2912.5,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P2": {
+     "relee": {
+      "en3": 111,
+      "en10": 127,
+      "en20": 147,
+      "en144": 390,
+      "dragon80": 2,
+      "conj84": 3,
+      "ola1": 130,
+      "fuentes": {
+       "unidad": 74.5,
+       "hitos": 40,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 305.5,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     },
+     "subidos": {
+      "en3": 120,
+      "en10": 373,
+      "en20": 732,
+      "en144": 5281,
+      "dragon80": 2,
+      "conj84": 3,
+      "ola1": 10,
+      "fuentes": {
+       "unidad": 4002.5,
+       "hitos": 1387.3,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P3": {
+     "relee": {
+      "en3": 120,
+      "en10": 120,
+      "en20": 120,
+      "en144": 120,
+      "dragon80": 2,
+      "conj84": 2,
+      "ola1": null,
+      "fuentes": {
+       "unidad": 119.7,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     },
+     "subidos": {
+      "en3": 167,
+      "en10": 463,
+      "en20": 898,
+      "en144": 6277,
+      "dragon80": 2,
+      "conj84": 2,
+      "ola1": 8,
+      "fuentes": {
+       "unidad": 7005.8,
+       "hitos": 0,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P4": {
+     "relee": {
+      "en3": 323,
+      "en10": 386,
+      "en20": 476,
+      "en144": 1583,
+      "dragon80": 1,
+      "conj84": 1,
+      "ola1": 8,
+      "fuentes": {
+       "unidad": 0,
+       "hitos": 320,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 1451.9,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     },
+     "subidos": {
+      "en3": 345,
+      "en10": 840,
+      "en20": 1545,
+      "en144": 10253,
+      "dragon80": 1,
+      "conj84": 1,
+      "ola1": 4,
+      "fuentes": {
+       "unidad": 0,
+       "hitos": 11532.5,
+       "libro": 0,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 0,
+       "relectura": 0,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "E2",
+   "nombre": "E2 · Híbrido ajustado (recomendado v3)",
+   "monedas15": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 26,
+    "P3": 24,
+    "P4": 27
+   },
+   "brecha": 1.34,
+   "giniNinos": 0.08,
+   "peorAbuso": 2.1,
+   "campanas": {
+    "P0": {
+     "relee": {
+      "en3": 60,
+      "en10": 190,
+      "en20": 328,
+      "en144": 1953,
+      "dragon80": 4,
+      "conj84": 5,
+      "ola1": 23,
+      "fuentes": {
+       "unidad": 96.5,
+       "hitos": 0,
+       "libro": 16.3,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 13.4,
+       "relectura": 1997.2,
+       "sinTropiezo": 0,
+       "mejora": 10.1
+      }
+     },
+     "subidos": {
+      "en3": 61,
+      "en10": 201,
+      "en20": 382,
+      "en144": 2615,
+      "dragon80": 4,
+      "conj84": 5,
+      "ola1": 19,
+      "fuentes": {
+       "unidad": 2093.2,
+       "hitos": 0,
+       "libro": 248.7,
+       "nuevas": 11.9,
+       "bloque": 0,
+       "nivel": 10.8,
+       "relectura": 476.6,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P1": {
+     "relee": {
+      "en3": 81,
+      "en10": 204,
+      "en20": 343,
+      "en144": 2054,
+      "dragon80": 3,
+      "conj84": 4,
+      "ola1": 22,
+      "fuentes": {
+       "unidad": 52.9,
+       "hitos": 0,
+       "libro": 23.5,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 2141.9,
+       "sinTropiezo": 0,
+       "mejora": 8.3
+      }
+     },
+     "subidos": {
+      "en3": 82,
+      "en10": 257,
+      "en20": 486,
+      "en144": 3316,
+      "dragon80": 3,
+      "conj84": 4,
+      "ola1": 15,
+      "fuentes": {
+       "unidad": 2272,
+       "hitos": 0,
+       "libro": 948.7,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 396.1,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P2": {
+     "relee": {
+      "en3": 83,
+      "en10": 162,
+      "en20": 260,
+      "en144": 1477,
+      "dragon80": 3,
+      "conj84": 4,
+      "ola1": 31,
+      "fuentes": {
+       "unidad": 47.7,
+       "hitos": 0,
+       "libro": 23.6,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1543.6,
+       "sinTropiezo": 0,
+       "mejora": 4.1
+      }
+     },
+     "subidos": {
+      "en3": 91,
+      "en10": 255,
+      "en20": 487,
+      "en144": 3378,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 15,
+      "fuentes": {
+       "unidad": 2447,
+       "hitos": 0,
+       "libro": 834.1,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 348.7,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P3": {
+     "relee": {
+      "en3": 70,
+      "en10": 137,
+      "en20": 230,
+      "en144": 1383,
+      "dragon80": 4,
+      "conj84": 5,
+      "ola1": 34,
+      "fuentes": {
+       "unidad": 30.7,
+       "hitos": 0,
+       "libro": 14.5,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1473.4,
+       "sinTropiezo": 0,
+       "mejora": 1.2
+      }
+     },
+     "subidos": {
+      "en3": 90,
+      "en10": 272,
+      "en20": 530,
+      "en144": 3737,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 14,
+      "fuentes": {
+       "unidad": 2593.6,
+       "hitos": 0,
+       "libro": 1315.8,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 182.7,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P4": {
+     "relee": {
+      "en3": 85,
+      "en10": 159,
+      "en20": 260,
+      "en144": 1507,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 30,
+      "fuentes": {
+       "unidad": 44.7,
+       "hitos": 0,
+       "libro": 22.4,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1572.8,
+       "sinTropiezo": 0,
+       "mejora": 0.8
+      }
+     },
+     "subidos": {
+      "en3": 93,
+      "en10": 263,
+      "en20": 505,
+      "en144": 3504,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 15,
+      "fuentes": {
+       "unidad": 2665,
+       "hitos": 0,
+       "libro": 806,
+       "nuevas": 0,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 282.4,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "E2H",
+   "nombre": "E2 + palabras nuevas en N2–N4 (+2 cada 40)",
+   "monedas15": {
+    "P0": 21,
+    "P1": 28,
+    "P2": 34,
+    "P3": 38,
+    "P4": 48
+   },
+   "brecha": 2.29,
+   "giniNinos": 0.16,
+   "peorAbuso": 2.1,
+   "campanas": {
+    "P0": {
+     "relee": {
+      "en3": 60,
+      "en10": 190,
+      "en20": 328,
+      "en144": 1953,
+      "dragon80": 4,
+      "conj84": 5,
+      "ola1": 23,
+      "fuentes": {
+       "unidad": 96.5,
+       "hitos": 0,
+       "libro": 16.3,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 13.4,
+       "relectura": 1997.2,
+       "sinTropiezo": 0,
+       "mejora": 10.1
+      }
+     },
+     "subidos": {
+      "en3": 61,
+      "en10": 201,
+      "en20": 382,
+      "en144": 2615,
+      "dragon80": 4,
+      "conj84": 5,
+      "ola1": 19,
+      "fuentes": {
+       "unidad": 2093.2,
+       "hitos": 0,
+       "libro": 248.7,
+       "nuevas": 11.9,
+       "bloque": 0,
+       "nivel": 10.8,
+       "relectura": 476.6,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P1": {
+     "relee": {
+      "en3": 81,
+      "en10": 204,
+      "en20": 343,
+      "en144": 2054,
+      "dragon80": 3,
+      "conj84": 4,
+      "ola1": 22,
+      "fuentes": {
+       "unidad": 52.9,
+       "hitos": 0,
+       "libro": 23.5,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 2141.9,
+       "sinTropiezo": 0,
+       "mejora": 8.3
+      }
+     },
+     "subidos": {
+      "en3": 82,
+      "en10": 257,
+      "en20": 486,
+      "en144": 3316,
+      "dragon80": 3,
+      "conj84": 4,
+      "ola1": 15,
+      "fuentes": {
+       "unidad": 2272,
+       "hitos": 0,
+       "libro": 948.7,
+       "nuevas": 12,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 396.1,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P2": {
+     "relee": {
+      "en3": 99,
+      "en10": 178,
+      "en20": 276,
+      "en144": 1493,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 29,
+      "fuentes": {
+       "unidad": 47.7,
+       "hitos": 0,
+       "libro": 23.6,
+       "nuevas": 16,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1543.6,
+       "sinTropiezo": 0,
+       "mejora": 4.1
+      }
+     },
+     "subidos": {
+      "en3": 107,
+      "en10": 271,
+      "en20": 503,
+      "en144": 3394,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 14,
+      "fuentes": {
+       "unidad": 2447,
+       "hitos": 0,
+       "libro": 834.1,
+       "nuevas": 16,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 348.7,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P3": {
+     "relee": {
+      "en3": 90,
+      "en10": 157,
+      "en20": 250,
+      "en144": 1403,
+      "dragon80": 3,
+      "conj84": 3,
+      "ola1": 32,
+      "fuentes": {
+       "unidad": 30.7,
+       "hitos": 0,
+       "libro": 14.5,
+       "nuevas": 20,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1473.4,
+       "sinTropiezo": 0,
+       "mejora": 1.2
+      }
+     },
+     "subidos": {
+      "en3": 110,
+      "en10": 292,
+      "en20": 550,
+      "en144": 3757,
+      "dragon80": 2,
+      "conj84": 2,
+      "ola1": 13,
+      "fuentes": {
+       "unidad": 2593.6,
+       "hitos": 0,
+       "libro": 1315.8,
+       "nuevas": 20,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 182.7,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    },
+    "P4": {
+     "relee": {
+      "en3": 125,
+      "en10": 199,
+      "en20": 300,
+      "en144": 1547,
+      "dragon80": 2,
+      "conj84": 2,
+      "ola1": 26,
+      "fuentes": {
+       "unidad": 44.7,
+       "hitos": 0,
+       "libro": 22.4,
+       "nuevas": 40,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 1572.8,
+       "sinTropiezo": 0,
+       "mejora": 0.8
+      }
+     },
+     "subidos": {
+      "en3": 133,
+      "en10": 303,
+      "en20": 545,
+      "en144": 3544,
+      "dragon80": 2,
+      "conj84": 2,
+      "ola1": 13,
+      "fuentes": {
+       "unidad": 2665,
+       "hitos": 0,
+       "libro": 806,
+       "nuevas": 40,
+       "bloque": 0,
+       "nivel": 15,
+       "relectura": 282.4,
+       "sinTropiezo": 0,
+       "mejora": 0
+      }
+     }
+    }
+   }
+  }
+ ],
+ "migraciones": {
+  "relee": {
+   "M0": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 51,
+      "p50": 57,
+      "p90": 62,
+      "media": 56.8
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 2,
+      "p90": 10,
+      "media": 3.3
+     },
+     "primeras10Despues": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 3,
+      "media": 0.7
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 68,
+      "p50": 74,
+      "p90": 78,
+      "media": 73
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.2
+     },
+     "primeras10Despues": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.1
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.01,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 134,
+      "p50": 147,
+      "p90": 163,
+      "media": 147.3
+     },
+     "ultimas10Antes": {
+      "p10": 12,
+      "p50": 19,
+      "p90": 27,
+      "media": 19.3
+     },
+     "primeras10Despues": {
+      "p10": 13,
+      "p50": 18,
+      "p90": 28,
+      "media": 19.4
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 120,
+      "p50": 120,
+      "p90": 120,
+      "media": 119.7
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.1
+     },
+     "primeras10Despues": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 410,
+      "p50": 470,
+      "p90": 554,
+      "media": 476.9
+     },
+     "ultimas10Antes": {
+      "p10": 57,
+      "p50": 87,
+      "p90": 132,
+      "media": 90.7
+     },
+     "primeras10Despues": {
+      "p10": 57,
+      "p50": 87,
+      "p90": 135,
+      "media": 90.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    }
+   ],
+   "E2": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 51,
+      "p50": 57,
+      "p90": 62,
+      "media": 56.8
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 2,
+      "p90": 10,
+      "media": 3.3
+     },
+     "primeras10Despues": {
+      "p10": 135,
+      "p50": 143,
+      "p90": 150,
+      "media": 143
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 27,
+      "p90": 28
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0,
+     "nuevasPost": 11.9,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 68,
+      "p50": 74,
+      "p90": 78,
+      "media": 73
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.2
+     },
+     "primeras10Despues": {
+      "p10": 143,
+      "p50": 151,
+      "p90": 158,
+      "media": 150.7
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 26,
+      "p90": 27
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.01,
+     "nuevasPost": 12,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 134,
+      "p50": 147,
+      "p90": 163,
+      "media": 147.3
+     },
+     "ultimas10Antes": {
+      "p10": 12,
+      "p50": 19,
+      "p90": 27,
+      "media": 19.3
+     },
+     "primeras10Despues": {
+      "p10": 93,
+      "p50": 98,
+      "p90": 103,
+      "media": 98
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 37,
+      "p90": 39
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 120,
+      "p50": 120,
+      "p90": 120,
+      "media": 119.7
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.1
+     },
+     "primeras10Despues": {
+      "p10": 84,
+      "p50": 90,
+      "p90": 97,
+      "media": 90.4
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 40,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 410,
+      "p50": 470,
+      "p90": 554,
+      "media": 476.9
+     },
+     "ultimas10Antes": {
+      "p10": 57,
+      "p50": 87,
+      "p90": 132,
+      "media": 90.7
+     },
+     "primeras10Despues": {
+      "p10": 91,
+      "p50": 97,
+      "p90": 101,
+      "media": 96.5
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 37,
+      "p90": 39
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    }
+   ],
+   "E2retro": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 51,
+      "p50": 57,
+      "p90": 62,
+      "media": 56.8
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 2,
+      "p90": 10,
+      "media": 3.3
+     },
+     "primeras10Despues": {
+      "p10": 134.9,
+      "p50": 145,
+      "p90": 152,
+      "media": 144.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 27,
+      "p90": 28
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0,
+     "nuevasPost": 0.2,
+     "retroMedia": 12.3
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 68,
+      "p50": 74,
+      "p90": 78,
+      "media": 73
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.2
+     },
+     "primeras10Despues": {
+      "p10": 146,
+      "p50": 154,
+      "p90": 161,
+      "media": 153.9
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 25,
+      "p90": 27
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.01,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 134,
+      "p50": 147,
+      "p90": 163,
+      "media": 147.3
+     },
+     "ultimas10Antes": {
+      "p10": 12,
+      "p50": 19,
+      "p90": 27,
+      "media": 19.3
+     },
+     "primeras10Despues": {
+      "p10": 108,
+      "p50": 113,
+      "p90": 118,
+      "media": 113
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 35,
+      "p90": 37
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 120,
+      "p50": 120,
+      "p90": 120,
+      "media": 119.7
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.1
+     },
+     "primeras10Despues": {
+      "p10": 99,
+      "p50": 105,
+      "p90": 112,
+      "media": 105.4
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 38,
+      "p90": 40
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 410,
+      "p50": 470,
+      "p90": 554,
+      "media": 476.9
+     },
+     "ultimas10Antes": {
+      "p10": 57,
+      "p50": 87,
+      "p90": 132,
+      "media": 90.7
+     },
+     "primeras10Despues": {
+      "p10": 106,
+      "p50": 112,
+      "p90": 116,
+      "media": 111.5
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 35,
+      "p90": 37
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    }
+   ],
+   "E2Hretro": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 51,
+      "p50": 57,
+      "p90": 62,
+      "media": 56.8
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 2,
+      "p90": 10,
+      "media": 3.3
+     },
+     "primeras10Despues": {
+      "p10": 134.9,
+      "p50": 145,
+      "p90": 152,
+      "media": 144.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 27,
+      "p90": 28
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0,
+     "nuevasPost": 0.2,
+     "retroMedia": 12.3
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 68,
+      "p50": 74,
+      "p90": 78,
+      "media": 73
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.2
+     },
+     "primeras10Despues": {
+      "p10": 146,
+      "p50": 154,
+      "p90": 161,
+      "media": 153.9
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 25,
+      "p90": 27
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.01,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 134,
+      "p50": 147,
+      "p90": 163,
+      "media": 147.3
+     },
+     "ultimas10Antes": {
+      "p10": 12,
+      "p50": 19,
+      "p90": 27,
+      "media": 19.3
+     },
+     "primeras10Despues": {
+      "p10": 108,
+      "p50": 113,
+      "p90": 118,
+      "media": 113
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 35,
+      "p90": 37
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 120,
+      "p50": 120,
+      "p90": 120,
+      "media": 119.7
+     },
+     "ultimas10Antes": {
+      "p10": 0,
+      "p50": 0,
+      "p90": 0,
+      "media": 0.1
+     },
+     "primeras10Despues": {
+      "p10": 99,
+      "p50": 105,
+      "p90": 112,
+      "media": 105.4
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 38,
+      "p90": 40
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 410,
+      "p50": 470,
+      "p90": 554,
+      "media": 476.9
+     },
+     "ultimas10Antes": {
+      "p10": 57,
+      "p50": 87,
+      "p90": 132,
+      "media": 90.7
+     },
+     "primeras10Despues": {
+      "p10": 106,
+      "p50": 112,
+      "p90": 116,
+      "media": 111.5
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 35,
+      "p90": 37
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    }
+   ]
+  },
+  "subidos": {
+   "M0": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 102.9,
+      "p50": 152,
+      "p90": 221.1,
+      "media": 157.6
+     },
+     "ultimas10Antes": {
+      "p10": 43.9,
+      "p50": 78,
+      "p90": 107.1,
+      "media": 78.6
+     },
+     "primeras10Despues": {
+      "p10": 46,
+      "p50": 78,
+      "p90": 100.4,
+      "media": 77.7
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": null,
+      "p90": null
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.96,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 207,
+      "p50": 354.5,
+      "p90": 519.1,
+      "media": 364
+     },
+     "ultimas10Antes": {
+      "p10": 94.9,
+      "p50": 175,
+      "p90": 256.1,
+      "media": 176.4
+     },
+     "primeras10Despues": {
+      "p10": 95,
+      "p50": 174,
+      "p90": 255.1,
+      "media": 176.1
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 21,
+      "p90": 39
+     },
+     "saldoCubreOla1": 0.47,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 424.9,
+      "p50": 729,
+      "p90": 964.2,
+      "media": 688.1
+     },
+     "ultimas10Antes": {
+      "p10": 193.9,
+      "p50": 357.5,
+      "p90": 471.7,
+      "media": 333.4
+     },
+     "primeras10Despues": {
+      "p10": 192,
+      "p50": 361,
+      "p90": 493.2,
+      "media": 333.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 10,
+      "p90": 19
+     },
+     "saldoCubreOla1": 0.98,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 597.4,
+      "p50": 912.5,
+      "p90": 1241.5,
+      "media": 913.3
+     },
+     "ultimas10Antes": {
+      "p10": 276.9,
+      "p50": 430,
+      "p90": 607,
+      "media": 438.5
+     },
+     "primeras10Despues": {
+      "p10": 290,
+      "p50": 431,
+      "p90": 600.4,
+      "media": 438.7
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 9,
+      "p90": 13
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 940,
+      "p50": 1552.5,
+      "p90": 2296,
+      "media": 1583.2
+     },
+     "ultimas10Antes": {
+      "p10": 399.5,
+      "p50": 695,
+      "p90": 1086.5,
+      "media": 722.5
+     },
+     "primeras10Despues": {
+      "p10": 389.5,
+      "p50": 715,
+      "p90": 1082,
+      "media": 720.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 5,
+      "p90": 10
+     },
+     "saldoCubreOla1": 1,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    }
+   ],
+   "E2": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 102.9,
+      "p50": 152,
+      "p90": 221.1,
+      "media": 157.6
+     },
+     "ultimas10Antes": {
+      "p10": 43.9,
+      "p50": 78,
+      "p90": 107.1,
+      "media": 78.6
+     },
+     "primeras10Despues": {
+      "p10": 163.9,
+      "p50": 186,
+      "p90": 207,
+      "media": 185.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 20,
+      "p90": 23
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.96,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 207,
+      "p50": 354.5,
+      "p90": 519.1,
+      "media": 364
+     },
+     "ultimas10Antes": {
+      "p10": 94.9,
+      "p50": 175,
+      "p90": 256.1,
+      "media": 176.4
+     },
+     "primeras10Despues": {
+      "p10": 216,
+      "p50": 243,
+      "p90": 261,
+      "media": 240.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 16,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.47,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 424.9,
+      "p50": 729,
+      "p90": 964.2,
+      "media": 688.1
+     },
+     "ultimas10Antes": {
+      "p10": 193.9,
+      "p50": 357.5,
+      "p90": 471.7,
+      "media": 333.4
+     },
+     "primeras10Despues": {
+      "p10": 209,
+      "p50": 247,
+      "p90": 265,
+      "media": 240.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.98,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 597.4,
+      "p50": 912.5,
+      "p90": 1241.5,
+      "media": 913.3
+     },
+     "ultimas10Antes": {
+      "p10": 276.9,
+      "p50": 430,
+      "p90": 607,
+      "media": 438.5
+     },
+     "primeras10Despues": {
+      "p10": 245,
+      "p50": 272,
+      "p90": 292,
+      "media": 268.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 14,
+      "p90": 15
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 940,
+      "p50": 1552.5,
+      "p90": 2296,
+      "media": 1583.2
+     },
+     "ultimas10Antes": {
+      "p10": 399.5,
+      "p50": 695,
+      "p90": 1086.5,
+      "media": 722.5
+     },
+     "primeras10Despues": {
+      "p10": 219,
+      "p50": 256,
+      "p90": 274,
+      "media": 249.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 17
+     },
+     "saldoCubreOla1": 1,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 0
+    }
+   ],
+   "E2retro": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 102.9,
+      "p50": 152,
+      "p90": 221.1,
+      "media": 157.6
+     },
+     "ultimas10Antes": {
+      "p10": 43.9,
+      "p50": 78,
+      "p90": 107.1,
+      "media": 78.6
+     },
+     "primeras10Despues": {
+      "p10": 163.9,
+      "p50": 186,
+      "p90": 207,
+      "media": 185.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 20,
+      "p90": 23
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.96,
+     "nuevasPost": 0,
+     "retroMedia": 10.5
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 207,
+      "p50": 354.5,
+      "p90": 519.1,
+      "media": 364
+     },
+     "ultimas10Antes": {
+      "p10": 94.9,
+      "p50": 175,
+      "p90": 256.1,
+      "media": 176.4
+     },
+     "primeras10Despues": {
+      "p10": 216,
+      "p50": 243,
+      "p90": 261,
+      "media": 240.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 16,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.47,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 424.9,
+      "p50": 729,
+      "p90": 964.2,
+      "media": 688.1
+     },
+     "ultimas10Antes": {
+      "p10": 193.9,
+      "p50": 357.5,
+      "p90": 471.7,
+      "media": 333.4
+     },
+     "primeras10Despues": {
+      "p10": 209,
+      "p50": 247,
+      "p90": 265,
+      "media": 240.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.98,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 597.4,
+      "p50": 912.5,
+      "p90": 1241.5,
+      "media": 913.3
+     },
+     "ultimas10Antes": {
+      "p10": 276.9,
+      "p50": 430,
+      "p90": 607,
+      "media": 438.5
+     },
+     "primeras10Despues": {
+      "p10": 245,
+      "p50": 272,
+      "p90": 292,
+      "media": 268.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 14,
+      "p90": 15
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 940,
+      "p50": 1552.5,
+      "p90": 2296,
+      "media": 1583.2
+     },
+     "ultimas10Antes": {
+      "p10": 399.5,
+      "p50": 695,
+      "p90": 1086.5,
+      "media": 722.5
+     },
+     "primeras10Despues": {
+      "p10": 219,
+      "p50": 256,
+      "p90": 274,
+      "media": 249.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 17
+     },
+     "saldoCubreOla1": 1,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    }
+   ],
+   "E2Hretro": [
+    {
+     "perfil": "P0",
+     "saldoAlMigrar": {
+      "p10": 102.9,
+      "p50": 152,
+      "p90": 221.1,
+      "media": 157.6
+     },
+     "ultimas10Antes": {
+      "p10": 43.9,
+      "p50": 78,
+      "p90": 107.1,
+      "media": 78.6
+     },
+     "primeras10Despues": {
+      "p10": 163.9,
+      "p50": 186,
+      "p90": 207,
+      "media": 185.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 20,
+      "p90": 23
+     },
+     "saldoCubreOla1": 0,
+     "saldoCubreDragon": 0.96,
+     "nuevasPost": 0,
+     "retroMedia": 10.5
+    },
+    {
+     "perfil": "P1",
+     "saldoAlMigrar": {
+      "p10": 207,
+      "p50": 354.5,
+      "p90": 519.1,
+      "media": 364
+     },
+     "ultimas10Antes": {
+      "p10": 94.9,
+      "p50": 175,
+      "p90": 256.1,
+      "media": 176.4
+     },
+     "primeras10Despues": {
+      "p10": 216,
+      "p50": 243,
+      "p90": 261,
+      "media": 240.2
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 16,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.47,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P2",
+     "saldoAlMigrar": {
+      "p10": 424.9,
+      "p50": 729,
+      "p90": 964.2,
+      "media": 688.1
+     },
+     "ultimas10Antes": {
+      "p10": 193.9,
+      "p50": 357.5,
+      "p90": 471.7,
+      "media": 333.4
+     },
+     "primeras10Despues": {
+      "p10": 209,
+      "p50": 247,
+      "p90": 265,
+      "media": 240.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 18
+     },
+     "saldoCubreOla1": 0.98,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P3",
+     "saldoAlMigrar": {
+      "p10": 597.4,
+      "p50": 912.5,
+      "p90": 1241.5,
+      "media": 913.3
+     },
+     "ultimas10Antes": {
+      "p10": 276.9,
+      "p50": 430,
+      "p90": 607,
+      "media": 438.5
+     },
+     "primeras10Despues": {
+      "p10": 245,
+      "p50": 272,
+      "p90": 292,
+      "media": 268.6
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 14,
+      "p90": 15
+     },
+     "saldoCubreOla1": 0.99,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    },
+    {
+     "perfil": "P4",
+     "saldoAlMigrar": {
+      "p10": 940,
+      "p50": 1552.5,
+      "p90": 2296,
+      "media": 1583.2
+     },
+     "ultimas10Antes": {
+      "p10": 399.5,
+      "p50": 695,
+      "p90": 1086.5,
+      "media": 722.5
+     },
+     "primeras10Despues": {
+      "p10": 219,
+      "p50": 256,
+      "p90": 274,
+      "media": 249.3
+     },
+     "sesionesOla1ConGanancia": {
+      "p50": 15,
+      "p90": 17
+     },
+     "saldoCubreOla1": 1,
+     "saldoCubreDragon": 1,
+     "nuevasPost": 0,
+     "retroMedia": 15
+    }
+   ]
+  }
+ }
+}
