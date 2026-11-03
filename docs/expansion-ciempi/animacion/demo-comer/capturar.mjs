@@ -21,24 +21,27 @@ const vigilar = (page, donde) => {
   page.on('console', (m) => m.type() === 'error' && errores.push(`${donde}: ${m.text()}`))
 }
 
+// v3 (AD-018): boca sorprendida por omisión y carcajada para comparar; las máscaras que
+// tapan la boca se agregan desde el catálogo (`mascarasDelCatalogo`), no a mano.
 const FILAS = [
-  { conjunto: 'base' },
-  { conjunto: 'base', boca: 'b03-carcajada' },
+  { conjunto: 'base', boca: 'sorprendido' },
+  { conjunto: 'base', boca: 'carcajada' },
   { conjunto: 'base', gesto: 'b03-dormilon' },
   { conjunto: 'mago', comida: 'comida-platano' },
-  { conjunto: 'robot' },
   { conjunto: 'gatita', comida: 'comida-frutilla' },
+  { conjunto: 'robot' },
   { conjunto: 'base', tranquilo: true },
+  { conjunto: 'robot', tranquilo: true },
 ]
 const FONDOS = { claro: ['#f6ecd8', '#243e5b'], oscuro: ['#1d2633', '#f3ead7'] }
-const ctx = await navegador.newContext({ viewport: { width: 2600, height: 2600 }, deviceScaleFactor: 2 })
+const ctx = await navegador.newContext({ viewport: { width: 2600, height: 4200 }, deviceScaleFactor: 2 })
 const page = await ctx.newPage()
 vigilar(page, 'hoja')
 await page.goto(url + 'hoja.html')
 await page.waitForFunction(() => window.hoja?.listo(), null, { timeout: 30000 })
 for (const modo of ['grande', 'pista'])
   for (const [fondo, [bg, tinta]] of Object.entries(FONDOS)) {
-    await page.evaluate((a) => window.hoja.dibujar(a), { modo, fondo: bg, tinta, filas: FILAS })
+    await page.evaluate((a) => window.hoja.dibujar(a), { modo, fondo: bg, tinta, filas: FILAS, boca: 'sorprendido', mascarasDelCatalogo: true })
     await page.evaluate(() => Promise.all([...document.querySelectorAll('image')].map((im) => im.decode?.().catch(() => {}))))
     await page.waitForTimeout(400)
     await page.locator('[data-hoja]').screenshot({ path: join(salida, `hoja-${modo}-${fondo}.png`) })

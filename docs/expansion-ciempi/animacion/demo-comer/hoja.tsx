@@ -16,7 +16,8 @@ import { renderCiempi } from '../../../../src/ciempi/v2/arte/componer.js'
 import { aSeleccion } from '../../../../src/ciempi/v2/seleccion'
 import { escena, posiciones } from '../../../../src/ciempi/v2/pose'
 import { crearRig } from '../../../../src/ciempi/v2/animacion/rig.js'
-import { ANIMACIONES, COMER, comer } from '../../../../src/ciempi/v2/animacion/animaciones.js'
+import { ANIMACIONES, COMER, comer, type BocaComer } from '../../../../src/ciempi/v2/animacion/animaciones.js'
+import { tapaBoca } from '../../../../src/ciempi/v2/animacion/boca'
 import { poseConInercia, reducir } from '../../../../src/ciempi/v2/animacion/motor.js'
 
 export const CONJUNTOS: Record<string, [string, Partial<AparienciaCiempi>]> = {
@@ -34,16 +35,24 @@ function escalaPista(total = 12, ancho = 412) {
   return { escala: R / 130, tamanoManzana: Math.min(14, Math.max(10, r * 0.85)) }
 }
 
-/** `boca`: otra expresión B03 para la ventana de boca abierta (solo para comparar en la hoja). */
-interface Fila { conjunto: string; gesto?: string; comida?: string; tranquilo?: boolean; boca?: string }
-interface Ajustes { modo: 'grande' | 'pista'; fondo: string; tinta: string; filas: Fila[]; instantes?: number[] }
+/**
+ * Una fila de la hoja. `boca`: variante de E08 de esa fila (si no, la del selector).
+ * `cabeza`: otra pieza de cabeza sobre el conjunto (filas generadas desde el catálogo).
+ */
+interface Fila { conjunto: string; gesto?: string; comida?: string; tranquilo?: boolean; boca?: BocaComer; cabeza?: string }
+/**
+ * `boca`: variante por omisión (selector de la hoja; AD-018: sorprendido).
+ * `mascarasDelCatalogo`: agrega una fila por cada pieza de cabeza con `ocultaRostro` en el catálogo cargado.
+ */
+interface Ajustes { modo: 'grande' | 'pista'; fondo: string; tinta: string; filas: Fila[]; instantes?: number[]; boca?: BocaComer; mascarasDelCatalogo?: boolean }
+const BOCAS: BocaComer[] = ['sorprendido', 'carcajada']
 
-function Cuadro({ fila, t, modo, i }: { fila: Fila; t: number; modo: Ajustes['modo']; i: string }) {
+function Cuadro({ fila, t, modo, i, boca }: { fila: Fila; t: number; modo: Ajustes['modo']; i: string; boca: BocaComer }) {
   const { env } = useEntornoCiempi()
   const g = useRef<SVGGElement>(null)
   const pista = escalaPista()
   const n = modo === 'pista' ? 8 : 5
-  const a: AparienciaCiempi = { ...APARIENCIA_INICIAL, ...CONJUNTOS[fila.conjunto][1], ...(fila.gesto ? { gesto: 'gesto:' + fila.gesto } : {}), comida: fila.comida ?? 'comida-manzana' }
+  const a: AparienciaCiempi = { ...APARIENCIA_INICIAL, ...CONJUNTOS[fila.conjunto][1], ...(fila.cabeza ? { cabeza: 'cabeza:' + fila.cabeza } : {}), ...(fila.gesto ? { gesto: 'gesto:' + fila.gesto } : {}), comida: fila.comida ?? 'comida-manzana' }
   const sel = aSeleccion(a)
   // Origen de la fruta como en Ciempi.tsx: delante de la boca, a la altura de la pista (la fruta está bajo la cabeza).
   const origen: [number, number] = [COMER.origen[0], 340 + 6 / pista.escala]
@@ -59,8 +68,8 @@ function Cuadro({ fila, t, modo, i }: { fila: Fila; t: number; modo: Ajustes['mo
     const p = poseConInercia(A02, 0.3 + t, n)
     const k = Math.max(0, n - 2)
     const q = posiciones(n)[k]
-    comer(p, t, n, { origen, segmento: [q.x, q.y] })
-    if (fila.boca && p.expresion === COMER.bocaAbierta) p.expresion = fila.boca
+    // Como CiempiVivo: la variante de boca y, si la pieza de cabeza tapa la boca (catálogo), la reacción sin boca.
+    comer(p, t, n, { origen, segmento: [q.x, q.y], boca: fila.boca ?? boca, bocaTapada: tapaBoca(env, sel.cabeza) })
     const final = fila.tranquilo ? reducir(p, 0.35) : p
     rig.cambiarRostro(final.expresion ?? String(sel.expresion))
     rig.aplicar(final)
@@ -78,20 +87,36 @@ function Cuadro({ fila, t, modo, i }: { fila: Fila; t: number; modo: Ajustes['mo
 }
 
 let fijar: (a: Ajustes) => void = () => {}
+const BOCA_INICIAL: BocaComer = new URLSearchParams(location.search).get('boca') === 'carcajada' ? 'carcajada' : 'sorprendido'
 function Hoja() {
+  const { env } = useEntornoCiempi()
   const [a, setA] = useState<Ajustes | null>(null)
-  fijar = setA
+  const [bocaElegida, setBoca] = useState<BocaComer>(BOCA_INICIAL)
+  fijar = (x) => { setA(x); if (x.boca) setBoca(x.boca) }
   if (!a) return null
   const instantes = a.instantes ?? INSTANTES
   const chico = a.modo === 'pista'
+  const boca = bocaElegida
+  // Filas de máscaras que tapan la boca, desde los metadatos del catálogo (no una lista a mano).
+  const tapan = a.mascarasDelCatalogo && env ? [...env.hats, ...env.masks].filter((x) => x.ocultaRostro === true && !(x as { historico?: boolean }).historico) : []
+  const filas: Fila[] = [...a.filas, ...tapan.map((x) => ({ conjunto: 'base', cabeza: x.id }))]
+  const nombre = (f: Fila) => (f.cabeza ? (tapan.find((x) => x.id === f.cabeza)?.nombre ?? f.cabeza) : CONJUNTOS[f.conjunto][0])
+  // ¿La fila lleva una pieza que tapa la boca? (catálogo; la etiqueta no promete una boca que no se dibuja)
+  const sinBoca = (f: Fila) => tapaBoca(env, f.cabeza ?? String(CONJUNTOS[f.conjunto][1].cabeza ?? '').replace(/^cabeza:/, ''))
   return (
     <div data-hoja style={{ background: a.fondo, color: a.tinta, padding: 12, display: 'inline-block', fontFamily: 'system-ui, sans-serif' }}>
+      <label style={{ display: 'block', marginBottom: 8, fontSize: chico ? 12 : 15 }}>
+        Boca de E08 (AD-018):{' '}
+        <select data-selector-boca value={boca} onChange={(e) => setBoca(e.target.value as BocaComer)}>
+          {BOCAS.map((b) => <option key={b} value={b}>{b === 'sorprendido' ? 'sorprendido (inicial)' : 'carcajada (versión 1, comparar)'}</option>)}
+        </select>
+      </label>
       <div style={{ display: 'grid', gridTemplateColumns: `${chico ? 92 : 110}px repeat(${instantes.length}, auto)`, gap: chico ? 6 : 8, alignItems: 'center' }}>
         <span />
         {instantes.map((t) => <b key={t} style={{ fontSize: chico ? 11 : 14, textAlign: 'center' }}>t = {t.toFixed(2)} s{t === COMER.mordisco ? ' (mordisco)' : ''}</b>)}
-        {a.filas.map((f, fi) => [
-          <span key={'n' + fi} style={{ fontSize: chico ? 11 : 14, lineHeight: 1.2 }}>{CONJUNTOS[f.conjunto][0]}{f.gesto ? ` · ${f.gesto.replace('b03-', '')}` : ''}{f.tranquilo ? ' · tranquilo' : ''}{f.boca ? ` · boca ${f.boca.replace('b03-', '')}` : ''}{f.comida && f.comida !== 'comida-manzana' ? ` · ${f.comida.replace('comida-', '')}` : ''}</span>,
-          ...instantes.map((t, ti) => <Cuadro key={`${fi}-${ti}-${JSON.stringify(f)}`} fila={f} t={t} modo={a.modo} i={`${fi}x${ti}`} />),
+        {filas.map((f, fi) => [
+          <span key={'n' + fi} style={{ fontSize: chico ? 11 : 14, lineHeight: 1.2 }}>{nombre(f)}{f.gesto ? ` · ${f.gesto.replace('b03-', '')}` : ''}{f.tranquilo ? ' · tranquilo' : ''}{sinBoca(f) ? ' · tapa la boca: sin boca' : ` · boca ${f.boca ?? boca}`}{f.comida && f.comida !== 'comida-manzana' ? ` · ${f.comida.replace('comida-', '')}` : ''}</span>,
+          ...instantes.map((t, ti) => <Cuadro key={`${fi}-${ti}-${JSON.stringify(f)}-${boca}`} fila={f} t={t} modo={a.modo} i={`${fi}x${ti}`} boca={boca} />),
         ])}
       </div>
     </div>

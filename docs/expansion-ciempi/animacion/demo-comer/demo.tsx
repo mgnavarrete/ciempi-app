@@ -9,9 +9,10 @@ import { Comida } from '../../../../src/ciempi/dibujos'
 import { VestuarioProvider, useEntornoCiempi } from '../../../../src/ciempi/v2/Vestuario'
 import { renderCiempi } from '../../../../src/ciempi/v2/arte/componer.js'
 import { aSeleccion } from '../../../../src/ciempi/v2/seleccion'
-import { escena, posiciones } from '../../../../src/ciempi/v2/pose'
+import { escena } from '../../../../src/ciempi/v2/pose'
 import { crearRig } from '../../../../src/ciempi/v2/animacion/rig.js'
-import { ANIMACIONES, COMER } from '../../../../src/ciempi/v2/animacion/animaciones.js'
+import { COMER, comer, poseNeutra, type BocaComer } from '../../../../src/ciempi/v2/animacion/animaciones.js'
+import { tapaBoca } from '../../../../src/ciempi/v2/animacion/boca'
 import { Ciempi } from '../../../../src/lectura/Ciempi'
 import type { Fase, Pista } from '../../../../src/lectura/motor'
 
@@ -19,6 +20,8 @@ const CONJUNTOS: Record<string, [string, Partial<AparienciaCiempi>]> = {
   base: ['Base (jockey)', {}],
   mago: ['Gorro de mago + capa + superficie', { cabeza: 'cabeza:b06-ia-mago', espalda: 'espalda:b08-ia-heroica', textura: 'textura:b11-mago' }],
   robot: ['Máscara completa Robot (tapa la boca)', { cabeza: 'cabeza:b07-ia-robot', espalda: 'espalda:b09-robot', textura: 'textura:b11-robot' }],
+  espiritu: ['Máscara Espíritu (tapa la boca)', { cabeza: 'cabeza:b07-ia-espiritu' }],
+  araluz: ['Máscara AraLuz (tapa la boca)', { cabeza: 'cabeza:b12-araluz' }],
   gatita: ['Máscara Gatita (boca visible)', { cabeza: 'cabeza:b07-ia-gatita' }],
   pirata: ['Sombrero pirata + capa bosque', { cabeza: 'cabeza:b06-ia-pirata', espalda: 'espalda:b08-ia-bosque', textura: 'textura:b11-pirata' }],
 }
@@ -29,7 +32,7 @@ const RITMOS: [string, number][] = [['Manual', 0], ['Lento (900 ms)', 900], ['Re
 const pistas = new Map<number, Pista>()
 const pistaDe = (n: number): Pista => pistas.get(n) ?? pistas.set(n, { manzanas: Array.from({ length: n }, (_, i) => 0.08 + (0.84 * (i + 0.5)) / n), fin: 1 }).get(n)!
 
-interface Ajustes { conjunto: string; gesto: string; comida: string; nMax: number; ritmo: number; tranquilo: boolean; comer: boolean; ampliado: boolean }
+interface Ajustes { conjunto: string; gesto: string; comida: string; nMax: number; ritmo: number; tranquilo: boolean; comer: boolean; ampliado: boolean; boca: BocaComer }
 
 function apariencia(a: Ajustes): AparienciaCiempi {
   return { ...APARIENCIA_INICIAL, ...CONJUNTOS[a.conjunto][1], gesto: 'gesto:' + a.gesto, comida: a.comida }
@@ -96,7 +99,7 @@ function Carril({ a, reinicio }: { a: Ajustes; reinicio: number }) {
     },
   })
   const ciempi = (
-    <Ciempi key={a.nMax} pista={pista} palabrasLeidas={estado.n} progreso={estado.progreso} fase={estado.fase} tranquilo={a.tranquilo} apariencia={apariencia(a)} comerAnimado={a.comer} />
+    <Ciempi key={a.nMax} pista={pista} palabrasLeidas={estado.n} progreso={estado.progreso} fase={estado.fase} tranquilo={a.tranquilo} apariencia={apariencia(a)} comerAnimado={a.comer} bocaComer={a.boca} />
   )
   return (
     <div>
@@ -121,17 +124,18 @@ function Hoja({ a, instantes }: { a: Ajustes; instantes: number[] }) {
     if (!env || !raiz) return
     const svg = renderCiempi(env, sel)
     const rostro = (e: string) => renderCiempi(env, { ...sel, expresion: e })
-    const E08 = ANIMACIONES.find((x) => x.id === 'E08')!
+    const tapa = tapaBoca(env, sel.cabeza)
     raiz.querySelectorAll('svg[data-cuadro]').forEach((lienzo, i) => {
       const g = lienzo.querySelector('g')!
       const e = escena(svg, 5, 'hoja' + i)
       g.innerHTML = e.html
       const rig = crearRig(g, { cabeza: String(sel.cabeza), expresion: String(sel.expresion) }, rostro, { prefijo: `hoja${i}-`, dibujos: { comida: '<use href="#hoja-comida"/>' } })
-      const p = E08.pose(instantes[i], 5)
+      // E08 suelto (sin caminar), con la boca elegida y la reacción sin boca si la máscara la tapa.
+      const p = comer(poseNeutra(5), instantes[i], 5, { boca: a.boca, bocaTapada: tapa })
       rig.cambiarRostro(p.expresion ?? String(sel.expresion))
       rig.aplicar(p)
     })
-  }, [env, sel, instantes])
+  }, [env, sel, instantes, a.boca])
   return (
     <div ref={contenedor} data-hoja style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
       <svg width="0" height="0" style={{ position: 'absolute' }}>
@@ -152,7 +156,7 @@ function Hoja({ a, instantes }: { a: Ajustes; instantes: number[] }) {
 const INSTANTES = [0, 0.06, 0.16, 0.26, 0.34, 0.4, 0.5, 0.66]
 
 function Demo() {
-  const [a, setA] = useState<Ajustes>({ conjunto: 'mago', gesto: 'b03-alegre', comida: 'comida-manzana', nMax: 12, ritmo: 500, tranquilo: false, comer: true, ampliado: true })
+  const [a, setA] = useState<Ajustes>({ conjunto: 'mago', gesto: 'b03-alegre', comida: 'comida-manzana', nMax: 12, ritmo: 500, tranquilo: false, comer: true, ampliado: true, boca: new URLSearchParams(location.search).get('boca') === 'carcajada' ? 'carcajada' : 'sorprendido' })
   const [reinicio, setReinicio] = useState(0)
   const fijar = (p: Partial<Ajustes>) => setA((x) => ({ ...x, ...p }))
   Object.assign(window, { demo: { ...(window as unknown as { demo?: object }).demo, fijar, reiniciar: () => setReinicio((r) => r + 1) } })
@@ -167,6 +171,7 @@ function Demo() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 12, fontSize: 14 }}>
         <label>Vestuario <select style={sel} value={a.conjunto} onChange={(e) => fijar({ conjunto: e.target.value })}>{Object.entries(CONJUNTOS).map(([k, [n]]) => <option key={k} value={k}>{n}</option>)}</select></label>
         <label>Expresión <select style={sel} value={a.gesto} onChange={(e) => fijar({ gesto: e.target.value })}>{GESTOS.map((g) => <option key={g}>{g}</option>)}</select></label>
+        <label>Boca <select data-selector-boca style={sel} value={a.boca} onChange={(e) => fijar({ boca: e.target.value as BocaComer })}><option value="sorprendido">sorprendido (inicial, AD-018)</option><option value="carcajada">carcajada (versión 1)</option></select></label>
         <label>Comida <select style={sel} value={a.comida} onChange={(e) => fijar({ comida: e.target.value })}>{COMIDAS.map((g) => <option key={g}>{g}</option>)}</select></label>
         <label>Unidades <select style={sel} value={a.nMax} onChange={(e) => fijar({ nMax: +e.target.value })}>{[6, 12, 24, 40].map((g) => <option key={g}>{g}</option>)}</select></label>
         <label>Ritmo <select style={sel} value={a.ritmo} onChange={(e) => fijar({ ritmo: +e.target.value })}>{RITMOS.map(([n, v]) => <option key={v} value={v}>{n}</option>)}</select></label>
