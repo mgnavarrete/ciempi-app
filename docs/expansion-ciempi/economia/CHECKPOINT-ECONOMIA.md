@@ -22,3 +22,10 @@ Son estimaciones con supuestos, no datos de niños. No se modificó código del 
 1. `node docs/expansion-ciempi/economia/simulador/simular.mjs && node docs/expansion-ciempi/economia/simulador/generar-informe.mjs`
 2. Escribir `ECONOMIA-V3.md` a partir de `index.html` y `tablas.md`.
 3. Commit.
+
+## Actualización (3-nov-2026, verificación de E2)
+- `ECONOMIA-V3.md` está redactado; la verificación pedida por el usuario está en su **§18**.
+- El simulador reproduce `76c9367`: la única diferencia es el escenario de abuso «rondar», que se añadió. `sensibilidad.mjs` está terminado y es determinista.
+- Para los niveles 3 y 4 se recomienda **E2R** (relectura a 1,5/min en todos los niveles) y el «nivel completo» retroactivo. Ningún niño simulado pierde saldo.
+- TIENDA-V3 (`ef867b3`) y PLAN-MAESTRO (`e22ca61`) están corregidos en sus ramas.
+- Pendiente: lo que lista ECONOMIA-V3 §18.9.
