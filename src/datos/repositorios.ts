@@ -132,6 +132,31 @@ export interface RepositorioPremios {
   alResolver(fn: (pedido: PedidoPremio, resolucion: Exclude<ResolucionPremio, { estado: 'pendiente' }>) => void): () => void
 }
 
+/** Un libro que agregó el niño y espera la aprobación de un adulto. */
+export interface PendienteDeAutorizar {
+  asignacion: Asignacion
+  perfil: { id: Id; apodo: string; icono: string }
+  texto: { id: Id; titulo: string; frases: number; muestra: string[]; origen: string }
+  nivelSugerido: NivelLectura
+  /** ¿Algún adulto del niño ya creó su PIN? */
+  hayPin: boolean
+}
+
+/**
+ * Textos propios del niño aprobados por un adulto con su PIN. Solo con el
+ * servidor (el PIN se verifica allá); sin conexión no existe y todo está autorizado.
+ */
+export interface RepositorioAutorizaciones {
+  /** Los de sus niños (adulto) o los propios (niño). */
+  pendientes(): Promise<PendienteDeAutorizar[]>
+  autorizar(asignacionId: Id, pin: string, nivel?: NivelLectura): Promise<Asignacion>
+  rechazar(asignacionId: Id, pin: string): Promise<Asignacion>
+  /** Solo adultos. */
+  miPin(): Promise<{ tienePin: boolean }>
+  /** Crear o cambiar el PIN: pide la contraseña de la cuenta. */
+  definirPin(pin: string, clave: string): Promise<void>
+}
+
 export interface Repositorios {
   /** true con el servidor: hay login, invitaciones y sincronización entre dispositivos. */
   enLinea: boolean
@@ -141,4 +166,5 @@ export interface Repositorios {
   asignaciones: RepositorioAsignaciones
   sesiones: RepositorioSesiones
   premios: RepositorioPremios
+  autorizaciones?: RepositorioAutorizaciones
 }

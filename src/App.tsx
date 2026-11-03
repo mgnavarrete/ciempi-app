@@ -12,7 +12,7 @@ import { PantallaBiblioteca, type LibroEnBiblioteca } from './biblioteca/Pantall
 import { useRepositorios } from './datos/DatosProvider'
 import { prepararCuentaNueva } from './datos/inicio'
 import type { PedidoPremio } from './datos/repositorios'
-import type { AjustesLectura, Asignacion, Id, PerfilNino, Sesion } from './dominio/tipos'
+import { sinAutorizar, type AjustesLectura, type Asignacion, type Id, type PerfilNino, type Sesion } from './dominio/tipos'
 import type { IdFuente } from './fuentes/entradas'
 import { PantallaAcceso } from './inicio/PantallaAcceso'
 import { PantallaNuevaClave } from './inicio/CambiarClave'
@@ -223,7 +223,8 @@ export function App() {
             alCambiarAjustes={(a) => cambiarAjustes(perfil.id, a)}
             alPedirPremio={pedirPremio}
             alProgreso={(progreso) => {
-              ultimoProgreso.current.set(asignacion.id, progreso)
+              // Lo leído sin autorizar no cuenta como pagado: al aprobarse, se vuelve a leer y paga (el servidor vuelve su avance a lo pagado).
+              ultimoProgreso.current.set(asignacion.id, sinAutorizar(asignacion) ? { ...progreso, leidoHasta: 0, premioHasta: 0 } : progreso)
               void repos.asignaciones.guardarProgreso(asignacion.id, progreso)
             }}
             alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })}
@@ -320,6 +321,7 @@ export function App() {
         // En la sesión de un alumno se sale con la franja de arriba («Volver al panel»).
         alVolver={esNino || enSesionDe ? undefined : modoAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}
         ninosDelAdulto={modoAdmin ? perfiles! : undefined}
+        alAutorizar={(a) => ultimoProgreso.current.delete(a.id)}
       />
     )
   }

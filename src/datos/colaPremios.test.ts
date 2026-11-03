@@ -118,6 +118,29 @@ describe('cola de premios', () => {
     expect(await cola.reclamar(pedido(1, { esperadas: 4 }))).toEqual({ estado: 'otorgado', otorgadas: 4, monedas: 30 })
   })
 
+  it('libro pendiente de aprobación (el servidor paga 0): sale de la cola, no se reintenta y no bloquea lo siguiente', async () => {
+    // Pedidos guardados sin conexión (por ejemplo, de una app que mostraba la moneda antes de saber que estaba pendiente).
+    const almacen = almacenEnMemoria()
+    const sinRed = crearColaPremios({ enviar: async () => ({ tipo: 'reintentar' }), almacen, programar: reloj().programar })
+    await sinRed.reclamar(pedido(1, { asignacionId: 'pendiente-1', esperadas: 2 }))
+    await sinRed.reclamar(pedido(2, { asignacionId: 'libro-1', esperadas: 1 }))
+    const red = servidor((p) => (p.asignacionId === 'pendiente-1' ? { tipo: 'ok', otorgadas: 0, monedas: 10 } : { tipo: 'ok', otorgadas: 1, monedas: 11 }))
+    const reloj2 = reloj()
+    const cola = crearColaPremios({ enviar: red.enviar, almacen, programar: reloj2.programar })
+    const avisos: ResolucionPremio[] = []
+    cola.alResolver((_, r) => avisos.push(r))
+    await cola.reintentar()
+    expect(avisos).toEqual([
+      { estado: 'otorgado', otorgadas: 0, monedas: 10 },
+      { estado: 'otorgado', otorgadas: 1, monedas: 11 },
+    ])
+    expect(cola.pendientes('nino-1')).toBe(0)
+    expect(JSON.parse(almacen.datos.get(CLAVE_COLA) ?? '[]')).toEqual([])
+    reloj2.disparar()
+    await cola.reintentar()
+    expect(red.recibidos.map((p) => p.operationId)).toEqual(['operacion-1', 'operacion-2'])
+  })
+
   it('descartar: sale de la cola, avisa y la cola sigue con el siguiente', async () => {
     const red = servidor((p) => (p.operationId === 'operacion-1' ? { tipo: 'descartar', motivo: 'Ese libro ya no está' } : { tipo: 'ok', otorgadas: 1, monedas: 1 }))
     const cola = crearColaPremios({ enviar: red.enviar, almacen: almacenEnMemoria(), programar: reloj().programar })

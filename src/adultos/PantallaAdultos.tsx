@@ -14,6 +14,7 @@ import { nivelSugerido } from '../lenguaje/dificultad'
 import { NIVELES } from '../lenguaje/unidades'
 import { BarraProgreso, BotonPrincipal, BotonSecundario, Encabezado, Icono, MensajeError, Portada } from '../ui/comunes'
 import { AgregarLibro, TarjetaCarga } from './AgregarLibro'
+import { PinDelAdulto, TextosPorAprobar } from './AprobarTextos'
 import { useCargasDeLibros } from './cargas'
 import { LectoresDelLibro } from './LectoresDelLibro'
 
@@ -114,7 +115,10 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
             alCambiarClave={(clave) => repos.perfiles.cambiarClave(alumno.id, clave)}
           />
         ) : pestana === 'alumnos' ? (
-          <Alumnos perfiles={perfiles} sesiones={sesiones} asignaciones={asignaciones} enLinea={repos.enLinea} alAbrir={(p) => setAbierto(p.id)} alLeerCon={alLeerCon} alCambiarNinos={alCambiarNinos} />
+          <>
+            {repos.enLinea && <TextosPorAprobar alCambiar={() => void recargar()} alIrACuenta={() => setPestana('cuenta')} />}
+            <Alumnos perfiles={perfiles} sesiones={sesiones} asignaciones={asignaciones} enLinea={repos.enLinea} alAbrir={(p) => setAbierto(p.id)} alLeerCon={alLeerCon} alCambiarNinos={alCambiarNinos} />
+          </>
         ) : pestana === 'libros' ? (
           <Libros
             cuenta={cuenta}
@@ -552,6 +556,7 @@ function CuentaAdulto({ cuenta, alSalir, enLinea }: { cuenta: Cuenta; alSalir?: 
             </div>
           )}
           {aviso && <p className="rounded-xl bg-verde-claro px-3 py-2 text-sm">{aviso}</p>}
+          <PinDelAdulto />
         </>
       ) : (
         <p className="text-sm text-tinta-suave">

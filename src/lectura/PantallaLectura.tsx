@@ -9,7 +9,7 @@ import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { PedidoPremio, ProgresoAsignacion } from '../datos/repositorios'
 import { nuevoId } from '../dominio/ids'
-import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, ModoLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
+import { sinAutorizar, type AjustesLectura, type Asignacion, type EstadoAsignacion, type Id, type ModoLectura, type PerfilNino, type SesionLectura, type Texto } from '../dominio/tipos'
 import { dividirEnFragmentos, quitarGuiones, trocearOracion } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
@@ -118,6 +118,8 @@ export function PantallaLectura(props: Props) {
   const { perfil, usuarioId, texto, asignacion, vistaPrevia = false, nivel = 1, alVolver, alAjustes } = props
   // En vista previa no se registra nada: ni progreso, ni monedas, ni sesión.
   const alProgreso = vistaPrevia ? () => {} : props.alProgreso
+  // Un texto propio que un adulto todavía no aprueba con su PIN: se lee y guarda su avance, pero no da monedas.
+  const sinMonedas = vistaPrevia || sinAutorizar(asignacion)
   const repos = useRepositorios()
   const { ajustes } = perfil
   // Cómo se lee en cada nivel (ver lenguaje/unidades.ts):
@@ -380,7 +382,7 @@ export function PantallaLectura(props: Props) {
 
   /** Pide el premio de lo leído (la moneda ya se mostró). */
   const pedirPremio = (solicitud: SolicitudPremio, esperadas: number) => {
-    if (vistaPrevia) return
+    if (sinMonedas) return
     const operationId = nuevoId()
     cuentaLectura.current.pedir(operationId, esperadas)
     setMonedasLectura(cuentaLectura.current.total())
@@ -435,13 +437,13 @@ export function PantallaLectura(props: Props) {
     if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
       leidoHasta.current = fin
       // Niveles 0 a 3: esta frase, leída por primera vez y a su ritmo, paga en el momento (con tope por libro).
-      const deEsta = monedasDeUnidad(nivel, indice + 1, total)
+      const deEsta = sinMonedas ? 0 : monedasDeUnidad(nivel, indice + 1, total)
       if (aBuenRitmo && deEsta) {
         ganadas += deEsta
         setMonedaGanada({ monedas: deEsta, n: Date.now() })
         programar(() => setMonedaGanada(null), 1600)
       }
-      const nuevos = hitosNuevos(nivel, premioHasta.current, porcentajeLeido(fin, totalFrases))
+      const nuevos = sinMonedas ? [] : hitosNuevos(nivel, premioHasta.current, porcentajeLeido(fin, totalFrases))
       if (nuevos.length) {
         ganadas += nuevos.reduce((s, h) => s + h.monedas, 0)
         premioHasta.current = nuevos[nuevos.length - 1].porcentaje
@@ -456,7 +458,7 @@ export function PantallaLectura(props: Props) {
     }
     // Terminar otra vez un libro ya premiado (leído entero, a buen ritmo): premio menor, una vez al día.
     const terminaLibro = fin >= totalFrases
-    if (terminaLibro && !vistaPrevia && yaPremiadoEntero.current) {
+    if (terminaLibro && !sinMonedas && yaPremiadoEntero.current) {
       if (!ritmoBien || t.desde > 0) mensajeFinal = 'Para ganar monedas al releer, lee todo a tu ritmo 🐢'
       else if (relecturaPremiadaEn.current === hoy()) mensajeFinal = 'Hoy ya ganaste monedas releyéndolo. ¡Mañana puedes volver a ganar!'
       else {
@@ -464,7 +466,7 @@ export function PantallaLectura(props: Props) {
         relecturaPremiadaEn.current = hoy()
         pedirPremio({ tipo: 'relectura', dia: hoy() }, premioRelectura(nivel))
       }
-    } else if (terminaLibro && !vistaPrevia && !ritmoBien) mensajeFinal = 'Para ganar monedas, lee a tu ritmo, sin apurarte 🐢'
+    } else if (terminaLibro && !sinMonedas && !ritmoBien) mensajeFinal = 'Para ganar monedas, lee a tu ritmo, sin apurarte 🐢'
 
     const s = sesion.current
     guardarSesion({
@@ -785,7 +787,7 @@ export function PantallaLectura(props: Props) {
   const porcentaje = porcentajeLeido(fraseDeUnidad(vista, indice, totalFrases), totalFrases)
   // Al final del camino, la moneda que gana esta frase si es la primera vez que la lee (niveles 0 a 3).
   const monedaAlFinal =
-    !vistaPrevia && monedasDeUnidad(nivel, indice + 1, total) > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
+    !sinMonedas && monedasDeUnidad(nivel, indice + 1, total) > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -795,6 +797,11 @@ export function PantallaLectura(props: Props) {
       {vistaPrevia && (
         <div className="mx-5 rounded-xl bg-petroleo-claro px-3 py-1 text-center text-sm text-petroleo">
           Vista previa: no cambia el avance ni las monedas de {perfil.apodo}
+        </div>
+      )}
+      {!vistaPrevia && sinAutorizar(asignacion) && (
+        <div className="mx-5 rounded-xl bg-naranjo/15 px-3 py-1 text-center text-sm text-tinta">
+          {asignacion.autorizacion === 'pendiente' ? '⏳ Pendiente de aprobación: puedes leerlo, y dará monedas cuando un adulto lo apruebe' : 'Este texto se puede leer, pero no da monedas'}
         </div>
       )}
       {props.leyendoConAdulto && (

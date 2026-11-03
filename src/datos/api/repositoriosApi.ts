@@ -10,7 +10,7 @@ import {
   type Texto,
 } from '../../dominio/tipos'
 import { crearColaPremios, type PedidoEnCola, type RespuestaEnvio } from '../colaPremios'
-import type { Repositorios } from '../repositorios'
+import type { PendienteDeAutorizar, Repositorios } from '../repositorios'
 
 /**
  * Implementación con el servidor propio de Ciempi (carpeta server/: Node +
@@ -255,6 +255,16 @@ export function crearRepositoriosApi(base: string): Repositorios {
       guardarProgreso: (id, progreso) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/progreso`, { ...progreso, premiosPorRegistro: true }),
       async quitar(id) {
         await pedir('DELETE', `/api/asignaciones/${id}`)
+      },
+    },
+
+    autorizaciones: {
+      pendientes: () => pedir<PendienteDeAutorizar[]>('GET', '/api/autorizaciones'),
+      autorizar: (asignacionId, pin, nivel) => pedir<Asignacion>('POST', `/api/asignaciones/${asignacionId}/autorizar`, { pin, ...(nivel === undefined ? {} : { nivel }) }),
+      rechazar: (asignacionId, pin) => pedir<Asignacion>('POST', `/api/asignaciones/${asignacionId}/rechazar`, { pin }),
+      miPin: () => pedir<{ tienePin: boolean }>('GET', '/api/mi-pin'),
+      async definirPin(pin, clave) {
+        await pedir('PUT', '/api/mi-pin', { pin, clave })
       },
     },
 
