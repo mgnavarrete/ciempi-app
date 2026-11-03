@@ -17,6 +17,7 @@ import {
 import { nivelSugerido } from '../../src/lenguaje/dificultad.ts'
 import { vistaPorNivel, type VistaPorNivel } from '../../src/lenguaje/unidades.ts'
 import { revisarCuncuna } from './desbloqueos.ts'
+import { sinAutorizar } from './autorizacion.ts'
 
 /**
  * Registro de premios (ledger). Las monedas por leer las calcula el servidor
@@ -229,6 +230,8 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
   const { rows: asignaciones } = await c.query('select * from asignaciones where id = $1 and perfil_id = $2 for update', [p.asignacionId, p.perfilId])
   const a = asignaciones[0]
   if (!a) throw new SinAsignacion()
+  // Texto propio del niño sin autorizar (pendiente o rechazado): se lee, pero no paga (ver autorizacion.ts).
+  if (a.autorizacion === 'pendiente' || a.autorizacion === 'rechazada') return { ...(await sinAutorizar(c, p, perfil.monedas, a)), economia, desbloqueos: [] }
   const { rows: textos } = await c.query('select id, origen, frases, capitulos, parrafos, huella, actualizado_en from textos where id = $1', [a.texto_id])
   const t = textos[0]
   const clave = await claveDe(c, t)

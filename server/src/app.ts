@@ -30,6 +30,8 @@ import { enTransaccion, pool } from './db.ts'
 import { Esperar, SinAsignacion, ajustarMonedas, anotarLegado, fechaDia, huellaDe, otorgarPremio, recordarLecturas, type PedidoPremio } from './premios.ts'
 import { leerModeloEconomia, type ModeloEconomia } from '../../src/lectura/monedas.ts'
 import { CUNCUNA, listarDesbloqueos, marcarCelebrado, regalarCuncuna, revisarCuncuna } from './desbloqueos.ts'
+import { columnasAlAgregar, pendienteSiCambiaContenido } from './autorizacion.ts'
+import { registrarRutasPin } from './rutasPin.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
 /** Error con mensaje para mostrarle al usuario (400 por defecto). */
@@ -118,6 +120,9 @@ const aAsignacion = (f: Fila) => ({
   relecturaPremiadaEn: fechaDia(f.relectura_premiada_en as Date | string | null),
   // Hasta dónde ya pagó el servidor (lo demás de lo leído quedó sin moneda o está por pagarse).
   pagadoHasta: (f.pagado_hasta as number | undefined) ?? 0,
+  // Texto propio del niño que un adulto todavía no autoriza con su PIN (se lee, pero no paga).
+  autorizacion: f.autorizacion ?? 'autorizada',
+  autorizadaEn: f.autorizada_en ?? null,
   asignadaEn: f.asignada_en,
   actualizadaEn: f.actualizada_en,
   completadaEn: f.completada_en ?? null,
@@ -537,7 +542,10 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
     const huella = huellaDe(frases as string[])
     const rows = await enTransaccion(async (c) => {
       // Si cambia el contenido, lo ya pagado del texto anterior queda recordado (volver a subirlo no paga otra vez).
-      if (existente[0] && existente[0].huella !== huella) await recordarLecturas(c, { textoId: id })
+      if (existente[0] && existente[0].huella !== huella) {
+        await recordarLecturas(c, { textoId: id })
+        await pendienteSiCambiaContenido(c, yo(req), id)
+      }
       const r = await c.query(
         `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen, parrafos, huella)
          values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
@@ -591,10 +599,15 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
     if (!(await puedeVerTexto(yo(req), textoId))) throw new Prohibido('No tienes acceso a este texto')
     const modo = ['coro', 'eco', 'solo'].includes(b.modo as string) ? b.modo : 'coro'
     // El nivel lo elige un adulto del niño; si el niño agrega un libro, parte en el sugerido.
-    const nivel = (await esAdminDe(yo(req), perfilId)) ? nivelValido(b.nivel) : await nivelSugeridoDe(textoId)
+    const esAdulto = await esAdminDe(yo(req), perfilId)
+    const nivel = esAdulto ? nivelValido(b.nivel) : await nivelSugeridoDe(textoId)
+    // Lo que agrega el propio niño queda pendiente hasta que un adulto lo autorice con su PIN
+    // (lo que diga la app no cuenta: lo decide el servidor según quién lo agrega).
+    const aut = await columnasAlAgregar(pool, yo(req), { perfilId, textoId, esAdulto })
     await pool.query(
-      'insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel) values ($1, $2, $3, $4, $5) on conflict (perfil_id, texto_id) do nothing',
-      [yo(req).id, perfilId, textoId, modo, nivel],
+      `insert into asignaciones (asignada_por, perfil_id, texto_id, modo, nivel, autorizacion, autorizada_por, autorizada_en)
+       values ($1, $2, $3, $4, $5, $6, $7, $8) on conflict (perfil_id, texto_id) do nothing`,
+      [yo(req).id, perfilId, textoId, modo, nivel, aut.autorizacion, aut.autorizadaPor, aut.autorizadaEn],
     )
     const { rows } = await pool.query('select * from asignaciones where perfil_id = $1 and texto_id = $2', [perfilId, textoId])
     return aAsignacion(rows[0])
@@ -776,6 +789,9 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
     })
     return { ok: true }
   })
+
+  // ── Textos propios: autorización con el PIN del adulto (ver rutasPin.ts) ──
+  registrarRutasPin(app, { conUsuario, conAdulto, aAsignacion, nivelValido, ahora })
 
   // ── Sesiones de lectura ─────────────────────────────────────────────────
 
