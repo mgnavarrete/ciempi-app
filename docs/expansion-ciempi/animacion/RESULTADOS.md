@@ -159,7 +159,7 @@ Criterios obligatorios (§12 de la guía):
 
 ## 4. Sesión 4: AD-018, crecimiento con especies e interrupciones (2026-11-03)
 
-Parte del WIP `da13860` (otro agente, cortado a mitad). Se revisó con `git diff 1bf79c6 da13860`: compilaba y pasaba 198/198 sin cambios. Commits de esta sesión: `8ae68f3` (WIP verificado), `a3db7c7`… ver `git log 1bf79c6..HEAD`.
+Parte del WIP `da13860` (otro agente, cortado a mitad). Se revisó con `git diff 1bf79c6 da13860`: compilaba y pasaba 198/198 sin cambios. Commits de esta sesión: ver `git log da13860..HEAD`.
 
 ### 4.1 `escenaCreciente` con forma de especie — **verificado**
 
@@ -184,7 +184,7 @@ Parte del WIP `da13860` (otro agente, cortado a mitad). Se revisó con `git diff
 2. Borrar de `pose.ts` el bloque `/** Forma del cuerpo de una especie: copia… */ export interface FormaCuerpo {…}` (si no, tsc da "Import declaration conflicts with local declaration").
 3. Nada más: `escenaCreciente` ya usa `FormaCuerpo` y `posiciones(n, forma)`.
 
-Comprobado con [`fusion-especies/preparar-fusion.sh`](fusion-especies/preparar-fusion.sh), que arma el árbol fusionado en una carpeta temporal y aplica la receta: **tsc OK y `vitest run src` 211/211** (208 de esta rama + 13 de especies − 10 comunes ya contados; 22 archivos).
+Comprobado con [`fusion-especies/preparar-fusion.sh`](fusion-especies/preparar-fusion.sh), que arma el árbol fusionado en una carpeta temporal y aplica la receta: **tsc OK y `vitest run src` 221/221** (23 archivos: las 208 de esta rama + 13 de especies). La primera comprobación, antes de las pruebas nuevas, dio 211/211.
 
 ### 4.3 AD-018: bocas y máscaras — **verificado**
 
@@ -249,7 +249,7 @@ Criterios §12: respeto de base — cumple (108/108 y 234/234; no se tocó arte)
 - `npx tsc --noEmit -p .`: sin errores.
 - `npx vitest run src`: **21 archivos, 208/208** (198 previas + `boca.test.ts` 3 + 7 nuevas en `comer.test.ts`).
 - `medicion/capturas.mjs`: **108/108** idénticos (sin forma).
-- Fusión con especies (copia): tsc OK, **211/211**, `comprobar-fusion.mjs` **234/234** idénticos y revisión de bocas sin fallos; 0 errores de consola.
+- Fusión con especies (copia, `preparar-fusion.sh` desde HEAD): tsc OK, **221/221**, `comprobar-fusion.mjs` **234/234** idénticos y revisión de bocas sin fallos; 0 errores de consola.
 - Demo: `demo-comer/dist` reconstruido (0,9 MB); Playwright con selector de boca, 6 vestuarios, cambio a Robot a mitad y `reducedMotion`: 0 errores de consola.
 
 ### Pruebas de la sesión anterior
