@@ -17,7 +17,8 @@ import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLect
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
 import type { SolicitudPremio } from './premios'
-import { HITOS, MINIMO_A_BUEN_RITMO, contarPalabras, hitosNuevos, hoy, monedasDeUnidad, porcentajeLeido, premioRelectura } from './monedas'
+import { HITOS, MINIMO_A_BUEN_RITMO, contarPalabras, hitosNuevos, hoy, monedasDeUnidad, pagaPorEsfuerzo, porcentajeLeido, premioRelectura } from './monedas'
+import { registrarGesto, segundosDesdeElUltimoPremio, tiempoActivoInicial } from './tiempoActivo'
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
 import { TiraDeLectura } from './TiraDeLectura'
@@ -38,8 +39,6 @@ const PALABRAS_DE_VENTAJA = 3
 const MS_DEDO_QUIETO = 600
 /** Niveles 3 y 4: dónde empieza la primera palabra en el carril. */
 const INICIO_PISTA_PARRAFO = 0.06
-/** Pausas más largas que esto no cuentan como tiempo leyendo. */
-const MAX_PAUSA_ACTIVA_MS = 10_000
 
 export type Progreso = ProgresoAsignacion
 
@@ -119,6 +118,8 @@ export function PantallaLectura(props: Props) {
   // En vista previa no se registra nada: ni progreso, ni monedas, ni sesión.
   const alProgreso = vistaPrevia ? () => {} : props.alProgreso
   const repos = useRepositorios()
+  // Qué economía paga (la dice el servidor en cada premio; por defecto, 2.4.1).
+  const e2 = pagaPorEsfuerzo(repos.premios.economia?.() ?? 'actual')
   const { ajustes } = perfil
   // Cómo se lee en cada nivel (ver lenguaje/unidades.ts):
   // 0 sílaba por sílaba · 1 palabra por palabra · 2 la oración, al ritmo del
@@ -285,13 +286,12 @@ export function PantallaLectura(props: Props) {
 
   // ── Sesión de lectura ─────────────────────────────────────────────────
   const sesion = useRef<SesionLectura | null>(null)
-  const tiempoActivo = useRef({ ms: 0, ultimo: 0 })
+  // Cada pausa cuenta como máximo 10 s (ver tiempoActivo.ts).
+  const tiempoActivo = useRef(tiempoActivoInicial())
+  // Tropiezos de esta lectura (con E2, «relectura con mejora»).
+  const tropiezos = useRef(0)
 
-  const registrarActividad = (t: number) => {
-    const ta = tiempoActivo.current
-    if (ta.ultimo) ta.ms += Math.min(t - ta.ultimo, MAX_PAUSA_ACTIVA_MS)
-    ta.ultimo = t
-  }
+  const registrarActividad = (t: number) => registrarGesto(tiempoActivo.current, t)
 
   const guardarSesion = (cambios: Partial<SesionLectura>) => {
     const actual: SesionLectura = sesion.current ?? {
@@ -384,7 +384,9 @@ export function PantallaLectura(props: Props) {
     const operationId = nuevoId()
     cuentaLectura.current.pedir(operationId, esperadas)
     setMonedasLectura(cuentaLectura.current.total())
-    props.alPedirPremio({ ...solicitud, operationId, perfilId: perfil.id, asignacionId: asignacion.id, esperadas })
+    // Lo leído desde el pedido anterior (con 2.4.1 el servidor no lo usa; con E2 lo acota).
+    const medido = solicitud.tipo === 'relectura' ? solicitud : { ...solicitud, segundosActivos: segundosDesdeElUltimoPremio(tiempoActivo.current) }
+    props.alPedirPremio({ ...medido, operationId, perfilId: perfil.id, asignacionId: asignacion.id, esperadas })
     if (esperadas) {
       const s = sesion.current
       guardarSesion({ monedasGanadas: (s?.monedasGanadas ?? 0) + esperadas })
@@ -432,7 +434,17 @@ export function PantallaLectura(props: Props) {
     const fin = fraseDeUnidad(vista, indice + 1, totalFrases)
     let ganadas = 0
     let mensajeFinal = '¡Muy bien leído! 📖'
-    if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
+    const terminaLibro = fin >= totalFrases
+    // E2 (experimental, lo decide el servidor): paga el tiempo de cada unidad; las monedas llegan con su respuesta.
+    if (e2 && !vistaPrevia) {
+      if (ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
+        leidoHasta.current = fin
+        pedirPremio({ tipo: 'avance', hasta: fin, conPremio: aBuenRitmo, ...(terminaLibro ? { tropiezos: tropiezos.current } : {}) }, 0)
+      } else if (fin <= leidoHasta.current) {
+        pedirPremio({ tipo: 'releida', hasta: fin, conPremio: aBuenRitmo }, 0)
+        if (terminaLibro && yaPremiadoEntero.current && ritmoBien && t.desde === 0) pedirPremio({ tipo: 'relectura', dia: hoy(), tropiezos: tropiezos.current }, 0)
+      }
+    } else if (!vistaPrevia && ritmoBien && t.desde <= leidoHasta.current && fin > leidoHasta.current) {
       leidoHasta.current = fin
       // Niveles 0 a 3: esta frase, leída por primera vez y a su ritmo, paga en el momento (con tope por libro).
       const deEsta = monedasDeUnidad(nivel, indice + 1, total)
@@ -455,8 +467,9 @@ export function PantallaLectura(props: Props) {
       pedirPremio({ tipo: 'avance', hasta: fin, conPremio: aBuenRitmo }, ganadas)
     }
     // Terminar otra vez un libro ya premiado (leído entero, a buen ritmo): premio menor, una vez al día.
-    const terminaLibro = fin >= totalFrases
-    if (terminaLibro && !vistaPrevia && yaPremiadoEntero.current) {
+    if (e2) {
+      // Con E2 la relectura se pidió arriba.
+    } else if (terminaLibro && !vistaPrevia && yaPremiadoEntero.current) {
       if (!ritmoBien || t.desde > 0) mensajeFinal = 'Para ganar monedas al releer, lee todo a tu ritmo 🐢'
       else if (relecturaPremiadaEn.current === hoy()) mensajeFinal = 'Hoy ya ganaste monedas releyéndolo. ¡Mañana puedes volver a ganar!'
       else {
@@ -639,6 +652,7 @@ export function PantallaLectura(props: Props) {
         break
       }
       case 'tropiezo':
+        tropiezos.current++
         voz.callar()
         if (!tranquilo) sonarTropiezo()
         setAviso('Más despacito 🐢')
@@ -768,7 +782,8 @@ export function PantallaLectura(props: Props) {
                   texto: 'Leer otra vez',
                   accion: () => {
                     sesion.current = null
-                    tiempoActivo.current = { ms: 0, ultimo: 0 }
+                    tiempoActivo.current = tiempoActivoInicial()
+                    tropiezos.current = 0
                     cuentaLectura.current.reiniciar()
                     setMonedasLectura(0)
                     yaPremiadoEntero.current = leidoHasta.current >= totalFrases

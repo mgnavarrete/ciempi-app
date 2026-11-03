@@ -1,9 +1,22 @@
 import { createHash, randomUUID } from 'node:crypto'
 import type pg from 'pg'
 import type { NivelLectura } from '../../src/dominio/tipos.ts'
-import { REGLAS_MONEDAS } from '../../src/lectura/monedas.ts'
-import { calcularPremio, combinarEstados, normalizarParaHuella, revisarRitmo, type EstadoPremios, type SolicitudPremio } from '../../src/lectura/premios.ts'
+import { pagaPorEsfuerzo, reglasDe, type ModeloEconomia } from '../../src/lectura/monedas.ts'
+import {
+  acreditarActividad,
+  calcularPremio,
+  combinarEstados,
+  normalizarParaHuella,
+  revisarRelojE2,
+  revisarRitmo,
+  type CalculoPremio,
+  type EstadoPremios,
+  type OpcionesPremio,
+  type SolicitudPremio,
+} from '../../src/lectura/premios.ts'
+import { nivelSugerido } from '../../src/lenguaje/dificultad.ts'
 import { vistaPorNivel, type VistaPorNivel } from '../../src/lenguaje/unidades.ts'
+import { revisarCuncuna } from './desbloqueos.ts'
 
 /**
  * Registro de premios (ledger). Las monedas por leer las calcula el servidor
@@ -80,18 +93,77 @@ const estadoDeAsignacion = (a: Fila): EstadoPremios => ({
   relecturaDia: fechaDia(a.relectura_premiada_en),
 })
 
-/** Guarda (sin bajar nada) lo ya pagado de un texto para un niño. */
-async function recordar(c: pg.PoolClient, perfilId: string, clave: string, e: EstadoPremios) {
+/**
+ * Guarda (sin bajar nada) lo ya pagado de un texto para un niño. Los campos E2
+ * solo cambian si vienen (con 2.4.1 quedan como estaban); la fracción es la
+ * única que puede bajar (se pagó una moneda entera). `actividad`: segundos de
+ * lectura activa que se suman (vía del lector lento a la Cuncuna).
+ */
+async function recordar(c: pg.PoolClient, perfilId: string, clave: string, e: EstadoPremios, actividad = 0) {
   await c.query(
-    `insert into lecturas_premiadas (perfil_id, clave, pagado_hasta, hitos_hasta, relectura_dia) values ($1, $2, $3, $4, $5::date)
+    `insert into lecturas_premiadas (perfil_id, clave, pagado_hasta, hitos_hasta, relectura_dia,
+       fraccion, libro_premiado, activo_libro_segundos, mejor_tropiezos, segundos_actividad)
+     values ($1, $2, $3, $4, $5::date, coalesce($6::real, 0), coalesce($7::boolean, false), coalesce($8::real, 0), $9::integer, $10::real)
      on conflict (perfil_id, clave) do update set
        pagado_hasta = greatest(lecturas_premiadas.pagado_hasta, excluded.pagado_hasta),
        hitos_hasta = greatest(lecturas_premiadas.hitos_hasta, excluded.hitos_hasta),
        relectura_dia = greatest(lecturas_premiadas.relectura_dia, excluded.relectura_dia),
+       fraccion = coalesce($6::real, lecturas_premiadas.fraccion),
+       libro_premiado = lecturas_premiadas.libro_premiado or excluded.libro_premiado,
+       activo_libro_segundos = greatest(lecturas_premiadas.activo_libro_segundos, excluded.activo_libro_segundos),
+       mejor_tropiezos = least(lecturas_premiadas.mejor_tropiezos, excluded.mejor_tropiezos),
+       segundos_actividad = lecturas_premiadas.segundos_actividad + excluded.segundos_actividad,
        actualizado_en = now()`,
-    [perfilId, clave, e.pagadoHasta, e.hitosHasta, e.relecturaDia],
+    [
+      perfilId,
+      clave,
+      e.pagadoHasta,
+      e.hitosHasta,
+      e.relecturaDia,
+      e.fraccion ?? null,
+      e.libroPremiado ?? null,
+      e.activoLibroSegundos ?? null,
+      e.mejorTropiezos ?? null,
+      actividad,
+    ],
   )
 }
+
+/** Lo guardado por texto (incluido el estado E2) como EstadoPremios. */
+const estadoDeLectura = (l: Fila | undefined): Partial<EstadoPremios> | null =>
+  l
+    ? {
+        pagadoHasta: l.pagado_hasta,
+        hitosHasta: l.hitos_hasta,
+        relecturaDia: fechaDia(l.relectura_dia),
+        fraccion: l.fraccion ?? 0,
+        libroPremiado: !!l.libro_premiado,
+        activoLibroSegundos: l.activo_libro_segundos ?? 0,
+        mejorTropiezos: l.mejor_tropiezos ?? null,
+      }
+    : null
+
+// La dificultad real de un texto que no es de la biblioteca (nivel sugerido), guardada por versión.
+const sugeridos = new Map<string, NivelLectura>()
+function nivelDelTexto(t: Fila): NivelLectura {
+  const clave = `${t.id}:${new Date(t.actualizado_en).getTime()}`
+  let n = sugeridos.get(clave)
+  if (n === undefined) {
+    n = nivelSugerido(t.frases, t.parrafos ?? undefined) as NivelLectura
+    sugeridos.set(clave, n)
+    if (sugeridos.size > 200) sugeridos.delete(sugeridos.keys().next().value!)
+  }
+  return n
+}
+
+/** E2: con qué nivel se calcula lo esperado. Los cuentos de Ciempi tienen el nivel curado; lo demás, el más exigente. */
+export function nivelDeReferencia(t: Fila, asignado: NivelLectura): NivelLectura {
+  if (t.origen === 'ciempi') return asignado
+  return Math.max(asignado, nivelDelTexto(t)) as NivelLectura
+}
+
+/** E2: la ventana en que se busca la relectura de verdad (unidades releídas) antes de «releí el libro entero». */
+const HORAS_RELECTURA = 6
 
 /**
  * Antes de borrar un texto, una asignación o cambiar el contenido de un texto:
@@ -130,6 +202,10 @@ export interface RespuestaPremio {
   monedas: number
   motivo: string
   asignacion: Fila
+  /** Qué economía pagó ('actual' = 2.4.1). */
+  economia: ModeloEconomia
+  /** Lo que este premio desbloqueó (por ejemplo, la Cuncuna), para celebrarlo. */
+  desbloqueos: string[]
 }
 
 /**
@@ -137,16 +213,17 @@ export interface RespuestaPremio {
  * si se pide más rápido de lo que se puede leer (la app lo reintenta después)
  * y `SinAsignacion` si el libro ya no está.
  */
-export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: number): Promise<RespuestaPremio> {
+export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: number, economia: ModeloEconomia = 'actual'): Promise<RespuestaPremio> {
+  const reglas = reglasDe(economia)
   // Un premio (o una compra) a la vez por niño.
-  const { rows: perfiles } = await c.query('select monedas, premios_reloj from perfiles_ninos where id = $1 for update', [p.perfilId])
+  const { rows: perfiles } = await c.query('select monedas, premios_reloj, actividad_reloj from perfiles_ninos where id = $1 for update', [p.perfilId])
   const perfil = perfiles[0]
   if (!perfil) throw new SinAsignacion()
 
   const { rows: antes } = await c.query('select monedas, detalle from premios where perfil_id = $1 and operation_id = $2', [p.perfilId, p.operationId])
   if (antes[0]) {
     const { rows } = await c.query('select * from asignaciones where id = $1', [p.asignacionId])
-    return { estado: 'repetido', otorgadas: antes[0].monedas, monedas: perfil.monedas, motivo: antes[0].detalle?.motivo ?? '', asignacion: rows[0] ?? {} }
+    return { estado: 'repetido', otorgadas: antes[0].monedas, monedas: perfil.monedas, motivo: antes[0].detalle?.motivo ?? '', asignacion: rows[0] ?? {}, economia, desbloqueos: [] }
   }
 
   const { rows: asignaciones } = await c.query('select * from asignaciones where id = $1 and perfil_id = $2 for update', [p.asignacionId, p.perfilId])
@@ -157,23 +234,40 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
   const clave = await claveDe(c, t)
   const { rows: lecturas } = await c.query('select * from lecturas_premiadas where perfil_id = $1 and clave = $2 for update', [p.perfilId, clave])
   const l = lecturas[0]
-  const previo = combinarEstados(
-    estadoDeAsignacion(a),
-    l && { pagadoHasta: l.pagado_hasta, hitosHasta: l.hitos_hasta, relecturaDia: fechaDia(l.relectura_dia) },
-  )
+  const previo = combinarEstados(estadoDeAsignacion(a), estadoDeLectura(l))
 
   const nivel = a.nivel as NivelLectura
-  const calculo = calcularPremio(t as never, nivel, previo, p.solicitud, { hoy: diaUtc(ahora), vista: vistaDe(t, nivel) })
+  const opciones: OpcionesPremio = { hoy: diaUtc(ahora), vista: vistaDe(t, nivel), reglas }
+  if (pagaPorEsfuerzo(economia)) {
+    opciones.nivelReferencia = nivelDeReferencia(t, nivel)
+    if (p.solicitud.tipo === 'relectura') opciones.segundosReleidosRecientes = await segundosReleidos(c, p.perfilId, a.id, ahora)
+  }
+  let calculo = calcularPremio(t as never, nivel, previo, p.solicitud, opciones)
 
   let reloj: number | null = perfil.premios_reloj ? new Date(perfil.premios_reloj).getTime() : null
-  if (calculo.monedas > 0) {
+  if (pagaPorEsfuerzo(economia)) {
+    // E2: lo pagado por tiempo adelanta el reloj (no se cobra más tiempo del que pasó).
+    if (calculo.monedas > 0 || calculo.segundosPagados > 0) {
+      const r = revisarRelojE2(reloj, ahora, calculo.costoSegundos, calculo.segundosPagados)
+      if (!r.ok) throw new Esperar(r.esperarSegundos)
+      if (r.pagables < calculo.segundosPagados) calculo = calcularPremio(t as never, nivel, previo, p.solicitud, { ...opciones, maxSegundosPagables: r.pagables })
+      reloj = r.reloj
+    }
+  } else if (calculo.monedas > 0) {
     const r = revisarRitmo(reloj, ahora, calculo.costoSegundos)
     if (!r.ok) throw new Esperar(r.esperarSegundos)
     reloj = r.reloj
   }
+  // Lectura activa (no da monedas): solo la que cabe en el tiempo real.
+  const actividad = acreditarActividad(perfil.actividad_reloj ? new Date(perfil.actividad_reloj).getTime() : null, ahora, calculo.segundosActividad)
 
   const saldo = perfil.monedas + calculo.monedas
-  await c.query('update perfiles_ninos set monedas = $1, premios_reloj = $2 where id = $3', [saldo, reloj === null ? null : new Date(reloj), p.perfilId])
+  await c.query('update perfiles_ninos set monedas = $1, premios_reloj = $2, actividad_reloj = $3 where id = $4', [
+    saldo,
+    reloj === null ? null : new Date(reloj),
+    actividad.reloj === null ? null : new Date(actividad.reloj),
+    p.perfilId,
+  ])
   const e = calculo.estado
   const { rows: actualizada } = await c.query(
     `update asignaciones set pagado_hasta = greatest(pagado_hasta, $2), leido_hasta = greatest(leido_hasta, $2),
@@ -181,7 +275,7 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
      where id = $1 returning *`,
     [a.id, e.pagadoHasta, e.hitosHasta, e.relecturaDia],
   )
-  await recordar(c, p.perfilId, clave, e)
+  await recordar(c, p.perfilId, clave, e, actividad.acreditados)
   await c.query(
     `insert into premios (perfil_id, operation_id, asignacion_id, usuario_id, tipo, nivel, hasta, solicitadas, monedas, saldo, detalle)
      values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
@@ -192,23 +286,56 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
       p.usuarioId,
       p.solicitud.tipo,
       nivel,
-      p.solicitud.tipo === 'avance' ? Math.max(0, Math.floor(p.solicitud.hasta)) : null,
+      p.solicitud.tipo !== 'relectura' ? Math.max(0, Math.floor(p.solicitud.hasta)) : null,
       p.solicitadas,
       calculo.monedas,
       saldo,
       {
         motivo: calculo.motivo,
         origen: p.origen,
-        reglas: REGLAS_MONEDAS.version,
+        reglas: reglas.version,
         unidades: calculo.unidades,
         hitos: calculo.hitos.map((h) => h.porcentaje),
         costoSegundos: Math.round(calculo.costoSegundos * 10) / 10,
         ...(p.solicitud.tipo === 'relectura' ? { dia: p.solicitud.dia } : {}),
-        ...(p.solicitud.tipo === 'avance' && !p.solicitud.conPremio ? { sinPremioUltima: true } : {}),
+        ...(p.solicitud.tipo !== 'relectura' && !p.solicitud.conPremio ? { sinPremioUltima: true } : {}),
+        ...(actividad.acreditados > 0 ? { actividad: Math.round(actividad.acreditados * 10) / 10 } : {}),
+        ...detalleE2(economia, calculo, p.solicitud, ahora),
       },
     ],
   )
-  return { estado: 'otorgado', otorgadas: calculo.monedas, monedas: saldo, motivo: calculo.motivo, asignacion: actualizada[0] }
+  // La Cuncuna se gana con cuentos de Ciempi (no con textos propios): se revisa en la misma transacción.
+  const desbloqueos: string[] = []
+  if (t.origen === 'ciempi') {
+    const nuevo = await revisarCuncuna(c, p.perfilId)
+    if (nuevo) desbloqueos.push(nuevo)
+  }
+  return { estado: 'otorgado', otorgadas: calculo.monedas, monedas: saldo, motivo: calculo.motivo, asignacion: actualizada[0], economia, desbloqueos }
+}
+
+/** E2: lo que se anota de más en el registro (para auditar el tiempo pagado). */
+function detalleE2(economia: ModeloEconomia, calculo: CalculoPremio, s: SolicitudPremio, ahora: number): Record<string, unknown> {
+  if (!pagaPorEsfuerzo(economia)) return {}
+  const r = (x: number) => Math.round(x * 10) / 10
+  return {
+    economia,
+    ahora: Math.round(ahora),
+    segundosPagados: r(calculo.segundosPagados),
+    ...(s.tipo !== 'relectura' && typeof s.segundosActivos === 'number' ? { segundosDeclarados: r(Math.min(s.segundosActivos, 86_400)) } : {}),
+    ...(typeof (s as { tropiezos?: unknown }).tropiezos === 'number' ? { tropiezos: (s as { tropiezos: number }).tropiezos } : {}),
+    ...(calculo.desglose ? { desglose: calculo.desglose } : {}),
+    ...(calculo.terminoLibro ? { terminoLibro: true } : {}),
+  }
+}
+
+/** E2: segundos de unidades releídas (pagadas) de este libro en las últimas horas. */
+async function segundosReleidos(c: pg.PoolClient, perfilId: string, asignacionId: string, ahora: number): Promise<number> {
+  const { rows } = await c.query(
+    `select coalesce(sum((detalle->>'segundosPagados')::real), 0)::real as s from premios
+      where perfil_id = $1 and asignacion_id = $2 and tipo = 'releida' and (detalle->>'ahora')::bigint > $3`,
+    [perfilId, asignacionId, Math.round(ahora - HORAS_RELECTURA * 3600 * 1000)],
+  )
+  return rows[0].s
 }
 
 /**

@@ -1,5 +1,6 @@
 import type { AparienciaCiempi } from '../ciempi/catalogo'
 import type { SolicitudPremio } from '../lectura/premios'
+import type { ModeloEconomia } from '../lectura/monedas'
 import type {
   AjustesLectura,
   Asignacion,
@@ -130,6 +131,12 @@ export interface RepositorioPremios {
   pendientes(perfilId: Id): number
   /** Avisa cada vez que un pedido se resuelve, también los que estaban en la cola. Devuelve cómo dejar de escuchar. */
   alResolver(fn: (pedido: PedidoPremio, resolucion: Exclude<ResolucionPremio, { estado: 'pendiente' }>) => void): () => void
+  /**
+   * Qué economía paga ('actual' = 2.4.1, 'e2' = experimental). Con cuenta, la
+   * que dijo el servidor en su último premio; sin cuenta, la de compilación.
+   * Si falta, 'actual'.
+   */
+  economia?(): ModeloEconomia
 }
 
 export interface Repositorios {
