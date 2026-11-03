@@ -1,6 +1,6 @@
 # CIEMPI · Tienda v3: colecciones, personajes y transformaciones
 
-**Fecha:** 3 de noviembre de 2026 · **Estado:** propuesta de diseño de producto, pendiente de aprobación.
+**Fecha:** 3 de noviembre de 2026 · **Estado:** propuesta de diseño de producto, pendiente de aprobación. **Actualizado el mismo día** con lo que el usuario aprobó de la economía v3 (modelo E2, precios provisionales en dos olas y Cuncuna con 6 de 8 cuentos de nivel 0): §2.4, §4.6, §4.8 y §6. Fuente: `ECONOMIA-V3.md` (rama de economía `worktree-agent-a925a3794da34fde2`), §9, §10 y §18.
 **Alcance de este trabajo:** solo documentos y láminas de concepto. No se modificaron el catálogo (`src/ciempi/catalogo.ts`, `tienda.generada.ts`), los precios, el servidor ni los cuentos.
 **Página para revisar:** [index.html](index.html) (autocontenida, sin CDN).
 **Relación con otros documentos:** desarrolla las secciones 4, 5, 7 y 16 (Fase E) del [plan maestro de expansión](../PLAN-MAESTRO-EXPANSION.md) y respeta la economía y los paquetes del [plan maestro v1](../../integracion-ciempi/plan-maestro-v1/PLAN-MAESTRO.md). La guía de referencia es [CIEMPI_ART_DIRECTION.md](../../../CIEMPI_ART_DIRECTION.md) v1.7.
@@ -32,7 +32,7 @@ Fuente: `src/ciempi/tienda.generada.ts`, generado por `scripts/generar-tienda-ci
 | Comida | 10 | 1 | 8–15 | Manzana gratis. |
 | Conjuntos | 10 | — | 20 % menos sobre lo que falta | Robot, Dragón, Explorador, Pirata, Mago, Espíritu, AraLuz, Ratón, Realeza, Charcos. |
 
-Total: 96 piezas de personaje + 6 fondos + 10 comidas + 10 conjuntos [V]. Comprar todo cuesta unas 1 360 monedas, alrededor del doble de lo que dan los 40 cuentos en su primera lectura (≈697) [V, hechos verificados].
+Total: 96 piezas de personaje + 6 fondos + 10 comidas + 10 conjuntos [V]. Comprar todo cuesta unas 1 360 monedas, alrededor del doble de lo que dan los 40 cuentos en su primera lectura (≈697) [V, hechos verificados]. *Nota de la economía v3:* ejecutando el código del juego, `ECONOMIA-V3.md` §2.1 obtiene **1 350** para el catálogo y **703** para los 40 cuentos (el nivel 2 da 118, no 112); el orden de magnitud no cambia.
 
 **Huecos por anclaje:** cuello (1), espalda (2, y ninguna mochila), detalle (1), pies (5). En cambio, cabeza, pelo y lentes suman 36 opciones de pago. La tienda está cargada hacia la cabeza: ahí la pieza se ve más, pero el cuerpo largo de Ciempi, que es su rasgo más propio, tiene poca oferta. **Las colecciones nuevas deberían rellenar sobre todo espalda, pies, cuello y superficies** [I].
 
@@ -199,7 +199,8 @@ No propongo un exclusivo de Cuncuna en Espacio: forzarlo inflaría el catálogo 
 - **23 productos nuevos** (8 + 7 + 8), de los cuales 5 son exclusivos de especie y 3 son mochilas condicionadas al rediseño.
 - Ninguno es un recolor presentado como pieza nueva. Si más adelante se quiere otro color de una pieza, se añade como **variante** dentro del mismo derecho (como la capa de héroe).
 - Huecos que se cubren: espalda +6 (2 capas, 3 mochilas, alas), pies +3, cuello +1, detalle +1, superficies +3.
-- **Coste total:** con el escalón medio de cada pieza, las 23 suman ≈ 480 monedas. El catálogo pasaría de ≈ 1 360 a ≈ 1 840, unas 2,6 veces lo que dan los 40 cuentos. **Supera el techo de 2,4× del plan** (§5). Opciones: (a) lanzar en dos olas (universal primero, exclusivos con las especies); (b) retirar o fusionar las paletas de marca, lo que libera unas 170 monedas de catálogo; (c) subir el pago por cuento según la revisión económica. Lo decide el modelo económico [P].
+- **Coste total (cálculo original, con el escalón medio):** las 23 suman ≈ 480 monedas y el catálogo pasaría de ≈ 1 360 a ≈ 1 840, unas 2,6 veces lo que dan los 40 cuentos con las reglas 2.4.1. Superaba el techo de 2,4× del plan (§5).
+- **Resuelto por la economía v3 (aprobado como referencia, precios provisionales):** con el modelo E2 se lanza en **dos olas** y la regla de salud pasa a medirse en **sesiones de un niño de nivel 0**, no en «veces lo que dan los cuentos» (§4.8). Ola 1: 16 piezas universales o adaptables, **360** monedas, ~23–25 sesiones de 15 min de P0. Ola 2: Dragón + 4 exclusivos + 3 mochilas (estas, solo tras su rediseño), **224** monedas, ~13–15 sesiones. Catálogo actual + todo v3 ≈ **1 934** monedas ≈ 143 sesiones de P0 releyendo, dentro de la regla de salud de ≤ ~150 sesiones [I, simulado en ECONOMIA-V3 §9].
 
 ---
 
@@ -309,7 +310,7 @@ Hoy hay cuatro secciones: Cabeza · Cuerpo · Su mundo · Conjuntos [V]. Propues
 ```
 
 Notas:
-- Los «?» son precios por definir (§4.8).
+- Los «?» se reemplazan por los precios provisionales E2 de §4.8 (Dragón 80; Alas de cuento 30; Cresta gema 16; «Dragón real» 107).
 - La tarjeta de Cuncuna sin ganar se puede **probar** (vista previa) y explica cómo se consigue con una frase fija. No muestra porcentaje ni cuenta regresiva [I].
 - **Se quita «Te faltan X 🪙: ¡sigue leyendo!»**, que hoy aparece en la barra de compra (`PantallaCiempi.tsx`) [V]. Si no alcanza, el botón queda desactivado y dice «Guárdalo en ♥ favoritos». Sin cifras de lo que falta.
 - **Se quita el sonido al comprar** (`sonarCelebracion()` tras comprar [V]). La celebración es la animación A09 «Estrenar ropa», que ya existe y respeta el modo tranquilo.
@@ -334,21 +335,26 @@ Hay una versión HTML de ambos bocetos en [index.html](index.html#wireframes).
 
 ### 4.6 Cuncuna: recompensa gratuita de lectura
 
-**Definición exacta de «completar el nivel 0»** [I, a validar con el equipo de economía]:
-> El perfil tiene **6 cuentos distintos de nivel 0 de la biblioteca de Ciempi** (`textos.origen = 'ciempi'`, `asignaciones.nivel = 0`) con `completada_en` no nulo.
+**Aprobado por el usuario (3-nov-2026):** la Cuncuna se desbloquea con **6 de los 8 cuentos originales de nivel 0**, con una condición equivalente para quien empieza en otros niveles y una alternativa para lectores lentos que reconozca progreso educativo y no solo tiempo. Se conserva el progreso y hay una celebración especial. Detalle y simulación: `ECONOMIA-V3.md` §10 [U; cifras I].
 
-- Se exigen 6 de los 8 y no los 8, porque un adulto puede quitar cuentos de la biblioteca (`server/src/cuentos.ts`) [V] y porque los cuentos 21–24 pueden cambiar (ver la revisión de personajes). Si el niño tiene menos de 6 cuentos de nivel 0 asignados, basta con terminarlos todos, con un mínimo de 4.
-- Cuentan las lecturas completas, no las monedas ni la velocidad. Las relecturas no suman cuentos nuevos.
-- No cuentan los textos subidos por el adulto (origen pegado o pdf), para que no se pueda «fabricar» el logro.
-- **Se calcula en el servidor** al marcar una asignación como completada: se inserta `especie:cuncuna` en el inventario de forma idempotente. El cliente no puede otorgarlo.
+Se otorga `especie:cuncuna` de forma **idempotente y retroactiva** en cuanto se cumple **cualquiera** de estas condiciones:
 
-**Niño que empieza en nivel 1 o superior (alternativa justa):**
-> Recibe la Cuncuna al terminar sus **primeros 4 cuentos distintos de la biblioteca de Ciempi en cualquier nivel**.
+1. **Completar el nivel 0:** 6 de los 8 cuentos de nivel 0 de la biblioteca de Ciempi terminados. Si un adulto quitó cuentos de la biblioteca (`server/src/cuentos.ts`) [V] o se retiran los cuentos 21–24 (ver la revisión de personajes), basta con terminar **todos los que tenga, con un mínimo de 4**.
+2. **Quien empieza en nivel 1 o superior:** **6 cuentos distintos de la biblioteca de Ciempi, de cualquier nivel**, terminados. Todos los perfiles tienen los 40 cuentos, así que la regla es una sola: quien parte en N0 la cumple completando su nivel, y quien parte en N1+ no tiene que leer cuentos de sílabas, que le resultarían infantilizantes. *(Sustituye a los «4 cuentos de cualquier nivel» de la versión anterior: 4 se logran en 1–2 sesiones.)*
+3. **Lector lento (progreso + tiempo, nunca solo tiempo):** **60 min de lectura activa en cuentos de nivel 0 y 30 frases distintas de nivel 0 leídas.** Existe porque un lector muy lento (~20 min por cuento) con sesiones de 15 min nunca termina un cuento mientras el cuento se reinicie en cada sesión, y con la condición 1 no recibiría nunca la Cuncuna.
+4. **Regalo del adulto** desde su panel (terapia, dificultades de lectura u otros casos), registrado con motivo.
 
-- Así el regalo cuesta un esfuerzo parecido (≈ 4 sesiones) y no obliga a leer cuentos de sílabas, que serían infantilizantes para ese lector.
-- **Niños que ya cumplían la condición antes del despliegue:** se otorga en la migración, calculada con `completada_en`. Se anuncia la primera vez que abran la tienda.
-- **El adulto puede regalarla** desde su panel (para casos de terapia o de lectores con dificultades). Queda registrada con motivo.
-- **Anuncio después, no antes** (plan §6.7, Marinak y Gambrell): no hay barra de progreso hacia la Cuncuna. La tarjeta dice solo «Llega cuando termines tus primeros cuentos». Al ganarla, la pantalla de fin de libro muestra a Ciempi con la Cuncuna al lado y el texto «¡Tienes una amiga nueva: la Cuncuna!».
+**«Terminado» verificable:**
+- Se usa el **registro de premios del servidor** (`pagado_hasta` = total de unidades, acotado por el reloj del servidor), **no** `completada_en`, que hoy fija la app sin verificar [V, ECONOMIA-V3 §2.2].
+- Solo cuentan los cuentos con `textos.origen = 'ciempi'`; nunca los textos propios del niño ni los que sube el adulto, para que no se pueda «fabricar» el logro.
+- Cuentan cuentos distintos; las relecturas no suman cuentos nuevos. No cuentan las monedas ni la velocidad.
+- **Se calcula en el servidor**; el cliente no puede otorgarla.
+
+**Esfuerzo estimado** (sesiones de 15 min; mediana y p10–p90) [I, ECONOMIA-V3 §10.2]: P0, 6 sesiones (4–10) por la condición 1; P1–P4, 2–3 sesiones por la condición 2; lector muy lento, 11 sesiones (9–11) por la condición 3, 4 con sesiones de 25 min y 7 con un marcapáginas en N0 (pendiente de decisión). La sensibilidad de ECONOMIA-V3 §18 muestra que con lectores un 30 % más lentos la condición 3 sube a 15 sesiones (p90 18) y con sesiones de 10 min a 21 (p90 37) [I].
+
+**Niños que ya cumplían la condición antes del despliegue:** se otorga en la migración, calculada con el registro de premios (en las asignaciones migradas, `pagado_hasta` parte de `leido_hasta`). Se anuncia la primera vez que abran la tienda.
+
+**Anuncio después, no antes** (plan §6.7, Marinak y Gambrell): no hay barra de progreso hacia la Cuncuna. La tarjeta dice solo «Llega cuando termines tus primeros cuentos». Al ganarla hay una **celebración especial**: la pantalla de fin de libro muestra a Ciempi con la Cuncuna al lado y el texto «¡Tienes una amiga nueva: la Cuncuna!».
 
 ### 4.7 Dragón comprable, bundles, favoritos y recompensas especiales
 
@@ -358,21 +364,25 @@ Hay una versión HTML de ambos bocetos en [index.html](index.html#wireframes).
 - **Recompensas especiales por lectura (anunciadas después):** por ejemplo, al terminar los 8 cuentos de un nivel se regala una pieza de colección (Antenas luz, Gorro pétalo). Se entregan con un mensaje en la pantalla final. No se anuncian en la tienda, no tienen calendario y no caducan (decisión D11).
 - **Sin patrones oscuros** (Google Play Familias, ICO estándar 13): sin temporizadores, ofertas por tiempo, rarezas, cajas sorpresa, «te faltan X», sonidos de caja registradora, rachas ni avisos para volver.
 
-### 4.8 Precios: rangos, no definitivos
+### 4.8 Precios provisionales E2 (aprobados como referencia, no aplicados)
 
-Dependen del modelo económico (Fase 0: pago del nivel 0, topes, registro en servidor). Hoy un cuento da entre 7 y 40 monedas según el nivel [V].
+El usuario aprobó el modelo E2 como referencia **con precios provisionales en dos olas**. Se calcularon con las sesiones de 15 min que necesita un niño de nivel 0 (mediana y p90, y el lector muy lento) [U; cifras I, `ECONOMIA-V3.md` §9]. **No se aplicaron**: el catálogo y los precios reales del juego no cambian hasta que se apruebe llevarlos a producción.
 
-| Producto | Escalón | Rango orientativo | Precio final |
-|---|---|---|---|
-| Cuncuna | Recompensa | 0 (no se vende) | 0 |
-| Dragón (especie) | Especie | 60–100 (≈ 6–8 cuentos de nivel 1–2) | `[PRECIO_DRAGON]` |
-| Bundle Dragón real | Pack | 20 % menos sobre lo que falta | `[calc]` |
-| Básico (Antenas luz, Cola cometa) | Básico | 6–12 | `[P_BASICO]` |
-| Común (Botas caballero, Gorro pétalo, Zuecos hongo, Botas lunares, Lentes planeta, Cresta gema, Mechones rocío) | Común | 14–18 | `[P_COMUN]` |
-| Especial (Casco suave, Antifaz grifo, Antifaz zorro, Casco burbuja, Bufanda musgo, mochilas) | Especial | 20–26 | `[P_ESPECIAL]` |
-| Obra (trajes, Capa de páginas, Capa cometa, Alas de cuento) | Obra | 28–32 | `[P_OBRA]` |
+| Producto | Escalón | Precio provisional E2 | Sesiones de P0 (mediana / p90) · muy lento |
+|---|---|---:|---|
+| Cuncuna | Recompensa | **0** (no se vende; §4.6) | — |
+| Dragón (especie) | Especie | **80** | 4 / 5 · 5 (p90 6) |
+| Bundle «Dragón real» (Dragón + Alas + Cresta + Cola) | Pack | 134 − 20 % = **107** | — |
+| Básico (Antenas luz, Cola cometa) | Básico | **10** | 1 / 1 · 1 |
+| Común (Botas caballero, Gorro pétalo, Zuecos hongo, Botas lunares, Lentes planeta, Cresta gema, Mechones rocío) | Común | **16** | 1 / 1 · 1–2 |
+| Especial (Casco suave, Antifaz grifo, Antifaz zorro, Casco burbuja, Bufanda musgo; mochilas) | Especial | **24** | 2 / 2 · 2 |
+| Obra (Acolchado, Jardín, Traje astral, Capa de páginas, Capa cometa, Alas de cuento) | Obra | **30** | 2 / 2 · 2–3 |
+| Conjuntos de colección | Pack | 20 % menos sobre lo que falta (`precioDe`): **~60–85** | 3–5 / ≤ 7 |
+| Catálogo actual | — | **Sin cambios** | Ya cumple los criterios con E2 |
 
-Regla de salud: con el modelo elegido, **el Dragón no debería costar más que lo que da leer un nivel completo por primera vez**, y el catálogo total no debería superar 2,4× los ingresos de la primera lectura [P].
+- **Dos olas:** ola 1 = 16 piezas universales o adaptables, **360**; ola 2 = Dragón + 4 exclusivos + 3 mochilas (estas, solo tras su rediseño, §4.9), **224** (§2.4).
+- **Regla de salud (sustituye a la anterior):** el catálogo completo ≤ ~150 sesiones de P0 releyendo (con todo v3 da ~143) [I]. La regla «≤ 2,4× los ingresos de la primera lectura» medía las reglas 2.4.1 y deja de aplicarse con E2.
+- Estos precios suponen E2. Si E2 no llegara a producción, habría que recalcularlos: con 2.4.1, P0 releyendo **nunca** junta 80 monedas para el Dragón [I].
 
 ### 4.9 Mochilas: condición para reintroducirlas
 
@@ -406,18 +416,18 @@ Corresponde a la **Fase E** del [plan maestro §16](../PLAN-MAESTRO-EXPANSION.md
 ## 6. Pendiente de aprobación del usuario
 
 1. Estructura de tienda con «Personajes», «Gratis» y «Favoritos» (§4.1).
-2. Definición de «completar el nivel 0» y la alternativa para niveles 1+ (§4.6).
-3. Lista de 23 productos y 6 conjuntos; o versión reducida en dos olas (§2.4).
+2. ~~Definición de «completar el nivel 0» y la alternativa para niveles 1+~~ **Aprobado** (6 de 8 cuentos de N0 con alternativas, §4.6). Falta implementarlo en el servidor (migración 013 de la rama de seguridad).
+3. Lista de 23 productos y 6 conjuntos **en dos olas** (aprobadas como referencia con la economía v3, §2.4); falta aprobar el contenido de cada ola.
 4. Partes nuevas `extra` (cresta, mechones, cola) y alas en Espalda (§2).
 5. Quitar «Te faltan X» y el sonido de compra de la tienda actual (§4.4). Es un cambio de UX pequeño, pero toca la pantalla actual.
 6. Renombres visibles: Dragón→Draco, Robot→Lumen y Estrellas (estampado)→Constelación (§1.2).
 7. Rediseño de mochilas como condición previa (§4.9).
-8. Precios finales (tabla §4.8) tras la revisión económica.
+8. Precios: **provisionales E2 aprobados como referencia** (§4.8). Pasarlos a producción requiere aprobación aparte, junto con E2.
 9. Dirección visual de cada colección según las láminas (§3). Ninguna está aprobada.
 
 ## Límites
 
 - Las láminas son **conceptos IA** inspeccionados a tamaño completo; no se probaron en el juego ni a 84/240/320 px.
 - Las notas de rúbrica son orientativas, de un revisor adulto, y no reflejan la preferencia infantil.
-- Las cifras del total del catálogo usan el punto medio de cada escalón; con otros precios cambian.
+- Las cifras de esfuerzo por precio son simulaciones con supuestos (ECONOMIA-V3 §15), no datos de niños.
 - No se ejecutó código, no se tocaron el catálogo, los precios ni el servidor, y no se hicieron pruebas con niños.
