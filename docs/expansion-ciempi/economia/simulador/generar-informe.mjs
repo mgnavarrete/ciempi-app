@@ -4,7 +4,7 @@
  * datos/resultados.json. Ejecutar después de simular.mjs:
  *   node docs/expansion-ciempi/economia/simulador/generar-informe.mjs
  */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 const R = JSON.parse(readFileSync(new URL('./datos/resultados.json', import.meta.url), 'utf8'))
 const M = Object.fromEntries(R.modelos.map((m) => [m.id, m]))
@@ -343,6 +343,41 @@ nav ol{columns:2;max-width:none;font-size:.95rem}
 @media (max-width:640px){nav ol{columns:1}h1{font-size:1.5rem}}
 `
 
+// ─── Verificación (datos/sensibilidad.json, de sensibilidad.mjs) ───────────
+const urlSens = new URL('./datos/sensibilidad.json', import.meta.url)
+const SENS = existsSync(urlSens) ? JSON.parse(readFileSync(urlSens, 'utf8')) : null
+const PERF = ['P0', 'P1', 'P2', 'P3', 'P4']
+const verif = (() => {
+  if (!SENS) return { html: '', md: '' }
+  const cabEsc = ['Escenario', 'Grupo', ...PERF, 'Brecha', 'Gini', 'Caso 20 min', 'P0 Dragón 80 (p50/p90)', 'Muy lento Dragón 80', 'Muy lento Cuncuna vía 3', 'Peor abuso/min']
+  const filasEsc = SENS.escenarios.map((e) => [e.nombre, e.grupo, ...PERF.map((p) => num(e.monedas[p])), num(e.brecha, 2), num(e.giniNinos, 2), num(e.casoUsuario), `${num(e.p0Dragon80.p50)}/${num(e.p0Dragon80.p90)}`, `${num(e.lentoDragon80.p50)}/${num(e.lentoDragon80.p90)}`, `${num(e.lentoCuncunaVia3.p50)} (${num(e.lentoCuncunaVia3.p10)}–${num(e.lentoCuncunaVia3.p90)})`, num(e.peorAbuso.porMinuto, 1)])
+  const cabTope = ['Tope', ...SENS.tope[0].filas.map((f) => f.grupo)]
+  const filasTope = SENS.tope.map((t) => [`${num(t.capFactor, 2)}×`, ...t.filas.map((f) => `${num(f.sinPagarPorTope, 1)} % (p90 ${num(f.p90Nino, 1)} %)`)])
+  const cabMit = ['Modelo', ...PERF.map((p) => `${p} 15 min`), 'Brecha', 'Gini', 'Peor abuso/min', ...PERF.map((p) => `${p} 144 ses. relee`), ...PERF.map((p) => `${p} ola 1 relee`)]
+  const filasMit = SENS.mitigacion.map((m) => [m.nombre, ...PERF.map((p) => num(m.monedas15[p])), num(m.brecha, 2), num(m.giniNinos, 2), num(m.peorAbuso, 1), ...PERF.map((p) => num(m.campanas[p].relee.en144)), ...PERF.map((p) => ses(m.campanas[p].relee.ola1))])
+  const cabMig = ['Modo · modelo', ...PERF.map((p) => `${p}: saldo al migrar · 10 antes → 10 después`), 'Niños que pierden saldo']
+  const filasMig = Object.entries(SENS.migraciones).flatMap(([modo, v]) => Object.entries(v).map(([k, arr]) => [`${modo} · ${k}`, ...arr.map((r) => `${num(r.saldoAlMigrar.p50)} · ${num(r.ultimas10Antes.p50)} → ${num(r.primeras10Despues.p50)}`), num(arr.reduce((s, r) => s + r.ninosQuePierden, 0))]))
+  const cabMej = ['Nivel', 'Cuento más corto (min esperados)', 'Relectura/min', 'Relectura con mejora/min (peor caso)', 'Reserva si se cuenta 1 tropiezo por unidad']
+  const filasMej = SENS.mejora.E2.map((f) => [`N${f.nivel}`, num(f.minutosEsperados, 1), num(f.relecturaSinMejoraPorMin, 2), num(f.relecturaConMejoraPorMin, 2), `${num(f.reservaSiPorUnidad)} monedas`])
+  const html = `
+<h2 id="verificacion">Verificación de E2 (sensibilidad, niveles 3 y 4, saldos y abusos)</h2>
+<p>Generado desde <code>datos/sensibilidad.json</code> (<code>simulador/sensibilidad.mjs</code>, semilla ${SENS.semilla}, ${SENS.nNinos} niños por celda). Cada escenario cambia un supuesto y lo restaura. Detalle y conclusiones en <code>ECONOMIA-V3.md</code> §18.</p>
+<h3>Sensibilidad (15 min, cuentos nuevos, medianas)</h3>
+${tabla(cabEsc, filasEsc, 'texto')}
+<h3>Tiempo activo que el tope por unidad deja sin pagar (10 sesiones releyendo)</h3>
+${tabla(cabTope, filasTope)}
+<h3>Niveles 3 y 4: mitigaciones</h3>
+${tabla(cabMit, filasMit, 'texto')}
+<h3>Migración 2.4.1 → modelo nuevo (20 sesiones antes, 40 después; nadie gasta)</h3>
+${tabla(cabMig, filasMig, 'texto')}
+<h3>«Relectura con mejora»: cota del abuso (E2)</h3>
+${tabla(cabMej, filasMej)}
+`
+  const sinTags = (f) => f.map((c) => String(c).replace(/<[^>]+>/g, ''))
+  const mdTxt = ['\n## Verificación · sensibilidad\n', md(cabEsc, filasEsc.map(sinTags)), '\n## Verificación · tope por unidad\n', md(cabTope, filasTope), '\n## Verificación · mitigaciones N3–N4\n', md(cabMit, filasMit.map(sinTags)), '\n## Verificación · migración\n', md(cabMig, filasMig), '\n## Verificación · relectura con mejora\n', md(cabMej, filasMej)].join('\n')
+  return { html, md: mdTxt }
+})()
+
 const nav = [
   ['diagnostico', 'Diagnóstico'],
   ['niveles', 'Cómo paga hoy cada nivel'],
@@ -353,6 +388,7 @@ const nav = [
   ['campana', 'A lo largo de muchas sesiones'],
   ['precios', 'Esfuerzo por artículo y precios'],
   ['abuso', 'Abuso y topes'],
+  ...(SENS ? [['verificacion', 'Verificación de E2']] : []),
   ['riesgos', 'Riesgos y qué medir'],
   ['supuestos', 'Supuestos y fuentes'],
   ['detalle', 'Anexo: los 7 modelos × 5 perfiles × 4 duraciones'],
@@ -517,7 +553,7 @@ ${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'sesion'))}
 <p class="tenue">Primera sesión de 15 min con cuentos nuevos (monedas promedio por fuente). Abajo, la campaña completa (${160} sesiones) releyendo, en %.</p>
 ${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'relee'))}
 ${tabla(['Perfil', ...FUENTES.map((f) => f[1])], filasFuentes('E2', 'subidos'))}
-
+${verif.html}
 <h2 id="riesgos">10. Riesgos y qué medir después</h2>
 <h3>Riesgos</h3>
 <ul>
@@ -619,6 +655,7 @@ const tablasMd = [
   md(['Modelo', 'Gini 5 medianas', 'Gini niños', 'Máx/mín por minuto'], orden.map((id) => [M[id].nombre, num(M[id].equidad.gini, 2), num(M[id].equidad.giniNinos, 2), num(M[id].equidad.maxMin, 2)])),
   '\n## Abuso\n',
   md(['Modelo', 'Acción', 'Monedas', 'Min', 'Por min'], filasAbuso.map((f) => f.map((c) => String(c).replace(/<[^>]+>/g, '')))),
+  verif.md,
 ].join('\n')
 writeFileSync(new URL('./datos/tablas.md', import.meta.url), tablasMd)
 console.log('index.html y datos/tablas.md escritos')

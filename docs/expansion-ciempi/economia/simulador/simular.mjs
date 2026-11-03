@@ -12,9 +12,10 @@
  * informe. No son datos de niños reales.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
+import { pathToFileURL } from 'node:url'
 
 const leer = (f) => JSON.parse(readFileSync(new URL(f, import.meta.url), 'utf8'))
-const { cuentos: CUENTOS, reglas: REGLAS } = leer('./datos/cuentos.json')
+export const { cuentos: CUENTOS, reglas: REGLAS } = leer('./datos/cuentos.json')
 const CATALOGO = leer('./datos/catalogo.json')
 const ABUSOS_REALES = leer('./datos/abusos.json')
 
@@ -24,7 +25,7 @@ const DURACIONES = [10, 15, 20, 30]
 const SESIONES_CAMPANA = 160
 
 // ─── Azar reproducible ─────────────────────────────────────────────────────
-function mulberry32(a) {
+export function mulberry32(a) {
   return () => {
     a |= 0
     a = (a + 0x6d2b79f5) | 0
@@ -48,7 +49,7 @@ function poisson(rng, media) {
   } while (p > L)
   return k - 1
 }
-const cuantil = (xs, q) => {
+export const cuantil = (xs, q) => {
   const o = [...xs].sort((a, b) => a - b)
   if (!o.length) return NaN
   const i = (o.length - 1) * q
@@ -94,7 +95,7 @@ export const SUPUESTOS = {
 }
 
 // ─── Textos ────────────────────────────────────────────────────────────────
-const cuentosDeNivel = (n) => CUENTOS.filter((c) => c.nivel === n)
+export const cuentosDeNivel = (n) => CUENTOS.filter((c) => c.nivel === n)
 
 /** Texto que sube un adulto: unidades tomadas al azar de los cuentos del nivel. */
 function textoSubido(nivel, rng, i) {
@@ -137,7 +138,7 @@ export const A_RELECTURA = { 0: 3, 1: 1, 2: 1, 3: 1, 4: 2 }
 
 /** Sílabas por minuto «de referencia» de cada nivel (modelos D y E). */
 export const REF_SPM = { 0: 7, 1: 22, 2: 60, 3: 105, 4: 165 }
-const esperadoMin = (u, nivel, ref = REF_SPM) => u.silabas / ref[nivel] + 3 / 60
+export const esperadoMin = (u, nivel, ref = REF_SPM) => u.silabas / ref[nivel] + 3 / 60
 /** E2: ritmo de referencia con N0 = 5 síl/min (revisión de Fable). */
 export const REF_SPM_E2 = { 0: 5, 1: 22, 2: 60, 3: 105, 4: 165 }
 
@@ -266,7 +267,7 @@ export const MODELOS = [
 ]
 
 // ─── Un niño leyendo ───────────────────────────────────────────────────────
-function nuevoNino(perfil, rng, modo) {
+export function nuevoNino(perfil, rng, modo) {
   return {
     perfil,
     rng,
@@ -330,10 +331,10 @@ function tiempoUnidad(n, u, nivel) {
 }
 
 /** Una sesión de `minutos`. Devuelve lo ganado y lo hecho. */
-function sesion(n, modelo, minutos) {
+export function sesion(n, modelo, minutos) {
   n.dia++
   n.bloque = { activoMin: 0, dados: 0 }
-  const res = { monedas: 0, unidades: 0, silabas: 0, libros: 0, activoMin: 0, porFuente: { unidad: 0, hitos: 0, libro: 0, nuevas: 0, bloque: 0, nivel: 0, relectura: 0, sinTropiezo: 0, mejora: 0 }, pagadoMin: 0, total: 0 }
+  const res = { monedas: 0, unidades: 0, silabas: 0, libros: 0, activoMin: 0, porFuente: { unidad: 0, hitos: 0, libro: 0, nuevas: 0, bloque: 0, nivel: 0, relectura: 0, sinTropiezo: 0, mejora: 0 }, pagadoMin: 0, total: 0, sobreTopeMin: 0, repeticionMin: 0 }
   const ganar = (m, fuente) => {
     if (!m) return
     res.monedas += m
@@ -405,6 +406,8 @@ function sesion(n, modelo, minutos) {
         // D y E: cada unidad paga por esfuerzo esperado; E toma el menor entre esperado y activo real.
         const esperado = esperadoMin(u, nivel, modelo.ref)
         const base = modelo.usaTiempoReal ? Math.min((modelo.capFactor ?? 1) * esperado, tu.activo) : esperado
+        // Verificación (no consume azar): tiempo activo que el tope por unidad deja sin pagar.
+        if (modelo.usaTiempoReal) res.sobreTopeMin += Math.max(0, tu.activo - base)
         const tasa = nuevaUnidad ? modelo.tasa : typeof modelo.relecturaTasa === 'object' ? modelo.relecturaTasa[nivel] : modelo.relecturaTasa
         if (nuevaUnidad) est.leidoHasta = fin
         est.acarreo += tasa * base
@@ -435,6 +438,8 @@ function sesion(n, modelo, minutos) {
         if (t + otra.total <= presupuesto) {
           t += otra.total
           res.activoMin += otra.activo
+          // Verificación: el simulador no paga esta repetición (E2 la pagaría como «releída»; ver ECONOMIA-V3 §18).
+          res.repeticionMin += otra.activo
           tramo.desde = k
           tramo.palabras = u.palabras
           tramo.buen = u.palabras
@@ -496,12 +501,12 @@ function sesion(n, modelo, minutos) {
 }
 
 // ─── Experimentos ──────────────────────────────────────────────────────────
-function resumen(xs) {
+export function resumen(xs) {
   return { p10: r1(cuantil(xs, 0.1)), p50: r1(cuantil(xs, 0.5)), p90: r1(cuantil(xs, 0.9)), media: r1(xs.reduce((s, x) => s + x, 0) / xs.length) }
 }
 
 /** Primera sesión (contenido nuevo) de cada perfil × duración × modelo. */
-function primeraSesion(modelo, perfil, minutos) {
+export function primeraSesion(modelo, perfil, minutos) {
   const rng = mulberry32(SEMILLA + perfil.nivel * 1000 + minutos)
   const m = []
   const l = []
@@ -532,7 +537,7 @@ function primeraSesion(modelo, perfil, minutos) {
 }
 
 /** Muchas sesiones seguidas de 15 min: acumulado y cuándo alcanza cada precio. */
-function campana(modelo, perfil, modo, minutos = 15) {
+export function campana(modelo, perfil, modo, minutos = 15) {
   const rng = mulberry32(SEMILLA + 77 + perfil.nivel * 1000 + (modo === 'subidos' ? 500 : 0))
   const curvas = []
   const fuentes = {}
@@ -617,7 +622,7 @@ export const MINUTOS_ACTIVOS_CUNCUNA = 60
  * Caso «20 min por cuento» a lo largo del tiempo: P0 muy lento (factor 0,42)
  * con sesiones de `minutos`. Azar propio (no altera las demás celdas).
  */
-function campanaLento(modelo, minutos, marcapaginas = false) {
+export function campanaLento(modelo, minutos, marcapaginas = false) {
   const perfil = PERFILES[0]
   const rng = mulberry32(SEMILLA + 4242 + minutos + (marcapaginas ? 7 : 0))
   const progresos = []
@@ -734,7 +739,7 @@ ESCENARIOS_PRECIO.push(
  * Sesión de 25 min para que alcance a terminarlo.
  */
 export const CASO_USUARIO = { factor: 0.42, minutos: 25 }
-function casoUsuario(modelo) {
+export function casoUsuario(modelo) {
   const perfil = PERFILES[0]
   const rng = mulberry32(SEMILLA + 999)
   const monedas = []
@@ -752,7 +757,7 @@ function casoUsuario(modelo) {
 }
 
 // ─── Abuso: la acción repetitiva que más paga sin aprender ─────────────────
-function abuso(modelo) {
+export function abuso(modelo) {
   // Arrastre lo más rápido que permite el motor sin tropezar (4 manzanas/s, LIMITE_MAXIMO_RITMO)
   // sobre un texto subido por el propio niño. Tiempos mínimos (s) por unidad: arrastre + 0,45 s
   // (MS_PASO_FRASE) + ~0,6 s de voz final. Subir un texto nuevo: ~40 s (pegar y guardar).
@@ -778,10 +783,12 @@ function abuso(modelo) {
   } else {
     // D: paga lo esperado aunque se arrastre rápido. Texto N0 de 300 frases de 8 sílabas.
     const silabas = 8
-    const esperado = silabas / REF_SPM[0] + 3 / 60
+    // Corregido tras la verificación: usa la referencia y el tope del modelo (antes, REF_SPM y tope 1× para E2).
+    // Sin efecto numérico: el arrastre (3,05 s) queda bajo lo esperado con cualquiera de las dos referencias.
+    const esperado = silabas / (modelo.ref ?? REF_SPM)[0] + 3 / 60
     const segUnidad = silabas / 4 + 0.45 + 0.6
     const activo = segUnidad / 60
-    const porUnidad = modelo.tasa * (modelo.usaTiempoReal ? Math.min(esperado, activo) : esperado)
+    const porUnidad = modelo.tasa * (modelo.usaTiempoReal ? Math.min((modelo.capFactor ?? 1) * esperado, activo) : esperado)
     const unidades = 300
     const bloque = modelo.bloque ? (modelo.bloque.monedas / modelo.bloque.minutos) : 0
     const min = (unidades * segUnidad + subir) / 60
@@ -831,7 +838,7 @@ function pagoTexto(modelo, { nivel, sugerido, unidades, segActivo, propio, falsi
 
 const SUBIR_SEG = 40 // pegar y guardar un texto
 const rep_ = (n, u) => Array.from({ length: n }, () => ({ ...u }))
-function abusoAmpliado(modelo) {
+export function abusoAmpliado(modelo) {
   const filas = []
   const fila = (id, accion, r, minutos, extra = {}) => filas.push({ id, accion, monedas: r1(r.monedas), minutos: r1(minutos), porMinuto: r1(r.monedas / minutos), ...extra })
   // 1. 300 × «Mariposa amarilla.» (N2 sugerido), arrastrar (1,55 s por oración).
@@ -868,7 +875,16 @@ function abusoAmpliado(modelo) {
     const minB = Math.max(minA, r.pagadoMin)
     fila('falso-reloj-pagado', 'Ídem; reloj que se adelanta con los segundos pagados', r, minB, { rafagaMaxHora: r1(modelo.tasa * 60) })
   }
-  // 6. App abierta sin completar frases (toques cada < 10 s), 60 min.
+  // 6. Rondar (añadido tras la verificación): tocar cada < 10 s sin leer y completar cada frase de un cuento
+  //    de N0 de la biblioteca solo al llegar al tiempo máximo pagable (tope × lo esperado). Es la cota superior
+  //    de «tiempo con la app abierta» en los modelos que pagan tiempo real: nunca rinde más que leer.
+  {
+    const u = { silabas: 10, palabras: 4 }
+    const seg = (modelo.capFactor ?? 1) * esperadoMin(u, 0, modelo.ref ?? REF_SPM) * 60
+    const r = pagoTexto(modelo, { nivel: 0, sugerido: 0, unidades: rep_(8, u), segActivo: seg, propio: false })
+    fila('rondar', 'Rondar: tocar cada < 10 s y completar cada frase de N0 solo al llegar al máximo pagable', r, (8 * seg) / 60)
+  }
+  // 7. App abierta sin completar frases (toques cada < 10 s), 60 min.
   {
     const m = modelo.bloque ? Math.min(modelo.bloque.monedas * Math.floor(60 / modelo.bloque.minutos), modelo.bloque.monedas * modelo.bloque.maxPorDia) : 0
     filas.push({ id: 'abierta', accion: 'App abierta 60 min tocando la pantalla sin completar frases', monedas: m, minutos: 60, porMinuto: r1(m / 60) })
@@ -877,7 +893,7 @@ function abusoAmpliado(modelo) {
 }
 
 // ─── Equidad ───────────────────────────────────────────────────────────────
-function gini(xs) {
+export function gini(xs) {
   const n = xs.length
   const media = xs.reduce((s, x) => s + x, 0) / n
   let suma = 0
@@ -886,6 +902,9 @@ function gini(xs) {
 }
 
 // ─── Ejecutar ──────────────────────────────────────────────────────────────
+// Solo al ejecutarlo directamente; sensibilidad.mjs importa las funciones sin escribir resultados.json.
+const esPrincipal = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+if (esPrincipal) {
 const salida = {
   semilla: SEMILLA,
   nNinos: N_NINOS,
@@ -978,3 +997,4 @@ for (const modelo of MODELOS) {
 for (const m of salida.modelos) for (const p of Object.values(m.celdas)) for (const c of Object.values(p)) delete c._muestra
 writeFileSync(new URL('./datos/resultados.json', import.meta.url), JSON.stringify(salida) + '\n')
 console.log('datos/resultados.json escrito')
+}
