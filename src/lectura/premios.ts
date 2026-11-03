@@ -178,9 +178,28 @@ function esFinDeUnidad(vista: VistaPorNivel, totalFrases: number, hasta: number)
 const esperadoDe = (unidades: string[], nivelRef: NivelLectura, e: ReglasEsfuerzo) =>
   unidades.reduce((s, u) => s + segundosEsperados(nivelRef, contarSilabas(u), e), 0)
 
-/** Los segundos activos que cuentan: los medidos (o, si una app anterior no los manda, lo esperado), hasta el tope. */
-const segundosQueCuentan = (activos: number | undefined, esperado: number, e: ReglasEsfuerzo) =>
-  Math.min(e.topeSobreEsperado * esperado, activos ?? esperado)
+/**
+ * Los segundos activos que cuentan: los medidos, hasta `topeSobreEsperado` ×
+ * lo esperado. Si la app no los manda (una app anterior o manipulada), se
+ * cuenta solo lo mínimo para pasar el dedo (`minimo`, la plausibilidad: 0,1 s
+ * por palabra y 0,5 s por unidad), nunca lo esperado: pagar lo esperado sin
+ * medirlo es el modelo D (hasta 45/min con arrastre; ECONOMIA-V3 §18.5).
+ */
+const segundosQueCuentan = (activos: number | undefined, esperado: number, e: ReglasEsfuerzo, minimo: number) =>
+  Math.min(e.topeSobreEsperado * esperado, activos ?? minimo)
+
+/** Lo mínimo plausible de varias unidades (lo que cuenta si la app no mide el tiempo). */
+const minimoDe = (unidades: string[], ritmo: RitmoPlausible) => unidades.reduce((s, u) => s + segundosDe(u, ritmo), 0)
+
+/**
+ * Tropiezos de una lectura completa: como mucho uno por unidad del libro. Con
+ * más (una app manipulada) se podría crear una reserva sin fin de «relecturas
+ * con mejora» (+2 por cuento y día bajando de a uno; ECONOMIA-V3 §18.5).
+ */
+const tropiezosDe = (v: unknown, unidades: number): number | undefined => {
+  const t = medida(v, 10_000)
+  return t === undefined ? undefined : Math.min(Math.floor(t), unidades)
+}
 
 /**
  * Monedas de una solicitud, con las reglas vigentes. Nunca paga dos veces lo
@@ -214,7 +233,7 @@ export function calcularPremio(
     if (!(hasta > 0 && hasta <= totalFrases) || !esFinDeUnidad(vista, totalFrases, hasta)) return nada('unidad_inexistente')
     if (hasta > previo.pagadoHasta) return nada('no_leida')
     const u = unidadesEntre(vista, totalFrases, 0, hasta).at(-1)
-    const actividad = u && solicitud.conPremio ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe([u.texto], nivelRef, ACTIVIDAD), ACTIVIDAD) : 0
+    const actividad = u && solicitud.conPremio ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe([u.texto], nivelRef, ACTIVIDAD), ACTIVIDAD, minimoDe([u.texto], opciones.ritmo ?? RITMO_PLAUSIBLE)) : 0
     return { ...nada('releida'), segundosActividad: actividad }
   }
 
@@ -262,7 +281,7 @@ export function calcularPremio(
   monedas += hitos.reduce((s, h) => s + h.monedas, 0)
   // Lo que no cambia las monedas de 2.4.1: actividad para los logros.
   const nuevas = unidadesEntre(vista, totalFrases, previo.pagadoHasta, hasta).map((u) => u.texto)
-  const actividad = solicitud.conPremio && nuevas.length ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe(nuevas, nivelRef, ACTIVIDAD), ACTIVIDAD) : 0
+  const actividad = solicitud.conPremio && nuevas.length ? segundosQueCuentan(medida(solicitud.segundosActivos), esperadoDe(nuevas, nivelRef, ACTIVIDAD), ACTIVIDAD, minimoDe(nuevas, ritmo)) : 0
   return {
     monedas,
     estado: { ...previo, pagadoHasta: hasta, hitosHasta: hitos.length ? hitos[hitos.length - 1].porcentaje : previo.hitosHasta },
@@ -328,19 +347,21 @@ function calcularPremioE2(
     return { monedas, fraccion: Math.max(0, acarreo - monedas) }
   }
   const esperadoLibro = () => esperadoDe(vista.unidades.filter((u) => contarPalabras(u) > 0), nivelRef, e)
+  const unidadesConPalabras = vista.unidades.filter((u) => contarPalabras(u) > 0).length
   /** Los segundos pagables: los activos (o lo esperado), hasta 2× lo esperado y hasta lo que deja el reloj del servidor. */
   const pagablesDe = (textos: string[]) =>
-    Math.max(0, Math.min(opciones.maxSegundosPagables ?? Infinity, segundosQueCuentan(activos, esperadoDe(textos, nivelRef, e), e)))
+    Math.max(0, Math.min(opciones.maxSegundosPagables ?? Infinity, segundosQueCuentan(activos, esperadoDe(textos, nivelRef, e), e, minimoDe(textos, ritmo))))
 
   if (solicitud.tipo === 'relectura') {
     if (!diaValido(solicitud.dia, opciones.hoy)) return nada('dia_invalido')
     if (previo.pagadoHasta < totalFrases) return nada('no_terminado')
     if (previo.relecturaDia && solicitud.dia <= previo.relecturaDia) return nada('relectura_repetida')
-    const tropiezos = medida(solicitud.tropiezos, 10_000)
-    if (tropiezos === undefined) return nada('sin_mejora')
+    const t = tropiezosDe(solicitud.tropiezos, unidadesConPalabras)
+    if (t === undefined) return nada('sin_mejora')
+    // Como el premio de terminar: solo libros de al menos 1 min esperado.
+    if (esperadoLibro() / 60 < e.libroTerminado.minutosEsperadosMinimos) return nada('sin_mejora')
     // Tiene que haberse releído de verdad (unidades releídas pagadas en estas horas), no solo decirlo.
     if ((opciones.segundosReleidosRecientes ?? 0) < e.libroTerminado.fraccionActivaMinima * esperadoLibro()) return nada('sin_relectura')
-    const t = Math.floor(tropiezos)
     if (previo.mejorTropiezos == null || t >= previo.mejorTropiezos) {
       return nada('sin_mejora', { estado: { ...previo, mejorTropiezos: previo.mejorTropiezos == null ? t : previo.mejorTropiezos } })
     }
@@ -389,8 +410,8 @@ function calcularPremioE2(
       // Una sola vez: aunque no alcance (texto corto, arrastrado), ya no se vuelve a evaluar.
       estado.libroPremiado = true
     }
-    const t = medida(solicitud.tropiezos, 10_000)
-    if (t !== undefined) estado.mejorTropiezos = previo.mejorTropiezos == null ? Math.floor(t) : Math.min(previo.mejorTropiezos, Math.floor(t))
+    const t = tropiezosDe(solicitud.tropiezos, unidadesConPalabras)
+    if (t !== undefined) estado.mejorTropiezos = previo.mejorTropiezos == null ? t : Math.min(previo.mejorTropiezos, t)
   }
   const monedas = tiempo.monedas + libro
   return {

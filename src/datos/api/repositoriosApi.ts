@@ -143,12 +143,12 @@ export function crearRepositoriosApi(base: string): Repositorios {
   let economia: ModeloEconomia = modeloDeCompilacion()
   try {
     const guardada = typeof localStorage === 'undefined' ? null : localStorage.getItem(CLAVE_ECONOMIA)
-    if (guardada === 'e2' || guardada === 'actual') economia = guardada
+    if (guardada === 'e2' || guardada === 'e2r' || guardada === 'actual') economia = guardada
   } catch {
     /* sin almacenamiento: se aprende de la próxima respuesta */
   }
   function recordarEconomia(valor: unknown) {
-    if (valor !== 'e2' && valor !== 'actual') return
+    if (valor !== 'e2' && valor !== 'e2r' && valor !== 'actual') return
     economia = valor
     try {
       localStorage.setItem(CLAVE_ECONOMIA, valor)

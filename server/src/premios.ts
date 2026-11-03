@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto'
 import type pg from 'pg'
 import type { NivelLectura } from '../../src/dominio/tipos.ts'
-import { reglasDe, type ModeloEconomia } from '../../src/lectura/monedas.ts'
+import { pagaPorEsfuerzo, reglasDe, type ModeloEconomia } from '../../src/lectura/monedas.ts'
 import {
   acreditarActividad,
   calcularPremio,
@@ -103,12 +103,12 @@ async function recordar(c: pg.PoolClient, perfilId: string, clave: string, e: Es
   await c.query(
     `insert into lecturas_premiadas (perfil_id, clave, pagado_hasta, hitos_hasta, relectura_dia,
        fraccion, libro_premiado, activo_libro_segundos, mejor_tropiezos, segundos_actividad)
-     values ($1, $2, $3, $4, $5::date, coalesce($6, 0), coalesce($7, false), coalesce($8, 0), $9, $10)
+     values ($1, $2, $3, $4, $5::date, coalesce($6::real, 0), coalesce($7::boolean, false), coalesce($8::real, 0), $9::integer, $10::real)
      on conflict (perfil_id, clave) do update set
        pagado_hasta = greatest(lecturas_premiadas.pagado_hasta, excluded.pagado_hasta),
        hitos_hasta = greatest(lecturas_premiadas.hitos_hasta, excluded.hitos_hasta),
        relectura_dia = greatest(lecturas_premiadas.relectura_dia, excluded.relectura_dia),
-       fraccion = coalesce($6, lecturas_premiadas.fraccion),
+       fraccion = coalesce($6::real, lecturas_premiadas.fraccion),
        libro_premiado = lecturas_premiadas.libro_premiado or excluded.libro_premiado,
        activo_libro_segundos = greatest(lecturas_premiadas.activo_libro_segundos, excluded.activo_libro_segundos),
        mejor_tropiezos = least(lecturas_premiadas.mejor_tropiezos, excluded.mejor_tropiezos),
@@ -238,14 +238,14 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
 
   const nivel = a.nivel as NivelLectura
   const opciones: OpcionesPremio = { hoy: diaUtc(ahora), vista: vistaDe(t, nivel), reglas }
-  if (economia === 'e2') {
+  if (pagaPorEsfuerzo(economia)) {
     opciones.nivelReferencia = nivelDeReferencia(t, nivel)
     if (p.solicitud.tipo === 'relectura') opciones.segundosReleidosRecientes = await segundosReleidos(c, p.perfilId, a.id, ahora)
   }
   let calculo = calcularPremio(t as never, nivel, previo, p.solicitud, opciones)
 
   let reloj: number | null = perfil.premios_reloj ? new Date(perfil.premios_reloj).getTime() : null
-  if (economia === 'e2') {
+  if (pagaPorEsfuerzo(economia)) {
     // E2: lo pagado por tiempo adelanta el reloj (no se cobra más tiempo del que pasó).
     if (calculo.monedas > 0 || calculo.segundosPagados > 0) {
       const r = revisarRelojE2(reloj, ahora, calculo.costoSegundos, calculo.segundosPagados)
@@ -315,11 +315,11 @@ export async function otorgarPremio(c: pg.PoolClient, p: PedidoPremio, ahora: nu
 
 /** E2: lo que se anota de más en el registro (para auditar el tiempo pagado). */
 function detalleE2(economia: ModeloEconomia, calculo: CalculoPremio, s: SolicitudPremio, ahora: number): Record<string, unknown> {
-  if (economia !== 'e2') return {}
+  if (!pagaPorEsfuerzo(economia)) return {}
   const r = (x: number) => Math.round(x * 10) / 10
   return {
     economia,
-    ahora,
+    ahora: Math.round(ahora),
     segundosPagados: r(calculo.segundosPagados),
     ...(s.tipo !== 'relectura' && typeof s.segundosActivos === 'number' ? { segundosDeclarados: r(Math.min(s.segundosActivos, 86_400)) } : {}),
     ...(typeof (s as { tropiezos?: unknown }).tropiezos === 'number' ? { tropiezos: (s as { tropiezos: number }).tropiezos } : {}),
@@ -333,7 +333,7 @@ async function segundosReleidos(c: pg.PoolClient, perfilId: string, asignacionId
   const { rows } = await c.query(
     `select coalesce(sum((detalle->>'segundosPagados')::real), 0)::real as s from premios
       where perfil_id = $1 and asignacion_id = $2 and tipo = 'releida' and (detalle->>'ahora')::bigint > $3`,
-    [perfilId, asignacionId, ahora - HORAS_RELECTURA * 3600 * 1000],
+    [perfilId, asignacionId, Math.round(ahora - HORAS_RELECTURA * 3600 * 1000)],
   )
   return rows[0].s
 }

@@ -4,6 +4,8 @@ import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '..
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { hoy } from '../../lectura/monedas'
 import { calcularPremio, combinarEstados, type EstadoPremios } from '../../lectura/premios'
+import { reglasDe } from '../../lectura/monedas'
+import { modeloDeCompilacion } from '../economia'
 import { nuevoId } from '../../dominio/ids'
 import {
   AJUSTES_POR_DEFECTO,
@@ -512,7 +514,8 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       else if (atendido) r = { estado: 'otorgado', otorgadas: atendido.otorgadas, monedas: perfil.monedas }
       else {
         const previo = premiosDe(a)
-        const calculo = calcularPremio(texto, a.nivel ?? 1, previo, pedido, { hoy: hoy() })
+        // Sin cuenta, la economía la fija la compilación (VITE_ECONOMIA; por defecto 2.4.1).
+        const calculo = calcularPremio(texto, a.nivel ?? 1, previo, pedido, { hoy: hoy(), reglas: reglasDe(modeloDeCompilacion()) })
         const e = calculo.estado
         tablas.premios.guardar({ id: a.id, ...e })
         tablas.premiosAtendidos.guardar({ id: pedido.operationId, otorgadas: calculo.monedas })
@@ -531,6 +534,7 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     },
     async reintentar() {},
     pendientes: () => 0,
+    economia: () => modeloDeCompilacion(),
     alResolver(fn) {
       oyentesPremios.add(fn)
       return () => void oyentesPremios.delete(fn)

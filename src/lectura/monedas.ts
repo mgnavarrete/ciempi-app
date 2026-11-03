@@ -200,7 +200,23 @@ export const REGLAS_MONEDAS_E2: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEsf
 }
 
 /** Qué economía usa el servidor. 'actual' = 2.4.1 (por defecto). */
-export type ModeloEconomia = 'actual' | 'e2'
+export type ModeloEconomia = 'actual' | 'e2' | 'e2r'
+
+/**
+ * E2R (ECONOMIA-V3 §18.3, recomendada pero NO aprobada): igual que E2, pero la
+ * relectura paga 1,5 por minuto en todos los niveles. Solo con ECONOMIA=e2r.
+ */
+export const REGLAS_MONEDAS_E2R: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEsfuerzo } = {
+  ...REGLAS_MONEDAS_E2,
+  version: '3.0.0-e2r',
+  esfuerzo: {
+    ...REGLAS_MONEDAS_E2.esfuerzo,
+    tasaPorMinuto: { ...REGLAS_MONEDAS_E2.esfuerzo.tasaPorMinuto, relectura: { 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 } },
+  },
+}
+
+/** ¿Paga por esfuerzo (E2 o su variante E2R)? */
+export const pagaPorEsfuerzo = (m: ModeloEconomia) => m === 'e2' || m === 'e2r'
 
 /**
  * La bandera ECONOMIA del servidor: 'e2' activa el modelo experimental; vacía,
@@ -211,10 +227,11 @@ export function leerModeloEconomia(valor: string | undefined | null): ModeloEcon
   const v = (valor ?? '').trim().toLowerCase()
   if (v === '' || v === 'actual' || v === '2.4.1') return 'actual'
   if (v === 'e2') return 'e2'
-  throw new Error(`ECONOMIA="${valor}" no es válida: usa "e2" o déjala vacía (2.4.1)`)
+  if (v === 'e2r') return 'e2r'
+  throw new Error(`ECONOMIA="${valor}" no es válida: usa "e2", "e2r" o déjala vacía (2.4.1)`)
 }
 
-export const reglasDe = (modelo: ModeloEconomia): ReglasMonedasConEsfuerzo => (modelo === 'e2' ? REGLAS_MONEDAS_E2 : REGLAS_MONEDAS)
+export const reglasDe = (modelo: ModeloEconomia): ReglasMonedasConEsfuerzo => (modelo === 'e2' ? REGLAS_MONEDAS_E2 : modelo === 'e2r' ? REGLAS_MONEDAS_E2R : REGLAS_MONEDAS)
 
 /** Sílabas de una unidad (para el tiempo esperado). */
 export function contarSilabas(unidad: string): number {
