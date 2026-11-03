@@ -48,6 +48,55 @@ function marcasDeSuelo(p, t) {
   return Array.from({ length: 9 }, (_, i) => ({ tipo: 'suelo', x: 40 + i * paso - d, y: 596, s: 1.4, opacidad: 1 }))
 }
 
+/**
+ * Cola de E08 Comer, como capa sobre la animación de fondo: como mucho una en
+ * curso y una pendiente. Si llega otra unidad antes del mordisco, la actual
+ * salta al mordisco; la pendiente empieza cuando la actual ya masticó
+ * (`COMER.reanudar`). Más llegadas se funden con la pendiente (la última manda).
+ */
+export class ColaComer {
+  /** `capa(p, t, n, opciones)` y sus tiempos: `COMER` y `comer` de animaciones.js. */
+  constructor(tiempos, capa) {
+    this.tiempos = tiempos
+    this.capa = capa
+    this.t = 0
+    this.activa = false
+    this.pendiente = null
+    this.opciones = {}
+  }
+  /** Llega una unidad (una fruta). Devuelve qué hizo, para pruebas y medición. */
+  llega(opciones = {}) {
+    if (!this.activa) {
+      Object.assign(this, { activa: true, t: 0, opciones })
+      return 'inicia'
+    }
+    const fundida = this.pendiente !== null
+    this.pendiente = opciones
+    if (fundida) return 'funde'
+    if (this.t < this.tiempos.mordisco) {
+      this.t = this.tiempos.mordisco
+      return 'adelanta'
+    }
+    return 'espera'
+  }
+  avanzar(dt) {
+    if (!this.activa) return
+    this.t += dt
+    if (this.pendiente && this.t >= this.tiempos.reanudar) {
+      Object.assign(this, { t: 0, opciones: this.pendiente, pendiente: null })
+    } else if (this.t >= this.tiempos.duracion) {
+      Object.assign(this, { activa: false, t: 0 })
+    }
+  }
+  aplicar(p, n) {
+    if (this.activa) this.capa(p, this.t, n, this.opciones)
+    return p
+  }
+  detener() {
+    Object.assign(this, { activa: false, t: 0, pendiente: null })
+  }
+}
+
 export class Reproductor {
   constructor(alCuadro) {
     this.alCuadro = alCuadro
@@ -63,6 +112,8 @@ export class Reproductor {
     this.suelo = true
     /** Al terminar una animación que no se repite (si no, se queda en su último cuadro). */
     this.alTerminar = null
+    /** Capa que se suma a la animación (p. ej. ColaComer): { avanzar(dt), aplicar(p, n) }. */
+    this.capa = null
     this.ultimo = 0
     this.medidas = []
     this.cuadro = this.cuadro.bind(this)
@@ -74,7 +125,9 @@ export class Reproductor {
     this.dibujar()
   }
   pose(t = this.t) {
-    const p = reducir(poseConInercia(this.anim, t, this.segmentos), this.movimiento)
+    const p0 = poseConInercia(this.anim, t, this.segmentos)
+    if (this.capa) this.capa.aplicar(p0, this.segmentos)
+    const p = reducir(p0, this.movimiento)
     if (this.suelo) p.efectos = [...marcasDeSuelo(p, t), ...p.efectos]
     return p
   }
@@ -102,6 +155,7 @@ export class Reproductor {
     const dt = Math.min(0.1, (ahora - this.ultimo) / 1000)
     this.ultimo = ahora
     this.t += dt * this.velocidad
+    if (this.capa) this.capa.avanzar(dt * this.velocidad)
     if (this.t >= this.anim.duracion) {
       if (this.bucle) this.t %= this.anim.duracion
       else {

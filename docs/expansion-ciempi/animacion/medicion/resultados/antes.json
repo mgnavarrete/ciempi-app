@@ -1,0 +1,735 @@
+{
+ "etiqueta": "antes",
+ "extra": {},
+ "msPorUnidad": 500,
+ "conjunto": "tipico",
+ "fecha": "2026-11-03T14:12:02.174Z",
+ "chromium": "156.0.8078.4",
+ "corridas": [
+  {
+   "cpu": 1,
+   "rep": 0,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 5.800000011920929,
+    "p95": 10.099999994039536,
+    "max": 18.599999994039536
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.29999999701976776,
+    "p95": 0.7000000029802322
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.002621473753706,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.031269073486328,
+    "finSinGcMB": 5.105121612548828,
+    "finMB": 3.7365379333496094
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1308,
+    "recalculosEstilo": 1308
+   },
+   "errores": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ]
+  },
+  {
+   "cpu": 1,
+   "rep": 1,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 6.700000002980232,
+    "p95": 10.599999994039536,
+    "max": 13.899999991059303
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.29999999701976776,
+    "p95": 0.8999999910593033
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0026214737537,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.0357933044433594,
+    "finSinGcMB": 5.170379638671875,
+    "finMB": 3.7392311096191406
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1307,
+    "recalculosEstilo": 1307
+   },
+   "errores": []
+  },
+  {
+   "cpu": 1,
+   "rep": 2,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 5.9000000059604645,
+    "p95": 11.200000002980232,
+    "max": 11.899999991059303
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.29999999701976776,
+    "p95": 0.6000000089406967
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.0506668090820312,
+    "finSinGcMB": 5.573455810546875,
+    "finMB": 3.7373046875
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1306,
+    "recalculosEstilo": 1306
+   },
+   "errores": []
+  },
+  {
+   "cpu": 4,
+   "rep": 0,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 27.299999997019768,
+    "p95": 43.70000000298023,
+    "max": 55.599999994039536
+   },
+   "movimiento": {
+    "n": 1150,
+    "mediana": 1.2000000029802322,
+    "p95": 2.5999999940395355
+   },
+   "cuadros": {
+    "n": 1191,
+    "fps": 57.77094378610684,
+    "perdidos": 46,
+    "pctPerdidos": 3.7186742118027487,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999955,
+    "max": 66.70000000000073
+   },
+   "tareasLargas": {
+    "n": 11,
+    "totalMs": 628,
+    "max": 73
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.045013427734375,
+    "finSinGcMB": 6.5741424560546875,
+    "finMB": 3.6774520874023438
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1263,
+    "recalculosEstilo": 1263
+   },
+   "errores": []
+  },
+  {
+   "cpu": 4,
+   "rep": 1,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 27.099999994039536,
+    "p95": 48.80000001192093,
+    "max": 64.59999999403954
+   },
+   "movimiento": {
+    "n": 1145,
+    "mediana": 1.2000000029802322,
+    "p95": 3.2999999970197678
+   },
+   "cuadros": {
+    "n": 1186,
+    "fps": 57.57505145830906,
+    "perdidos": 50,
+    "pctPerdidos": 4.0453074433656955,
+    "mediana": 16.699999999999818,
+    "p95": 16.800000000000182,
+    "max": 83.29999999999927
+   },
+   "tareasLargas": {
+    "n": 13,
+    "totalMs": 792,
+    "max": 84
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.049327850341797,
+    "finSinGcMB": 5.024688720703125,
+    "finMB": 3.6600265502929688
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1258,
+    "recalculosEstilo": 1258
+   },
+   "errores": []
+  },
+  {
+   "cpu": 4,
+   "rep": 2,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 24.899999991059303,
+    "p95": 39.29999999701977,
+    "max": 49.20000000298023
+   },
+   "movimiento": {
+    "n": 1159,
+    "mediana": 1,
+    "p95": 2.0999999940395355
+   },
+   "cuadros": {
+    "n": 1200,
+    "fps": 58.25468950250495,
+    "perdidos": 36,
+    "pctPerdidos": 2.912621359223301,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 66.59999999999854
+   },
+   "tareasLargas": {
+    "n": 5,
+    "totalMs": 297,
+    "max": 66
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.0458145141601562,
+    "finSinGcMB": 5.191165924072266,
+    "finMB": 3.6939315795898438
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1271,
+    "recalculosEstilo": 1271
+   },
+   "errores": []
+  },
+  {
+   "cpu": 6,
+   "rep": 0,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 58.6000000089407,
+    "p95": 90.70000000298023,
+    "max": 110.29999999701977
+   },
+   "movimiento": {
+    "n": 1001,
+    "mediana": 2.5,
+    "p95": 5.5
+   },
+   "cuadros": {
+    "n": 1042,
+    "fps": 50.58448871800847,
+    "perdidos": 194,
+    "pctPerdidos": 15.6957928802589,
+    "mediana": 16.699999999999818,
+    "p95": 33.399999999999636,
+    "max": 133.40000000000146
+   },
+   "tareasLargas": {
+    "n": 30,
+    "totalMs": 2784,
+    "max": 146
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.0354766845703125,
+    "finSinGcMB": 4.304851531982422,
+    "finMB": 3.6915130615234375
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1115,
+    "recalculosEstilo": 1115
+   },
+   "errores": []
+  },
+  {
+   "cpu": 6,
+   "rep": 1,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 53.900000005960464,
+    "p95": 109.29999999701977,
+    "max": 124.5
+   },
+   "movimiento": {
+    "n": 955,
+    "mediana": 2.3999999910593033,
+    "p95": 5.600000008940697
+   },
+   "cuadros": {
+    "n": 996,
+    "fps": 48.35162701283065,
+    "perdidos": 240,
+    "pctPerdidos": 19.41747572815534,
+    "mediana": 16.699999999999818,
+    "p95": 33.399999999999636,
+    "max": 166.70000000000073
+   },
+   "tareasLargas": {
+    "n": 37,
+    "totalMs": 3416,
+    "max": 165
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.0357894897460938,
+    "finSinGcMB": 6.777256011962891,
+    "finMB": 3.6562728881835938
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1070,
+    "recalculosEstilo": 1070
+   },
+   "errores": []
+  },
+  {
+   "cpu": 6,
+   "rep": 2,
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "conjunto": "tipico",
+   "unidad": {
+    "n": 40,
+    "mediana": 44.80000001192093,
+    "p95": 106.20000000298023,
+    "max": 133.1000000089407
+   },
+   "movimiento": {
+    "n": 976,
+    "mediana": 2.199999988079071,
+    "p95": 5.399999991059303
+   },
+   "cuadros": {
+    "n": 1017,
+    "fps": 49.370849353372954,
+    "perdidos": 219,
+    "pctPerdidos": 17.718446601941746,
+    "mediana": 16.699999999999818,
+    "p95": 33.400000000001455,
+    "max": 183.29999999999927
+   },
+   "tareasLargas": {
+    "n": 35,
+    "totalMs": 3052,
+    "max": 181
+   },
+   "nodosDom": 1085,
+   "nodosCiempi": 1072,
+   "heap": {
+    "inicioMB": 3.041351318359375,
+    "finSinGcMB": 4.1975250244140625,
+    "finMB": 3.687042236328125
+   },
+   "cdp": {
+    "nodosInicio": 741,
+    "nodosFin": 1842,
+    "layouts": 1089,
+    "recalculosEstilo": 1089
+   },
+   "errores": []
+  }
+ ],
+ "micro": [
+  {
+   "cpu": 1,
+   "componerMs": 2.5,
+   "svgBytes": 16028,
+   "n0a10": {
+    "escena": {
+     "mediana": 2,
+     "p95": 2.5
+    },
+    "innerHTML": {
+     "mediana": 0.5,
+     "p95": 0.7999999970197678
+    },
+    "rig": {
+     "mediana": 0.29999999701976776,
+     "p95": 0.4000000059604645
+    },
+    "estilo": {
+     "mediana": 1.1000000089406967,
+     "p95": 1.5999999940395355
+    }
+   },
+   "n11a25": {
+    "escena": {
+     "mediana": 3.2999999970197678,
+     "p95": 5
+    },
+    "innerHTML": {
+     "mediana": 0.7999999970197678,
+     "p95": 1.199999988079071
+    },
+    "rig": {
+     "mediana": 0.29999999701976776,
+     "p95": 0.5
+    },
+    "estilo": {
+     "mediana": 1.6000000089406967,
+     "p95": 2.1000000089406967
+    }
+   },
+   "n26a40": {
+    "escena": {
+     "mediana": 4.9000000059604645,
+     "p95": 7.200000002980232
+    },
+    "innerHTML": {
+     "mediana": 1.2999999970197678,
+     "p95": 2.9000000059604645
+    },
+    "rig": {
+     "mediana": 0.4000000059604645,
+     "p95": 0.7999999970197678
+    },
+    "estilo": {
+     "mediana": 2.300000011920929,
+     "p95": 3.6000000089406967
+    }
+   },
+   "bytesN40": 83035
+  },
+  {
+   "cpu": 4,
+   "componerMs": 12.299999997019768,
+   "svgBytes": 16028,
+   "n0a10": {
+    "escena": {
+     "mediana": 10.200000002980232,
+     "p95": 18.299999997019768
+    },
+    "innerHTML": {
+     "mediana": 2.6000000089406967,
+     "p95": 4.5
+    },
+    "rig": {
+     "mediana": 1.2000000029802322,
+     "p95": 2.2000000029802322
+    },
+    "estilo": {
+     "mediana": 7.399999991059303,
+     "p95": 10.400000005960464
+    }
+   },
+   "n11a25": {
+    "escena": {
+     "mediana": 19.799999997019768,
+     "p95": 32.29999999701977
+    },
+    "innerHTML": {
+     "mediana": 5.4000000059604645,
+     "p95": 8.400000005960464
+    },
+    "rig": {
+     "mediana": 2,
+     "p95": 3.800000011920929
+    },
+    "estilo": {
+     "mediana": 11.399999991059303,
+     "p95": 20.19999998807907
+    }
+   },
+   "n26a40": {
+    "escena": {
+     "mediana": 27.5,
+     "p95": 34.30000001192093
+    },
+    "innerHTML": {
+     "mediana": 7.100000008940697,
+     "p95": 12.600000008940697
+    },
+    "rig": {
+     "mediana": 2.1000000089406967,
+     "p95": 4.699999988079071
+    },
+    "estilo": {
+     "mediana": 12.700000002980232,
+     "p95": 17.799999997019768
+    }
+   },
+   "bytesN40": 83035
+  },
+  {
+   "cpu": 6,
+   "componerMs": 23.80000001192093,
+   "svgBytes": 16028,
+   "n0a10": {
+    "escena": {
+     "mediana": 19.399999991059303,
+     "p95": 34.6000000089407
+    },
+    "innerHTML": {
+     "mediana": 5.5,
+     "p95": 9.599999994039536
+    },
+    "rig": {
+     "mediana": 2.4000000059604645,
+     "p95": 4.700000002980232
+    },
+    "estilo": {
+     "mediana": 11.5,
+     "p95": 18.299999997019768
+    }
+   },
+   "n11a25": {
+    "escena": {
+     "mediana": 38.5,
+     "p95": 70.09999999403954
+    },
+    "innerHTML": {
+     "mediana": 9.599999994039536,
+     "p95": 17.5
+    },
+    "rig": {
+     "mediana": 3.7999999970197678,
+     "p95": 7.200000002980232
+    },
+    "estilo": {
+     "mediana": 17.799999997019768,
+     "p95": 29.600000008940697
+    }
+   },
+   "n26a40": {
+    "escena": {
+     "mediana": 55.400000005960464,
+     "p95": 71.5
+    },
+    "innerHTML": {
+     "mediana": 14.099999994039536,
+     "p95": 22.399999991059303
+    },
+    "rig": {
+     "mediana": 4.9000000059604645,
+     "p95": 10
+    },
+    "estilo": {
+     "mediana": 26.799999997019768,
+     "p95": 44.79999999701977
+    }
+   },
+   "bytesN40": 83035
+  }
+ ],
+ "trazas": [
+  {
+   "cpu": 1,
+   "ventanaS": 20.615815,
+   "msPorEvento": {
+    "RunTask": 3307,
+    "FunctionCall": 510,
+    "EventDispatch": 4,
+    "FireAnimationFrame": 1240,
+    "UpdateLayoutTree": 462,
+    "Layout": 165,
+    "PrePaint": 247,
+    "Paint": 519,
+    "Layerize": 310,
+    "ParseHTML": 30,
+    "MinorGC": 24,
+    "MajorGC": 33,
+    "V8.GC_SCAVENGER": 20,
+    "HitTest": 0
+   }
+  },
+  {
+   "cpu": 4,
+   "ventanaS": 20.603282,
+   "msPorEvento": {
+    "RunTask": 12387,
+    "FunctionCall": 1584,
+    "EventDispatch": 14,
+    "FireAnimationFrame": 4454,
+    "UpdateLayoutTree": 1842,
+    "Layout": 615,
+    "PrePaint": 988,
+    "Paint": 1892,
+    "Layerize": 1237,
+    "ParseHTML": 142,
+    "MinorGC": 72,
+    "MajorGC": 92,
+    "V8.GC_SCAVENGER": 61,
+    "HitTest": 2
+   }
+  },
+  {
+   "cpu": 6,
+   "ventanaS": 20.602454,
+   "msPorEvento": {
+    "RunTask": 16122,
+    "FunctionCall": 1915,
+    "EventDispatch": 28,
+    "FireAnimationFrame": 5985,
+    "UpdateLayoutTree": 2340,
+    "Layout": 758,
+    "PrePaint": 1228,
+    "Paint": 2324,
+    "Layerize": 1607,
+    "ParseHTML": 217,
+    "MinorGC": 120,
+    "MajorGC": 117,
+    "V8.GC_SCAVENGER": 106,
+    "HitTest": 2
+   }
+  }
+ ],
+ "resumen": [
+  {
+   "cpu": 1,
+   "unidadMediana": 5.9000000059604645,
+   "unidadP95": 10.599999994039536,
+   "unidadMax": 18.599999994039536,
+   "movimientoMediana": 0.29999999701976776,
+   "movimientoP95": 0.7000000029802322,
+   "fps": 60.0026214737537,
+   "perdidos": 0,
+   "pctPerdidos": 0,
+   "cuadroP95": 16.700000000000728,
+   "cuadroMax": 16.80000000000291,
+   "tareasLargas": 0,
+   "tareasLargasMs": 0,
+   "heapFinMB": 3.7373046875,
+   "heapPicoSinGcMB": 5.573455810546875,
+   "nodosDom": 1085,
+   "nodosCdpFin": 1842,
+   "recalculosEstilo": 1307,
+   "layouts": 1307
+  },
+  {
+   "cpu": 4,
+   "unidadMediana": 27.099999994039536,
+   "unidadP95": 43.70000000298023,
+   "unidadMax": 64.59999999403954,
+   "movimientoMediana": 1.2000000029802322,
+   "movimientoP95": 2.5999999940395355,
+   "fps": 57.77094378610684,
+   "perdidos": 46,
+   "pctPerdidos": 3.7186742118027487,
+   "cuadroP95": 16.799999999999955,
+   "cuadroMax": 83.29999999999927,
+   "tareasLargas": 11,
+   "tareasLargasMs": 628,
+   "heapFinMB": 3.6774520874023438,
+   "heapPicoSinGcMB": 6.5741424560546875,
+   "nodosDom": 1085,
+   "nodosCdpFin": 1842,
+   "recalculosEstilo": 1263,
+   "layouts": 1263
+  },
+  {
+   "cpu": 6,
+   "unidadMediana": 53.900000005960464,
+   "unidadP95": 106.20000000298023,
+   "unidadMax": 133.1000000089407,
+   "movimientoMediana": 2.3999999910593033,
+   "movimientoP95": 5.5,
+   "fps": 49.370849353372954,
+   "perdidos": 219,
+   "pctPerdidos": 17.718446601941746,
+   "cuadroP95": 33.399999999999636,
+   "cuadroMax": 183.29999999999927,
+   "tareasLargas": 35,
+   "tareasLargasMs": 3052,
+   "heapFinMB": 3.687042236328125,
+   "heapPicoSinGcMB": 6.777256011962891,
+   "nodosDom": 1085,
+   "nodosCdpFin": 1842,
+   "recalculosEstilo": 1089,
+   "layouts": 1089
+  }
+ ]
+}

@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { ANIMACIONES, type Pose } from './animacion/animaciones.js'
-import { Reproductor } from './animacion/motor.js'
+import { ANIMACIONES, COMER, comer, type OpcionesComer, type Pose } from './animacion/animaciones.js'
+import { ColaComer, Reproductor } from './animacion/motor.js'
 import { crearRig, type Rig } from './animacion/rig.js'
-import type { EscenaViva } from './Vestuario'
+import { posiciones } from './pose'
+import type { EscenaViva, EscenaVivaCreciente } from './Vestuario'
 
 /** Una animación que se juega una vez; `n` cambia para repetir la misma. */
 export interface EventoCiempi {
@@ -20,6 +21,10 @@ interface Props {
   evento?: EventoCiempi | null
   /** Modo tranquilo: movimientos más suaves y sin partículas. */
   tranquilo?: boolean
+  /** E08 Comer como capa sobre la animación de fondo; `n` cambia con cada fruta. */
+  comer?: ({ n: number } & OpcionesComer) | null
+  /** Dibujos SVG de efectos propios (p. ej. `comida`: la comida equipada), centrados en 0,0. */
+  dibujos?: Record<string, string>
 }
 
 const MOVIMIENTO_SUAVE = 0.35
@@ -32,7 +37,7 @@ const sinMovimiento = () => typeof matchMedia !== 'undefined' && matchMedia('(pr
  * cuello y espalda, y solo se mueven; los dibujos aprobados no cambian. Los
  * accesorios siguen a la parte donde están sujetos.
  */
-export function CiempiVivo({ escena, segmentos, base = 'A01', evento = null, tranquilo = false }: Props) {
+export function CiempiVivo({ escena, segmentos, base = 'A01', evento = null, tranquilo = false, comer: fruta = null, dibujos }: Props) {
   const grupo = useRef<SVGGElement>(null)
   const rig = useRef<Rig | null>(null)
   const estado = useRef({ base, enEvento: false })
@@ -52,20 +57,50 @@ export function CiempiVivo({ escena, segmentos, base = 'A01', evento = null, tra
   const rep = reproductor.current
   rep.segmentos = segmentos
   rep.movimiento = tranquilo ? MOVIMIENTO_SUAVE : 1
+  const creciente = 'nMax' in escena
+  const ultimosSegmentos = useRef(segmentos)
+  ultimosSegmentos.current = segmentos
+  const dibujosRef = useRef(dibujos)
+  dibujosRef.current = dibujos
 
-  // La escena cambia con el vestuario o con cada palabra (un segmento más): se rearma el rig.
+  // La escena cambia con el vestuario (o, sin escena creciente, con cada palabra): se rearma el rig.
   useLayoutEffect(() => {
     const g = grupo.current
     if (!g) return
     g.innerHTML = escena.html
     try {
-      rig.current = crearRig(g, { cabeza: escena.cabeza, expresion: escena.expresion }, escena.rostro, { prefijo: escena.prefijo })
+      rig.current = crearRig(g, { cabeza: escena.cabeza, expresion: escena.expresion }, escena.rostro, { prefijo: escena.prefijo, dibujos: dibujosRef.current })
+      if ('nMax' in escena) rig.current.crecer(ultimosSegmentos.current, posiciones)
     } catch (e) {
       console.error('Animación de Ciempi:', e)
       rig.current = null
     }
     if (rep.anim) rep.dibujar()
   }, [escena, rep])
+
+  // Escena creciente: cada palabra solo muestra un segmento más (sin recomponer ni rearmar el rig).
+  useLayoutEffect(() => {
+    if (!creciente || !rig.current) return
+    if (!rig.current.crecer(segmentos, posiciones)) console.error('Ciempi: más segmentos que la escena creciente', segmentos, (escena as EscenaVivaCreciente).nMax)
+    if (rep.anim) rep.dibujar()
+  }, [segmentos, creciente, rep])
+
+  // E08 Comer: una fruta por unidad, como capa (sigue caminando mientras come).
+  const cola = useRef<ColaComer | null>(null)
+  const frutasVistas = useRef(fruta?.n ?? 0)
+  useEffect(() => {
+    // Solo cuando aumenta (al montar o si el cuerpo se achica no hay nada que comer).
+    const nueva = !!fruta && fruta.n > frutasVistas.current
+    frutasVistas.current = fruta?.n ?? 0
+    if (!fruta || !nueva || sinMovimiento()) return
+    if (!cola.current) cola.current = new ColaComer(COMER, comer)
+    rep.capa = cola.current
+    rig.current?.precargarRostro(COMER.bocaAbierta)
+    const n = ultimosSegmentos.current
+    const p = posiciones(n)[Math.max(0, n - 2)]
+    cola.current.llega({ origen: fruta.origen, segmento: fruta.segmento ?? (p ? [p.x, p.y] : undefined) })
+    if (!rep.reproduciendo) rep.dibujar()
+  }, [fruta?.n, rep])
 
   // Animación de fondo (si no se está jugando un evento).
   useEffect(() => {
