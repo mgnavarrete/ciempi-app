@@ -8,6 +8,7 @@ import type { Pieza } from '../seleccion'
  */
 export function tapaBoca(env: { hats?: Pieza[]; masks?: Pieza[] } | null | undefined, cabeza: string | number | undefined): boolean {
   if (!env || cabeza === undefined) return false
-  const pieza = [...(env.masks ?? []), ...(env.hats ?? [])].find((x) => x.id === String(cabeza))
+  // Mismo orden de búsqueda que el compositor (`equipCostumes`: gorros y luego máscaras).
+  const pieza = [...(env.hats ?? []), ...(env.masks ?? [])].find((x) => x.id === String(cabeza))
   return pieza?.ocultaRostro === true
 }

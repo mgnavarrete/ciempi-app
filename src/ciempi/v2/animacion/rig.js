@@ -264,10 +264,6 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
     ojosVisibles: () => rostro.ojos.length > 0,
     /** Hay boca dibujada (una máscara completa la vacía: `data-hidden="costume"`). */
     bocaVisible: () => !!cabezaG?.querySelector('[id="mouth"], [id$="-mouth"]')?.children.length,
-    /**
-     * Cambia ojos, cejas y boca por los de otra expresión B03, tomados de la
-     * composición del mismo conjunto con esa expresión (`obtenerRostro(id)`).
-     */
     /** Prepara de antemano una expresión, para que el cambio no demore un cuadro. */
     precargarRostro(id) {
       if (!id || rostros.has(id) || !obtenerRostro) return
@@ -277,6 +273,12 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       const cabezaOtra = otro.querySelector(`[id="${prefijo}e-${id}-head"]`)
       rostros.set(id, ['eyes', 'b03-brows', 'mouth'].map((nombre) => [nombre, cabezaOtra?.querySelector(`[id$="-${nombre}"]`)]))
     },
+    /**
+     * Cambia ojos, cejas y boca por los de otra expresión B03, tomados de la
+     * composición del mismo conjunto con esa expresión (`obtenerRostro(id)`).
+     * Con una máscara que tapa la boca esa composición también la trae vacía:
+     * nunca aparece una boca sobre la máscara.
+     */
     cambiarRostro(id) {
       if (!id || rostro.expresion === id || !obtenerRostro) return
       this.precargarRostro(id)
