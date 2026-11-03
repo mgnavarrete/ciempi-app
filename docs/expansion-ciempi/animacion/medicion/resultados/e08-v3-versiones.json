@@ -1,0 +1,1874 @@
+{
+ "etiqueta": "e08-v3-versiones",
+ "antes": "/tmp/claude-1000/-mnt-d-Proyectos-ciempi-app/f6786c66-70e9-4f5f-a1f5-44b6262e191b/scratchpad/antes",
+ "fecha": "2026-11-03T19:44:06.278Z",
+ "chromium": "156.0.8078.4",
+ "corridas": [
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    6.8,
+    6.98,
+    5.15
+   ],
+   "cargaFin": [
+    5.99,
+    6.79,
+    5.13
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.9000000059604645,
+    "p95": 6.899999991059303,
+    "max": 9.299999997019768
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.7000000029802322,
+    "p95": 1.2999999970197678
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0026214737537,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ]
+  },
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    5.99,
+    6.79,
+    5.13
+   ],
+   "cargaFin": [
+    4.43,
+    6.35,
+    5.03
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.3999999910593033,
+    "p95": 5.399999991059303,
+    "max": 6.200000002980232
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.3999999910593033,
+    "p95": 1
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ]
+  },
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    4.43,
+    6.35,
+    5.03
+   ],
+   "cargaFin": [
+    3.82,
+    6.09,
+    4.97
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.800000011920929,
+    "p95": 6,
+    "max": 7.299999997019768
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.7000000029802322,
+    "p95": 1.2000000029802322
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    3.82,
+    6.09,
+    4.97
+   ],
+   "cargaFin": [
+    4.64,
+    6.07,
+    4.99
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.199999988079071,
+    "p95": 6.200000002980232,
+    "max": 6.700000002980232
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.5999999940395355,
+    "p95": 1.2000000029802322
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.954075663499864,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 33.30000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    4.64,
+    6.07,
+    4.99
+   ],
+   "cargaFin": [
+    3.91,
+    5.81,
+    4.92
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.5999999940395355,
+    "p95": 5,
+    "max": 7.799999997019768
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5999999940395355,
+    "p95": 1.2999999970197678
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.00203890423461,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    3.91,
+    5.81,
+    4.92
+   ],
+   "cargaFin": [
+    4.13,
+    5.75,
+    4.92
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.8999999910593033,
+    "p95": 6.700000002980232,
+    "max": 14
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.7000000029802322,
+    "p95": 1.5
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    4.13,
+    5.75,
+    4.92
+   ],
+   "cargaFin": [
+    3.39,
+    5.45,
+    4.85
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.200000002980232,
+    "p95": 7.4000000059604645,
+    "max": 9.5
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.7999999970197678,
+    "p95": 1.7000000029802322
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    3.39,
+    5.45,
+    4.85
+   ],
+   "cargaFin": [
+    2.99,
+    5.22,
+    4.78
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.800000011920929,
+    "p95": 8.699999988079071,
+    "max": 14.299999997019768
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.7999999970197678,
+    "p95": 1.699999988079071
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.95407566349985,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 33.30000000000109
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.99,
+    5.22,
+    4.78
+   ],
+   "cargaFin": [
+    2.59,
+    4.95,
+    4.7
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.4000000059604645,
+    "p95": 7.5,
+    "max": 8.699999988079071
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.6000000089406967,
+    "p95": 1.5999999940395355
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0026214737537,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.59,
+    4.95,
+    4.7
+   ],
+   "cargaFin": [
+    2.13,
+    4.69,
+    4.62
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.699999988079071,
+    "p95": 7.699999988079071,
+    "max": 9.699999988079071
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.6000000089406967,
+    "p95": 1.6000000089406967
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.95349356531533,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 33.40000000000009
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.13,
+    4.69,
+    4.62
+   ],
+   "cargaFin": [
+    1.95,
+    4.48,
+    4.56
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.299999997019768,
+    "p95": 6.600000008940697,
+    "max": 10
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.699999988079071,
+    "p95": 1.5999999940395355
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.954075663499864,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 33.400000000000546
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    1.95,
+    4.48,
+    4.56
+   ],
+   "cargaFin": [
+    1.86,
+    4.27,
+    4.48
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.799999997019768,
+    "p95": 6.5,
+    "max": 8.600000008940697
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.7000000029802322,
+    "p95": 1.6000000089406967
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.95407566349985,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 33.30000000000018
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.86,
+    4.27,
+    4.48
+   ],
+   "cargaFin": [
+    1.75,
+    4.09,
+    4.42
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.4000000059604645,
+    "p95": 4.700000002980232,
+    "max": 23.700000002980232
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5,
+    "p95": 1.1000000089406967
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.002621473753706,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.75,
+    4.09,
+    4.42
+   ],
+   "cargaFin": [
+    1.76,
+    3.9,
+    4.35
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.5,
+    "p95": 5,
+    "max": 7
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5,
+    "p95": 1.2000000029802322
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0020389042346,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    1.76,
+    3.9,
+    4.35
+   ],
+   "cargaFin": [
+    1.76,
+    3.76,
+    4.29
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.5,
+    "p95": 6.100000008940697,
+    "max": 7
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5,
+    "p95": 1.1000000089406967
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    1.76,
+    3.76,
+    4.29
+   ],
+   "cargaFin": [
+    2.02,
+    3.68,
+    4.25
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.4000000059604645,
+    "p95": 5.0999999940395355,
+    "max": 6
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5,
+    "p95": 1.1000000089406967
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.02,
+    3.68,
+    4.25
+   ],
+   "cargaFin": [
+    1.86,
+    3.51,
+    4.18
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.3999999910593033,
+    "p95": 4.700000002980232,
+    "max": 6.899999991059303
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.3999999910593033,
+    "p95": 1.0999999940395355
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.86,
+    3.51,
+    4.18
+   ],
+   "cargaFin": [
+    1.75,
+    3.38,
+    4.12
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.2999999970197678,
+    "p95": 5.9000000059604645,
+    "max": 7.700000002980232
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.4000000059604645,
+    "p95": 1.0999999940395355
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.00203890423461,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.75,
+    3.38,
+    4.12
+   ],
+   "cargaFin": [
+    2.13,
+    3.34,
+    4.09
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.200000002980232,
+    "p95": 8.299999997019768,
+    "max": 10
+   },
+   "movimiento": {
+    "n": 1137,
+    "mediana": 1,
+    "p95": 1.9000000059604645
+   },
+   "cuadros": {
+    "n": 1178,
+    "fps": 57.186686861625695,
+    "perdidos": 58,
+    "pctPerdidos": 4.692556634304207,
+    "mediana": 16.699999999999818,
+    "p95": 16.80000000000109,
+    "max": 66.69999999999709
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.13,
+    3.34,
+    4.09
+   ],
+   "cargaFin": [
+    2.82,
+    3.41,
+    4.1
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 6.4000000059604645,
+    "p95": 9.900000005960464,
+    "max": 11.200000002980232
+   },
+   "movimiento": {
+    "n": 1107,
+    "mediana": 1.2000000029802322,
+    "p95": 2.2000000029802322
+   },
+   "cuadros": {
+    "n": 1148,
+    "fps": 55.73031962406307,
+    "perdidos": 88,
+    "pctPerdidos": 7.119741100323624,
+    "mediana": 16.699999999999818,
+    "p95": 33.29999999999927,
+    "max": 50
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.82,
+    3.41,
+    4.1
+   ],
+   "cargaFin": [
+    2.65,
+    3.32,
+    4.05
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.0999999940395355,
+    "p95": 9.200000002980232,
+    "max": 11.599999994039536
+   },
+   "movimiento": {
+    "n": 1193,
+    "mediana": 0.800000011920929,
+    "p95": 1.7000000029802322
+   },
+   "cuadros": {
+    "n": 1234,
+    "fps": 59.90523903840925,
+    "perdidos": 2,
+    "pctPerdidos": 0.16181229773462782,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 33.400000000000546
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.65,
+    3.32,
+    4.05
+   ],
+   "cargaFin": [
+    2.9,
+    3.33,
+    4.03
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.700000002980232,
+    "p95": 10.200000002980232,
+    "max": 18.400000005960464
+   },
+   "movimiento": {
+    "n": 1186,
+    "mediana": 1.1000000089406967,
+    "p95": 2.2999999970197678
+   },
+   "cuadros": {
+    "n": 1227,
+    "fps": 59.565420016311315,
+    "perdidos": 9,
+    "pctPerdidos": 0.7281553398058253,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 50
+   },
+   "tareasLargas": {
+    "n": 1,
+    "totalMs": 54,
+    "max": 54
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.9,
+    3.33,
+    4.03
+   ],
+   "cargaFin": [
+    2.5,
+    3.21,
+    3.98
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.700000002980232,
+    "p95": 7.299999997019768,
+    "max": 13.199999988079071
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.3999999910593033,
+    "p95": 1.5
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.002621473753706,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.5,
+    3.21,
+    3.98
+   ],
+   "cargaFin": [
+    2.63,
+    3.19,
+    3.95
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.700000002980232,
+    "p95": 8.600000008940697,
+    "max": 11.200000002980232
+   },
+   "movimiento": {
+    "n": 1185,
+    "mediana": 0.8999999910593033,
+    "p95": 1.7999999970197678
+   },
+   "cuadros": {
+    "n": 1226,
+    "fps": 59.51716337121525,
+    "perdidos": 10,
+    "pctPerdidos": 0.8090614886731392,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999272,
+    "max": 33.399999999999636
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.63,
+    3.19,
+    3.95
+   ],
+   "cargaFin": [
+    2.39,
+    3.1,
+    3.9
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.5999999940395355,
+    "p95": 5,
+    "max": 6.4000000059604645
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.5,
+    "p95": 1.1000000089406967
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.39,
+    3.1,
+    3.9
+   ],
+   "cargaFin": [
+    2.98,
+    3.17,
+    3.91
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.7999999970197678,
+    "p95": 5.899999991059303,
+    "max": 6.399999991059303
+   },
+   "movimiento": {
+    "n": 1192,
+    "mediana": 0.7999999970197678,
+    "p95": 1.3999999910593033
+   },
+   "cuadros": {
+    "n": 1233,
+    "fps": 59.85669346382384,
+    "perdidos": 3,
+    "pctPerdidos": 0.24271844660194175,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999272,
+    "max": 33.400000000001455
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.98,
+    3.17,
+    3.91
+   ],
+   "cargaFin": [
+    2.65,
+    3.08,
+    3.86
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.3999999910593033,
+    "p95": 5.4000000059604645,
+    "max": 7.699999988079071
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.4000000059604645,
+    "p95": 1.0999999940395355
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.65,
+    3.08,
+    3.86
+   ],
+   "cargaFin": [
+    2.24,
+    2.96,
+    3.8
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.5,
+    "p95": 4.9000000059604645,
+    "max": 5.600000008940697
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.29999999701976776,
+    "p95": 1
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.24,
+    2.96,
+    3.8
+   ],
+   "cargaFin": [
+    1.97,
+    2.83,
+    3.74
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3,
+    "p95": 5,
+    "max": 5.799999997019768
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.4000000059604645,
+    "p95": 1
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 4,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.97,
+    2.83,
+    3.74
+   ],
+   "cargaFin": [
+    2.15,
+    2.81,
+    3.71
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 3.7000000029802322,
+    "p95": 5.299999997019768,
+    "max": 6
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.7000000029802322,
+    "p95": 1.2999999970197678
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.15,
+    2.81,
+    3.71
+   ],
+   "cargaFin": [
+    2.16,
+    2.76,
+    3.67
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5,
+    "p95": 8.899999991059303,
+    "max": 11.700000002980232
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.800000011920929,
+    "p95": 1.7000000029802322
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.95378461299468,
+    "perdidos": 1,
+    "pctPerdidos": 0.08090614886731391,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 33.30000000000018
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1090,
+   "nodosCiempi": 1060,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "mascara",
+   "cargaIni": [
+    2.16,
+    2.76,
+    3.67
+   ],
+   "cargaFin": [
+    1.91,
+    2.66,
+    3.62
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.700000002980232,
+    "p95": 8.399999991059303,
+    "max": 9
+   },
+   "movimiento": {
+    "n": 1188,
+    "mediana": 0.7999999970197678,
+    "p95": 1.7000000029802322
+   },
+   "cuadros": {
+    "n": 1229,
+    "fps": 59.662800801976786,
+    "perdidos": 7,
+    "pctPerdidos": 0.5663430420711975,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 33.39999999999782
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1098,
+   "nodosCiempi": 1068,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    1.91,
+    2.66,
+    3.62
+   ],
+   "cargaFin": [
+    2.98,
+    2.84,
+    3.65
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 6.199999988079071,
+    "p95": 14.900000005960464,
+    "max": 28.200000002980232
+   },
+   "movimiento": {
+    "n": 1060,
+    "mediana": 0.8999999910593033,
+    "p95": 2.2000000029802322
+   },
+   "cuadros": {
+    "n": 1101,
+    "fps": 53.448677618548295,
+    "perdidos": 135,
+    "pctPerdidos": 10.922330097087379,
+    "mediana": 16.699999999999818,
+    "p95": 33.30000000000291,
+    "max": 83.30000000000291
+   },
+   "tareasLargas": {
+    "n": 7,
+    "totalMs": 410,
+    "max": 68
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.98,
+    2.84,
+    3.65
+   ],
+   "cargaFin": [
+    3.51,
+    3.02,
+    3.69
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.699999988079071,
+    "p95": 9.200000002980232,
+    "max": 16.700000002980232
+   },
+   "movimiento": {
+    "n": 1185,
+    "mediana": 0.4000000059604645,
+    "p95": 2.0999999940395355
+   },
+   "cuadros": {
+    "n": 1226,
+    "fps": 59.51716337121525,
+    "perdidos": 10,
+    "pctPerdidos": 0.8090614886731392,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 33.40000000000009
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1092,
+   "nodosCiempi": 1079,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    3.51,
+    3.02,
+    3.69
+   ],
+   "cargaFin": [
+    2.87,
+    2.9,
+    3.64
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.4000000059604645,
+    "p95": 7.5,
+    "max": 11.200000002980232
+   },
+   "movimiento": {
+    "n": 1188,
+    "mediana": 0.8999999910593033,
+    "p95": 1.7999999970197678
+   },
+   "cuadros": {
+    "n": 1229,
+    "fps": 59.66251116548216,
+    "perdidos": 7,
+    "pctPerdidos": 0.5663430420711975,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999272,
+    "max": 33.400000000001455
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.87,
+    2.9,
+    3.64
+   ],
+   "cargaFin": [
+    3.28,
+    3.01,
+    3.66
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.600000008940697,
+    "p95": 19.5,
+    "max": 24.399999991059303
+   },
+   "movimiento": {
+    "n": 1018,
+    "mediana": 0.8999999910593033,
+    "p95": 4.5999999940395355
+   },
+   "cuadros": {
+    "n": 1059,
+    "fps": 51.36836795079501,
+    "perdidos": 178,
+    "pctPerdidos": 14.38965238480194,
+    "mediana": 16.699999999999818,
+    "p95": 33.399999999999636,
+    "max": 83.30000000000018
+   },
+   "tareasLargas": {
+    "n": 3,
+    "totalMs": 191,
+    "max": 71
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  }
+ ],
+ "resumen": [
+  {
+   "cpu": 4,
+   "caso": "revelar/tipico",
+   "version": "antes",
+   "n": 3,
+   "unidad": "3.4 / 5.9 / 9.3",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.0",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.9–6.0",
+   "errores": 1
+  },
+  {
+   "cpu": 4,
+   "caso": "revelar/tipico",
+   "version": "despues",
+   "n": 3,
+   "unidad": "3.4 / 4.9 / 6.9",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.0",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "2.0–4.4",
+   "errores": 1
+  },
+  {
+   "cpu": 4,
+   "caso": "revelar+comer/tipico",
+   "version": "antes",
+   "n": 3,
+   "unidad": "3.5 / 5 / 7.3",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.0",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.8–3.8",
+   "errores": 0
+  },
+  {
+   "cpu": 4,
+   "caso": "revelar+comer/tipico",
+   "version": "despues",
+   "n": 3,
+   "unidad": "3.4 / 5.3 / 23.7",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.1",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.9–4.6",
+   "errores": 0
+  },
+  {
+   "cpu": 4,
+   "caso": "revelar+comer/mascara",
+   "version": "antes",
+   "n": 3,
+   "unidad": "3.6 / 5 / 7.8",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.0",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.8–3.9",
+   "errores": 0
+  },
+  {
+   "cpu": 4,
+   "caso": "revelar+comer/mascara",
+   "version": "despues",
+   "n": 3,
+   "unidad": "3.8 / 6.1 / 14",
+   "pctPerdidos": 0,
+   "rangoPerdidos": "0.0–0.2",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.8–4.1",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar/tipico",
+   "version": "antes",
+   "n": 3,
+   "unidad": "5.7 / 8.6 / 28.2",
+   "pctPerdidos": 0.8,
+   "rangoPerdidos": "0.0–10.9",
+   "fps": 59.5,
+   "largas": 0,
+   "largaMax": 68,
+   "carga": "1.9–3.4",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar/tipico",
+   "version": "despues",
+   "n": 3,
+   "unidad": "4.7 / 8.7 / 16.7",
+   "pctPerdidos": 0.1,
+   "rangoPerdidos": "0.0–0.8",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "2.9–3.5",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/tipico",
+   "version": "antes",
+   "n": 3,
+   "unidad": "5.4 / 7.5 / 11.2",
+   "pctPerdidos": 0.6,
+   "rangoPerdidos": "0.0–7.1",
+   "fps": 59.7,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "2.1–2.9",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/tipico",
+   "version": "despues",
+   "n": 3,
+   "unidad": "5.2 / 8.3 / 24.4",
+   "pctPerdidos": 4.7,
+   "rangoPerdidos": "0.1–14.4",
+   "fps": 57.2,
+   "largas": 0,
+   "largaMax": 71,
+   "carga": "1.8–3.3",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/mascara",
+   "version": "antes",
+   "n": 3,
+   "unidad": "5 / 8.9 / 18.4",
+   "pctPerdidos": 0.1,
+   "rangoPerdidos": "0.1–0.7",
+   "fps": 60,
+   "largas": 0,
+   "largaMax": 54,
+   "carga": "2.1–2.9",
+   "errores": 0
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/mascara",
+   "version": "despues",
+   "n": 3,
+   "unidad": "4.8 / 8.4 / 11.6",
+   "pctPerdidos": 0.2,
+   "rangoPerdidos": "0.1–0.6",
+   "fps": 59.9,
+   "largas": 0,
+   "largaMax": 0,
+   "carga": "1.9–2.6",
+   "errores": 0
+  }
+ ]
+}
