@@ -70,9 +70,11 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect(perfiles.body.map((p: { id: string }) => p.id)).toEqual([perfilId])
   })
 
-  it('el niño cambia sus ajustes y gana monedas, pero no crea niños ni invita adultos', async () => {
+  it('el niño cambia sus ajustes, pero no se suma monedas ni crea niños ni invita adultos', async () => {
     expect((await pedir('PUT', `/api/perfiles/${perfilId}/ajustes`, N, { ajustes: { tamanoLetra: 50 } })).body.ajustes).toEqual({ tamanoLetra: 50 })
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/monedas`, N, { cantidad: 2 })).body.monedas).toBe(2)
+    // Desde 2.5 el endpoint viejo no suma: las monedas por leer las calcula el servidor.
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/monedas`, N, { cantidad: 2 })).body.monedas).toBe(0)
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/monedas`, N, { cantidad: 2, motivo: 'me lo regalo' })).body.monedas).toBe(0)
     expect((await pedir('POST', '/api/perfiles', N, { apodo: 'x', icono: 'x' })).status).toBe(403)
     expect((await pedir('POST', `/api/perfiles/${perfilId}/invitaciones`, N)).status).toBe(403)
     expect((await pedir('POST', `/api/perfiles/${perfilId}/clave`, N, { clave: 'nueva123' })).status).toBe(403)
@@ -96,13 +98,16 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect(p.body).toMatchObject({ fraseActual: 0, fraseMaxima: 1 })
   })
 
-  it('lo leído, los hitos premiados y la relectura se guardan y no bajan', async () => {
+  it('lo leído no baja; los premios ya no los decide la app (una app anterior cobra por su avance)', async () => {
     const url = `/api/asignaciones/${asigGuia}/progreso`
     const p = await pedir('PUT', url, N, { fraseActual: 1, fraseMaxima: 1, estado: 'en_curso', leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
-    expect(p.body).toMatchObject({ leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
-    // Vuelve a empezar desde el comienzo: no se pierde lo ganado.
-    const otra = await pedir('PUT', url, N, { fraseActual: 0, fraseMaxima: 0, estado: 'en_curso', leidoHasta: 0, premioHasta: 0 })
-    expect(otra.body).toMatchObject({ fraseActual: 0, leidoHasta: 1, premioHasta: 50, relecturaPremiadaEn: '2026-10-28' })
+    // premioHasta y la relectura que manda la app no se guardan; la frase leída se paga (1 moneda) y queda pagada.
+    expect(p.body).toMatchObject({ leidoHasta: 1, pagadoHasta: 1, premioHasta: 0, relecturaPremiadaEn: null })
+    expect((await pedir('GET', `/api/perfiles/${perfilId}`, N)).body.monedas).toBe(1)
+    // Vuelve a empezar desde el comienzo: no se pierde lo leído ni se paga otra vez.
+    const otra = await pedir('PUT', url, N, { fraseActual: 0, fraseMaxima: 0, estado: 'en_curso', leidoHasta: 1, premioHasta: 0 })
+    expect(otra.body).toMatchObject({ fraseActual: 0, leidoHasta: 1, pagadoHasta: 1 })
+    expect((await pedir('GET', `/api/perfiles/${perfilId}`, N)).body.monedas).toBe(1)
   })
 
   it('la terapeuta le asigna un libro; el niño lo ve pero no lo borra ni lo edita', async () => {
@@ -131,13 +136,14 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
 
   it('tienda: no compra sin monedas, compra con monedas, no cobra dos veces y solo deja ponerse lo comprado', async () => {
     const corona = 'cabeza:b06-ia-corona'
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body.error).toMatch(/Te faltan 23 monedas/)
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body.error).toMatch(/Te faltan 24 monedas/)
     expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { cabeza: corona } })).status).toBe(403)
     const ok = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', genero: 'nino', cabeza: 'cabeza:cabeza-nada' } })
     expect(ok.body.ciempi).toMatchObject({ nombre: 'Rayito', cabeza: 'cabeza:cabeza-nada' })
-    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 28 })
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 5, inventario: [corona] })
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 5, inventario: [corona] })
+    // Un adulto del niño sí puede darle monedas a mano, con un motivo (queda anotado).
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 28, motivo: 'Terminó la guía en la consulta' })).body).toEqual({ monedas: 29, otorgadas: 28 })
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 4, inventario: [corona] })
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: corona })).body).toEqual({ monedas: 4, inventario: [corona] })
     expect((await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, { apariencia: { nombre: 'Rayito', cabeza: corona } })).body.ciempi.cabeza).toBe(corona)
     // Lo de la tienda anterior ya no se vende.
     expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'cabeza-corona' })).status).toBe(400)
@@ -145,7 +151,7 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   it('tienda: un conjunto se compra como pack (20 % menos), trae sus piezas y no cobra más de lo mostrado', async () => {
-    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 95 })
+    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 96, motivo: 'Para probar los conjuntos' })
     // Si la app mostró un precio menor (por ejemplo, una versión antigua), no se cobra.
     expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 60 })).body.error).toMatch(/ahora cuesta 71/)
     const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 71 })
@@ -410,5 +416,242 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     const r = await pedir('POST', `/api/perfiles/${otro.body.id}/asignaciones`, T, { textoId: guiaDeTomi, nivel: 2 })
     expect(r.status).toBe(200)
     expect(r.body).toMatchObject({ perfilId: otro.body.id, nivel: 2 })
+  })
+
+  // ── Registro de premios (CIEMPI 2.5): el servidor calcula y anota las monedas ──
+  describe('registro de premios', () => {
+    // Una app con la hora en la mano, para revisar la plausibilidad temporal.
+    let ahora = Date.now()
+    let appReloj: Awaited<ReturnType<typeof crearApp>>
+    const pedirR = async (metodo: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, token?: string, payload?: object): Promise<Respuesta> => {
+      const r = await appReloj.inject({ method: metodo, url, payload, headers: token ? { authorization: `Bearer ${token}` } : {} })
+      return { status: r.statusCode, body: r.body ? JSON.parse(r.body) : null }
+    }
+    const hoyUtc = () => new Date(ahora).toISOString().slice(0, 10)
+    let P: string, K: string, K2: string, ninoId: string
+    let op = 0
+    const nuevoOp = () => `prueba-${randomUUID()}-${++op}`
+    const saldo = async () => (await pedirR('GET', `/api/perfiles/${ninoId}`, P)).body.monedas as number
+    /** Un libro del adulto en la biblioteca del niño, en un nivel. */
+    const libro = async (frases: string[], nivel: number, token = P) => {
+      const id = randomUUID()
+      expect((await pedirR('PUT', `/api/textos/${id}`, token, { titulo: `Libro ${id.slice(0, 4)}`, textoOriginal: 'x', frases, capitulos: [], origen: 'pegado' })).status).toBe(200)
+      const a = await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, token, { textoId: id, nivel })
+      if (a.body.nivel !== nivel) await pedirR('PUT', `/api/asignaciones/${a.body.id}/nivel`, P, { nivel })
+      return { textoId: id, asignacionId: a.body.id as string }
+    }
+    const avance = (asignacionId: string, hasta: number, token = K, extra: object = {}) =>
+      pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, token, { operationId: nuevoOp(), tipo: 'avance', hasta, conPremio: true, ...extra })
+    // Cada libro con su propio contenido (el mismo texto dos veces no vuelve a pagar: ver la prueba de borrar y subir).
+    let libros = 0
+    const frases = (n: number, palabras = 3) => {
+      const k = ++libros
+      return Array.from({ length: n }, (_, i) => `${Array.from({ length: palabras }, (_, j) => `libro${k}palabra${i}x${j}`).join(' ')}.`)
+    }
+
+    beforeAll(async () => {
+      appReloj = await crearApp({ ahora: () => ahora })
+      const r = await pedirR('POST', '/api/registro', undefined, { correo: 'premios@test.cl', clave: 'clave-segura', nombreVisible: 'Mamá', rol: 'apoderado' })
+      P = r.body.token
+      ninoId = (await pedirR('POST', '/api/perfiles', P, { apodo: 'Pía', icono: '🐝', usuario: 'pia', clave: 'pia123' })).body.id
+      K = (await pedirR('POST', '/api/entrar-nino', undefined, { usuario: 'pia', clave: 'pia123' })).body.token
+      // El mismo niño en otro dispositivo.
+      K2 = (await pedirR('POST', '/api/entrar-nino', undefined, { usuario: 'pia', clave: 'pia123' })).body.token
+    })
+    afterAll(async () => {
+      await appReloj?.close()
+    })
+
+    it('el servidor calcula lo que corresponde: lo que pide la app no cuenta', async () => {
+      const { asignacionId } = await libro(frases(5), 1)
+      const r = await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: nuevoOp(), tipo: 'avance', hasta: 1, conPremio: true, esperadas: 100 })
+      expect(r.status).toBe(200)
+      expect(r.body).toMatchObject({ estado: 'otorgado', otorgadas: 1, monedas: 1, leidoHasta: 1, pagadoHasta: 1 })
+      const { rows } = await pool.query(`select solicitadas, monedas, saldo, detalle from premios where perfil_id = $1 and tipo = 'avance'`, [ninoId])
+      expect(rows).toEqual([{ solicitadas: 100, monedas: 1, saldo: 1, detalle: expect.objectContaining({ motivo: 'avance', origen: 'app', reglas: '2.4.1' }) }])
+      // Más allá del final, o datos inválidos: no paga de más ni acepta basura.
+      expect((await avance(asignacionId, 999)).body).toMatchObject({ otorgadas: 1, pagadoHasta: 5 })
+      expect((await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: 'corto', tipo: 'avance', hasta: 1 })).status).toBe(400)
+      expect((await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: nuevoOp(), tipo: 'regalo', hasta: 1 })).status).toBe(400)
+      expect(await saldo()).toBe(2)
+    })
+
+    it('el mismo pedido repetido (reintento, red lenta) paga una sola vez, también si llega a la vez', async () => {
+      const { asignacionId } = await libro(frases(5), 1)
+      const id = nuevoOp()
+      const pedido = { operationId: id, tipo: 'avance', hasta: 1, conPremio: true }
+      const primera = await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, pedido)
+      const segunda = await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, pedido)
+      expect(primera.body).toMatchObject({ estado: 'otorgado', otorgadas: 1 })
+      // La respuesta repetida dice lo que se pagó (la app no lo pierde si no recibió la primera).
+      expect(segunda.body).toMatchObject({ estado: 'repetido', otorgadas: 1, monedas: primera.body.monedas })
+      const otro = { operationId: nuevoOp(), tipo: 'avance', hasta: 2, conPremio: true }
+      const aLaVez = await Promise.all(Array.from({ length: 6 }, () => pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, otro)))
+      expect(aLaVez.map((r) => r.status)).toEqual(Array(6).fill(200))
+      expect(aLaVez.filter((r) => r.body.estado === 'otorgado')).toHaveLength(1)
+      expect(aLaVez.every((r) => r.body.otorgadas === 1)).toBe(true)
+      expect(await saldo()).toBe(4)
+    })
+
+    it('dos dispositivos del mismo niño: la misma frase se paga una vez; libros distintos, cada uno', async () => {
+      const uno = await libro(frases(4), 1)
+      const dos = await libro(frases(4), 1)
+      const antes = await saldo()
+      const misma = await Promise.all([avance(uno.asignacionId, 1, K), avance(uno.asignacionId, 1, K2)])
+      expect(misma.map((r) => r.body.otorgadas).sort()).toEqual([0, 1])
+      const distintos = await Promise.all([avance(uno.asignacionId, 2, K), avance(dos.asignacionId, 1, K2), avance(dos.asignacionId, 2, K2)])
+      expect(distintos.every((r) => r.status === 200)).toBe(true)
+      // Los dos dispositivos ven el mismo saldo al final, y es lo que dice el registro.
+      const final = await saldo()
+      expect(final).toBe(antes + 1 + distintos.reduce((s, r) => s + r.body.otorgadas, 0))
+      expect(final).toBeLessThanOrEqual(antes + 4)
+    })
+
+    it('reabrir un libro (otra instalación, cola vacía) no vuelve a pagar lo ya leído', async () => {
+      const { asignacionId } = await libro(frases(3), 1)
+      for (let h = 1; h <= 3; h++) await avance(asignacionId, h)
+      const antes = await saldo()
+      // La app reinstalada no tiene sus operationId: pide todo de nuevo con otros.
+      for (let h = 1; h <= 3; h++) expect((await avance(asignacionId, h, K2)).body).toMatchObject({ otorgadas: 0, motivo: 'ya_pagado' })
+      expect(await saldo()).toBe(antes)
+      const biblioteca = (await pedirR('GET', `/api/perfiles/${ninoId}/asignaciones`, K)).body as { id: string; leidoHasta: number; pagadoHasta: number }[]
+      expect(biblioteca.find((a) => a.id === asignacionId)).toMatchObject({ leidoHasta: 3, pagadoHasta: 3 })
+    })
+
+    it('una frase muy rápida avanza sin moneda; el libro terminado da relectura una vez al día en todos los niveles', async () => {
+      const { asignacionId } = await libro(frases(5), 1)
+      for (let h = 1; h <= 3; h++) await avance(asignacionId, h)
+      // Releer un libro sin terminar no paga.
+      expect((await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: nuevoOp(), tipo: 'relectura', dia: hoyUtc() })).body).toMatchObject({ otorgadas: 0, motivo: 'no_terminado' })
+      expect((await avance(asignacionId, 4, K, { conPremio: false })).body).toMatchObject({ otorgadas: 0, pagadoHasta: 4 })
+      expect((await avance(asignacionId, 5)).body).toMatchObject({ otorgadas: 1, pagadoHasta: 5 })
+      const relectura = (dia: string) => pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: nuevoOp(), tipo: 'relectura', dia })
+      expect((await relectura(hoyUtc())).body).toMatchObject({ otorgadas: 1, motivo: 'relectura', relecturaPremiadaEn: hoyUtc() })
+      expect((await relectura(hoyUtc())).body).toMatchObject({ otorgadas: 0, motivo: 'relectura_repetida' })
+      // Una fecha vieja o futura no sirve.
+      expect((await relectura('2020-01-01')).body).toMatchObject({ otorgadas: 0, motivo: 'dia_invalido' })
+      ahora += 24 * 3600 * 1000
+      expect((await relectura(hoyUtc())).body).toMatchObject({ otorgadas: 1 })
+      // Nivel 3 (antes la relectura nunca pagaba en 0, 1 y 3): 2 monedas.
+      const parrafos = await libro(frases(3, 10), 3)
+      await avance(parrafos.asignacionId, 3)
+      const r3 = await pedirR('POST', `/api/asignaciones/${parrafos.asignacionId}/premios`, K, { operationId: nuevoOp(), tipo: 'relectura', dia: hoyUtc() })
+      expect(r3.body).toMatchObject({ otorgadas: 2, motivo: 'relectura' })
+    })
+
+    it('plausibilidad: no paga más rápido de lo que se puede leer; lo pedido se paga después (429 y reintento)', async () => {
+      // Oraciones de 10 palabras (nivel 2, 1 moneda cada una): leer cada una toma al menos 1 s.
+      const { asignacionId } = await libro(frases(8, 10), 2)
+      await pool.query('update perfiles_ninos set premios_reloj = $1 where id = $2', [new Date(ahora), ninoId])
+      for (let h = 1; h <= 5; h++) expect((await avance(asignacionId, h)).status).toBe(200)
+      const id = nuevoOp()
+      const rapido = await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: id, tipo: 'avance', hasta: 6, conPremio: true })
+      expect(rapido.status).toBe(429)
+      expect(rapido.body.reintentarEnSegundos).toBeGreaterThanOrEqual(1)
+      // No quedó nada a medias: ni pagado ni anotado.
+      expect((await pedirR('GET', `/api/perfiles/${ninoId}/asignaciones`, K)).body.find((a: { id: string }) => a.id === asignacionId).pagadoHasta).toBe(5)
+      ahora += rapido.body.reintentarEnSegundos * 1000
+      const despues = await pedirR('POST', `/api/asignaciones/${asignacionId}/premios`, K, { operationId: id, tipo: 'avance', hasta: 6, conPremio: true })
+      expect(despues.body).toMatchObject({ estado: 'otorgado', otorgadas: 1 })
+      ahora += 3600 * 1000
+    })
+
+    it('borrar y volver a subir el mismo texto (o quitarlo y agregarlo) no vuelve a pagar', async () => {
+      const contenido = ['Mi gato se llama Tito.', 'Tito come pan.', 'Tito duerme mucho.']
+      const subir = async (frs: string[]) => {
+        const id = randomUUID()
+        await pedirR('PUT', `/api/textos/${id}`, K, { titulo: 'Mi gato', textoOriginal: frs.join(' '), frases: frs, capitulos: [], origen: 'pegado' })
+        const a = (await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, K, { textoId: id })).body
+        return { textoId: id, asignacionId: a.id as string }
+      }
+      const leerTodo = async (asignacionId: string) => {
+        let total = 0
+        for (let h = 1; h <= 3; h++) total += (await avance(asignacionId, h)).body.otorgadas
+        return total
+      }
+      const primero = await subir(contenido)
+      expect(await leerTodo(primero.asignacionId)).toBeGreaterThan(0)
+      expect((await pedirR('DELETE', `/api/textos/${primero.textoId}`, K)).status).toBe(200)
+      // Igual, con otras mayúsculas, tildes y signos.
+      const otraVez = await subir(['MI GATO SE LLAMA TITO', 'tito come pan!!', 'Tító duerme mucho...'])
+      expect(await leerTodo(otraVez.asignacionId)).toBe(0)
+      // Quitar el libro de la biblioteca y volver a agregarlo.
+      expect((await pedirR('DELETE', `/api/asignaciones/${otraVez.asignacionId}`, K)).status).toBe(200)
+      const reagregada = (await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, K, { textoId: otraVez.textoId })).body
+      expect(await leerTodo(reagregada.id)).toBe(0)
+      // Un texto de verdad distinto sí paga.
+      const nuevo = await subir(['Mi perro se llama Bobi.', 'Bobi corre.', 'Bobi salta alto.'])
+      expect(await leerTodo(nuevo.asignacionId)).toBeGreaterThan(0)
+    })
+
+    it('APK antigua: POST /monedas ya no suma; su progreso sí paga (una vez) con las mismas reglas', async () => {
+      const { asignacionId } = await libro(frases(4), 1)
+      const antes = await saldo()
+      expect((await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, K, { cantidad: 100 })).body).toEqual({ monedas: antes })
+      expect((await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, K, { cantidad: 101 })).status).toBe(400)
+      const progreso = (leido: number, extra: object = {}) =>
+        pedirR('PUT', `/api/asignaciones/${asignacionId}/progreso`, K, { fraseActual: leido, fraseMaxima: leido, estado: leido >= 4 ? 'completada' : 'en_curso', leidoHasta: leido, premioHasta: 100, ...extra })
+      expect((await progreso(1)).body).toMatchObject({ leidoHasta: 1, pagadoHasta: 1, premioHasta: 0 })
+      expect(await saldo()).toBe(antes + 1)
+      // El mismo progreso otra vez (la app lo manda al saltar o al volver): no paga de nuevo.
+      await progreso(1)
+      expect(await saldo()).toBe(antes + 1)
+      await progreso(2)
+      await progreso(3)
+      await progreso(4)
+      expect(await saldo()).toBe(antes + 4)
+      // Relectura de una app anterior (manda la fecha en el progreso): una vez por día.
+      await progreso(4, { relecturaPremiadaEn: hoyUtc() })
+      await progreso(4, { relecturaPremiadaEn: hoyUtc() })
+      expect(await saldo()).toBe(antes + 5)
+      // La app nueva avisa que pide sus premios aparte: su progreso no paga.
+      const nuevo = await libro(frases(2), 1)
+      await pedirR('PUT', `/api/asignaciones/${nuevo.asignacionId}/progreso`, K, { fraseActual: 2, fraseMaxima: 2, estado: 'completada', leidoHasta: 2, premiosPorRegistro: true })
+      expect(await saldo()).toBe(antes + 5)
+      const { rows } = await pool.query(`select count(*)::int as n from premios where perfil_id = $1 and tipo = 'legado' and monedas = 0`, [ninoId])
+      expect(rows[0].n).toBe(1)
+    })
+
+    it('compras simultáneas y premios a la vez: atómico, sin saldo negativo', async () => {
+      // Deja el saldo en 30 con un ajuste del adulto.
+      const actual = await saldo()
+      expect((await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, P, { cantidad: 30 - actual, motivo: 'Preparar la prueba' })).body.monedas).toBe(30)
+      const items = ['comida-frutilla', 'comida-platano', 'comida-sandia', 'comida-galleta'] // 8 + 8 + 10 + 10 = 36 > 30
+      const compras = await Promise.all(items.map((itemId) => pedirR('POST', `/api/perfiles/${ninoId}/comprar`, K, { itemId })))
+      const hechas = compras.filter((r) => r.status === 200)
+      expect(hechas.length).toBe(3)
+      expect(compras.filter((r) => r.status === 400).every((r) => /Te faltan/.test(r.body.error))).toBe(true)
+      const { rows } = await pool.query('select coalesce(sum(precio_pagado), 0)::int as total from compras where perfil_id = $1', [ninoId])
+      expect(await saldo()).toBe(30 - rows[0].total)
+      expect(await saldo()).toBeGreaterThanOrEqual(0)
+      // Un premio y una compra a la vez, desde dos dispositivos.
+      await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, P, { cantidad: 20, motivo: 'Preparar la prueba' })
+      const { asignacionId } = await libro(frases(3), 1)
+      const antes = await saldo()
+      const [premio, compra] = await Promise.all([avance(asignacionId, 1, K2), pedirR('POST', `/api/perfiles/${ninoId}/comprar`, K, { itemId: 'comida-pelota' })])
+      expect(compra.status).toBe(200)
+      expect(premio.body.otorgadas).toBe(1)
+      expect(await saldo()).toBe(antes + 1 - 12)
+    })
+
+    it('el saldo nunca queda negativo y el registro cuadra con el saldo', async () => {
+      const r = await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, P, { cantidad: -100, motivo: 'Prueba de resta' })
+      expect(r.body.monedas).toBe(0)
+      expect(r.body.otorgadas).toBeLessThanOrEqual(0)
+      await expect(pool.query('update perfiles_ninos set monedas = -1 where id = $1', [ninoId])).rejects.toThrow()
+      // Todo lo que entró (premios, ajustes) menos lo que se gastó es el saldo.
+      const { rows } = await pool.query(
+        `select (select coalesce(sum(monedas), 0) from premios where perfil_id = $1)::int - (select coalesce(sum(precio_pagado), 0) from compras where perfil_id = $1)::int as cuadra`,
+        [ninoId],
+      )
+      expect(rows[0].cuadra).toBe(await saldo())
+    })
+
+    it('un extraño no pide premios por otro niño', async () => {
+      const { asignacionId } = await libro(frases(2), 1)
+      const extraño = (await pedirR('POST', '/api/registro', undefined, { correo: 'otro-premios@test.cl', clave: 'clave-segura' })).body.token
+      expect((await avance(asignacionId, 1, extraño)).status).toBe(403)
+      expect((await pedirR('POST', `/api/perfiles/${ninoId}/monedas`, extraño, { cantidad: 5, motivo: 'x' })).status).toBe(403)
+    })
   })
 })

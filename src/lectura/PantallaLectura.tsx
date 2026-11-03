@@ -7,7 +7,7 @@ import type { AparienciaCiempi } from '../ciempi/catalogo'
 import { CiempiPersonaje } from '../ciempi/CiempiPersonaje'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
-import type { ProgresoAsignacion } from '../datos/repositorios'
+import type { PedidoPremio, ProgresoAsignacion } from '../datos/repositorios'
 import { nuevoId } from '../dominio/ids'
 import type { AjustesLectura, Asignacion, EstadoAsignacion, Id, ModoLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
 import { dividirEnFragmentos, quitarGuiones, trocearOracion } from '../lenguaje/frases'
@@ -16,6 +16,7 @@ import { silabearFrase } from '../lenguaje/silabas'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
+import type { SolicitudPremio } from './premios'
 import { HITOS, MINIMO_A_BUEN_RITMO, contarPalabras, hitosNuevos, hoy, monedasDeUnidad, porcentajeLeido, premioRelectura } from './monedas'
 import { CONFIG_MOTOR_BASE, FIN_PISTA, calcularPista, estadoInicial, paso, type Efecto, type Entrada, type EstadoMotor, type Pista } from './motor'
 import { ParrafoCompleto } from './ParrafoCompleto'
@@ -61,7 +62,11 @@ interface Props {
    * volvió). Si no, se empieza desde el comienzo (o desde el capítulo).
    */
   retomarEn?: number
-  alGanarMonedas: (cantidad: number) => void
+  /**
+   * Pide el premio de lo leído. La moneda se muestra al instante con lo que
+   * se espera; cuánto se paga lo decide el servidor (ver datos/colaPremios.ts).
+   */
+  alPedirPremio: (pedido: PedidoPremio) => void
   /** Se llama después de cada frase y al saltar: lo leído y lo ganado quedan guardados aunque se cierre la app. */
   alProgreso: (progreso: Progreso) => void
   alVolver: () => void
@@ -79,10 +84,39 @@ export function fraseDeInicio(texto: Pick<Texto, 'capitulos'>, asignacion: Pick<
   return texto.capitulos[capituloDeFrase(texto.capitulos, donde)].desdeFrase
 }
 
+/**
+ * ¿Ya lo terminó alguna vez? Entonces volver a terminarlo es una relectura. Se
+ * mira lo leído (en todos los niveles), no los hitos: en los niveles 0, 1 y 3
+ * no hay hitos y la relectura nunca se reconocía.
+ */
+export function libroTerminado(asignacion: Pick<Asignacion, 'leidoHasta'>, totalFrases: number): boolean {
+  return totalFrases > 0 && (asignacion.leidoHasta ?? 0) >= totalFrases
+}
+
+/**
+ * Las monedas de esta lectura (desde que se abrió el libro o se eligió «Leer
+ * otra vez»), para la pantalla final: lo que confirmó el servidor y, de lo que
+ * sigue en la cola sin conexión, lo que se espera. Nada inventado.
+ */
+export function crearCuentaDeLectura() {
+  const premios = new Map<string, number>()
+  return {
+    /** Un pedido recién hecho, con lo que se espera ganar. */
+    pedir: (operationId: string, esperadas: number) => void premios.set(operationId, esperadas),
+    /** La respuesta del servidor (solo si el pedido es de esta lectura). Devuelve si cambió algo. */
+    resolver(operationId: string, otorgadas: number): boolean {
+      if (!premios.has(operationId)) return false
+      premios.set(operationId, otorgadas)
+      return true
+    },
+    total: () => [...premios.values()].reduce((s, n) => s + n, 0),
+    reiniciar: () => premios.clear(),
+  }
+}
+
 export function PantallaLectura(props: Props) {
   const { perfil, usuarioId, texto, asignacion, vistaPrevia = false, nivel = 1, alVolver, alAjustes } = props
   // En vista previa no se registra nada: ni progreso, ni monedas, ni sesión.
-  const alGanarMonedas = vistaPrevia ? () => {} : props.alGanarMonedas
   const alProgreso = vistaPrevia ? () => {} : props.alProgreso
   const repos = useRepositorios()
   const { ajustes } = perfil
@@ -119,13 +153,13 @@ export function PantallaLectura(props: Props) {
   const leidoHasta = useRef(asignacion.leidoHasta ?? 0)
   const premioHasta = useRef(asignacion.premioHasta ?? 0)
   const relecturaPremiadaEn = useRef(asignacion.relecturaPremiadaEn ?? null)
-  // El libro ya estaba premiado entero al abrirlo: terminarlo es una relectura.
-  const yaPremiadoEntero = useRef(premioHasta.current >= 100)
+  // El libro ya estaba terminado al abrirlo: terminarlo otra vez es una relectura.
+  const yaPremiadoEntero = useRef(libroTerminado(asignacion, totalFrases))
   // Este tramo de lectura: desde dónde empezó y cuánto se leyó a buen ritmo.
   const tramo = useRef({ desde: fraseDeUnidad(vista, indice, totalFrases), palabras: 0, aBuenRitmo: 0 })
   const [premiado, setPremiado] = useState(premioHasta.current)
 
-  const [pausa, setPausa] = useState<{ tipo: 'capitulo' | 'libro'; titulo: string; premio: number; mensaje: string; siguiente: number } | null>(null)
+  const [pausa, setPausa] = useState<{ tipo: 'capitulo' | 'libro'; titulo: string; mensaje: string; siguiente: number } | null>(null)
   const [indiceAbierto, setIndiceAbierto] = useState(false)
   // Sin rayas ni guiones de diálogo, que confunden al leer.
   const frase = quitarGuiones(unidades[indice] ?? '')
@@ -333,25 +367,42 @@ export function PantallaLectura(props: Props) {
     guardarProgreso(destino)
   }
 
-  const premiar = (monedas: number) => {
-    if (!monedas) return
-    alGanarMonedas(monedas)
-    const s = sesion.current
-    guardarSesion({ monedasGanadas: (s?.monedasGanadas ?? 0) + monedas })
+  // Lo ganado en esta lectura, para la pantalla final (se corrige con lo que responde el servidor).
+  const cuentaLectura = useRef(crearCuentaDeLectura())
+  const [monedasLectura, setMonedasLectura] = useState(0)
+  useEffect(
+    () =>
+      repos.premios.alResolver((p, r) => {
+        if (cuentaLectura.current.resolver(p.operationId, r.estado === 'otorgado' ? r.otorgadas : 0)) setMonedasLectura(cuentaLectura.current.total())
+      }),
+    [repos],
+  )
+
+  /** Pide el premio de lo leído (la moneda ya se mostró). */
+  const pedirPremio = (solicitud: SolicitudPremio, esperadas: number) => {
+    if (vistaPrevia) return
+    const operationId = nuevoId()
+    cuentaLectura.current.pedir(operationId, esperadas)
+    setMonedasLectura(cuentaLectura.current.total())
+    props.alPedirPremio({ ...solicitud, operationId, perfilId: perfil.id, asignacionId: asignacion.id, esperadas })
+    if (esperadas) {
+      const s = sesion.current
+      guardarSesion({ monedasGanadas: (s?.monedasGanadas ?? 0) + esperadas })
+    }
   }
 
-  const siguienteFrase = (premioFinal: { monedas: number; mensaje: string }) => {
+  const siguienteFrase = (mensaje: string) => {
     const sig = indice + 1
     if (sig >= total) {
       guardarProgreso(total, 'completada')
-      setPausa({ tipo: 'libro', titulo: texto.titulo, premio: premioFinal.monedas, mensaje: premioFinal.mensaje, siguiente: 0 })
-      if (premioFinal.monedas && !tranquilo) programar(sonarCelebracion, 200)
+      setPausa({ tipo: 'libro', titulo: texto.titulo, mensaje, siguiente: 0 })
+      if (cuentaLectura.current.total() > 0 && !tranquilo) programar(sonarCelebracion, 200)
       return
     }
     guardarProgreso(sig)
     // En un libro, cada capítulo terminado es un buen lugar para descansar.
     if (conCapitulos && sig === finDelCapitulo) {
-      setPausa({ tipo: 'capitulo', titulo: capitulo.titulo, premio: 0, mensaje: '¡Muy bien leído! 📖', siguiente: sig })
+      setPausa({ tipo: 'capitulo', titulo: capitulo.titulo, mensaje: '¡Muy bien leído! 📖', siguiente: sig })
       return
     }
     irAFrase(sig, { callarVoz: false })
@@ -400,6 +451,8 @@ export function PantallaLectura(props: Props) {
           programar(() => setFestejo(null), 2600)
         }
       }
+      // Siempre se avisa el avance (aunque esta frase no pague): así el servidor no la paga después.
+      pedirPremio({ tipo: 'avance', hasta: fin, conPremio: aBuenRitmo }, ganadas)
     }
     // Terminar otra vez un libro ya premiado (leído entero, a buen ritmo): premio menor, una vez al día.
     const terminaLibro = fin >= totalFrases
@@ -409,6 +462,7 @@ export function PantallaLectura(props: Props) {
       else {
         ganadas += premioRelectura(nivel)
         relecturaPremiadaEn.current = hoy()
+        pedirPremio({ tipo: 'relectura', dia: hoy() }, premioRelectura(nivel))
       }
     } else if (terminaLibro && !vistaPrevia && !ritmoBien) mensajeFinal = 'Para ganar monedas, lee a tu ritmo, sin apurarte 🐢'
 
@@ -418,23 +472,20 @@ export function PantallaLectura(props: Props) {
       frasesMuyRapido: (s?.frasesMuyRapido ?? 0) + (aBuenRitmo ? 0 : 1),
       silabasLeidas: (s?.silabasLeidas ?? 0) + (aBuenRitmo ? palabras.reduce((m, p) => m + p.silabas.length, 0) : 0),
     })
-    if (ganadas) {
-      premiar(ganadas)
-      if (!tranquilo && !terminaLibro) programar(sonarMoneda, 120)
-    }
+    if (ganadas && !tranquilo && !terminaLibro) programar(sonarMoneda, 120)
     // Se pasa a la siguiente recién cuando la voz terminó.
     const cambio = cambiosDeFrase.current
     programar(async () => {
       await voz.esperarSilencio(nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
       if (cambio !== cambiosDeFrase.current) return
-      siguienteFrase({ monedas: terminaLibro ? ganadas : 0, mensaje: mensajeFinal })
+      siguienteFrase(mensajeFinal)
     }, MS_PASO_FRASE)
   }
 
   // Una frase que quedó vacía (era solo una raya) se salta sola.
   useEffect(() => {
     if (palabras.length === 0 && !pausa && total > 0) {
-      const t = window.setTimeout(() => siguienteFrase({ monedas: 0, mensaje: '¡Muy bien leído! 📖' }), 0)
+      const t = window.setTimeout(() => siguienteFrase('¡Muy bien leído! 📖'), 0)
       return () => window.clearTimeout(t)
     }
   }, [indice, palabras.length, pausa])
@@ -705,7 +756,8 @@ export function PantallaLectura(props: Props) {
         <Pausa
           titulo={esLibro ? '¡Leíste todo!' : '¡Terminaste un capítulo!'}
           subtitulo={pausa.titulo}
-          premio={pausa.premio}
+          // Fin del libro: todo lo ganado en esta lectura (no solo la última frase).
+          premio={esLibro ? monedasLectura : 0}
           mensaje={pausa.mensaje}
           tranquilo={tranquilo}
           apariencia={perfil.ciempi}
@@ -717,7 +769,9 @@ export function PantallaLectura(props: Props) {
                   accion: () => {
                     sesion.current = null
                     tiempoActivo.current = { ms: 0, ultimo: 0 }
-                    yaPremiadoEntero.current = premioHasta.current >= 100
+                    cuentaLectura.current.reiniciar()
+                    setMonedasLectura(0)
+                    yaPremiadoEntero.current = leidoHasta.current >= totalFrases
                     saltarA(0)
                   },
                 }

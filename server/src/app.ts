@@ -27,6 +27,7 @@ import { enviarRecuperacion } from './correo.ts'
 import { darCuentos } from './cuentos.ts'
 import { audioDe, leerVozPedida, vozDisponible } from './voz.ts'
 import { enTransaccion, pool } from './db.ts'
+import { Esperar, SinAsignacion, ajustarMonedas, anotarLegado, fechaDia, huellaDe, otorgarPremio, recordarLecturas, type PedidoPremio } from './premios.ts'
 import { Prohibido, esAdminDe, exigirAdminDe, exigirVerNino, puedeVerNino, puedeVerTexto } from './permisos.ts'
 
 /** Error con mensaje para mostrarle al usuario (400 por defecto). */
@@ -100,10 +101,6 @@ const aTexto = (f: Fila) => ({
   actualizadoEn: f.actualizado_en,
 })
 
-/** Una columna date como AAAA-MM-DD (pg la entrega como Date a medianoche local). */
-const fechaDia = (d: Date | string) =>
-  typeof d === 'string' ? d.slice(0, 10) : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-
 const aAsignacion = (f: Fila) => ({
   id: f.id,
   asignadaPor: f.asignada_por,
@@ -116,7 +113,9 @@ const aAsignacion = (f: Fila) => ({
   fraseMaxima: f.frase_maxima,
   leidoHasta: f.leido_hasta ?? 0,
   premioHasta: f.premio_hasta ?? 0,
-  relecturaPremiadaEn: f.relectura_premiada_en ? fechaDia(f.relectura_premiada_en as Date | string) : null,
+  relecturaPremiadaEn: fechaDia(f.relectura_premiada_en as Date | string | null),
+  // Hasta dónde ya pagó el servidor (lo demás de lo leído quedó sin moneda o está por pagarse).
+  pagadoHasta: (f.pagado_hasta as number | undefined) ?? 0,
   asignadaEn: f.asignada_en,
   actualizadaEn: f.actualizada_en,
   completadaEn: f.completada_en ?? null,
@@ -167,7 +166,12 @@ const LIMITE_LIBRO = 8 * 1024 * 1024
 /** Lo más largo que se le pide a la voz de una vez (una oración; un texto largo se pide por partes). */
 const LARGO_VOZ = 300
 
-export async function crearApp() {
+/** Un operationId: lo genera la app (un uuid) y sirve para no pagar dos veces el mismo pedido. */
+const ID_OPERACION = /^[A-Za-z0-9:_-]{8,100}$/
+
+export async function crearApp(opciones: { ahora?: () => number } = {}) {
+  // La hora del servidor (las pruebas la mueven para revisar la plausibilidad).
+  const ahora = opciones.ahora ?? Date.now
   const app = Fastify({
     logger: process.env.NODE_ENV === 'test' ? false : { level: process.env.LOG_LEVEL ?? 'info' },
     // Detrás de Nginx: la IP real llega en X-Forwarded-For.
@@ -193,6 +197,8 @@ export async function crearApp() {
 
   app.setErrorHandler((error, req, reply) => {
     if (error instanceof Prohibido) return reply.code(403).send({ error: error.message })
+    if (error instanceof Esperar) return reply.code(429).header('Retry-After', String(error.segundos)).send({ error: error.message, reintentarEnSegundos: error.segundos })
+    if (error instanceof SinAsignacion) return reply.code(404).send({ error: error.message })
     if (error instanceof Problema) return reply.code(error.codigo).send({ error: error.message })
     const e = error as { statusCode?: number; message: string }
     if (e.statusCode && e.statusCode < 500) return reply.code(e.statusCode).send({ error: e.message })
@@ -388,13 +394,25 @@ export async function crearApp() {
     return perfilPorId(param(req, 'id'))
   })
 
-  // Las gana el niño al leer (desde su dispositivo) o las da un adulto.
+  /**
+   * Endpoint de antes de 2.5. Las monedas por leer ya no se suman aquí: las
+   * calcula el servidor (POST /api/asignaciones/:id/premios o, con una app
+   * anterior, a partir del progreso que manda; ver PUT progreso). Aquí solo:
+   * - un adulto del niño, con un `motivo`, suma o resta a mano (queda anotado);
+   * - cualquier otro pedido (una app anterior) no suma: responde el saldo y queda anotado.
+   */
   app.post('/api/perfiles/:id/monedas', conUsuario, async (req) => {
-    await exigirVerNino(yo(req), param(req, 'id'))
-    const cantidad = entero(cuerpo(req).cantidad, 'cantidad')
+    const id = param(req, 'id')
+    await exigirVerNino(yo(req), id)
+    const b = cuerpo(req)
+    const cantidad = entero(b.cantidad, 'cantidad')
     if (Math.abs(cantidad) > 100) throw new Problema('Cantidad no válida')
-    const { rows } = await pool.query('update perfiles_ninos set monedas = greatest(0, monedas + $1) where id = $2 returning monedas', [cantidad, param(req, 'id')])
-    return { monedas: rows[0].monedas }
+    const motivo = typeof b.motivo === 'string' ? b.motivo.trim().slice(0, 200) : ''
+    const operationId = typeof b.operationId === 'string' && ID_OPERACION.test(b.operationId) ? b.operationId : undefined
+    if (motivo && (await esAdminDe(yo(req), id))) {
+      return enTransaccion((c) => ajustarMonedas(c, { perfilId: id, usuarioId: yo(req).id, cantidad, motivo, operationId }))
+    }
+    return { monedas: await enTransaccion((c) => anotarLegado(c, { perfilId: id, usuarioId: yo(req).id, cantidad })) }
   })
 
   /** Cómo se ve su Ciempi: solo puede ponerse lo gratis o lo comprado. */
@@ -505,16 +523,21 @@ export async function crearApp() {
     if (!Array.isArray(b.capitulos)) throw new Problema('Los capítulos no son válidos')
     // Dónde empieza cada párrafo: índices de frase, en orden.
     const parrafos = Array.isArray(b.parrafos) && b.parrafos.every((p, i, l) => Number.isInteger(p) && p >= 0 && p < frases.length && (i === 0 || p > l[i - 1])) ? b.parrafos : null
-    const { rows: existente } = await pool.query('select subido_por from textos where id = $1', [id])
+    const { rows: existente } = await pool.query('select subido_por, huella from textos where id = $1', [id])
     if (existente[0] && existente[0].subido_por !== yo(req).id) throw new Prohibido('Solo quien subió el texto puede cambiarlo')
     const portada = typeof b.portada === 'string' ? texto(b.portada, 'la portada', 200000) : null
-    const { rows } = await pool.query(
-      `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen, parrafos)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-       on conflict (id) do update set titulo = excluded.titulo, autor = excluded.autor, texto_original = excluded.texto_original,
-         frases = excluded.frases, capitulos = excluded.capitulos, portada = excluded.portada, parrafos = excluded.parrafos, actualizado_en = now()
-       returning *`,
-      [
+    const huella = huellaDe(frases as string[])
+    const rows = await enTransaccion(async (c) => {
+      // Si cambia el contenido, lo ya pagado del texto anterior queda recordado (volver a subirlo no paga otra vez).
+      if (existente[0] && existente[0].huella !== huella) await recordarLecturas(c, { textoId: id })
+      const r = await c.query(
+        `insert into textos (id, subido_por, titulo, autor, texto_original, frases, capitulos, portada, origen, parrafos, huella)
+         values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         on conflict (id) do update set titulo = excluded.titulo, autor = excluded.autor, texto_original = excluded.texto_original,
+           frases = excluded.frases, capitulos = excluded.capitulos, portada = excluded.portada, parrafos = excluded.parrafos,
+           huella = excluded.huella, actualizado_en = now()
+         returning *`,
+        [
         id,
         yo(req).id,
         texto(b.titulo, 'el título').trim() || 'Sin título',
@@ -525,14 +548,22 @@ export async function crearApp() {
         portada,
         ['pegado', 'pdf', 'ejemplo'].includes(b.origen as string) ? b.origen : 'pegado',
         parrafos,
+        huella,
       ],
-    )
+      )
+      return r.rows
+    })
     return aTexto(rows[0])
   })
 
   app.delete('/api/textos/:id', conUsuario, async (req) => {
-    const { rowCount } = await pool.query('delete from textos where id = $1 and subido_por = $2', [param(req, 'id'), yo(req).id])
-    if (!rowCount) throw new Prohibido('Solo quien subió el texto puede borrarlo')
+    await enTransaccion(async (c) => {
+      const { rows } = await c.query('select 1 from textos where id = $1 and subido_por = $2 for update', [param(req, 'id'), yo(req).id])
+      if (!rows[0]) throw new Prohibido('Solo quien subió el texto puede borrarlo')
+      // Lo ya pagado de este texto queda recordado: volver a subirlo no paga otra vez.
+      await recordarLecturas(c, { textoId: param(req, 'id') })
+      await c.query('delete from textos where id = $1', [param(req, 'id')])
+    })
     return { ok: true }
   })
 
@@ -589,19 +620,82 @@ export async function crearApp() {
     const fraseActual = Math.max(0, entero(b.fraseActual, 'fraseActual'))
     const fraseMaxima = Math.max(0, entero(b.fraseMaxima ?? fraseActual, 'fraseMaxima'))
     const estado = ['pendiente', 'en_curso', 'completada', 'archivada'].includes(b.estado as string) ? b.estado : 'en_curso'
-    // Lo leído y lo premiado nunca bajan (una app anterior no los manda).
+    // Lo leído nunca baja (una app anterior no lo manda). Los premios (premio_hasta,
+    // relectura_premiada_en) ya no se toman de aquí: solo los escribe el servidor al pagar.
     const leidoHasta = b.leidoHasta === undefined ? 0 : Math.max(0, entero(b.leidoHasta, 'leidoHasta'))
-    const premioHasta = b.premioHasta === undefined ? 0 : Math.min(100, Math.max(0, entero(b.premioHasta, 'premioHasta')))
     const relectura = typeof b.relecturaPremiadaEn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b.relecturaPremiadaEn) ? b.relecturaPremiadaEn : null
     const { rows } = await pool.query(
       `update asignaciones set frase_actual = $1, frase_maxima = $2, estado = $3, actualizada_en = now(),
          completada_en = case when $3 = 'completada' then coalesce(completada_en, now()) else completada_en end,
-         leido_hasta = greatest(leido_hasta, $5), premio_hasta = greatest(premio_hasta, $6),
-         relectura_premiada_en = coalesce($7::date, relectura_premiada_en)
+         leido_hasta = greatest(leido_hasta, $5)
        where id = $4 returning *`,
-      [fraseActual, fraseMaxima, estado, param(req, 'id'), leidoHasta, premioHasta, relectura],
+      [fraseActual, fraseMaxima, estado, param(req, 'id'), leidoHasta],
     )
+    // Una app anterior a 2.5 pide sus monedas con POST /monedas (que ya no suma): se le paga
+    // lo que corresponde a su avance, con las mismas reglas y el mismo registro. La app nueva
+    // manda `premiosPorRegistro` y pide sus premios aparte (POST /api/asignaciones/:id/premios).
+    if (b.premiosPorRegistro !== true) {
+      const id = param(req, 'id')
+      const pedidos: Pick<PedidoPremio, 'operationId' | 'solicitud'>[] = []
+      if (leidoHasta > (rows[0].pagado_hasta ?? 0)) {
+        pedidos.push({ operationId: `legado-avance:${id}:${leidoHasta}`, solicitud: { tipo: 'avance', hasta: leidoHasta, conPremio: true } })
+      }
+      const ya = fechaDia(rows[0].relectura_premiada_en)
+      if (relectura && (!ya || relectura > ya)) {
+        pedidos.push({ operationId: `legado-relectura:${id}:${relectura}`, solicitud: { tipo: 'relectura', dia: relectura } })
+      }
+      let ultima = rows[0]
+      for (const p of pedidos) {
+        try {
+          const pedido: PedidoPremio = { ...p, perfilId: a.perfil_id, asignacionId: id, usuarioId: yo(req).id, solicitadas: null, origen: 'legado' }
+          ultima = (await enTransaccion((c) => otorgarPremio(c, pedido, ahora()))).asignacion
+        } catch (e) {
+          // Muy rápido: se pagará con el próximo progreso que mande (mismo operationId, no paga dos veces).
+          if (!(e instanceof Esperar)) throw e
+        }
+      }
+      return aAsignacion(ultima)
+    }
     return aAsignacion(rows[0])
+  })
+
+  /**
+   * La app pide el premio de lo que leyó: «leí de corrido hasta la frase N»
+   * (`tipo: 'avance'`) o «releí entero este libro ya terminado» (`tipo:
+   * 'relectura'`). El servidor calcula cuánto corresponde con las reglas de
+   * src/lectura/monedas.ts (lo que diga la app sobre la cantidad no cuenta),
+   * no paga dos veces lo mismo, ni más rápido de lo que se puede leer (429:
+   * reintentar después). El mismo `operationId` responde siempre lo mismo.
+   */
+  app.post('/api/asignaciones/:id/premios', conUsuario, async (req) => {
+    const id = param(req, 'id')
+    const a = await asignacionPorId(id)
+    await exigirVerNino(yo(req), a.perfil_id)
+    const b = cuerpo(req)
+    const operationId = texto(b.operationId, 'operationId', 100)
+    if (!ID_OPERACION.test(operationId)) throw new Problema('operationId no válido')
+    let solicitud: PedidoPremio['solicitud']
+    if (b.tipo === 'avance') {
+      solicitud = { tipo: 'avance', hasta: Math.max(0, entero(b.hasta, 'hasta')), conPremio: b.conPremio !== false }
+    } else if (b.tipo === 'relectura') {
+      const dia = texto(b.dia, 'dia', 10)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) throw new Problema('dia debe ser AAAA-MM-DD')
+      solicitud = { tipo: 'relectura', dia }
+    } else throw new Problema('tipo debe ser avance o relectura')
+    const solicitadas = typeof b.esperadas === 'number' && Number.isInteger(b.esperadas) ? Math.max(-1, Math.min(1_000_000, b.esperadas)) : null
+    const pedido: PedidoPremio = { perfilId: a.perfil_id, asignacionId: id, usuarioId: yo(req).id, operationId, solicitud, solicitadas, origen: 'app' }
+    const r = await enTransaccion((c) => otorgarPremio(c, pedido, ahora()))
+    const asignacion = aAsignacion(r.asignacion)
+    return {
+      estado: r.estado,
+      otorgadas: r.otorgadas,
+      monedas: r.monedas,
+      motivo: r.motivo,
+      leidoHasta: asignacion.leidoHasta,
+      premioHasta: asignacion.premioHasta,
+      relecturaPremiadaEn: asignacion.relecturaPremiadaEn,
+      pagadoHasta: asignacion.pagadoHasta,
+    }
   })
 
   // Un adulto puede quitar cualquier libro; el niño, solo lo que subió él.
@@ -610,7 +704,11 @@ export async function crearApp() {
     const u = yo(req)
     const puede = (await esAdminDe(u, a.perfil_id)) || ((await puedeVerNino(u, a.perfil_id)) && a.subido_por === u.id)
     if (!puede) throw new Prohibido('Solo un adulto puede quitar este libro')
-    await pool.query('delete from asignaciones where id = $1', [param(req, 'id')])
+    await enTransaccion(async (c) => {
+      // Lo ya pagado queda recordado: volver a agregar el libro no paga otra vez.
+      await recordarLecturas(c, { asignacionId: param(req, 'id') })
+      await c.query('delete from asignaciones where id = $1', [param(req, 'id')])
+    })
     return { ok: true }
   })
 
