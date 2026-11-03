@@ -1,0 +1,13 @@
+{
+  "id": "concepto-d3-hojas",
+  "archivo": "concepto-d3-hojas.png",
+  "prompt": "concepto-d3-hojas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-0946-7b81-a86c-2926df215972/exec-e3264ffa-ab12-4fc2-a02f-3ce750907faa.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:51.075Z",
+  "segundos": 86
+}

@@ -1,0 +1,13 @@
+{
+  "id": "concepto-c1-esponjosa",
+  "archivo": "concepto-c1-esponjosa.png",
+  "prompt": "concepto-c1-esponjosa-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-0967-7e12-aa7f-d3f311afdf7b/exec-54139aa4-fe1e-4ffd-b588-e707070115d3.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:53.273Z",
+  "segundos": 88
+}

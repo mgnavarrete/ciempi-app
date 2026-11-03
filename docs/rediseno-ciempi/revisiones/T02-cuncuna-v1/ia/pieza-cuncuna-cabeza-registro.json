@@ -1,0 +1,14 @@
+{
+  "id": "pieza-cuncuna-cabeza",
+  "archivo": "pieza-cuncuna-cabeza.png",
+  "prompt": "pieza-cuncuna-cabeza-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/concepto-c2-penachos.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-219e-7b32-ba74-9f3136122596/exec-2154282b-d245-4435-b177-0a8bd3a5d404.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:35.464Z",
+  "segundos": 97
+}

@@ -1,0 +1,13 @@
+{
+  "id": "pieza-dragon-segmentos",
+  "archivo": "pieza-dragon-segmentos.png",
+  "prompt": "pieza-dragon-segmentos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-212d-7651-a7b0-f3a9ffb68cfc/exec-56d0588a-4b2c-4d52-81f1-3050ee068029.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:09.930Z",
+  "segundos": 71
+}

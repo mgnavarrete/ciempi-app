@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galería de transformaciones</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  main { padding: 16px; max-width: 1500px; margin: 0 auto; }
+  h2 { font-size: 1.1rem; margin: 28px 0 6px; border-bottom: 1px solid var(--borde); padding-bottom: 4px; }
+  h3 { font-size: .95rem; margin: 14px 0 4px; }
+  p, li { font-size: .9rem; }
+  .aviso { background: var(--panel); border: 1px solid var(--borde); border-left: 5px solid var(--acento); border-radius: 8px; padding: 8px 12px; }
+  figure { margin: 8px 0 18px; }
+  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--borde); border-radius: 8px; background: #fff9e9; }
+  figcaption { font-size: .8rem; color: var(--suave); }
+  .par { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 800px) { .par { grid-template-columns: 1fr; } }
+  nav.indice a { margin-right: 12px; }
+</style>
+</head>
+<body data-fondo="claro">
+<header class="cabecera">
+  <h1>Galería de transformaciones <small>Ciempi Dragón (T01) y Ciempi Cuncuna (T02) · evidencia para la revisión del usuario</small></h1>
+  <nav><a href="./">Abrir el laboratorio interactivo</a> · <label><input type="checkbox" id="oscuro"> Fondo oscuro</label></nav>
+</header>
+<main>
+  <p class="aviso"><b>Estado:</b> laboratorio, <b>pendiente de aprobación artística del usuario</b>. Nada está integrado al juego (catálogo, tienda, PantallaCiempi y servidor sin cambios). Las piezas del cuerpo, cola, patas, rasgos de cabeza y alitas son imágenes generadas con IA (Codex image_gen) editando sobre la referencia aprobada; la cabeza, ojos, boca, antenas y el hocico del Dragón son vectores (los de la base aprobada; el hocico es un vector nuevo, no IA). Fichas: <a href="../revisiones/T01-dragon-v1/REVISION.md">T01 REVISION.md</a> · <a href="../revisiones/T02-cuncuna-v1/REVISION.md">T02 REVISION.md</a>.</p>
+  <nav class="indice"><a href="#conceptos">Conceptos</a><a href="#comparacion">Comparación con Ciempi</a><a href="#crecimiento">Crecimiento</a><a href="#accesorios">Accesorios</a><a href="#detalle">Anclajes</a><a href="#conjuntos">Conjuntos</a><a href="#animacion">Animación</a><a href="#piezas">Piezas IA</a></nav>
+
+  <h2 id="conceptos">1. Conceptos IA y selección provisional</h2>
+  <p>Tres direcciones por criatura. Selección provisional (del agente, no del usuario): <b>Dragón d2 «bebé con alitas»</b> y <b>Cuncuna c2 «penachos»</b>, por ser las siluetas más distintas de Ciempi a 84 px.</p>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/conceptos/lamina-conceptos.png" alt="Conceptos del Dragón d1, d2 y d3" loading="lazy"><figcaption>Dragón: d1 desfile, d2 bebé con alitas (seleccionado), d3 cresta de hojas.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/conceptos/lamina-conceptos.png" alt="Conceptos de la Cuncuna c1, c2 y c3" loading="lazy"><figcaption>Cuncuna: c1 esponjosa, c2 penachos (seleccionada), c3 colores chilenos.</figcaption></figure>
+    <figure><img src="../revisiones/T01-dragon-v1/conceptos/siluetas.png" alt="Siluetas de los conceptos del Dragón" loading="lazy"><figcaption>Siluetas del Dragón a 84 px de alto y 320 px de ancho, con Ciempi.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/conceptos/siluetas.png" alt="Siluetas de los conceptos de la Cuncuna" loading="lazy"><figcaption>Siluetas de la Cuncuna.</figcaption></figure>
+  </div>
+
+  <h2 id="comparacion">2. Comparación con Ciempi (84, 240 y 320 px; claro y oscuro)</h2>
+  <div class="par">
+    <figure><img src="../revisiones/T00-comparacion-v1/evidencia/comparacion-claro.png" alt="Comparación con Ciempi en fondo claro" loading="lazy"><figcaption>Fondo claro. Incluye N = 12 a 84 px (pista) y siluetas.</figcaption></figure>
+    <figure><img src="../revisiones/T00-comparacion-v1/evidencia/comparacion-oscuro.png" alt="Comparación con Ciempi en fondo oscuro" loading="lazy"><figcaption>Fondo oscuro: el contorno azul oscuro pierde contraste (igual que en Ciempi).</figcaption></figure>
+  </div>
+
+  <h2 id="crecimiento">3. Crecimiento modular (N = 0, 1, 2, 5, 8, 12, 22, 40)</h2>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/crecimiento-claro.png" alt="Crecimiento del Dragón" loading="lazy"><figcaption>Dragón: cola con punta y frente únicos; A→B→C→D casi idénticos.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/crecimiento-claro.png" alt="Crecimiento de la Cuncuna" loading="lazy"><figcaption>Cuncuna: ciclo B→C→D→A (menta/lila y penachos amarillo/salmón alternos).</figcaption></figure>
+  </div>
+
+  <h2 id="accesorios">4. Accesorios aprobados por tipo de compatibilidad</h2>
+  <p>9 universales (gorros, máscaras, lentes, peinado, bufanda, gestos, ojos), 6 adaptables (2 paletas, calzado, superficie, capa, mochila) y el exclusivo (alitas). En la Cuncuna las alitas aparecen como <i>ocultas</i>: siguen equipadas y vuelven al cambiar a Dragón.</p>
+  <h3>Dragón</h3>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/accesorios-claro.png" alt="Accesorios en el Dragón, fondo claro" loading="lazy"><figcaption>Fondo claro.</figcaption></figure>
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/accesorios-oscuro.png" alt="Accesorios en el Dragón, fondo oscuro" loading="lazy"><figcaption>Fondo oscuro.</figcaption></figure>
+  </div>
+  <h3>Cuncuna</h3>
+  <div class="par">
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/accesorios-claro.png" alt="Accesorios en la Cuncuna, fondo claro" loading="lazy"><figcaption>Fondo claro. El penacho se guarda bajo gorros, máscaras y peinados.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/accesorios-oscuro.png" alt="Accesorios en la Cuncuna, fondo oscuro" loading="lazy"><figcaption>Fondo oscuro.</figcaption></figure>
+  </div>
+
+  <h2 id="detalle">5. Detalle de anclajes (cuello, patas, cola)</h2>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/detalle-claro.png" alt="Detalle de anclajes del Dragón" loading="lazy"><figcaption>Dragón: sin accesorios; calzado + bufanda + gorro; superficie + alitas.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/detalle-claro.png" alt="Detalle de anclajes de la Cuncuna" loading="lazy"><figcaption>Cuncuna: sin accesorios; calzado + bufanda + gorro; superficie + capa.</figcaption></figure>
+  </div>
+
+  <h2 id="conjuntos">6. Conjuntos B12 sobre cada criatura</h2>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/conjuntos-claro.png" alt="Conjuntos sobre el Dragón" loading="lazy"><figcaption>Dragón.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/conjuntos-claro.png" alt="Conjuntos sobre la Cuncuna" loading="lazy"><figcaption>Cuncuna.</figcaption></figure>
+  </div>
+
+  <h2 id="animacion">7. Animaciones del juego sobre las criaturas (cuadros congelados)</h2>
+  <div class="par">
+    <figure><img src="../revisiones/T01-dragon-v1/evidencia/animacion-claro.png" alt="Cuadros de animación del Dragón" loading="lazy"><figcaption>Dragón, N = 8: A02, A03, A06, A10, E04.</figcaption></figure>
+    <figure><img src="../revisiones/T02-cuncuna-v1/evidencia/animacion-claro.png" alt="Cuadros de animación de la Cuncuna" loading="lazy"><figcaption>Cuncuna, N = 8.</figcaption></figure>
+  </div>
+
+  <h2 id="piezas">8. Piezas modulares IA y sus anclajes</h2>
+  <figure><img src="../revisiones/T01-dragon-v1/piezas/anclajes-piezas.png" alt="Piezas del Dragón con su origen" loading="lazy"><figcaption>Dragón: segmentos A–D, frente, cola, pierna, pie, rasgos de cabeza y alitas (cruz roja = origen).</figcaption></figure>
+  <figure><img src="../revisiones/T02-cuncuna-v1/piezas/anclajes-piezas.png" alt="Piezas de la Cuncuna con su origen" loading="lazy"><figcaption>Cuncuna: segmentos A–D, frente, cola, pierna, pie y penacho.</figcaption></figure>
+</main>
+<script>
+  const c = document.getElementById('oscuro')
+  c.onchange = () => { document.body.dataset.fondo = c.checked ? 'oscuro' : 'claro' }
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "id": "pieza-dragon-cabeza",
+  "archivo": "pieza-dragon-cabeza.png",
+  "prompt": "pieza-dragon-cabeza-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-215a-7993-8545-24d2957e30e5/exec-3bf0e7b3-caa3-43f3-8e51-472b2231e831.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:06.106Z",
+  "segundos": 67
+}

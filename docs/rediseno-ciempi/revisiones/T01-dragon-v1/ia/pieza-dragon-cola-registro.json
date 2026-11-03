@@ -1,0 +1,13 @@
+{
+  "id": "pieza-dragon-cola",
+  "archivo": "pieza-dragon-cola.png",
+  "prompt": "pieza-dragon-cola-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-2146-76e3-95f1-d442df95dbd3/exec-865fc44c-7bbd-4ae9-943c-b78ceb61bb2d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:20:03.826Z",
+  "segundos": 125
+}
