@@ -1,6 +1,6 @@
 # Checkpoint · Transformaciones Dragón (T01) y Cuncuna (T02)
 
-Fecha: 2026-11-03. Estado: **PAUSADO a pedido del coordinador, incompleto**. Todo es laboratorio; no se tocó catálogo, tienda, PantallaCiempi ni servidor. No hay aprobación artística del usuario.
+Fecha: 2026-11-03. Estado: **pasos 1–6 completados (ver «Retomado»); pendiente la aprobación artística del usuario (paso 7)**. Todo es laboratorio; no se tocó catálogo, tienda, PantallaCiempi ni servidor. No hay aprobación artística del usuario.
 
 ## Hecho
 
@@ -31,3 +31,13 @@ Referencias: presentación v2 aprobada (1.ª) + `T00-referencias/ciempi-sin-gorr
 4. Pruebas: Vitest de `compatibilidad`/`especie`/`roles`+`posiciones` (con y sin `FORMA_CIEMPI`); Playwright (NODE_PATH del brief) comparando `escena` original vs nueva para N ∈ {0,1,5,12,40}; consola sin errores; capturas.
 5. Evidencia: crecimiento N=0,1,2,5,8,12,22,40; ≥8 universales + 2 adaptables + exclusivos; comparaciones 84/240/320 claro/oscuro; `REVISION.md` por especie con ficha §12 y cinco puntuaciones tras inspección.
 6. `npx tsc --noEmit -p .` y `npx vitest run src` (no ejecutados). `node_modules` del worktree es un enlace simbólico al del repo principal (ignorado por git).
+
+## Retomado (2026-11-03, segunda sesión)
+1. `construir-laboratorio.mjs` usa `transformWithOxc` de Vite (TypeScript 7.0.2 es nativo y no expone `ModuleKind`). `gen/` generado.
+2. `laboratorio-transformaciones/especies.js` + `nucleo.js`: compositor de especies sobre `renderCiempi` y `escena(…, forma)`; rasgos ocultables (`cuernos`, `hocico`, `penacho`), alitas exclusivas delante del cuerpo y detrás de la cabeza, tinte por paleta en canvas por bandas de tono, superficies B11 copiadas a D con contorno del núcleo.
+3. Laboratorio (`index.html`, `laboratorio.js`), láminas (`laminas.html`) y galería (`galeria.html`). README en la carpeta.
+4. Pruebas: `src/ciempi/v2/especie.test.ts`, `compatibilidad.test.ts`; `scripts/transformaciones/probar-laboratorio.cjs` (Ciempi idéntico 35/35; consola limpia).
+5. Evidencia en `revisiones/T01-dragon-v1/evidencia/`, `T02-cuncuna-v1/evidencia/`, `T00-comparacion-v1/evidencia/`; fichas `REVISION.md`.
+6. `npx tsc --noEmit -p .` sin errores; `npx vitest run src`: 21 archivos, 199 pruebas, todas pasan.
+
+Cambios de código compartido: `pose.ts` solo añade `forma?.margenCola` (con `forma` ausente, 110 como siempre). `especie.ts`: `margenCola`, ciclo configurable (Cuncuna B→C→D→A), `MASCARAS_COMPLETAS` y `rasgosOcultosCon`. `componer.js`, rig y catálogo sin cambios.
