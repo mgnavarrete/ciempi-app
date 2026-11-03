@@ -1,0 +1,13 @@
+{
+  "id": "concepto-c3-chilena",
+  "archivo": "concepto-c3-chilena.png",
+  "prompt": "concepto-c3-chilena-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-094d-7072-970f-ce8e2fece37e/exec-f549b89c-0a7a-4c07-8b75-f5efe00b27fb.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:52.025Z",
+  "segundos": 87
+}

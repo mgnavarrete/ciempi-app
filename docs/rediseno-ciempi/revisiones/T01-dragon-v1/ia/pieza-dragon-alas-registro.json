@@ -1,0 +1,13 @@
+{
+  "id": "pieza-dragon-alas",
+  "archivo": "pieza-dragon-alas.png",
+  "prompt": "pieza-dragon-alas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-213c-7913-a1a2-cc94068c0bdb/exec-b16eaf04-531c-4739-931a-31baff8749a2.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:08.779Z",
+  "segundos": 70
+}

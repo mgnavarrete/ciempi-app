@@ -1,0 +1,13 @@
+{
+  "id": "concepto-c2-penachos",
+  "archivo": "concepto-c2-penachos.png",
+  "prompt": "concepto-c2-penachos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-0948-72e0-a062-4f23912a9a62/exec-ec0f8b12-8fd7-4e26-9e19-23f5f5ebb013.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:37.444Z",
+  "segundos": 73
+}

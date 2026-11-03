@@ -1,0 +1,13 @@
+{
+  "id": "pieza-cuncuna-segmentos",
+  "archivo": "pieza-cuncuna-segmentos.png",
+  "prompt": "pieza-cuncuna-segmentos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/concepto-c2-penachos.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-2154-7c70-81d5-0c497363e873/exec-190261ad-8cc5-4376-a7e9-787692fc1b1e.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:08.465Z",
+  "segundos": 70
+}

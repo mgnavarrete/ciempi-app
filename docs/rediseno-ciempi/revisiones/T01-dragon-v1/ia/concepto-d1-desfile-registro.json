@@ -1,0 +1,13 @@
+{
+  "id": "concepto-d1-desfile",
+  "archivo": "concepto-d1-desfile.png",
+  "prompt": "concepto-d1-desfile-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-0945-7ca3-87d2-d15ef7653fbd/exec-4d6011a2-1f34-4fd1-a0e3-432922337350.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:36.125Z",
+  "segundos": 71
+}

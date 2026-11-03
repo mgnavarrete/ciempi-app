@@ -1,0 +1,13 @@
+{
+  "id": "pieza-dragon-pata",
+  "archivo": "pieza-dragon-pata.png",
+  "prompt": "pieza-dragon-pata-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-2160-79a1-9422-1dd8b57c3908/exec-abff96ae-5b51-4ba2-bc8b-8b814634f298.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:19:04.067Z",
+  "segundos": 65
+}
