@@ -621,3 +621,198 @@ Los cuatro WIP de §7 se completaron, se probaron por línea y se integraron. Na
 **Pendiente técnico:** pantalla de celebración de la Cuncuna; especie en `useEscenaCreciente`; hitos de sílabas/palabras y nivel completo de E2; avisos al adulto; Android, Firefox, Safari y APK antigua.
 
 **Siguiente: FASE ARTÍSTICA** (autorizada para empezar una vez guardada la integración; los cuerpos de AD-017 no se tocan): rostros de Dragón y Cuncuna, Serpiente, Camaleón, mochilas y zapatos, en un laboratorio HTML con antes y después.
+
+---
+
+## 9. TRASPASO A UNA SESIÓN NUEVA (3-nov-2026, cierre de la sesión 4)
+
+### 9.1 Estado verificado al cerrar
+- **`main`** en `3e188ce` (producción 2.4.1), **sin tocar**. Conserva cambios ajenos sin commitear: 20 archivos modificados y 25 entradas sin versionar. La lista exacta está en `contexto/respaldo-main-2026-11-03/estado-main.txt`. **No limpiar, no commitear ni descartar.**
+- **No hay agentes activos.** Tampoco procesos de la expansión, salvo un `python3 -m http.server 8772` de una sesión anterior, que es inofensivo. Los procesos MCP de Playwright y rea son de la herramienta.
+- Los **9 worktrees** están limpios: ningún cambio sin commitear.
+
+| Rama | Worktree (`.claude/worktrees/…`) | HEAD |
+|---|---|---|
+| **`expansion-v3-integracion`** (para retomar) | `integracion` | **`5faaf4f`** |
+| `expansion-v3-continuidad` | `continuidad` | este commit (ver `git log -1`) |
+| `worktree-agent-a5e1c8d72e4a5aeb0` (seguridad/E2/Cuncuna) | `agent-a5e1c8d72e4a5aeb0` | `21910b1` |
+| `expansion-v3-pin-textos` | `pin-textos` | `3401161` |
+| `worktree-agent-a925a3794da34fde2` (economía) | `agent-a925a3794da34fde2` | `548ba79` |
+| `worktree-agent-a4c7575325914c12a` (tienda) | `agent-a4c7575325914c12a` | `ef867b3` |
+| `worktree-agent-a103c0ae8e6a43da3` (animación) | `agent-a103c0ae8e6a43da3` | `e1945c5` |
+| `worktree-agent-ab5e3926402cffc21` (Dragón/Cuncuna) | `agent-ab5e3926402cffc21` | `bba72d3` |
+
+`5faaf4f` contiene todas las ramas anteriores; las pruebas y los resultados están en §8. Después de este commit, la integración se debe volver a fusionar con `expansion-v3-continuidad` para llevar esta §9.
+
+### 9.2 Archivos NO versionados que hay que conservar (solo en `main`, sin commitear)
+- **`CIEMPI_ART_DIRECTION.md`**: guía artística, con el registro AD-001 a AD-018.
+- **`AGENTS.md`**: instrucciones del proyecto.
+
+  Hay una copia de ambos en `docs/expansion-ciempi/contexto/respaldo-main-2026-11-03/`, con su sha256. **La fuente de verdad sigue siendo la de `main`.** Si difieren, manda la de `main`.
+- Herramientas y evidencia artística:
+  - `docs/rediseno-ciempi/laboratorio/`: laboratorio B01–B12, catálogo y aprobaciones;
+  - `auditoria/`, `revisiones/` y `laboratorio-animaciones/`;
+  - `docs/referencia-artiscita/`;
+  - `scripts/auditar-vestuario-ciempi.mjs` y `scripts/lib/acabados-armario.mjs`.
+- Además: `docs/integracion-ciempi/…`, `docs/expansion-ciempi/` (la copia antigua en `main`), `.agents/` y `.claude/` (aquí viven los worktrees).
+
+### 9.3 Decisiones aprobadas (vigentes)
+- **B01–B12:** aprobados para el laboratorio (AD-011, AD-012 y AD-014). Son la identidad visual de referencia.
+- **AD-015 y AD-016:** integración del personaje y animaciones A01–A12/E01–E07 (2.0.0).
+- **AD-017, Dragón (d2) y Cuncuna (c2):**
+  - Los **cuerpos están aprobados** y **no se rediseñan ni se reemplazan**. Incluye segmentos, siluetas, patas, texturas, colores, patrones, sombras y crecimiento modular A→B→C→D.
+  - Los **rostros NO están aprobados**: se parecen demasiado a Ciempi.
+  - **Dragón:** debe tener hocico, nariz, boca, colmillos pequeños y ojos propios.
+  - **Cuncuna:** mejillas, ojos, boca y expresiones más tiernas.
+  - Se hacen con **generación real de imágenes con IA**. Hay libertad de geometría facial siempre que se conserven las expresiones, las animaciones y los accesorios.
+- **AD-018, E08 «Comer»:**
+  - Experimental y apagada en producción (`COMER_ANIMADO=false`).
+  - Boca inicial sorprendida; la carcajada se conserva para comparar.
+  - Con máscaras que tapan la boca no se dibuja una segunda boca.
+- **Economía E2:** aprobada como referencia, con precios provisionales en dos olas (10/16/24/30, sets de 60 a 85, Dragón 80). **No está activada.**
+- **Cuncuna:** se desbloquea con 6 de los 8 cuentos de N0, con alternativas para otros niveles y para lectores lentos.
+- **PIN del adulto:** aprueba los textos que agrega el niño, con verificación en el servidor.
+- **Preferencias de la usuaria (economía):**
+  - equidad entre ritmos de lectura;
+  - sin media tasa y sin topes silenciosos;
+  - nunca monedas por tener la app abierta;
+  - recompensas mixtas.
+
+### 9.4 Decisiones artísticas nuevas (fase V4, registradas por pedido de la usuaria)
+- **Rostros de Dragón y Cuncuna:** más característicos, adorables y expresivos, hechos con IA real. Los cuerpos quedan intactos.
+- **Serpiente:** criatura nueva para desarrollar. **Camaleón:** se explora con propuestas. Las dos respetan la línea gráfica de Ciempi y el crecimiento modular (`FormaCuerpo` de `especie.ts`).
+- **Mochilas:** corregir las que parecen pegadas encima del cuerpo. Necesitan correas, volumen, perspectiva, anclajes y sombra de contacto.
+- **Zapatos:** corregir los que parecen dibujados sobre las patas. Deben verse puestos de verdad: abertura, tobillo, suela, perspectiva, orientación, movimiento y crecimiento.
+- **Reglas para todo:**
+  - conservar la identidad y los recursos aprobados B01–B12;
+  - usar `CIEMPI_ART_DIRECTION.md` y las herramientas existentes;
+  - preservar la evidencia del estado anterior;
+  - comparar antes y después;
+  - rúbrica de 1 a 5 con observaciones concretas.
+  - Un cambio significativo de identidad necesita la aprobación explícita de la usuaria antes de convertirse en referencia.
+
+### 9.5 Decisiones técnicas pendientes (NO activar en producción)
+- **Activación de E2.** Hoy la bandera `ECONOMIA` deja 2.4.1 por defecto.
+- **E2R** (relectura a 1,5/min en todos los niveles) y el **«nivel completo» retroactivo** (+15).
+- **Seguridad de monedas:**
+  - abuso «rondar» (~2,1/min);
+  - avisos al adulto;
+  - apps antiguas que casi no ganan con E2.
+- **Desbloqueo de la Cuncuna:**
+  - vía lenta: 60 min + 30 frases (implementado), 45 min o un marcapáginas;
+  - la pantalla de celebración no existe todavía;
+  - la Cuncuna también se desbloquea con 2.4.1, lo que es un cambio visible si se despliega.
+- **Especies en el juego real:** `useEscenaCreciente` aún no recibe la especie. Faltan `componerCriatura` y `ESPECIES[id].forma` fuera del laboratorio.
+- **Animación de comer:**
+  - boca definitiva;
+  - la fruta queda delante del labio entre 0,24 y 0,38 s;
+  - en modo tranquilo la boca se abre sin fruta.
+- **Compatibilidad con máscaras:** la reacción alternativa todavía no está aprobada.
+- **Android real, Firefox y Safari;** pruebas con **una APK antigua** contra el servidor nuevo.
+- **Personajes protegidos:**
+  - «Gatita» (riesgo de parecido con Hello Kitty);
+  - revisión de cuentos 21–40 en `personajes-protegidos/REVISION-PERSONAJES.md`.
+
+### 9.6 Riesgos conocidos
+- El desbloqueo de la Cuncuna es visible aunque se use la economía por defecto.
+- Los textos que agrega el niño no pagan hasta que el adulto cree un PIN.
+- Lo «pagado» antes de 2.5 sale de `leido_hasta`, que fijaba el cliente.
+- El PIN de 4 dígitos tiene ~0,4 % de acierto al mes por niño.
+- **Dragón:** monótono con N ≥ 12. **Cuncuna:** los penachos laterales quedan recortados. **A10 Victoria:** se sale del encuadre.
+- `.gitignore` ignora `dist`: los builds de demo se agregan con `git add -f`.
+
+### 9.7 Cómo recuperar los laboratorios (desde el worktree `integracion`)
+- **Laboratorio de especies (Dragón/Cuncuna):**
+  1. `node scripts/transformaciones/construir-laboratorio.mjs`
+  2. `python3 -m http.server 8779 --bind 127.0.0.1`
+  3. abrir `/docs/rediseno-ciempi/laboratorio-transformaciones/`
+  4. Pruebas: `NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules LAB_URL=http://127.0.0.1:8779/docs/rediseno-ciempi/laboratorio-transformaciones/ node scripts/transformaciones/probar-laboratorio.cjs`. Debe dar Ciempi 35/35.
+- **Crecimiento con especies:**
+  1. copiar `docs/expansion-ciempi/animacion/fusion-especies/comprobar-crecer.{html,js}` en el laboratorio;
+  2. correr `node docs/expansion-ciempi/animacion/fusion-especies/comprobar-fusion.mjs`. Debe dar 234/234.
+  3. Hacerlo en una copia (`git archive HEAD`) para no ensuciar el worktree.
+- **Ciempi idéntico:** `node docs/expansion-ciempi/animacion/medicion/capturas.mjs`. Debe dar 108/108; también conviene correrlo en una copia.
+- **Demo E08:** `node docs/expansion-ciempi/animacion/demo-comer/servir.mjs`, luego `http://127.0.0.1:8773/` y `/hoja.html?boca=carcajada`.
+- **Índice de la demo:** `docs/expansion-ciempi/demo-integrada.html`. Informe: `docs/expansion-ciempi/INFORME-INTEGRACION-V3.md`.
+- **Laboratorio de vestuario B01–B12:** `docs/rediseno-ciempi/laboratorio/` en `main` (sin versionar). Auditoría: `scripts/auditar-vestuario-ciempi.mjs`. Ese script **sobrescribe sus láminas**: preservar el estado anterior antes de correrlo.
+- **Catálogo de piezas:** `public/ciempi-v2/catalogo.json`, con las claves `bags` (mochilas), `footwear` (zapatos), `masks`, `hats`, `capes` y `surfaces`.
+- **IA real:** `scripts/transformaciones/generar-ia.mjs <destino> <id> <prompt.txt> <refs…>`, que usa Codex CLI image_gen (`codex` en `~/.nvm/versions/node/v22.23.4/bin/codex`). Los prompts están en `scripts/transformaciones/prompts/`.
+- **Revisiones previas:** `docs/rediseno-ciempi/revisiones/T01-dragon-v1/` y `T02-cuncuna-v1/`, en la rama de integración.
+- **Base de datos de pruebas:** contenedor `ciempi-db-1`, 127.0.0.1:5434, ciempi/ciempi. Usar solo bases `*_test*`.
+- **Playwright:** `NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules`, Chromium en `~/.cache/ms-playwright/chromium-1248/`.
+
+### 9.8 Próximos pasos
+1. La nueva sesión verifica el repositorio (§9.1) y lee el contexto.
+2. Crea la rama **`expansion-v4-arte`** desde `expansion-v3-integracion`, en un worktree nuevo `.claude/worktrees/arte-v4`.
+3. Hace el laboratorio V4 de la §6 de la petición: rostros de Dragón y Cuncuna, Serpiente, Camaleón, mochilas, zapatos, compatibilidad con expresiones y accesorios, crecimiento dinámico, animaciones y comparación antes y después.
+4. Entrega el resultado para su aprobación. Las decisiones técnicas de §9.5 se revisan aparte.
+
+---
+
+## PROMPT PARA NUEVA SESIÓN — EXPANSIÓN ARTÍSTICA V4
+
+```text
+Proyecto CIEMPI (/mnt/d/Proyectos/ciempi-app, WSL). App infantil de lectura: React 19 + TS + Vite + Tailwind 4
++ Capacitor 8; servidor Fastify + PostgreSQL. Producción = 2.4.1 = commit 3e188ce en `main`.
+NO conoces conversaciones anteriores: reconstruye el estado SOLO desde los archivos. Responde en español.
+
+## 0. Antes de modificar NADA
+1. Lee COMPLETO docs/expansion-ciempi/CONTINUIDAD-SESION.md en el worktree
+   /mnt/d/Proyectos/ciempi-app/.claude/worktrees/continuidad (rama expansion-v3-continuidad), sobre todo §8 y §9.
+2. Lee /mnt/d/Proyectos/ciempi-app/AGENTS.md y /mnt/d/Proyectos/ciempi-app/CIEMPI_ART_DIRECTION.md
+   (sin versionar en main; registro AD-001…AD-018; copia de respaldo en
+   docs/expansion-ciempi/contexto/respaldo-main-2026-11-03/ de la rama de continuidad).
+3. Verifica: `git worktree list`; `git -C .claude/worktrees/integracion log --oneline -3` (debe incluir 5faaf4f
+   y luego el merge de la continuidad §9); `git status` limpio en cada worktree; main en 3e188ce con sus cambios
+   ajenos (compara con contexto/respaldo-main-2026-11-03/estado-main.txt). Si algo difiere, infórmalo antes de seguir.
+4. Lee las revisiones previas: docs/rediseno-ciempi/revisiones/T01-dragon-v1/REVISION.md y T02-cuncuna-v1/REVISION.md
+   (rama expansion-v3-integracion), el laboratorio de especies docs/rediseno-ciempi/laboratorio-transformaciones/,
+   src/ciempi/v2/especie.ts y pose.ts, y el catálogo public/ciempi-v2/catalogo.json (bags, footwear, masks…).
+
+## 1. Dónde trabajar
+Crea la rama `expansion-v4-arte` desde `expansion-v3-integracion` en un worktree nuevo
+/mnt/d/Proyectos/ciempi-app/.claude/worktrees/arte-v4 (enlaza node_modules y server/node_modules al repo principal,
+como los demás worktrees). Commits frecuentes (checkpoints); termina los mensajes con la línea Co-Authored-By indicada.
+
+## 2. Objetivo: resultados artísticos FUNCIONALES (no solo documentos)
+Un laboratorio HTML probable en el navegador con:
+ 1. Dragón con ROSTRO mejorado (hocico, nariz, boca, colmillos pequeños, ojos propios) y CUERPO ORIGINAL INTACTO.
+ 2. Cuncuna con ROSTRO mejorado (mejillas, ojos, boca, expresiones tiernas) y CUERPO ORIGINAL INTACTO.
+ 3. Serpiente nueva (línea gráfica de Ciempi, crecimiento modular con FormaCuerpo).
+ 4. Propuestas de Camaleón (exploración, varias opciones).
+ 5. Mochilas corregidas: correas, volumen, perspectiva, anclajes y sombra de contacto (que no parezcan pegadas).
+ 6. Zapatos rediseñados: abertura, tobillo, suela, perspectiva, orientación; que el pie entre de verdad y acompañen
+    el movimiento y el crecimiento.
+ 7. Compatibilidad con expresiones B03 y accesorios B01–B12 (incluidas máscaras que tapan la boca).
+ 8. Crecimiento dinámico (N = 0…40, escenaCreciente/rig.crecer con `forma`).
+ 9. Animaciones (A01–A12, E01–E08) sobre las criaturas.
+10. Comparaciones antes/después en cada punto.
+Usa GENERACIÓN REAL DE IMÁGENES CON IA: scripts/transformaciones/generar-ia.mjs (Codex CLI image_gen,
+`codex` en ~/.nvm/versions/node/v22.23.4/bin/codex), prompts en scripts/transformaciones/prompts/. Si la IA no está
+disponible, dilo; no la sustituyas en silencio por SVG simples (AD-010).
+
+## 3. Reglas de dirección artística (obligatorias)
+- Los cuerpos de Dragón (d2) y Cuncuna (c2) están APROBADOS (AD-017): no rediseñarlos ni reemplazarlos.
+  Verifica que queden idénticos (comparación por píxeles del cuerpo antes/después).
+- Conserva la identidad visual de Ciempi y los recursos aprobados B01–B12. Ciempi base debe quedar idéntico
+  (capturas.mjs 108/108; probar-laboratorio.cjs 35/35).
+- Sigue CIEMPI_ART_DIRECTION.md: silueta y proporciones → integración/expresión/materiales → detalle. Guarda la
+  evidencia del estado previo ANTES de cada rediseño (el script de auditoría sobrescribe sus láminas).
+- Rúbrica 1–5 (coherencia, calidad, integración, legibilidad, originalidad) con observaciones visuales concretas,
+  revisando tú mismo las imágenes. No declares nada terminado solo por pruebas automáticas.
+- Cambios de identidad significativos requieren aprobación explícita de la usuaria: preséntalos como propuestas.
+  Registra en el registro de la guía solo decisiones que la usuaria apruebe.
+- Evita parecidos con personajes protegidos.
+
+## 4. Prohibido sin autorización explícita
+Tocar `main` (tiene cambios ajenos sin commitear: conservarlos), merge a main, push, desplegar, ciempi.minttu.cl,
+datos reales, economía o precios reales, activar E2/E2R/COMER_ANIMADO, generar APK, borrar ramas o worktrees,
+git stash sin etiqueta, reset --hard, clean. Bases de datos solo *_test* (ciempi-db-1, 127.0.0.1:5434).
+Las decisiones técnicas pendientes (CONTINUIDAD §9.5: E2, E2R, seguridad, Cuncuna, especies en el juego, E08,
+máscaras, Android, APK antigua, personajes protegidos) NO son parte de esta fase salvo que la usuaria lo pida.
+
+## 5. Entrega
+Rama y commits; ruta del laboratorio y cómo abrirlo; imágenes IA generadas (con prompts y generaciones.json);
+pruebas (Ciempi idéntico, cuerpos aprobados idénticos, crecimiento, accesorios, consola sin errores); rúbrica;
+lo verificado, lo inferido y lo pendiente; decisiones que necesita la usuaria. Actualiza CONTINUIDAD-SESION.md.
+```
