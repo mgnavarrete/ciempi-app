@@ -1,14 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { CUNCUNA as CUNCUNA_SERVIDOR, ORIGINALES_N0 as N0_SERVIDOR, REGLA_CUNCUNA } from '../../server/src/desbloqueos'
-import { CUNCUNA, ORIGINALES_N0, REGLA_CUNCUNA_LOCAL, motivoCuncuna } from './desbloqueoCuncuna'
+import { motivoCuncuna } from './desbloqueoCuncuna'
 import { CUENTOS } from '../contenido/cuentos'
 
 describe('regla local de la Cuncuna', () => {
-  it('usa los mismos números y cuentos que el servidor', () => {
-    expect(CUNCUNA).toBe(CUNCUNA_SERVIDOR)
-    expect(ORIGINALES_N0).toEqual(N0_SERVIDOR)
-    expect(REGLA_CUNCUNA_LOCAL).toEqual({ cuentosMinimos: REGLA_CUNCUNA.cuentosMinimos, minimoSiQuitaron: REGLA_CUNCUNA.minimoSiQuitaron })
-  })
+  // La comparación con server/src/desbloqueos.ts vive en server/test/desbloqueo-cliente.test.ts
+  // (la compilación de la app no debe importar código del servidor).
 
   it('6 de N0, todos los que queden si quitaron (mínimo 4), o 6 cuentos de cualquier nivel', () => {
     const leido = (id: string, pagado = 10) => ({ textoId: id, total: 10, pagado })
