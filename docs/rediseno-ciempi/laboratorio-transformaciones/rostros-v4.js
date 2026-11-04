@@ -66,6 +66,8 @@ const imagen = (doc, especieId, p) => {
  * (después de `renderCiempi`). Síncrono: requiere `prepararRostroV4` antes.
  */
 export function aplicarRostroV4(doc, especieId, sel) {
+  // Solo Dragón y Cuncuna tienen rostro v4; Serpiente y Camaleón (T03/T04) traen su propia cara.
+  if (!ESPECIES_CON_V4.includes(especieId)) return
   const m = manifiestos.get(especieId)
   if (!m || m instanceof Promise) throw Error('Rostro v4 sin preparar: usar prepararRostroV4() antes')
   const e = entradaDe(m, sel.expresion)
