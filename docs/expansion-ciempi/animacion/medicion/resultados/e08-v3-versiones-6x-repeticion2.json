@@ -1,0 +1,418 @@
+{
+ "etiqueta": "e08-v3-versiones-6x-repeticion2",
+ "antes": "/tmp/claude-1000/-mnt-d-Proyectos-ciempi-app/f6786c66-70e9-4f5f-a1f5-44b6262e191b/scratchpad/antes",
+ "fecha": "2026-11-03T20:07:58.832Z",
+ "chromium": "156.0.8078.4",
+ "corridas": [
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.06,
+    2.85,
+    3.15
+   ],
+   "cargaFin": [
+    2.22,
+    2.81,
+    3.13
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 5.399999991059303,
+    "p95": 8.399999991059303,
+    "max": 35.900000005960464
+   },
+   "movimiento": {
+    "n": 1168,
+    "mediana": 1,
+    "p95": 2.0999999940395355
+   },
+   "cuadros": {
+    "n": 1209,
+    "fps": 58.644340748358054,
+    "perdidos": 28,
+    "pctPerdidos": 2.263540824575586,
+    "mediana": 16.699999999999818,
+    "p95": 16.799999999999272,
+    "max": 50
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ]
+  },
+  {
+   "ronda": 0,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.22,
+    2.81,
+    3.13
+   ],
+   "cargaFin": [
+    2.5,
+    2.83,
+    3.13
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.9000000059604645,
+    "p95": 8.599999994039536,
+    "max": 20
+   },
+   "movimiento": {
+    "n": 1129,
+    "mediana": 0.7000000029802322,
+    "p95": 1.7999999970197678
+   },
+   "cuadros": {
+    "n": 1170,
+    "fps": 56.752312535470196,
+    "perdidos": 67,
+    "pctPerdidos": 5.416329830234438,
+    "mediana": 16.699999999999818,
+    "p95": 16.80000000000291,
+    "max": 50.10000000000218
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ]
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    2.5,
+    2.83,
+    3.13
+   ],
+   "cargaFin": [
+    5.96,
+    3.6,
+    3.37
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 10.700000002980232,
+    "p95": 21.100000008940697,
+    "max": 28.200000002980232
+   },
+   "movimiento": {
+    "n": 793,
+    "mediana": 1.6000000089406967,
+    "p95": 5.5
+   },
+   "cuadros": {
+    "n": 834,
+    "fps": 40.454212525283886,
+    "perdidos": 403,
+    "pctPerdidos": 32.57881972514147,
+    "mediana": 16.700000000000728,
+    "p95": 49.899999999999636,
+    "max": 100
+   },
+   "tareasLargas": {
+    "n": 6,
+    "totalMs": 354,
+    "max": 87
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 1,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    5.96,
+    3.6,
+    3.37
+   ],
+   "cargaFin": [
+    7.6,
+    4.14,
+    3.56
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 10.900000005960464,
+    "p95": 18.400000005960464,
+    "max": 22.900000005960464
+   },
+   "movimiento": {
+    "n": 809,
+    "mediana": 1.5,
+    "p95": 5.299999997019768
+   },
+   "cuadros": {
+    "n": 850,
+    "fps": 41.263738397607675,
+    "perdidos": 386,
+    "pctPerdidos": 31.22977346278317,
+    "mediana": 16.700000000000728,
+    "p95": 33.400000000001455,
+    "max": 116.59999999999854
+   },
+   "tareasLargas": {
+    "n": 9,
+    "totalMs": 555,
+    "max": 96
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    7.6,
+    4.14,
+    3.56
+   ],
+   "cargaFin": [
+    5.94,
+    3.99,
+    3.52
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.700000002980232,
+    "p95": 8.800000011920929,
+    "max": 11.700000002980232
+   },
+   "movimiento": {
+    "n": 1188,
+    "mediana": 0.8999999910593033,
+    "p95": 2
+   },
+   "cuadros": {
+    "n": 1229,
+    "fps": 59.614470454699784,
+    "perdidos": 8,
+    "pctPerdidos": 0.6467259498787389,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 33.400000000001455
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 2,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    6.11,
+    4.05,
+    3.54
+   ],
+   "cargaFin": [
+    4.88,
+    3.9,
+    3.51
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.700000002980232,
+    "p95": 8.299999997019768,
+    "max": 13.899999991059303
+   },
+   "movimiento": {
+    "n": 1194,
+    "mediana": 0.8999999910593033,
+    "p95": 1.7999999970197678
+   },
+   "cuadros": {
+    "n": 1235,
+    "fps": 59.90550936660232,
+    "perdidos": 2,
+    "pctPerdidos": 0.16168148746968472,
+    "mediana": 16.699999999999818,
+    "p95": 16.700000000000728,
+    "max": 33.30000000000018
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 3,
+   "cpu": 6,
+   "version": "despues",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    4.88,
+    3.9,
+    3.51
+   ],
+   "cargaFin": [
+    3.92,
+    3.75,
+    3.46
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.799999997019768,
+    "p95": 9.100000008940697,
+    "max": 11.299999997019768
+   },
+   "movimiento": {
+    "n": 1192,
+    "mediana": 0.9000000059604645,
+    "p95": 1.8999999910593033
+   },
+   "cuadros": {
+    "n": 1233,
+    "fps": 59.85669346382384,
+    "perdidos": 3,
+    "pctPerdidos": 0.24271844660194175,
+    "mediana": 16.69999999999891,
+    "p95": 16.700000000000728,
+    "max": 33.400000000001455
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  },
+  {
+   "ronda": 3,
+   "cpu": 6,
+   "version": "antes",
+   "modo": "revelar+comer",
+   "conjunto": "tipico",
+   "cargaIni": [
+    3.92,
+    3.75,
+    3.46
+   ],
+   "cargaFin": [
+    3.15,
+    3.57,
+    3.41
+   ],
+   "nMax": 40,
+   "msPorUnidad": 500,
+   "unidad": {
+    "n": 40,
+    "mediana": 4.5999999940395355,
+    "p95": 7.0999999940395355,
+    "max": 12.100000008940697
+   },
+   "movimiento": {
+    "n": 1195,
+    "mediana": 0.8999999910593033,
+    "p95": 1.7999999970197678
+   },
+   "cuadros": {
+    "n": 1236,
+    "fps": 60.0023301875801,
+    "perdidos": 0,
+    "pctPerdidos": 0,
+    "mediana": 16.69999999999891,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000291
+   },
+   "tareasLargas": {
+    "n": 0,
+    "totalMs": 0,
+    "max": 0
+   },
+   "nodosDom": 1121,
+   "nodosCiempi": 1091,
+   "errores": []
+  }
+ ],
+ "resumen": [
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/tipico",
+   "version": "antes",
+   "n": 4,
+   "unidad": "4.7 / 8.4 / 35.9",
+   "pctPerdidos": 0.6,
+   "rangoPerdidos": "0.0–31.2",
+   "fps": 58.6,
+   "largas": 0,
+   "largaMax": 96,
+   "carga": "2.1–7.6",
+   "errores": 1
+  },
+  {
+   "cpu": 6,
+   "caso": "revelar+comer/tipico",
+   "version": "despues",
+   "n": 4,
+   "unidad": "4.8 / 8.6 / 28.2",
+   "pctPerdidos": 0.2,
+   "rangoPerdidos": "0.2–32.6",
+   "fps": 56.8,
+   "largas": 0,
+   "largaMax": 87,
+   "carga": "2.2–6.0",
+   "errores": 1
+  }
+ ]
+}

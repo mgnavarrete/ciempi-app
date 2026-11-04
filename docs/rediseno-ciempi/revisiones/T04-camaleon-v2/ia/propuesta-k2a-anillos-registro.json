@@ -1,0 +1,13 @@
+{
+  "id": "propuesta-k2a-anillos",
+  "archivo": "propuesta-k2a-anillos.png",
+  "prompt": "propuesta-k2a-anillos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-6465-7962-aadf-f3150444d9c7/exec-61762dab-4212-4ad0-add1-44d79ef362de.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:31:06.527Z",
+  "segundos": 127
+}

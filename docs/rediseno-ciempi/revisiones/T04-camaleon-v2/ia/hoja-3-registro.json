@@ -1,0 +1,13 @@
+{
+  "id": "hoja-3",
+  "archivo": "hoja-3.png",
+  "prompt": "hoja-3-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/ia/propuesta-k2a-anillos.png",
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a467-0ea7-71e1-aec5-7cc131a0fb45/exec-2d5e4d14-aea8-46f8-94d5-815da39cc116.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:34:08.446Z",
+  "segundos": 69
+}

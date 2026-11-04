@@ -1,0 +1,34 @@
+import os
+d = os.path.dirname(os.path.abspath(__file__))
+ESTILO = ("Keep exactly the illustration language of the references: flat 2D children's cartoon, thick navy blue #243e5b outlines of the same weight, "
+          "rounded friendly shapes, soft cartoon volume with highlight from the upper left and shading to the lower right. Not realistic, no texture noise. "
+          "No text, no labels, no ground shadow, no background: genuine transparent background with wide transparent margins.")
+DR = ("Reference image 1 is the APPROVED concept 'Ciempi Dragon' (baby dragon caterpillar). Reference image 2 is the original approved Ciempi character (style reference). "
+      "This is game-asset production: redraw parts of the dragon from reference 1 as SEPARATE clean pieces, faithful to its design and colours. ")
+CU = ("Reference image 1 is the APPROVED concept 'Ciempi Cuncuna' (a tussock caterpillar; cuncuna is the Chilean word for a hairy caterpillar). Reference image 2 is the original approved Ciempi character (style reference). "
+      "This is game-asset production: redraw parts of the cuncuna from reference 1 as SEPARATE clean pieces, faithful to its design and colours. ")
+P = {
+ 'dragon-segmentos': DR + "Draw ONE horizontal row of FIVE separate body-segment pieces with wide transparent gaps between them (no overlaps, nothing touching), all at the same scale and resting on the same baseline, seen from the side like in the concept. "
+   "Pieces 1, 2, 3 and 4 are the repeatable middle segments A, B, C, D: each one a COMPLETE plump emerald-teal green ball, slightly taller than wide, with the cream-yellow striped belly plate on its lower part and ONE small rounded orange dorsal spike on its top. "
+   "A, B, C and D must have IDENTICAL size, outline and belly height so they can be chained; only vary slightly the spike shape and the belly stripes so the repetition looks natural. "
+   "Piece 5 is the front chest segment: the same design but about 10 percent bigger. Draw every piece fully closed by its outline on all sides (also the parts that were hidden by overlaps in the concept). No legs, no head, no wings, no tail. " + ESTILO,
+ 'dragon-cola': DR + "Draw ONE single piece: the rear tail segment of the dragon: a COMPLETE plump emerald-teal green ball the same size as a body segment, with the cream-yellow striped belly plate below and one small rounded orange dorsal spike on top; from its LEFT side a short thick tail tapers and curls slightly upward, ending in a rounded orange arrow-shaped tip, like the concept. "
+   "Fully closed outline on all sides (its right side will be covered by the next segment in the game). Side view. No legs, no head, no wings. " + ESTILO,
+ 'dragon-pata': DR + "Draw TWO separate pieces side by side with a wide transparent gap: piece 1 is ONE short chunky emerald-teal green dragon LEG seen from the side, a rounded column about 1.6 times taller than wide, slightly narrower at the bottom ankle, with a subtle scale or two; piece 2 is ONE green dragon FOOT seen from the side with the toes pointing to the RIGHT, three rounded cream claws at the front, a flat sole, its top opening where the ankle joins the leg. "
+   "Same scale and colours as the legs and feet in the concept. " + ESTILO,
+ 'dragon-cabeza': DR + "Reference image 3 is the original Ciempi head without cap. Draw the dragon HEAD FEATURES around a PLAIN EMPTY round orange disc that stands in for the head (same proportions as the head of reference 3; draw NO face on it: no eyes, no mouth, no cheeks). "
+   "On the top of the disc place two small rounded cream horns with soft ridges, and on its upper left and upper right edges two small mint-green fin-shaped ears, exactly like the concept. The base of each horn and ear must overlap the edge of the disc. No antennae, no cap, no body, no wings. " + ESTILO,
+ 'dragon-alas': DR + "Draw ONE single piece: the pair of small bat-like dragon wings from the concept, seen from the side as in the concept: the near wing in front and the far wing slightly behind and smaller, orange membranes with darker orange finger ribs, navy outlines, both joined at one small rounded root at the bottom where they attach to the back of the body. No body, no head. " + ESTILO,
+ 'cuncuna-segmentos': CU + "Draw ONE horizontal row of FIVE separate body-segment pieces with wide transparent gaps between them (no overlaps, nothing touching), all at the same scale and resting on the same baseline, seen from the side like in the concept. "
+   "Pieces 1, 2, 3 and 4 are the repeatable middle segments A, B, C, D: each one a COMPLETE smooth round ball (A lilac, B mint, C lilac, D mint) crowned on top with ONE tall upright brush-like tuft (penacho) of soft bristles (A sunny yellow, B coral, C sunny yellow, D coral), plus a few short soft hair locks sticking out of its lower sides like in the concept. "
+   "A, B, C and D must have IDENTICAL ball size, outline and tuft height so they can be chained. Piece 5 is the front segment: a lilac ball about 10 percent bigger with a yellow tuft and longer soft side hair. Draw every ball fully closed by its outline on all sides. No legs, no head, no tail. " + ESTILO,
+ 'cuncuna-cola': CU + "Draw ONE single piece: the rear tail segment of the cuncuna: a COMPLETE smooth lilac ball the same size as a body segment, with an upright yellow bristle tuft on top and, from its LEFT side, long soft hair pencils of yellow and coral bristles sweeping backward and down like in the concept. "
+   "Fully closed outline on all sides (its right side will be covered by the next segment in the game). Side view. No legs, no head. " + ESTILO,
+ 'cuncuna-pata': CU + "Draw TWO separate pieces side by side with a wide transparent gap: piece 1 is ONE short stubby orange LEG seen from the side, a rounded column about 1.6 times taller than wide; piece 2 is ONE small rounded orange FOOT seen from the side with the toe pointing to the RIGHT, plump and soft like a mitten, flat sole, its top opening where the ankle joins the leg. "
+   "Same scale and colours as the legs and feet in the concept. " + ESTILO,
+ 'cuncuna-cabeza': CU + "Reference image 3 is the original Ciempi head without cap. Draw the cuncuna HEAD FEATURES around a PLAIN EMPTY round orange disc that stands in for the head (same proportions as the head of reference 3; draw NO face on it: no eyes, no mouth, no cheeks). "
+   "Place on the top of the disc the soft bristle tuft (penacho) of yellow and coral bristles with a few long hair locks sweeping forward to the right over the upper edge, like the concept, and two thin navy antennae rising from the top ending in fuzzy mint pompom tips. The base of the tuft must overlap the top of the disc. No cap, no body. " + ESTILO,
+}
+for k, v in P.items():
+    open(os.path.join(d, k + '.txt'), 'w').write(v + '\n')
+print(len(P), 'prompts')

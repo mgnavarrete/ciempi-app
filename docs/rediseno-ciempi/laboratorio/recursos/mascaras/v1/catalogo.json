@@ -1,0 +1,162 @@
+[
+  {
+    "id": "b07-antifaz",
+    "nombre": "Antifaz guardián",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/antifaz.svg",
+    "anterior": "cabeza-mascara-antifaz",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-zorro",
+    "nombre": "Antifaz zorro curioso",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/zorro.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-buho",
+    "nombre": "Antifaz búho lector",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/buho.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-dragon",
+    "nombre": "Antifaz dragón amable",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/dragon.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-spider",
+    "nombre": "Máscara Spider-Man",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/spider.svg",
+    "anterior": "cabeza-mascara-spider",
+    "collections": [
+      "spider-man"
+    ],
+    "antenna": false,
+    "svg": true,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-iron",
+    "nombre": "Máscara Iron Man",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/iron.svg",
+    "anterior": "cabeza-mascara-iron",
+    "collections": [
+      "iron-man"
+    ],
+    "antenna": false,
+    "svg": true,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-voldemort",
+    "nombre": "Máscara mago misterioso",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/voldemort.svg",
+    "anterior": "cabeza-mascara-voldemort",
+    "collections": [
+      "voldemort"
+    ],
+    "antenna": false,
+    "svg": true,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b07-kitty",
+    "nombre": "Disfraz carita Kitty",
+    "batch": "B07",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mascaras/v1/kitty.svg",
+    "anterior": "cabeza-mascara-kitty",
+    "collections": [
+      "hello-kitty"
+    ],
+    "antenna": false,
+    "svg": true,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true,
+    "compatiblePelo": false
+  }
+]

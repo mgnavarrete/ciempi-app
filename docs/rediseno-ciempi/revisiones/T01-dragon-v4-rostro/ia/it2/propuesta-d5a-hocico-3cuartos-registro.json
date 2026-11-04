@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d5a-hocico-3cuartos",
+  "archivo": "propuesta-d5a-hocico-3cuartos.png",
+  "prompt": "propuesta-d5a-hocico-3cuartos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae08-7fb0-8ef4-09a18709c433/exec-39c6aba8-037b-4adb-b6a2-d524e6dde6e5.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:28:57.309Z",
+  "segundos": 110
+}

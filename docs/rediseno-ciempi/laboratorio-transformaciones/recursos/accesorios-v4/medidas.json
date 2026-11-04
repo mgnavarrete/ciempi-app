@@ -1,0 +1,97 @@
+{
+ "aventura": {
+  "archivo": "mochila-aventura.webp",
+  "px": [
+   768,
+   742
+  ],
+  "baseInferior": [
+   439,
+   736
+  ],
+  "fuente": "docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/ia/mochila-aventura-sin-correas.png",
+  "fuenteSha256": "5a503899083b4702",
+  "recorte": [
+   57,
+   59,
+   1145,
+   1110
+  ]
+ },
+ "draco": {
+  "archivo": "mochila-draco.webp",
+  "px": [
+   768,
+   718
+  ],
+  "baseInferior": [
+   406,
+   713
+  ],
+  "fuente": "docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/ia/mochila-draco-sin-correas.png",
+  "fuenteSha256": "141d70f12c237bb0",
+  "recorte": [
+   0,
+   19,
+   1256,
+   1193
+  ]
+ },
+ "mago": {
+  "archivo": "mochila-mago.webp",
+  "px": [
+   768,
+   513
+  ],
+  "baseInferior": [
+   476,
+   508
+  ],
+  "fuente": "docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/ia/mochila-mago-sin-correas.png",
+  "fuenteSha256": "35f4a054ac1e4e50",
+  "recorte": [
+   0,
+   213,
+   1203,
+   1016
+  ]
+ },
+ "raton": {
+  "archivo": "mochila-raton.webp",
+  "px": [
+   768,
+   778
+  ],
+  "baseInferior": [
+   370,
+   773
+  ],
+  "fuente": "docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/ia/mochila-raton-sin-correas.png",
+  "fuenteSha256": "fc741e72f6987bb2",
+  "recorte": [
+   80,
+   28,
+   1193,
+   1155
+  ]
+ },
+ "robot": {
+  "archivo": "mochila-robot.webp",
+  "px": [
+   768,
+   755
+  ],
+  "baseInferior": [
+   541,
+   751
+  ],
+  "fuente": "docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/ia/mochila-robot-sin-correas.png",
+  "fuenteSha256": "ca4ede6f50cea1f1",
+  "recorte": [
+   3,
+   54,
+   1085,
+   1117
+  ]
+ }
+}

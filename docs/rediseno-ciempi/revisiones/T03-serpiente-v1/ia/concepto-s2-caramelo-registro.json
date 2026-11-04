@@ -1,0 +1,14 @@
+{
+  "id": "concepto-s2-caramelo",
+  "archivo": "concepto-s2-caramelo.png",
+  "prompt": "concepto-s2-caramelo-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b72d-7a30-b299-20dcb9011886/exec-df73c799-2ee8-4ce0-bee1-d02327a52182.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:32:57.227Z",
+  "segundos": 91
+}

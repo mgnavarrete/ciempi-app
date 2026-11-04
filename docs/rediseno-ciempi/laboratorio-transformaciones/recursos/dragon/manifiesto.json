@@ -1,0 +1,227 @@
+{
+ "especie": "dragon",
+ "version": "v1",
+ "estado": "laboratorio — pendiente de aprobación del usuario",
+ "unidades": "viewBox de la base (0 0 1000 650)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia",
+ "bytesTotales": 193834,
+ "piezas": [
+  {
+   "id": "seg-a",
+   "rol": 1,
+   "archivo": "seg-a.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    345,
+    401
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -114.27,
+    172.47,
+    200.27
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-segmentos.png",
+   "fuenteSha256": "36464125355d2d45",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-b",
+   "rol": 2,
+   "archivo": "seg-b.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    347,
+    403
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.48,
+    -115.54,
+    173.43,
+    201.54
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-segmentos.png",
+   "fuenteSha256": "36464125355d2d45",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-c",
+   "rol": 3,
+   "archivo": "seg-c.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    345,
+    401
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -114.43,
+    172.47,
+    200.43
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-segmentos.png",
+   "fuenteSha256": "36464125355d2d45",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-d",
+   "rol": 5,
+   "archivo": "seg-d.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    400
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -113.88,
+    172.0,
+    199.88
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-segmentos.png",
+   "fuenteSha256": "36464125355d2d45",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "frente",
+   "rol": 4,
+   "archivo": "frente.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    392,
+    456
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -98.0,
+    -130.03,
+    196.0,
+    228.03
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-segmentos.png",
+   "fuenteSha256": "36464125355d2d45",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "cola",
+   "rol": 0,
+   "archivo": "cola.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    491,
+    434
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -159.71,
+    -131.05,
+    245.71,
+    217.05
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-cola.png",
+   "fuenteSha256": "c1127b8ae5c1f772",
+   "notas": "Bola = 0.70 del ancho del recorte (medido sobre la lámina de anclajes)."
+  },
+  {
+   "id": "pierna",
+   "rol": "pierna",
+   "archivo": "pierna.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    92,
+    126
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -31.0,
+    -77.76,
+    46,
+    62.76
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-pata.png",
+   "fuenteSha256": "c0bb227c557c864d",
+   "notas": "Origen = pie; la pierna baja hasta y=-15 (dentro del pie) y su extremo superior queda oculto dentro del cuerpo."
+  },
+  {
+   "id": "pie",
+   "rol": "pie",
+   "archivo": "pie.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    184,
+    125
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -44,
+    -40.5,
+    92,
+    62.5
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-pata.png",
+   "fuenteSha256": "c0bb227c557c864d",
+   "notas": "Encuadre igual al calzado B10: suela en y=+22, talón en x=-44."
+  },
+  {
+   "id": "cabeza-rasgos",
+   "rol": "cabeza",
+   "archivo": "cabeza-rasgos.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    705,
+    259
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    560.6800000000001,
+    167.55,
+    352.34,
+    129.63
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-cabeza.png",
+   "fuenteSha256": "7b28ed904aaf43c1",
+   "notas": "Registrado contra el disco naranja de la imagen IA; el disco y su contorno se quitaron.",
+   "plano": "detras"
+  },
+  {
+   "id": "alas",
+   "rol": "alas",
+   "archivo": "alas.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    480,
+    305
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    417.13,
+    198.86,
+    240.0,
+    152.38
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/pieza-dragon-alas.png",
+   "fuenteSha256": "bd9c4ee0bd46e52f",
+   "notas": "Origen = raíz de las alas (se esconde tras el segmento delantero)."
+  }
+ ],
+ "origenes": {
+  "segmentos/cola": "centro de la bola; el grupo del segmento se traslada a (x, y) de pose.ts",
+  "pierna/pie": "punto de apoyo del pie (grupo translate de cada pata); pie dentro del giro rotate(g -10 -32)",
+  "cabeza-rasgos": "coordenadas absolutas de la base (cabeza 736,340 r130)",
+  "alas": "coordenadas absolutas de la base"
+ }
+}

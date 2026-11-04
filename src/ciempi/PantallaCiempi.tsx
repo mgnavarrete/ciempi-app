@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { sonarCelebracion } from '../audio/sonidos'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { PerfilNino } from '../dominio/tipos'
@@ -16,6 +16,7 @@ import {
   loTiene,
   ponerItem,
   precioDe,
+  puedePonerse,
   type AparienciaCiempi,
   type CategoriaCiempi,
   type Genero,
@@ -25,6 +26,10 @@ import {
 import { CiempiPersonaje } from './CiempiPersonaje'
 import { Comida, FondoTema } from './dibujos'
 import { MiniaturaCiempi } from './v2/Miniatura'
+import { ESPECIES, especieDeItem, type EspecieId } from './criaturas'
+import { MiniaturaCriatura, TiendaCriaturas } from './TiendaCriaturas'
+
+const CUNCUNA = 'especie:cuncuna'
 
 interface Props {
   perfil: PerfilNino
@@ -38,6 +43,8 @@ const SECCIONES: { id: string; nombre: string; emoji: string; categorias: Catego
   { id: 'cuerpo', nombre: 'Cuerpo', emoji: '🐛', categorias: ['paleta', 'textura', 'cuello', 'espalda', 'pies'] },
   { id: 'mundo', nombre: 'Su mundo', emoji: '🏞️', categorias: ['fondo', 'comida'] },
   { id: 'conjuntos', nombre: 'Conjuntos', emoji: '🦸', categorias: ['conjunto'] },
+  // Criaturas (2.5): su propia vista (pestañas por especie), no categorías de PARTES.
+  { id: 'criaturas', nombre: 'Criaturas', emoji: '🐉', categorias: [] },
 ]
 
 /** Una tarjeta de la tienda: una pieza o uno de sus colores (todos vienen con la pieza). */
@@ -60,7 +67,7 @@ const colorPuesto = (a: AparienciaCiempi, t: Tarjeta) => {
 }
 const llevaTarjeta = (a: AparienciaCiempi, t: Tarjeta) => lleva(a, t.item) && colorPuesto(a, t)
 /** Lo que se ve de Ciempi (sin nombre ni género). */
-const look = (a: AparienciaCiempi) => JSON.stringify([...PARTES.map((p) => a[p]), a.variantes])
+const look = (a: AparienciaCiempi) => JSON.stringify([...PARTES.map((p) => a[p]), a.variantes, a.criatura])
 
 /**
  * Armario y tienda de Ciempi (solo los diseños nuevos). Tocar algo se lo
@@ -87,6 +94,29 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
   const guardado = useRef(perfil.ciempi)
   guardado.current = perfil.ciempi
   const inventario = perfil.inventario
+  const [especie, setEspecie] = useState<EspecieId>((especieDeItem(perfil.ciempi.criatura)?.id ?? ESPECIES[0].id) as EspecieId)
+  // La Cuncuna recién ganada leyendo: se celebra una vez (por_celebrar → «¡Ponérmela!» → celebrado).
+  const [celebrarCuncuna, setCelebrarCuncuna] = useState(false)
+  useEffect(() => {
+    let vigente = true
+    repos.desbloqueos
+      ?.listar(perfil.id)
+      .then(async (ds) => {
+        if (!vigente) return
+        if (ds.some((d) => d.item === CUNCUNA) && !perfil.inventario.includes(CUNCUNA)) {
+          // Se la dieron leyendo: el inventario que tiene la app todavía no la trae.
+          const p = await repos.perfiles.obtener(perfil.id)
+          if (vigente && p) alCambiarPerfil({ inventario: p.inventario })
+        }
+        if (vigente && ds.some((d) => d.item === CUNCUNA && d.estado === 'por_celebrar')) setCelebrarCuncuna(true)
+      })
+      .catch(() => {})
+    return () => {
+      vigente = false
+    }
+    // Solo al entrar a la tienda.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [perfil.id])
 
   const guardar = async (apariencia: AparienciaCiempi) => {
     setError(null)
@@ -111,7 +141,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
     setProbando(conColor(probando, t))
     // Si ya es suyo, se lo pone de inmediato (sin botón extra), sobre lo que tiene guardado.
     const puesta = conColor(guardado.current, t)
-    if (PARTES.every((p) => loTiene(inventario, puesta[p]))) void guardar(puesta)
+    if (puedePonerse(puesta, inventario)) void guardar(puesta)
   }
 
   const volverALoMio = () => {
@@ -164,6 +194,52 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
     }
   }
 
+  // ── Criaturas ──
+  const probarCriatura = (criatura: string | null) => {
+    setEstreno(null)
+    setAviso(null)
+    setProbando({ ...probando, criatura })
+  }
+  const usarCriatura = async (criatura: string | null) => {
+    setOcupado(true)
+    const puesta = { ...guardado.current, criatura }
+    await guardar(puesta)
+    setOcupado(false)
+    if (guardado.current.criatura !== criatura) return
+    setProbando({ ...probando, criatura })
+    setEstreno(criatura ? `¡${buscarItem(criatura)?.nombre}!` : `¡${guardado.current.nombre}!`)
+    if (!tranquilo) sonarCelebracion()
+  }
+  /** Compra sin ponérsela (con el total que se mostró). */
+  const comprarCriatura = async (itemId: string, precioVisto: number) => {
+    setOcupado(true)
+    setError(null)
+    try {
+      const r = await repos.perfiles.comprar(perfil.id, itemId, precioVisto)
+      alCambiarPerfil({ monedas: r.monedas, inventario: r.inventario })
+      setEstreno(`¡Ya tienes ${buscarItem(itemId)?.nombre}!`)
+      if (!tranquilo) sonarCelebracion()
+      return true
+    } catch (e) {
+      setError((e as Error).message)
+      return false
+    } finally {
+      setOcupado(false)
+    }
+  }
+  const ponermelaCuncuna = async () => {
+    setCelebrarCuncuna(false)
+    irA(SECCIONES.find((s) => s.id === 'criaturas')!)
+    setEspecie('cuncuna')
+    await usarCriatura('variante:cuncuna-clasica')
+    await repos.desbloqueos?.celebrar(perfil.id, CUNCUNA).catch(() => {})
+  }
+  const despuesCuncuna = () => {
+    setCelebrarCuncuna(false)
+    void repos.desbloqueos?.celebrar(perfil.id, CUNCUNA).catch(() => {})
+  }
+  const enCriaturas = seccion.id === 'criaturas'
+
   const cambiarGenero = (g: Genero) => {
     const genero = probando.genero === g ? null : g
     setProbando({ ...probando, genero })
@@ -203,7 +279,8 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
                 {estreno} 🎉
               </p>
             )}
-            {cambiado && (
+            {/* En «Criaturas», «Volver a lo mío» está en la barra de abajo (aquí taparía el aviso). */}
+            {cambiado && !enCriaturas && (
               <button onClick={volverALoMio} className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1.5 font-bold text-petroleo shadow-sm active:scale-95">
                 ↺ Volver a lo mío
               </button>
@@ -258,14 +335,14 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
 
         <div className="flex min-w-0 flex-1 flex-col gap-3 apaisado:min-h-0 apaisado:gap-2">
           {/* Primero dónde (cabeza, cuerpo, su mundo, conjuntos) y después qué. */}
-          <div className="grid shrink-0 grid-cols-4 gap-2" role="tablist" aria-label="Secciones">
+          <div className="grid shrink-0 grid-cols-5 gap-1.5" role="tablist" aria-label="Secciones">
             {SECCIONES.map((s) => (
               <button
                 key={s.id}
                 role="tab"
                 aria-selected={seccion.id === s.id}
                 onClick={() => irA(s)}
-                className={`flex flex-col items-center rounded-2xl px-1 py-2 font-bold leading-tight apaisado:py-1.5 apaisado:text-sm ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : 'bg-white text-tinta shadow-sm'}`}
+                className={`flex min-w-0 flex-col items-center rounded-2xl px-0.5 py-2 text-xs font-bold leading-tight apaisado:py-1.5 apaisado:text-xs ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : 'bg-white text-tinta shadow-sm'}`}
               >
                 <span className="text-2xl apaisado:text-xl" aria-hidden>
                   {s.emoji}
@@ -274,7 +351,24 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
               </button>
             ))}
           </div>
-          {categorias.length > 1 && (
+          {enCriaturas && (
+            <div className="apaisado:-m-1 apaisado:min-h-0 apaisado:flex-1 apaisado:overflow-y-auto apaisado:p-1 apaisado:pb-28">
+            <TiendaCriaturas
+              probando={probando}
+              puesta={perfil.ciempi}
+              inventario={inventario}
+              monedas={perfil.monedas}
+              ocupado={ocupado}
+              alProbar={probarCriatura}
+              alUsar={(c) => void usarCriatura(c)}
+              alComprar={comprarCriatura}
+              alVolverALoMio={volverALoMio}
+              especie={especie}
+              alCambiarEspecie={setEspecie}
+            />
+            </div>
+          )}
+          {!enCriaturas && categorias.length > 1 && (
             <div className="-mx-5 flex shrink-0 gap-2 overflow-x-auto px-5 pb-1 apaisado:mx-0 apaisado:px-0" role="tablist" aria-label={seccion.nombre}>
               {categorias.map((c) => (
                 <button
@@ -292,6 +386,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
           {aviso && <p className="rounded-2xl bg-amarillo/40 px-3 py-2 text-sm font-bold">{aviso}</p>}
           {categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y sale más barato que comprar cada cosa.</p>}
 
+          {!enCriaturas && (
           <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 apaisado:min-h-0 apaisado:flex-1 apaisado:grid-cols-4 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-1 apaisado:pb-24">
             {tarjetas.map((t) => {
               const suyo = loTiene(inventario, t.item.id)
@@ -317,11 +412,31 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
               )
             })}
           </ul>
+          )}
           <MensajeError error={error} />
         </div>
       </div>
 
-      {pendientes.length > 0 && (
+      {celebrarCuncuna && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-tinta/30 p-5">
+          <div role="dialog" aria-label="¡Ganaste la Cuncuna!" className="aparecer flex w-full max-w-sm flex-col items-center gap-3 rounded-3xl bg-crema p-6 text-center shadow-xl">
+            <p className="text-3xl" aria-hidden>
+              🎉
+            </p>
+            <p className="text-2xl font-bold">¡Ganaste la Cuncuna!</p>
+            <MiniaturaCriatura varianteId="variante:cuncuna-clasica" especie={ESPECIES.find((e) => e.id === 'cuncuna')!} className="h-36 w-full" />
+            <p className="text-lg">Leíste muchos cuentos. Ahora {perfil.ciempi.nombre} puede ser una Cuncuna.</p>
+            <BotonPrincipal onClick={() => void ponermelaCuncuna()} className="w-full">
+              ¡Ponérmela!
+            </BotonPrincipal>
+            <button onClick={despuesCuncuna} className="font-bold text-petroleo underline underline-offset-4">
+              Ahora no
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!enCriaturas && pendientes.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl flex-col gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
           <div className="flex items-center gap-2">
             <p className="min-w-0 flex-1 text-sm">

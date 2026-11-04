@@ -1,0 +1,52 @@
+{
+ "nota": "Copia para el juego (scripts/criaturas/copiar-recursos.mjs): solo lo que usa src/ciempi/v2/criaturas/. Original en docs/rediseno-ciempi/laboratorio-transformaciones/recursos/.",
+ "especie": "camaleon",
+ "capa": "ojos-k3",
+ "estado": "laboratorio V5 — ojos k3 compartidos por todas las variantes (AD-020)",
+ "unidades": "viewBox de la base (0 0 1000 650); coordenadas absolutas de la cabeza (736,340 r130)",
+ "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k3-atardecer.png",
+ "fuenteSha256": "a0ea9f759c0c1027",
+ "metodo": "recorte del concepto sin redibujar; ojo sustituido por párpado del color del anillo frontal",
+ "torretas": {
+  "torreta-izq": {
+   "archivo": "torreta-izq.webp",
+   "px": [
+    293,
+    249
+   ],
+   "encuadre": [
+    619.49,
+    276.23,
+    146.5,
+    124.5
+   ],
+   "ojo": [
+    721.28,
+    339.39,
+    33.73,
+    36.18
+   ],
+   "colorParpado": "#fd9235"
+  },
+  "torreta-der": {
+   "archivo": "torreta-der.webp",
+   "px": [
+    186,
+    193
+   ],
+   "encuadre": [
+    797.32,
+    244.95,
+    93,
+    96.5
+   ],
+   "ojo": [
+    857.11,
+    296.77,
+    22.38,
+    27.9
+   ],
+   "colorParpado": "#fc8e36"
+  }
+ }
+}

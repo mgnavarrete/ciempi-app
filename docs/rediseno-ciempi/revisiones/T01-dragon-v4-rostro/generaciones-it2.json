@@ -1,0 +1,100 @@
+{
+ "iteracion": 2,
+ "motivo": "revisión artística independiente (Fable) transmitida por el coordinador",
+ "herramienta": "Codex CLI 0.166 exec + image_gen",
+ "fallos": 0,
+ "generaciones": [
+  {
+   "id": "hoja-1",
+   "archivo": "hoja-1.png",
+   "prompt": "hoja-1-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/it2/propuesta-d5a-hocico-3cuartos.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cc10-7332-92f9-ac9d42ead30c/exec-32129ed3-33cc-405a-97ca-af1067db63a3.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:31:10.309Z",
+   "segundos": 105,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-2",
+   "archivo": "hoja-2.png",
+   "prompt": "hoja-2-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/it2/propuesta-d5a-hocico-3cuartos.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cba4-7bc0-a0d5-185475f48404/exec-6d7db57f-097a-4567-82e5-4b732fb7c584.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:31:41.893Z",
+   "segundos": 136,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-3",
+   "archivo": "hoja-3.png",
+   "prompt": "hoja-3-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/it2/propuesta-d5a-hocico-3cuartos.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cc72-7c91-9d02-e2c8ab32908f/exec-48a55f91-7eeb-4915-a61f-7e4e05230fed.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:30:52.646Z",
+   "segundos": 87,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-4",
+   "archivo": "hoja-4.png",
+   "prompt": "hoja-4-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/it2/propuesta-d5a-hocico-3cuartos.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cbc2-77b2-a23b-f5ab7dc13612/exec-847d655b-f6a6-41fe-bb91-846a2e922cec.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:31:34.222Z",
+   "segundos": 128,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "propuesta-d5a-hocico-3cuartos",
+   "archivo": "propuesta-d5a-hocico-3cuartos.png",
+   "prompt": "propuesta-d5a-hocico-3cuartos-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae08-7fb0-8ef4-09a18709c433/exec-39c6aba8-037b-4adb-b6a2-d524e6dde6e5.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:28:57.309Z",
+   "segundos": 110,
+   "ronda": "it2-propuestas",
+   "elegida": true
+  },
+  {
+   "id": "propuesta-d5b-hocico-frontal",
+   "archivo": "propuesta-d5b-hocico-frontal.png",
+   "prompt": "propuesta-d5b-hocico-frontal-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae08-7c52-8cf1-d30be864a850/exec-722bd85c-122c-40d1-9e96-1908ddfed752.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:28:53.313Z",
+   "segundos": 106,
+   "ronda": "it2-propuestas",
+   "elegida": false
+  }
+ ]
+}

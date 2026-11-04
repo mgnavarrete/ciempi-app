@@ -1,0 +1,12 @@
+{
+  "id": "mochila-raton-sin-correas",
+  "archivo": "mochila-raton-sin-correas.png",
+  "prompt": "mochila-raton-sin-correas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/raton.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-ef9b-7d72-be72-1aa2de31cb30/exec-4277907b-fa49-48cb-87a5-6a10fa80ace4.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:43:02.040Z",
+  "segundos": 90
+}

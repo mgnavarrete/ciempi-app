@@ -1,0 +1,192 @@
+[
+  {
+    "id": "b11-robot",
+    "nombre": "Armadura Lumen",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/robot.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/robot-cuerpo.png",
+    "fuenteSha256": "5898c9aab0a2bde72895f6affad54076fc968dbe80401b20dd405e9528821b50",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "armadura",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "robot"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-draco",
+    "nombre": "Escamas Draco",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/draco.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/draco-cuerpo.png",
+    "fuenteSha256": "9d8f2a0fd98d9c6a953f955149f3bfff31c4500f749373574338b3b387e42c1f",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "escamas",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "draco"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-mago",
+    "nombre": "Tejido de constelaciones",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/mago.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/mago-cuerpo.png",
+    "fuenteSha256": "93f849a98ab03a3d46e57ab888b3b24cd70b5ecf9fac19348b7488c60c57272b",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "estrellas",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "mago"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-pirata",
+    "nombre": "Travesía de cuentos",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/pirata.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/pirata-cuerpo.png",
+    "fuenteSha256": "e4ff2cc1b62a13db6e8c19330eb0125870033216c1b8746a5844042430746029",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "rayas",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "pirata"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-araluz",
+    "nombre": "Seda de AraLuz",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/araluz.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/araluz-cuerpo.png",
+    "fuenteSha256": "6a341dcc887056d5e773051611eef8e73f58174e4e5a88624b3c10803b326795",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "telarana",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "araluz"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  }
+]

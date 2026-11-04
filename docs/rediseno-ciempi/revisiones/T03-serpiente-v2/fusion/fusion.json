@@ -1,0 +1,4872 @@
+{
+ "crecer": [
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "sinLengua",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 1,
+   "t": -1,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 1,
+   "t": 0.37,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "zapatillaCola",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 0,
+   "t": -1,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 0,
+   "t": 0.37,
+   "escena": "460 0 540 650",
+   "crecer": true,
+   "creciente": "460 0 540 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 1,
+   "t": -1,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 1,
+   "t": 0.37,
+   "escena": "368 0 632 650",
+   "crecer": true,
+   "creciente": "368 0 632 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 2,
+   "t": -1,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 2,
+   "t": 0.37,
+   "escena": "264 0 736 650",
+   "crecer": true,
+   "creciente": "264 0 736 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 3,
+   "t": -1,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 3,
+   "t": 0.37,
+   "escena": "170 0 830 650",
+   "crecer": true,
+   "creciente": "170 0 830 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 4,
+   "t": -1,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 4,
+   "t": 0.37,
+   "escena": "76 0 924 650",
+   "crecer": true,
+   "creciente": "76 0 924 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 5,
+   "t": -1,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-18 0 1018 650",
+   "crecer": true,
+   "creciente": "-18 0 1018 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 6,
+   "t": -1,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-112 0 1112 650",
+   "crecer": true,
+   "creciente": "-112 0 1112 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 12,
+   "t": -1,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-676 0 1676 650",
+   "crecer": true,
+   "creciente": "-676 0 1676 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 40,
+   "t": -1,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "serpiente",
+   "conjunto": "iterV1",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3308 0 4308 650",
+   "crecer": true,
+   "creciente": "-3308 0 4308 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 0,
+   "t": -1,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 0,
+   "t": 0.37,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 1,
+   "t": -1,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 1,
+   "t": 0.37,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 2,
+   "t": -1,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 2,
+   "t": 0.37,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "camuflaje",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 0,
+   "t": -1,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 0,
+   "t": 0.37,
+   "escena": "435 0 565 650",
+   "crecer": true,
+   "creciente": "435 0 565 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 1,
+   "t": -1,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 1,
+   "t": 0.37,
+   "escena": "343 0 657 650",
+   "crecer": true,
+   "creciente": "343 0 657 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 2,
+   "t": -1,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 2,
+   "t": 0.37,
+   "escena": "239 0 761 650",
+   "crecer": true,
+   "creciente": "239 0 761 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 3,
+   "t": -1,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 3,
+   "t": 0.37,
+   "escena": "147 0 853 650",
+   "crecer": true,
+   "creciente": "147 0 853 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 4,
+   "t": -1,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 4,
+   "t": 0.37,
+   "escena": "55 0 945 650",
+   "crecer": true,
+   "creciente": "55 0 945 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 5,
+   "t": -1,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 5,
+   "t": 0.37,
+   "escena": "-37 0 1037 650",
+   "crecer": true,
+   "creciente": "-37 0 1037 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 6,
+   "t": -1,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-129 0 1129 650",
+   "crecer": true,
+   "creciente": "-129 0 1129 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 12,
+   "t": -1,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-681 0 1681 650",
+   "crecer": true,
+   "creciente": "-681 0 1681 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 40,
+   "t": -1,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "camaleon",
+   "conjunto": "iterV1",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3257 0 4257 650",
+   "crecer": true,
+   "creciente": "-3257 0 4257 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  }
+ ],
+ "bocas": [
+  {
+   "especie": "ciempi",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "serpiente",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "camaleon",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 1,
+   "minHijos": 1,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  }
+ ],
+ "errores": [],
+ "tapan": [
+  "b07-ia-robot",
+  "b07-ia-espiritu",
+  "b12-araluz"
+ ]
+}

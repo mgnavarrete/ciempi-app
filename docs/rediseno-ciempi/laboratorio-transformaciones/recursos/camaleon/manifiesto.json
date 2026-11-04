@@ -1,0 +1,312 @@
+{
+ "especie": "camaleon",
+ "version": "v1",
+ "estado": "laboratorio — pendiente de aprobación del usuario",
+ "unidades": "viewBox de la base (0 0 1000 650)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia",
+ "bytesTotales": 235152,
+ "piezas": [
+  {
+   "id": "seg-a",
+   "rol": 1,
+   "archivo": "seg-a.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    340,
+    353
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -85.0,
+    -88.24,
+    170.0,
+    176.49
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-segmentos.png",
+   "fuenteSha256": "84f9dbbceb6144ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-b",
+   "rol": 2,
+   "archivo": "seg-b.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    340,
+    353
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -85.0,
+    -88.24,
+    170.0,
+    176.49
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-segmentos.png",
+   "fuenteSha256": "84f9dbbceb6144ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-c",
+   "rol": 3,
+   "archivo": "seg-c.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    340,
+    354
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -85.0,
+    -88.48,
+    170.0,
+    176.97
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-segmentos.png",
+   "fuenteSha256": "84f9dbbceb6144ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-d",
+   "rol": 5,
+   "archivo": "seg-d.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    340,
+    353
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -85.0,
+    -88.24,
+    170.0,
+    176.49
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-segmentos.png",
+   "fuenteSha256": "84f9dbbceb6144ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "frente",
+   "rol": 4,
+   "archivo": "frente.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    384,
+    393
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -96.0,
+    -98.19,
+    192.0,
+    196.38
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-segmentos.png",
+   "fuenteSha256": "84f9dbbceb6144ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "cola",
+   "rol": 0,
+   "archivo": "cola.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    422,
+    585
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -125.33,
+    -207.11,
+    210.94,
+    292.41
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-cola.png",
+   "fuenteSha256": "b2aaa2d7fa69e8b9",
+   "notas": "Bola medida por su contorno derecho e inferior; la cola sale arriba a la izquierda."
+  },
+  {
+   "id": "pierna",
+   "rol": "pierna",
+   "archivo": "pierna.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    80,
+    152
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -28.0,
+    -90.82,
+    40,
+    75.82
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "56d763fb4c122611",
+   "notas": "Origen = pie; la pierna baja hasta y=-15 (dentro del pie)."
+  },
+  {
+   "id": "pie",
+   "rol": "pie",
+   "archivo": "pie.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    180,
+    117
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -44,
+    -36.26,
+    90,
+    58.26
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "56d763fb4c122611",
+   "notas": "Encuadre igual al calzado B10: suela en y=+22, talón en x=-44."
+  },
+  {
+   "id": "cabeza-piel",
+   "rol": "cabeza",
+   "archivo": "cabeza-piel.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    533,
+    535
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    603.28,
+    206.27,
+    266.56,
+    267.56
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-cabeza.png",
+   "fuenteSha256": "4ee2eda38d953afa",
+   "notas": "Piel de cabeza sin rostro (IA), registrada por el contorno del disco; se recorta al círculo #face bajo ojos, cejas, rubor y boca B03."
+  },
+  {
+   "id": "casco",
+   "rol": "cabeza",
+   "archivo": "casco.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    462,
+    291
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    610.97,
+    133.36,
+    231.11,
+    145.49
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-cabeza.png",
+   "fuenteSha256": "4ee2eda38d953afa",
+   "notas": "Casco: parte de la imagen fuera del disco; va detrás de la cabeza (su base queda tapada por el contorno).",
+   "plano": "detras"
+  },
+  {
+   "id": "torreta-izq",
+   "rol": "torreta",
+   "archivo": "torreta-izq.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    215,
+    217
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -69.26,
+    -58.15,
+    107.42,
+    108.58
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-torretas.png",
+   "fuenteSha256": "18c572c0a2a2789e",
+   "notas": "Origen = centro del hueco (radio 24.6 u); radio exterior 54 u; se centra en el ojo B03 y va detrás de #eyes."
+  },
+  {
+   "id": "torreta-der",
+   "rol": "torreta",
+   "archivo": "torreta-der.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    183,
+    185
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -58.57,
+    -49.5,
+    91.36,
+    92.64
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-torretas.png",
+   "fuenteSha256": "18c572c0a2a2789e",
+   "notas": "Origen = centro del hueco (radio 20.9 u); radio exterior 46 u; se centra en el ojo B03 y va detrás de #eyes."
+  },
+  {
+   "id": "pierna-v2",
+   "rol": "pierna",
+   "archivo": "pierna-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    100,
+    110
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -33.0,
+    -70.11,
+    50,
+    55.11
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "4695acd0d5b29ad1",
+   "notas": "Origen = pie; la pierna baja hasta y=-15 (dentro del pie)."
+  },
+  {
+   "id": "pie-v2",
+   "rol": "pie",
+   "archivo": "pie-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    208,
+    119
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -44,
+    -37.6,
+    104,
+    59.6
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "4695acd0d5b29ad1",
+   "notas": "Encuadre igual al calzado B10: suela en y=+22, talón en x=-44."
+  }
+ ],
+ "origenes": {
+  "segmentos/cola": "centro de la bola; el grupo del segmento se traslada a (x, y) de pose.ts",
+  "pierna/pie": "punto de apoyo del pie (grupo translate de cada pata); pie dentro del giro rotate(g -10 -32)",
+  "cabeza-piel/casco": "coordenadas absolutas de la base (cabeza 736,340 r130)",
+  "lengua": "centro del borde superior; el compositor lo lleva a la boca de cada expresión",
+  "torretas": "centro del hueco; el compositor lo lleva al centro de cada ojo B03"
+ }
+}

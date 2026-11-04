@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tienda v3 · Colecciones</title>
+<style>
+:root{--bg:#fbf6ea;--card:#ffffff;--ink:#243e5b;--soft:#5b6f86;--line:#e4d8bf;--accent:#ff9e32;--mint:#83cda4;--ok:#2f8f5b;--warn:#b5651d;--chip:#f3ecdc;
+--f:#9c86c9;--n:#6f9a4a;--e:#1f3557}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16212e;--card:#1f2d3d;--ink:#eef2f6;--soft:#a9b8c8;--line:#33465b;--chip:#2a3b4f;--ok:#7fd3a3;--warn:#f0b07a;--e:#8fb3e6}}
+:root[data-theme="dark"]{--bg:#16212e;--card:#1f2d3d;--ink:#eef2f6;--soft:#a9b8c8;--line:#33465b;--chip:#2a3b4f;--ok:#7fd3a3;--warn:#f0b07a;--e:#8fb3e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.8rem;margin:0 0 4px}h2{margin:40px 0 8px;font-size:1.4rem}h3{margin:0 0 6px;font-size:1.1rem}
+p.lead{color:var(--soft);margin:0 0 16px}
+.aviso{border:2px dashed var(--warn);border-radius:14px;padding:10px 14px;color:var(--warn);font-weight:600;background:transparent}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+nav a,.chip{background:var(--chip);color:var(--ink);text-decoration:none;border-radius:999px;padding:6px 12px;font-weight:600;font-size:.9rem}
+.col{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:16px 0}
+.col header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pal{display:flex;gap:6px}.pal span{width:22px;height:22px;border-radius:50%;border:2px solid var(--line)}
+figure{margin:12px 0}figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fbf6ea}
+figcaption{font-size:.9rem;color:var(--soft);margin-top:6px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.duo{grid-template-columns:1fr}}
+.tabla{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:640px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--soft);font-weight:600}
+.tag{display:inline-block;border-radius:6px;padding:0 6px;font-size:.8rem;font-weight:700}
+.u{background:#d9f0e3;color:#1f5e3b}.a{background:#fde9c8;color:#7a4a0f}.x{background:#e6dcf7;color:#4a2f80}
+.veredicto{font-weight:700}.bien{color:var(--ok)}.mal{color:var(--warn)}
+pre{background:var(--chip);border-radius:12px;padding:12px;overflow-x:auto;font-size:.82rem;line-height:1.35}
+.wf{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:800px){.wf{grid-template-columns:1fr}}
+.phone{border:2px solid var(--line);border-radius:24px;padding:12px;background:var(--card);max-width:380px}
+.top{display:flex;justify-content:space-between;font-weight:700}
+.stage{height:120px;border-radius:16px;background:linear-gradient(#e9f6ee,#fbf6ea);display:flex;align-items:flex-end;justify-content:center;color:#243e5b;font-size:.85rem;padding:8px;margin:8px 0}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.tabs span{background:var(--chip);border-radius:12px;padding:4px 8px;font-size:.8rem;font-weight:700}.tabs .on{background:var(--ink);color:var(--bg)}
+.especies{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.esp{border:1px solid var(--line);border-radius:14px;padding:8px;text-align:center;font-size:.85rem}
+.esp b{display:block}.esp .on{color:var(--ok)}
+.ex{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ex span{border:1px dashed var(--line);border-radius:10px;padding:4px 8px;font-size:.8rem}
+.compat{border-left:4px solid var(--mint);background:var(--chip);border-radius:10px;padding:10px;font-size:.9rem}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.85rem;margin-top:6px}
+.dim{opacity:.55}
+footer{color:var(--soft);font-size:.85rem;margin-top:40px}
+</style>
+</head>
+<body>
+<main>
+<h1>Tienda v3 · Colecciones Fantasía, Naturaleza y Espacio</h1>
+<p class="lead">Propuesta del 3 de noviembre de 2026. Documento completo: <a href="TIENDA-V3.md" style="color:inherit">TIENDA-V3.md</a>.</p>
+<p class="aviso">Las láminas son conceptos de dirección generados con IA (Codex image_gen) a partir de la referencia aprobada. No son recursos del juego ni piezas aprobadas. Los precios son <b>provisionales E2</b> (aprobados como referencia, no aplicados al juego).</p>
+<nav><a href="#fantasia">Fantasía</a><a href="#naturaleza">Naturaleza</a><a href="#espacio">Espacio</a><a href="#wireframes">Bocetos de Personajes</a><a href="#precios">Precios</a></nav>
+
+<section class="col" id="fantasia">
+<header><h2 style="margin:0">Fantasía · El reino de los cuentos</h2><div class="pal" aria-label="Paleta"><span style="background:#9c86c9"></span><span style="background:#e7b84a"></span><span style="background:#83cda4"></span><span style="background:#fff4dc"></span></div></header>
+<p>Ciempi como caballero de un libro de cuentos: armadura blanda, telas acolchadas y páginas. La fantasía se conecta con la lectura, no con la lucha.</p>
+<div class="duo">
+<figure><img src="conceptos/fantasia-concepto-1024.jpg" alt="Concepto Fantasía v1: Ciempi con casco lavanda, cuerpo acolchado en forma de tubo, faldón de papel y botas violetas" loading="lazy"><figcaption><span class="veredicto mal">v1 · descartada:</span> segmentos fundidos en un tubo; la capa parece una falda. Botas muy bien.</figcaption></figure>
+<figure><img src="conceptos/fantasia-v2-concepto-1024.jpg" alt="Concepto Fantasía v2: casco con carrilleras y pluma menta, cuerpo en rombos lavanda, hojas sueltas al costado y botas violetas" loading="lazy"><figcaption><span class="veredicto mal">v2 · parcial:</span> mejor casco y pluma; sigue el tubo; el rombo parece de arlequín; las «páginas» no forman una capa.</figcaption></figure>
+</div>
+<div class="tabla"><table>
+<tr><th>Producto</th><th>Categoría · anclaje</th><th>Compat.</th><th>Constr.</th><th>Escalón</th><th>Riesgo (§8)</th></tr>
+<tr><td>Casco suave</td><td>Gorros · cabeza</td><td><span class="tag u">universal</span></td><td>raster</td><td>Especial</td><td>Casco que domina la cabeza</td></tr>
+<tr><td>Acolchado</td><td>Estampado · segmentos</td><td><span class="tag a">adaptable</span></td><td>raster atlas</td><td>Obra</td><td>Cuadrícula plana; tubo</td></tr>
+<tr><td>Capa de páginas</td><td>Espalda · cuello</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Obra</td><td>Plantilla triangular</td></tr>
+<tr><td>Botas caballero</td><td>Calzado · tobillo</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Común</td><td>Bloque sin caña</td></tr>
+<tr><td>Antifaz grifo</td><td>Máscara · rostro</td><td><span class="tag u">universal</span></td><td>raster</td><td>Especial</td><td>Ojos sustitutos</td></tr>
+<tr><td>Mochila cofre</td><td>Espalda · segmento delantero</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Especial</td><td>Mochila plana (condicionada)</td></tr>
+<tr><td>Alas de cuento</td><td>Espalda · cuello</td><td><span class="tag x">solo Dragón</span></td><td>raster</td><td>Obra</td><td>Rigidez en animación</td></tr>
+<tr><td>Cresta gema</td><td>Extra · lomo</td><td><span class="tag x">solo Dragón</span></td><td>vector</td><td>Común</td><td>Picos uniformes</td></tr>
+</table></div>
+<p><strong>Conjuntos:</strong> Caballero de cuentos (universal) · Dragón real (solo Dragón).</p>
+</section>
+
+<section class="col" id="naturaleza">
+<header><h2 style="margin:0">Naturaleza · El jardín de Ciempi</h2><div class="pal" aria-label="Paleta"><span style="background:#6f9a4a"></span><span style="background:#8cc56a"></span><span style="background:#f08a7e"></span><span style="background:#d9a55a"></span><span style="background:#8fd0e8"></span></div></header>
+<p>El lugar donde vive Ciempi: pétalos, hojas y hongos. Es la colección de la Cuncuna y la que estrena las mochilas rediseñadas.</p>
+<figure><img src="conceptos/naturaleza-concepto-1024.jpg" alt="Concepto Naturaleza: gorro de pétalos coral, cuerpo de hojas y pétalos, mochila de hoja y zuecos de hongo" loading="lazy"><figcaption><span class="veredicto bien">Dirección con ajustes:</span> el gorro de pétalos y los zuecos se leen muy bien, y la mochila tiene asa y correa. El traje es demasiado denso para 84 px, y los hongos rojos con puntos deben pasar a café.</figcaption></figure>
+<div class="tabla"><table>
+<tr><th>Producto</th><th>Categoría · anclaje</th><th>Compat.</th><th>Constr.</th><th>Escalón</th><th>Riesgo (§8)</th></tr>
+<tr><td>Gorro pétalo</td><td>Gorros · cabeza</td><td><span class="tag u">universal</span></td><td>raster</td><td>Común</td><td>Casquete</td></tr>
+<tr><td>Jardín</td><td>Estampado · segmentos</td><td><span class="tag a">adaptable</span></td><td>raster atlas</td><td>Obra</td><td>Ruido a 84 px</td></tr>
+<tr><td>Mochila hoja</td><td>Espalda · segmento delantero</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Especial</td><td>Mochila plana</td></tr>
+<tr><td>Zuecos hongo</td><td>Calzado · tobillo</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Común</td><td>Seis pies; nada de amanita</td></tr>
+<tr><td>Bufanda musgo</td><td>Bufanda · cuello</td><td><span class="tag u">universal</span></td><td>vector</td><td>Especial</td><td>Parece corbata</td></tr>
+<tr><td>Antifaz zorro</td><td>Máscara · rostro</td><td><span class="tag u">universal</span></td><td>raster</td><td>Especial</td><td>Ojos sustitutos</td></tr>
+<tr><td>Mechones rocío</td><td>Extra · segmentos</td><td><span class="tag x">solo Cuncuna</span></td><td>vector</td><td>Común</td><td>Mechones como casquete</td></tr>
+</table></div>
+<p><strong>Conjuntos:</strong> Jardinero (universal) · Cuncuna del bosque (solo Cuncuna).</p>
+</section>
+
+<section class="col" id="espacio">
+<header><h2 style="margin:0">Espacio · Viaje a las estrellas</h2><div class="pal" aria-label="Paleta"><span style="background:#1f3557"></span><span style="background:#d9dde3"></span><span style="background:#ff8a3d"></span><span style="background:#45d3d0"></span></div></header>
+<p>Ciempi astronauta, cálido y acolchado, nada militar. Da piezas propias al fondo Espacio, que ya existe.</p>
+<figure><img src="conceptos/espacio-concepto-1024.jpg" alt="Concepto Espacio: casco burbuja transparente, traje blanco y azul medianoche con costuras turquesa, cohete en la espalda y botas lunares" loading="lazy"><figcaption><span class="veredicto bien">Dirección:</span> es la lámina más coherente. El casco deja ver la cara, el traje sigue el volumen y las botas son redondeadas. Falta colgar el cohete al costado del segmento, en vez de apoyarlo encima.</figcaption></figure>
+<div class="tabla"><table>
+<tr><th>Producto</th><th>Categoría · anclaje</th><th>Compat.</th><th>Constr.</th><th>Escalón</th><th>Riesgo (§8)</th></tr>
+<tr><td>Casco burbuja</td><td>Gorros · cabeza</td><td><span class="tag u">universal</span></td><td>raster semitransparente</td><td>Especial</td><td>Vidrio que tapa la mirada</td></tr>
+<tr><td>Traje astral</td><td>Estampado · segmentos</td><td><span class="tag a">adaptable</span></td><td>raster atlas</td><td>Obra</td><td>Emblemas pegados</td></tr>
+<tr><td>Mochila cohete</td><td>Espalda · segmento delantero</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Especial</td><td>Apoyada en vez de colgada</td></tr>
+<tr><td>Botas lunares</td><td>Calzado · tobillo</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Común</td><td>Bloque rectangular</td></tr>
+<tr><td>Capa cometa</td><td>Espalda · cuello</td><td><span class="tag a">adaptable</span></td><td>raster</td><td>Obra</td><td>Plantilla triangular</td></tr>
+<tr><td>Antenas luz</td><td>Detalle · antenas</td><td><span class="tag u">universal</span></td><td>vector</td><td>Básico</td><td>Efecto fijo al animar</td></tr>
+<tr><td>Lentes planeta</td><td>Lentes · rostro</td><td><span class="tag u">universal</span></td><td>vector</td><td>Común</td><td>Cristal opaco</td></tr>
+<tr><td>Cola cometa</td><td>Extra · cola</td><td><span class="tag x">solo Dragón</span></td><td>vector</td><td>Básico</td><td>—</td></tr>
+</table></div>
+<p><strong>Conjuntos:</strong> Astronauta · Cometa (los dos universales).</p>
+</section>
+
+<h2 id="wireframes">Bocetos: sección Personajes y aviso de compatibilidad</h2>
+<p class="lead">Sin temporizadores, sin «te faltan X monedas», sin sonidos de compra. Probar nunca guarda.</p>
+<div class="wf">
+<div class="phone" aria-label="Boceto de la sección Personajes">
+<div class="top"><span>← Mi Ciempi</span><span>🪙 124</span></div>
+<div class="stage">[ personaje grande que se está probando ] · ↺ Volver a lo mío</div>
+<div class="tabs"><span class="on">Personajes</span><span>Cabeza</span><span>Cuerpo</span><span>Su mundo</span><span>Conjuntos</span><span>♥ Favoritos</span><span>Gratis</span></div>
+<div class="especies">
+<div class="esp"><b>Ciempi</b><span class="on">✓ Eres tú</span></div>
+<div class="esp"><b>Cuncuna</b>Regalo de lectura</div>
+<div class="esp"><b>Dragón</b>🪙 80</div>
+</div>
+<p style="font-size:.85rem;margin:8px 0">Cuncuna: «Llega cuando termines tus primeros cuentos.»</p>
+<div><strong style="font-size:.85rem">Solo para Dragón</strong><div class="ex"><span>Alas de cuento</span><span>Cresta gema</span><span>Conjunto Dragón real</span></div></div>
+<div class="btn">Probar Dragón</div> <div class="btn" style="background:var(--chip);color:var(--ink)">♥ Guardar</div>
+</div>
+<div>
+<div class="compat" role="note"><strong>ℹ️ El Dragón no usa:</strong><br>• Capa de héroe (usa sus alas)<br>• Mochila cohete<br>Siguen siendo tuyas. Vuelven a aparecer cuando seas Ciempi.<br><span class="btn">Entendido</span></div>
+<p style="font-size:.9rem">En la grilla, las piezas que no aplican se ven atenuadas y no desaparecen:</p>
+<div class="ex"><span class="dim">Capa de héroe · Para Ciempi</span><span>Casco burbuja · ✓ Puesto</span><span>Botas lunares · Usar</span></div>
+<p style="font-size:.9rem">Si no alcanza el dinero, el botón queda desactivado y ofrece «♥ Guardar», sin decir cuánto falta.</p>
+</div>
+</div>
+
+<h2 id="precios">Precios provisionales E2 (no aplicados)</h2>
+<div class="tabla"><table>
+<tr><th>Producto</th><th>Precio provisional</th><th>Sesiones de 15 min de un niño de nivel 0 (mediana)</th></tr>
+<tr><td>Cuncuna</td><td>0: se gana con 6 de los 8 cuentos de nivel 0 (o 6 de cualquier nivel; o 60 min + 30 frases de nivel 0 para lectores lentos; o regalo del adulto)</td><td>6 (lector muy lento: 11)</td></tr>
+<tr><td>Dragón</td><td>80</td><td>4 (muy lento: 5)</td></tr>
+<tr><td>Básico / Común / Especial / Obra</td><td>10 / 16 / 24 / 30</td><td>1 / 1 / 2 / 2</td></tr>
+<tr><td>Conjuntos de colección</td><td>~60–85 (20 % menos sobre lo que falta)</td><td>3–5</td></tr>
+<tr><td>«Dragón real»</td><td>107</td><td>—</td></tr>
+</table></div>
+<p style="font-size:.85rem">Dos olas: ola 1 = 360 (16 piezas); ola 2 = Dragón + exclusivos + mochilas = 224. Catálogo actual sin cambios. Detalle en <a href="TIENDA-V3.md" style="color:inherit">TIENDA-V3.md</a> §4.6 y §4.8.</p>
+<footer>Generado como documentación, sin cambios en el catálogo, los precios ni el servidor. Láminas: Codex CLI 0.166 image_gen; prompts en <code>conceptos/*-prompt.txt</code>.</footer>
+</main>
+</body>
+</html>

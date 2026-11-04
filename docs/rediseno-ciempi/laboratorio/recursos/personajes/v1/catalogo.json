@@ -1,0 +1,89 @@
+[
+  {
+    "id": "b12-araluz",
+    "nombre": "Máscara AraLuz",
+    "batch": "B12",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/personajes/v1/araluz.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/araluz-mascara.png",
+    "fuenteSha256": "f7589bd3296d512089452f190aff710142a913fd6acbb9bf3b9216e393910ef1",
+    "recorte": {
+      "left": 178,
+      "top": 92,
+      "width": 1021,
+      "height": 969
+    },
+    "dimensiones": [
+      768,
+      729
+    ],
+    "anterior": "b07-spider",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "araluz"
+    ],
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true,
+    "antenna": true,
+    "compatiblePelo": false,
+    "encuadre": [
+      601,
+      205,
+      270,
+      256.2890625
+    ]
+  },
+  {
+    "id": "b12-raton",
+    "nombre": "Antifaz Ratón Atlas",
+    "batch": "B12",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/personajes/v1/raton.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/raton-mascara.png",
+    "fuenteSha256": "ee40441f9612150e9165c14d9fb5e1bd10154def87740015ad0cf0f9425904d9",
+    "recorte": {
+      "left": 26,
+      "top": 82,
+      "width": 1502,
+      "height": 838
+    },
+    "dimensiones": [
+      768,
+      428
+    ],
+    "anterior": "cabeza-mickey",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "raton"
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "antenna": true,
+    "compatiblePelo": false,
+    "encuadre": [
+      552.2,
+      173.2,
+      397.5,
+      221.52
+    ],
+    "rotation": -3.5,
+    "centroRotacion": [
+      708,
+      342
+    ]
+  }
+]

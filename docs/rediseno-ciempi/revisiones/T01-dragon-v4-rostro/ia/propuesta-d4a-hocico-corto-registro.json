@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d4a-hocico-corto",
+  "archivo": "propuesta-d4a-hocico-corto.png",
+  "prompt": "propuesta-d4a-hocico-corto-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0da9-7341-bfdc-57a0290a2815/exec-b66ca9b5-5b93-4779-ba78-a972001f66e1.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:53.100Z",
+  "segundos": 102
+}

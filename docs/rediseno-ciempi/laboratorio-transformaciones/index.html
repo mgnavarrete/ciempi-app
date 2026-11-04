@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de transformaciones</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body data-fondo="claro">
+<header class="cabecera">
+  <h1>Laboratorio de transformaciones <small>T01 Dragón · T02 Cuncuna · solo laboratorio, pendiente de aprobación del usuario</small></h1>
+  <nav><a href="galeria.html">Galería de evidencia</a></nav>
+</header>
+<p id="error" class="error" hidden></p>
+<main class="lab">
+  <aside class="panel" aria-label="Controles">
+    <fieldset>
+      <legend>Criatura</legend>
+      <div class="botones" id="criaturas" role="radiogroup"></div>
+      <p class="estado" id="estado-especie"></p>
+    </fieldset>
+    <fieldset>
+      <legend>Longitud</legend>
+      <label class="fila">Segmentos <input type="range" id="n" min="0" max="40" value="5"> <output id="n-valor">5</output></label>
+      <div class="botones pequenos" id="n-rapidos"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Conjuntos</legend>
+      <div class="botones pequenos" id="conjuntos"></div>
+      <button type="button" id="restaurar">Restaurar (sin accesorios)</button>
+    </fieldset>
+    <fieldset>
+      <legend>Vestuario y compatibilidad</legend>
+      <p class="ayuda">Cada pieza indica si es <b class="et universal">universal</b>, <b class="et adaptable">adaptable</b>, <b class="et exclusivo">exclusiva</b> u <b class="et oculto">oculta en esta especie</b> (se conserva puesta y vuelve al cambiar de criatura).</p>
+      <div id="categorias"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Animación (rig del juego)</legend>
+      <label class="fila">Animación <select id="anim"></select></label>
+      <div class="botones pequenos">
+        <button type="button" id="reproducir" aria-label="Reproducir">▶</button>
+        <button type="button" id="reiniciar">Reiniciar</button>
+        <label><input type="checkbox" id="reducido"> Movimiento reducido</label>
+        <label><input type="checkbox" id="exp-anim" checked> Expresiones de la animación</label>
+      </div>
+      <label class="fila">Velocidad <input type="range" id="velocidad" min="0.1" max="2" step="0.1" value="1"> <output id="vel-valor">1×</output></label>
+      <p class="ayuda" id="costo">—</p>
+    </fieldset>
+    <fieldset>
+      <legend>Vista</legend>
+      <div class="botones pequenos">
+        <label><input type="radio" name="fondo" value="claro" checked> Claro</label>
+        <label><input type="radio" name="fondo" value="oscuro"> Oscuro</label>
+      </div>
+      <label class="fila">Comparar con <select id="comparar"><option value="">Sin comparación</option></select></label>
+    </fieldset>
+  </aside>
+  <section class="escenario">
+    <div class="ab" id="ab">
+      <figure class="vista" id="vista-a"><figcaption id="titulo-a"></figcaption><div class="lienzo" id="lienzo-a"></div></figure>
+      <figure class="vista" id="vista-b" hidden><figcaption id="titulo-b"></figcaption><div class="lienzo" id="lienzo-b"></div></figure>
+    </div>
+    <h2>Tamaños</h2>
+    <p class="ayuda">84 px de alto (pista de lectura real) y 96, 240 y 320 px de ancho, con la misma selección y longitud.</p>
+    <div class="tamanos" id="tamanos"></div>
+    <h2>Compatibilidad de lo equipado</h2>
+    <ul class="compat" id="compat"></ul>
+  </section>
+</main>
+<script type="module" src="laboratorio.js"></script>
+<script type="module" src="laboratorio-v4.js"></script>
+<script type="module" src="interruptor-accesorios.js"></script>
+</body>
+</html>

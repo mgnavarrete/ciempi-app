@@ -1,0 +1,13 @@
+{
+  "id": "concepto-d2-bebe",
+  "archivo": "concepto-d2-bebe.png",
+  "prompt": "concepto-d2-bebe-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c1-0953-7d71-a2a2-2f0e0915a4fb/exec-402fc807-cccc-43c5-b92f-60a671e925a3.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:13:48.587Z",
+  "segundos": 84
+}

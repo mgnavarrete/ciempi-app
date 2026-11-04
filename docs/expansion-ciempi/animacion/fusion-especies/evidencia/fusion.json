@@ -1,0 +1,4080 @@
+{
+ "crecer": [
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 0,
+   "t": -1,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 0,
+   "t": 0.37,
+   "escena": "475 0 525 650",
+   "crecer": true,
+   "creciente": "475 0 525 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 1,
+   "t": -1,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 1,
+   "t": 0.37,
+   "escena": "383 0 617 650",
+   "crecer": true,
+   "creciente": "383 0 617 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 2,
+   "t": -1,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 2,
+   "t": 0.37,
+   "escena": "279 0 721 650",
+   "crecer": true,
+   "creciente": "279 0 721 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 3,
+   "t": -1,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 3,
+   "t": 0.37,
+   "escena": "187 0 813 650",
+   "crecer": true,
+   "creciente": "187 0 813 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 4,
+   "t": -1,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 4,
+   "t": 0.37,
+   "escena": "95 0 905 650",
+   "crecer": true,
+   "creciente": "95 0 905 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 5,
+   "t": -1,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 5,
+   "t": 0.37,
+   "escena": "3 0 997 650",
+   "crecer": true,
+   "creciente": "3 0 997 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 6,
+   "t": -1,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-89 0 1089 650",
+   "crecer": true,
+   "creciente": "-89 0 1089 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 12,
+   "t": -1,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-641 0 1641 650",
+   "crecer": true,
+   "creciente": "-641 0 1641 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 40,
+   "t": -1,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "dragon",
+   "conjunto": "alas",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3217 0 4217 650",
+   "crecer": true,
+   "creciente": "-3217 0 4217 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "378 0 622 650",
+   "crecer": true,
+   "creciente": "378 0 622 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "378 0 622 650",
+   "crecer": true,
+   "creciente": "378 0 622 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "470 0 530 650",
+   "crecer": true,
+   "creciente": "470 0 530 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "378 0 622 650",
+   "crecer": true,
+   "creciente": "378 0 622 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "378 0 622 650",
+   "crecer": true,
+   "creciente": "378 0 622 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "278 0 722 650",
+   "crecer": true,
+   "creciente": "278 0 722 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "190 0 810 650",
+   "crecer": true,
+   "creciente": "190 0 810 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "102 0 898 650",
+   "crecer": true,
+   "creciente": "102 0 898 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "14 0 986 650",
+   "crecer": true,
+   "creciente": "14 0 986 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-74 0 1074 650",
+   "crecer": true,
+   "creciente": "-74 0 1074 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-602 0 1602 650",
+   "crecer": true,
+   "creciente": "-602 0 1602 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "cuncuna",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3066 0 4066 650",
+   "crecer": true,
+   "creciente": "-3066 0 4066 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "escena": "160 0 840 650",
+   "crecer": true,
+   "creciente": "160 0 840 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": -1,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 1,
+   "t": 0.37,
+   "escena": "362 0 638 650",
+   "crecer": true,
+   "creciente": "362 0 638 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "mochila",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 0,
+   "t": -1,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 0,
+   "t": 0.37,
+   "escena": "540 0 460 650",
+   "crecer": true,
+   "creciente": "540 0 460 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 1,
+   "t": -1,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 1,
+   "t": 0.37,
+   "escena": "448 0 552 650",
+   "crecer": true,
+   "creciente": "448 0 552 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 2,
+   "t": -1,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 2,
+   "t": 0.37,
+   "escena": "346 0 654 650",
+   "crecer": true,
+   "creciente": "346 0 654 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 3,
+   "t": -1,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 3,
+   "t": 0.37,
+   "escena": "245 0 755 650",
+   "crecer": true,
+   "creciente": "245 0 755 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 4,
+   "t": -1,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 4,
+   "t": 0.37,
+   "escena": "158 0 842 650",
+   "crecer": true,
+   "creciente": "158 0 842 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 5,
+   "t": -1,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 5,
+   "t": 0.37,
+   "escena": "0 0 1000 650",
+   "crecer": true,
+   "creciente": "0 0 1000 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 6,
+   "t": -1,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 6,
+   "t": 0.37,
+   "escena": "-24 0 1024 650",
+   "crecer": true,
+   "creciente": "-24 0 1024 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 12,
+   "t": -1,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 12,
+   "t": 0.37,
+   "escena": "-562 0 1562 650",
+   "crecer": true,
+   "creciente": "-562 0 1562 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 40,
+   "t": -1,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  },
+  {
+   "especie": "ciempi",
+   "conjunto": "robot",
+   "n": 40,
+   "t": 0.37,
+   "escena": "-3070 0 4070 650",
+   "crecer": true,
+   "creciente": "-3070 0 4070 650",
+   "distintos": 0,
+   "max": 0
+  }
+ ],
+ "bocas": [
+  {
+   "especie": "ciempi",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "ciempi",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "dragon",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "cabeza-nada",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-jockey",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-mago",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-aventura",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-pirata",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b06-ia-corona",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-robot",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-robot",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-gatita",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-espiritu",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-dragon",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b07-ia-buho",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-araluz",
+   "tapa": true,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-araluz",
+   "tapa": false,
+   "forzarConBoca": true,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 0,
+   "minHijos": 0,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": false,
+   "boca": "carcajada"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-sorprendido"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "sorprendido"
+  },
+  {
+   "especie": "cuncuna",
+   "cabeza": "b12-raton",
+   "tapa": false,
+   "forzarConBoca": false,
+   "cuadros": 41,
+   "maxBocas": 1,
+   "maxHijos": 2,
+   "minHijos": 2,
+   "expresiones": [
+    "b03-carcajada"
+   ],
+   "bocaVisibleInicial": true,
+   "boca": "carcajada"
+  }
+ ],
+ "errores": [],
+ "tapan": [
+  "b07-ia-robot",
+  "b07-ia-espiritu",
+  "b12-araluz"
+ ]
+}

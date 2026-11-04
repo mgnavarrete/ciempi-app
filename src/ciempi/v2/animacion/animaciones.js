@@ -592,4 +592,168 @@ export const ANIMACIONES = [
       return p
     },
   },
+  {
+    id: 'E08', nombre: 'Comer', duracion: 0.8, bucle: false, extra: true,
+    nota: 'La fruta da un saltito, vuela en arco a su boca; la mira, abre la boca, la muerde y el segmento nuevo aparece con un pop.',
+    expresiones: ['b03-sorprendido', 'b03-carcajada'],
+    pose(t, n = 5) {
+      const p = poseNeutra(n)
+      respirar(p, t, 2, 0.5)
+      return comer(p, t, n)
+    },
+  },
 ]
+
+// ── E08 Comer ───────────────────────────────────────────────────────────
+// Pensada como CAPA: se suma a la animación de fondo (caminar o reposo), así
+// Ciempi sigue caminando mientras come. `pose()` de arriba es la versión
+// suelta (laboratorio y pruebas). Unidades de la base: la boca está en
+// (765, 405); la fruta parte delante de la barbilla, a la altura de la pista.
+// AD-018 (CIEMPI_ART_DIRECTION.md): experimental, apagada en producción; boca
+// inicial sorprendida, carcajada conservada para comparar; con una máscara que
+// tapa la boca no se dibuja ninguna boca y la reacción es de cabeza y cuerpo.
+export const COMER = {
+  /** Instante del mordisco: si llega otra unidad antes, se salta aquí. */
+  mordisco: 0.36,
+  /** Desde aquí puede empezar la fruta pendiente (ya masticó; el pop del segmento queda a medias). */
+  reanudar: 0.56,
+  duracion: 0.8,
+  boca: [765, 405],
+  origen: [890, 400],
+  /**
+   * Variantes de boca abierta (expresión B03 entre `abre` y el mordisco; después vuelve la vigente).
+   * Sorprendido (por omisión, preferida por el usuario): la mira con la boca en "o".
+   * Carcajada (versión 1, para comparar): cierra los ojos y deja de seguir la fruta.
+   */
+  bocas: { sorprendido: 'b03-sorprendido', carcajada: 'b03-carcajada' },
+  /** Expresión de la variante por omisión (`sorprendido`). */
+  bocaAbierta: 'b03-sorprendido',
+  abre: 0.16,
+  /**
+   * Máscara que tapa la boca (`ocultaRostro` en el catálogo): la fruta da un
+   * saltito hasta delante del hocico, la cabeza baja a "morderla" y la fruta
+   * desaparece con brillo y migas; el cuerpo rebota. Sin expresión ni boca.
+   */
+  mascara: { destino: [872, 398], arco: 30 },
+}
+
+/** Expresión B03 de boca abierta de la variante `boca` ('sorprendido' por omisión). */
+export function bocaAbiertaDe(boca) {
+  return COMER.bocas[boca] ?? COMER.bocaAbierta
+}
+
+/**
+ * Suma la animación de comer a la pose `p` (de `n` segmentos) en el instante `t`.
+ * `opciones.origen`: dónde aparece la fruta; `opciones.segmento`: centro del
+ * segmento nuevo (para su brillo); `opciones.boca`: 'sorprendido' | 'carcajada';
+ * `opciones.bocaTapada`: la apariencia equipada tapa la boca (máscara completa).
+ * Determinista: no guarda estado.
+ */
+export function comer(p, t, n = p.segmentos.length, opciones = {}) {
+  if (t < 0 || t > COMER.duracion) return p
+  if (opciones.bocaTapada) comerSinBoca(p, t, opciones)
+  else comerConBoca(p, t, opciones)
+  return popSegmento(p, t, n, opciones)
+}
+
+/** Con la boca a la vista: la fruta entra en la boca abierta. */
+function comerConBoca(p, t, opciones) {
+  const { mordisco: M, boca: [bx, by], abre } = COMER
+  const [ox, oy] = opciones.origen ?? COMER.origen
+
+  // 1. La fruta reacciona (aplastamiento suave) en su lugar y salta en un arco
+  //    bajo hasta la boca, achicándose: así no tapa los ojos ni la boca abierta
+  //    (revisión de la hoja v1: a tamaño de pista cubría medio rostro).
+  if (t < M + 0.07) {
+    const u = entre(t, 0.14, M)
+    const v = curvas.suave(u)
+    const sy = kf(t, [[0, 1], [0.05, 0.8, 'sale'], [0.11, 1.12, 'sale'], [0.16, 1]])
+    const s = kf(t, [[0, 1], [0.14, 1], [0.26, 0.6, 'sale'], [M, 0.42], [M + 0.07, 0, 'entra']])
+    p.efectos.push({ tipo: 'comida', x: ox + (bx - ox) * v, y: oy + (by - oy) * v - 35 * Math.sin(Math.PI * u), s, sx: 2 - sy, sy, rot: -25 * v, opacidad: 1 })
+  }
+  // Migas al morder.
+  p.efectos.push(...rafaga(t, M, { x: bx + 12, y: by + 6, n: 4, tipo: 'miga', semilla: 8, fuerza: 170, gravedad: 900, vida: 0.32, escala: 0.75 }))
+
+  // 2. Gira un poco la cabeza hacia la fruta y la sigue con la mirada.
+  p.cabeza.rot += kf(t, [[0, 0], [0.16, 5], [M - 0.04, 6], [M + 0.04, 1.5, 'sale'], [0.6, 0]])
+  p.cabeza.x += kf(t, [[0.05, 0], [M - 0.02, 7], [M + 0.12, 0]])
+  p.ojos.mirarX += kf(t, [[0, 0], [0.1, 6], [M, 3], [M + 0.06, 0]])
+  p.ojos.mirarY += kf(t, [[0, 0], [0.1, 4], [0.24, 1], [M, 5], [M + 0.06, 0]])
+
+  // 3. Abre la boca justo antes; al morder vuelve la expresión vigente (no se impone una sonrisa).
+  if (t >= abre && t < M) p.expresion = bocaAbiertaDe(opciones.boca)
+
+  // 4. Mordisco: la cabeza da un golpecito, los ojos se aprietan un instante y mastica dos veces.
+  p.cabeza.y += kf(t, [[M - 0.05, 0], [M, -4], [M + 0.05, 5, 'sale'], [M + 0.12, 0]]) + masticar(t)
+  const aprieta = kf(t, [[M, 0], [M + 0.04, 0.45], [M + 0.15, 0]])
+  p.ojos.parpadeo = p.ojos.parpadeo.map((v) => Math.max(v, aprieta))
+  antenasAlMorder(p, t)
+  const golpe = kf(t, [[M, 1], [M + 0.05, 0.97], [M + 0.16, 1]])
+  p.raiz.sy *= golpe
+  p.raiz.sx *= 2 - golpe
+}
+
+/**
+ * Con una máscara que tapa la boca: no hay boca a la que llevar la fruta ni se
+ * dibuja otra encima de la máscara. La fruta salta hasta delante del hocico,
+ * la cabeza se inclina y avanza a "morderla" (golpe y dos masticadas), la
+ * fruta desaparece con un destello y migas, y el cuerpo da un saltito. La
+ * apariencia equipada no cambia: no se toca la expresión.
+ */
+function comerSinBoca(p, t, opciones) {
+  const { mordisco: M, mascara: { destino: [dx, dy], arco } } = COMER
+  const [ox, oy] = opciones.origen ?? COMER.origen
+
+  // 1. La fruta reacciona y salta en un arco corto hasta delante del hocico; al
+  //    mordisco se encoge de golpe (no "entra" en ninguna boca).
+  if (t < M + 0.06) {
+    const u = entre(t, 0.14, M - 0.02)
+    const v = curvas.suave(u)
+    const sy = kf(t, [[0, 1], [0.05, 0.8, 'sale'], [0.11, 1.12, 'sale'], [0.16, 1]])
+    const s = kf(t, [[0, 1], [0.14, 1], [0.26, 0.75, 'sale'], [M - 0.02, 0.7], [M + 0.02, 0.8, 'sale'], [M + 0.06, 0, 'entra']])
+    p.efectos.push({ tipo: 'comida', x: ox + (dx - ox) * v, y: oy + (dy - oy) * v - arco * Math.sin(Math.PI * u), s, sx: 2 - sy, sy, rot: -15 * v, opacidad: 1 })
+  }
+  // Destello y migas donde estaba la fruta.
+  p.efectos.push(...rafaga(t, M, { x: dx, y: dy - 6, n: 5, tipo: 'brillo', semilla: 31, fuerza: 260, gravedad: 120, vida: 0.36, escala: 0.55 }))
+  p.efectos.push(...rafaga(t, M + 0.02, { x: dx - 4, y: dy + 10, n: 4, tipo: 'miga', semilla: 8, fuerza: 170, gravedad: 900, vida: 0.32, escala: 0.75 }))
+
+  // 2. La cabeza se inclina hacia la fruta y avanza para morderla.
+  p.cabeza.rot += kf(t, [[0.06, 0], [M - 0.06, 6], [M, 10, 'sale'], [M + 0.1, 2], [0.62, 0]])
+  p.cabeza.x += kf(t, [[0.08, 0], [M - 0.04, 8], [M, 14, 'sale'], [M + 0.14, 0]])
+  // 3. Mordisco: golpe hacia abajo y dos masticadas (se ve la máscara asentir).
+  p.cabeza.y += kf(t, [[M - 0.06, 0], [M - 0.02, -5], [M + 0.04, 7, 'sale'], [M + 0.12, 0]]) + masticar(t)
+  antenasAlMorder(p, t)
+  // 4. El cuerpo reacciona: se aplasta al morder y da un saltito al tragar.
+  p.raiz.y += kf(t, [[M + 0.06, 0], [M + 0.15, -10, 'sale'], [M + 0.25, 0, 'entra']])
+  const golpe = kf(t, [[M, 1], [M + 0.05, 0.95], [M + 0.12, 1.03], [M + 0.25, 0.97], [M + 0.32, 1]])
+  p.raiz.sy *= golpe
+  p.raiz.sx *= 2 - golpe
+}
+
+/** Dos masticadas tras el mordisco (movimiento de cabeza). */
+function masticar(t) {
+  const M = COMER.mordisco
+  return t > M + 0.12 && t < M + 0.32 ? 2.2 * Math.sin(PI2 * ((t - M - 0.12) / 0.1)) : 0
+}
+function antenasAlMorder(p, t) {
+  const M = COMER.mordisco
+  p.antenas = p.antenas.map((a, i) => a + kf(t, [[M, 0], [M + 0.06, i ? -7 : 7, 'sale'], [M + 0.3, 0]]))
+}
+
+/**
+ * El segmento nuevo (el que sigue al frente; con 1, el frente) espera algo
+ * más pequeño y aparece con un pop al tragar, con un brillo encima.
+ */
+function popSegmento(p, t, n, opciones) {
+  const M = COMER.mordisco
+  const k = Math.max(0, n - 2)
+  const seg = p.segmentos[k]
+  if (seg) {
+    const f = t < M ? 0.86 : kf(t, [[M, 0.86], [M + 0.13, 1.13, 'sale'], [0.74, 1]])
+    seg.sx *= f
+    seg.sy *= f
+    const [sx0, sy0] = opciones.segmento ?? [470, 402]
+    p.efectos.push(...aparece(t, M + 0.06, COMER.duracion, { tipo: 'brillo', x: sx0 + 18, y: sy0 - 100, s: 1.3 }))
+  }
+  return p
+}

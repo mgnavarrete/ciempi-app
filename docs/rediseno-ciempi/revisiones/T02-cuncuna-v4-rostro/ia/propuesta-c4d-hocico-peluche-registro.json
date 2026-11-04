@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-c4d-hocico-peluche",
+  "archivo": "propuesta-c4d-hocico-peluche.png",
+  "prompt": "propuesta-c4d-hocico-peluche-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d93-7d02-bab3-409906865284/exec-023e6bad-583e-4a21-b01c-bf27918093eb.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:21.436Z",
+  "segundos": 70
+}

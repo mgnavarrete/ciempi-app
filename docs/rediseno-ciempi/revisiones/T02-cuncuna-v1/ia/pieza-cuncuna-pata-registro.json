@@ -1,0 +1,13 @@
+{
+  "id": "pieza-cuncuna-pata",
+  "archivo": "pieza-cuncuna-pata.png",
+  "prompt": "pieza-cuncuna-pata-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/concepto-c2-penachos.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a1c6-2175-7753-b711-67809a136a2f/exec-100d4e66-0840-46f9-a72f-8ae5df48329e.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-03T14:18:56.584Z",
+  "segundos": 58
+}

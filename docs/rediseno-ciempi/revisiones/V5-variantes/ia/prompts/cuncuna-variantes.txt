@@ -1,0 +1,9 @@
+Color and surface-finish exploration sheet for an approved children's-app character, "Ciempi Cuncuna" (a fuzzy caterpillar, reference image 1). Draw SIX copies of exactly this character in a clean 3 columns x 2 rows grid on a plain off-white background, each one the SAME pose, SAME silhouette, SAME proportions: same round head with the same face, antennae and hair tuft, same five round body segments each with a soft fuzzy tuft on top, same short legs and feet. Do NOT change anatomy, do not add or remove segments, legs or tufts. Keep the Ciempi style: thick dark navy blue outline (#243e5b) on every shape, flat 2D cartoon volume with one soft shadow and one glossy highlight per round shape, rounded friendly shapes, kid-friendly, no text.
+Only colour, material and a small surface pattern change between the six:
+1. SPRING: mint and soft yellow segments, pink and yellow tufts, a few tiny discreet five-petal flowers on the segments.
+2. STRAWBERRY: strawberry-red and soft pink segments with tiny yellow seed dots, leafy green tufts like a strawberry crown.
+3. RAINBOW: each segment a different colour in a smooth harmonious rainbow order (pink, orange, yellow, green, blue, violet), cream tufts.
+4. LAVENDER: pastel lilac and pastel sky-blue segments, pale lilac tufts, tiny lavender-bud dots.
+5. FOREST: moss green and warm brown segments, warm yellow and leaf-green tufts, tiny leaf marks.
+6. GOLDEN: shiny golden-yellow and cream segments, orange tufts, small white four-point sparkles, luminous.
+Each cuncuna centred in its cell, all at the same scale and facing right.

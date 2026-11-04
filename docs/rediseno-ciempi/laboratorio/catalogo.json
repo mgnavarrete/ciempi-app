@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "fase": "A",
+  "produccionAutorizada": false,
+  "base": "../ciempi-ilustracion-v2.svg",
+  "historico": "../../../../scripts/lib/armario-ciempi.mjs",
+  "bufandasHistoricas": [
+    "espalda-gryffindor",
+    "espalda-slytherin",
+    "espalda-ravenclaw",
+    "espalda-hufflepuff"
+  ],
+  "recursos": [
+    {
+      "id": "bufanda-acolchada",
+      "version": "concepto-1",
+      "categoria": "cuello",
+      "batch": "B01",
+      "estado": "historico",
+      "tipo": "raster",
+      "imagen": "../revisiones/B01-ia-bufandas-v1/generados/B-v1.png",
+      "informe": "../revisiones/B01-ia-bufandas-v1/REVISION.md",
+      "aprobacion": {
+        "alcance": "dirección artística; no vector final",
+        "fuente": "Usuario: He elegido la propuesta B — Acolchada como nuestra dirección artística"
+      },
+      "pendiente": [
+        "referencia histórica; el maestro vigente es B-calco-32"
+      ],
+      "variantesPlanificadas": [
+        "Gryffindor",
+        "Slytherin",
+        "Ravenclaw",
+        "Hufflepuff",
+        "Océano Coral",
+        "Lavanda Mágica"
+      ]
+    },
+    {
+      "id": "bufanda-b-tecnica",
+      "version": "1",
+      "categoria": "cuello",
+      "batch": "B01",
+      "estado": "en-revision",
+      "tipo": "vector",
+      "nombre": "B anterior · ensayo del adaptador",
+      "geometria": "../revisiones/B01-adaptador-v1/salida-verificada/accesorio.json",
+      "compararCon": "espalda-gryffindor",
+      "informe": "../revisiones/B01-adaptador-v1/REVISION.md",
+      "variantes": [
+        {
+          "id": "gryffindor",
+          "nombre": "Burdeos / dorado original",
+          "colores": {}
+        }
+      ]
+    },
+    {
+      "id": "bufanda-acolchada-raster-prueba",
+      "nombre": "B corregida · PNG por capas (prueba)",
+      "version": "raster-1",
+      "categoria": "cuello",
+      "batch": "B01",
+      "tipo": "raster-capas",
+      "estado": "en-revision",
+      "encuadre": [
+        0,
+        0,
+        1000,
+        649.7429305912597
+      ],
+      "capas": {
+        "posterior": "../revisiones/B01-raster-capas-v1/recursos/posterior.png",
+        "delantera": "../revisiones/B01-raster-capas-v1/recursos/delantera.png"
+      },
+      "compararCon": "espalda-gryffindor",
+      "informe": "../revisiones/B01-raster-capas-v1/REVISION.md",
+      "variantes": [
+        {
+          "id": "gryffindor",
+          "nombre": "Burdeos / dorado original",
+          "colores": {}
+        }
+      ]
+    },
+    {
+      "id": "bufanda-calco32",
+      "nombre": "Bufanda acolchada · seis colores",
+      "version": "1",
+      "categoria": "cuello",
+      "batch": "B01",
+      "tipo": "vector-maestro",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "collections": [
+        "harry-potter",
+        "hermione",
+        "voldemort",
+        "ciempi-original"
+      ],
+      "maestro": "./recursos/bufanda-calco32/v1/maestro.svg",
+      "paletas": "./recursos/bufanda-calco32/v1/paletas.json",
+      "adaptacion": {
+        "transform": "matrix(0.7 0 0 0.7 103 75)",
+        "corteY": 340
+      },
+      "compararCon": "espalda-gryffindor",
+      "informe": "../revisiones/B01-calco32-produccion-v1/REVISION.md",
+      "validacion": "../revisiones/B01-calco32-produccion-v1/pruebas/validacion.json",
+      "aprobacion": {
+        "fecha": "2026-10-28",
+        "alcance": "Maestro acolchado de 16 colores, SVG transparente, seis variantes, geometría compartida y funcionamiento HTML. Conservar sin nuevas versiones.",
+        "fuente": "Usuario: APRUEBO la bufanda acolchada de 16 colores, basada en B-calco-32.svg, como nuestro diseño maestro final de B01. También apruebo las seis variantes cromáticas creadas a partir de ese maestro."
+      },
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "observacionesAceptadas": [
+        "Líneas finas entre tonos del calco: conocidas y aceptadas en esta revisión.",
+        "Superposición parcial de flecos cortos con zapatilla delantera: conocida y aceptada; conservar para revisión final de compatibilidad."
+      ],
+      "cierre": "./aprobaciones/B01-v1.md"
+    },
+    {
+      "id": "expresiones-b03",
+      "version": "1",
+      "categoria": "expresion",
+      "batch": "B03",
+      "tipo": "componentes-faciales",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/expresiones/v1/catalogo.json",
+      "informe": "../revisiones/B03-produccion-ia-v1/REVISION.md",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false
+    },
+    {
+      "id": "b04-lentes",
+      "version": "1",
+      "categoria": "cara",
+      "batch": "B04",
+      "tipo": "accesorios-cabeza",
+      "nombre": "Lentes y detalles faciales",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/lentes/v1/catalogo.json",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B04-B05-produccion-v1/REVISION.md",
+      "cierre": "./aprobaciones/B04-B05-v1.md"
+    },
+    {
+      "id": "b05-peinados",
+      "version": "1",
+      "categoria": "pelo",
+      "batch": "B05",
+      "tipo": "accesorios-cabeza",
+      "nombre": "Peinados",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/peinados/v1/catalogo.json",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B04-B05-produccion-v1/REVISION.md",
+      "cierre": "./aprobaciones/B04-B05-v1.md"
+    },
+    {
+      "id": "b06-gorros",
+      "version": "1",
+      "categoria": "cabeza",
+      "batch": "B06",
+      "tipo": "disfraces-vectoriales",
+      "estado": "Histórico v1 — rechazado artísticamente",
+      "catalogo": "./recursos/gorros/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+      "historico": true
+    },
+    {
+      "id": "b07-mascaras",
+      "version": "1",
+      "categoria": "cabeza",
+      "batch": "B07",
+      "tipo": "disfraces-vectoriales",
+      "estado": "Histórico v1 — rechazado artísticamente",
+      "catalogo": "./recursos/mascaras/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+      "historico": true
+    },
+    {
+      "id": "b08-capas",
+      "version": "1",
+      "categoria": "espalda",
+      "batch": "B08",
+      "tipo": "disfraces-vectoriales",
+      "estado": "Histórico v1 — rechazado artísticamente",
+      "catalogo": "./recursos/capas/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+      "historico": true
+    },
+    {
+      "id": "b06-gorros-ia",
+      "version": "2",
+      "categoria": "cabeza",
+      "batch": "B06",
+      "tipo": "disfraces-raster-ia",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/gorros/v2/catalogo.json",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+      "historico": false
+    },
+    {
+      "id": "b07-mascaras-ia",
+      "version": "2",
+      "categoria": "cabeza",
+      "batch": "B07",
+      "tipo": "disfraces-raster-ia",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/mascaras/v2/catalogo.json",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+      "historico": false
+    },
+    {
+      "id": "b08-capas-ia",
+      "version": "2",
+      "categoria": "espalda",
+      "batch": "B08",
+      "tipo": "disfraces-raster-ia",
+      "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+      "catalogo": "./recursos/capas/v2/catalogo.json",
+      "aprobadoParaLaboratorio": true,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+      "historico": false
+    },
+    {
+      "id": "b09-ia",
+      "batch": "B09",
+      "version": "1",
+      "categoria": "espalda",
+      "tipo": "vestuario-raster-ia",
+      "estado": "En revisión artística — Pendiente de aprobación del usuario",
+      "catalogo": "./recursos/mochilas/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B09-B12-ia-v1/REVISION.md"
+    },
+    {
+      "id": "b10-ia",
+      "batch": "B10",
+      "version": "1",
+      "categoria": "pies",
+      "tipo": "vestuario-raster-ia",
+      "estado": "En revisión artística — Pendiente de aprobación del usuario",
+      "catalogo": "./recursos/calzado/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B09-B12-ia-v1/REVISION.md"
+    },
+    {
+      "id": "b11-ia",
+      "batch": "B11",
+      "version": "1",
+      "categoria": "textura",
+      "tipo": "vestuario-raster-ia",
+      "estado": "En revisión artística — Pendiente de aprobación del usuario",
+      "catalogo": "./recursos/superficies/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B09-B12-ia-v1/REVISION.md"
+    },
+    {
+      "id": "b12-ia",
+      "batch": "B12",
+      "version": "1",
+      "categoria": "cabeza",
+      "tipo": "vestuario-raster-ia",
+      "estado": "En revisión artística — Pendiente de aprobación del usuario",
+      "catalogo": "./recursos/personajes/v1/catalogo.json",
+      "aprobadoParaLaboratorio": false,
+      "aprobadoParaProduccion": false,
+      "informe": "../revisiones/B09-B12-ia-v1/REVISION.md"
+    }
+  ],
+  "coleccionesNuevas": [
+    {
+      "id": "draco-abrigado",
+      "nombre": "Draco abrigado",
+      "historia": "Un pequeño dragón que cuida los cuentos del bosque.",
+      "seleccion": {
+        "cabeza": "b06-ia-dragon",
+        "espalda": "b08-ia-bosque",
+        "cuello": "bufanda-calco32",
+        "variante": "slytherin",
+        "expresion": "b03-curioso"
+      }
+    },
+    {
+      "id": "luna-bibliotecaria",
+      "nombre": "Luna bibliotecaria",
+      "historia": "Busca historias escondidas entre las estrellas.",
+      "seleccion": {
+        "cabeza": "b06-ia-mago",
+        "espalda": "b08-ia-heroica",
+        "varianteCapa": "luna",
+        "cuello": "bufanda-calco32",
+        "variante": "ravenclaw",
+        "expresion": "b03-sorprendido"
+      }
+    },
+    {
+      "id": "cartografo-cuentos",
+      "nombre": "Cartógrafo de cuentos",
+      "historia": "Dibuja mapas hacia aventuras por descubrir.",
+      "seleccion": {
+        "cabeza": "b06-ia-aventura",
+        "espalda": "b08-ia-bosque",
+        "cara": "b04-lector",
+        "expresion": "b03-curioso"
+      }
+    },
+    {
+      "id": "capitan-brisa",
+      "nombre": "Capitán Brisa",
+      "historia": "Navega sobre el viento buscando finales felices.",
+      "seleccion": {
+        "cabeza": "b06-ia-pirata",
+        "espalda": "b08-ia-heroica",
+        "expresion": "b03-guino"
+      }
+    },
+    {
+      "id": "robot-lumen",
+      "nombre": "Robot Lumen",
+      "historia": "Un compañero luminoso que protege las bibliotecas.",
+      "seleccion": {
+        "cabeza": "b07-ia-robot",
+        "espalda": "b08-ia-heroica",
+        "varianteCapa": "oceano"
+      }
+    },
+    {
+      "id": "buho-lector",
+      "nombre": "Búho lector",
+      "historia": "Escucha historias cuando el bosque se queda dormido.",
+      "seleccion": {
+        "cabeza": "b07-ia-buho",
+        "espalda": "b08-ia-bosque",
+        "ojos": "miel",
+        "expresion": "b03-dormilon"
+      }
+    },
+    {
+      "id": "corona-relatos",
+      "nombre": "Corona de relatos",
+      "historia": "Gobierna un reino donde todos pueden contar su historia.",
+      "seleccion": {
+        "cabeza": "b06-ia-corona",
+        "espalda": "b08-ia-heroica",
+        "varianteCapa": "aurora",
+        "expresion": "b03-alegre"
+      }
+    }
+  ],
+  "vestuarioIA": {
+    "version": "2",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "catalogos": [
+      "./recursos/gorros/v2/catalogo.json",
+      "./recursos/mascaras/v2/catalogo.json",
+      "./recursos/capas/v2/catalogo.json"
+    ],
+    "historicoRechazado": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+    "revision": "../revisiones/B06-B07-B08-ia-v2/REVISION.md"
+  },
+  "familiasB12": [
+    {
+      "id": "robot",
+      "nombre": "Robot Lumen · B09–B12"
+    },
+    {
+      "id": "draco",
+      "nombre": "Draco · B09–B12"
+    },
+    {
+      "id": "aventura",
+      "nombre": "Cartógrafo · B09–B12"
+    },
+    {
+      "id": "pirata",
+      "nombre": "Capitán Brisa · B09–B12"
+    },
+    {
+      "id": "mago",
+      "nombre": "Luna · B09–B12"
+    },
+    {
+      "id": "araluz",
+      "nombre": "AraLuz · B09–B12"
+    },
+    {
+      "id": "raton",
+      "nombre": "Ratón Atlas · B09–B12"
+    }
+  ],
+  "conjuntosB12": "./recursos/conjuntos/v1/catalogo.json"
+}

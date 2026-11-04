@@ -1,0 +1,843 @@
+{
+ "rig": [
+  {
+   "conjunto": "tipico",
+   "n": 0,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 0,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 1,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 1,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 2,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 2,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 3,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 3,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 4,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 4,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 5,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 5,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 6,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 6,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 12,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 12,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 40,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "tipico",
+   "n": 40,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 0,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 0,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 0,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 1,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 1,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 1,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 2,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 2,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 2,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 3,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 3,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 3,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 4,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 4,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 4,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 5,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 5,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 5,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 6,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 6,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 6,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 12,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 12,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 12,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 40,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 40,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "base",
+   "n": 40,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 0,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 0,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 0,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 1,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 1,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 1,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 2,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 2,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 2,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 3,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 3,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 3,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 4,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 4,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 4,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 5,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 5,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 5,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 6,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 6,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 6,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 12,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 12,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 12,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 40,
+   "t": -1,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 40,
+   "t": 0.37,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  },
+  {
+   "conjunto": "mascara",
+   "n": 40,
+   "t": 1.21,
+   "distintos": 0,
+   "max": 0,
+   "total": 936000
+  }
+ ],
+ "componente": [
+  {
+   "conjunto": "tipico",
+   "n": 0,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 1,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 2,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 3,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 4,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 5,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 6,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 12,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "tipico",
+   "n": 40,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 0,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 1,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 2,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 3,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 4,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 5,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 6,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 12,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "base",
+   "n": 40,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 0,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 1,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 2,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 3,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 4,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 5,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 6,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 12,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  },
+  {
+   "conjunto": "mascara",
+   "n": 40,
+   "distintos": 0,
+   "max": 0,
+   "total": 553728
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "pieza-serpiente-cola",
+  "archivo": "pieza-serpiente-cola.png",
+  "prompt": "pieza-serpiente-cola-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b3e5-7d42-afeb-0152c7099d83/exec-8e594120-05ee-4f11-93f1-3221c0a55a08.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:39:09.531Z",
+  "segundos": 70
+}

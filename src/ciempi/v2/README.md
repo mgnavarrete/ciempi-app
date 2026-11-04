@@ -9,3 +9,11 @@ Tienda (2.1): `../catalogo.ts` vende solo los diseños nuevos (ids «categoría:
 Las referencias SVG se aíslan por componente y segmento. Se analiza XML solo cuando cambian selección/longitud, no en cada movimiento del dedo. Animación (2.0.0): `CiempiVivo.tsx` anima la escena por partes con `animacion/` (rig, reproductor y las 19 animaciones aprobadas del laboratorio `docs/rediseno-ciempi/laboratorio-animaciones/`, que usa estos mismos módulos). El rig solo traslada, gira o escala cabeza, antenas, ojos, segmentos, patas, cuello y espalda; no redibuja. Funciona con cualquier cantidad de segmentos. Portada: reposo + saludo y acciones al azar; Personalizar y presentación: Estrenar ropa al cambiar el vestuario; lectura: reposo/caminar, Tropezar y Celebración; fin de libro: Victoria o Celebración. Respeta modo tranquilo (movimiento suave, sin partículas) y `prefers-reduced-motion` (sin animación).
 
 Validación y límites: `docs/integracion-ciempi/ejecucion-v1/RESULTADO.md`.
+
+## Criaturas (2.5)
+
+`criaturas/` dibuja Dragón, Cuncuna, Serpiente y Camaleón con sus 23 variantes aprobadas (AD-022), portado del laboratorio de transformaciones (idéntico píxel a píxel: `scripts/criaturas/paridad.mjs`).
+
+- API: `prepararCriatura(id)` (asíncrona, con caché), `componerCriatura(seleccion, id)` (síncrona), `formaDe(id)`; `id` es `variante:<id>` o `<id>`.
+- `Vestuario.tsx`: con `apariencia.criatura` la escena usa la criatura (mientras carga, la escena anterior; si falla, Ciempi). Con `criatura` null el camino es el de siempre.
+- Recursos en `public/criaturas/` (`scripts/criaturas/copiar-recursos.mjs`), tinte horneado (`hornear.mjs`, PNG con los mismos píxeles) y miniaturas (`miniaturas.mjs`). Pruebas: `paridad.mjs`, `componentes.mjs`, `medir.mjs`.

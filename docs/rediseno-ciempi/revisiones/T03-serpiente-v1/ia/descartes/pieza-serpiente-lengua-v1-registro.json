@@ -1,0 +1,13 @@
+{
+  "id": "pieza-serpiente-lengua",
+  "archivo": "pieza-serpiente-lengua.png",
+  "prompt": "pieza-serpiente-lengua-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b41b-7ea3-a8d7-fb3bab7c8211/exec-98d6501a-8055-4e8e-b1e9-8ad83973962f.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:39:01.591Z",
+  "segundos": 62
+}

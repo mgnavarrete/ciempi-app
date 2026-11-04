@@ -1,0 +1,129 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "name": "carga real de módulos y catálogo",
+      "ok": true
+    },
+    {
+      "name": "selección vector en revisión",
+      "ok": true
+    },
+    {
+      "name": "mochila y bufanda independientes",
+      "ok": true
+    },
+    {
+      "name": "ambos planos de bufanda y espalda",
+      "ok": true
+    },
+    {
+      "name": "comparación visible y distinta",
+      "ok": true
+    },
+    {
+      "name": "ampliación de cuello",
+      "ok": true
+    },
+    {
+      "name": "fondo oscuro",
+      "ok": true
+    },
+    {
+      "name": "tamaños nominales",
+      "ok": true
+    },
+    {
+      "name": "máscara restringe lentes",
+      "ok": true
+    },
+    {
+      "name": "restauración exacta",
+      "ok": true
+    },
+    {
+      "name": "restauración de controles",
+      "ok": true
+    },
+    {
+      "name": "todas las opciones reales renderizan (124)",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-nada",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-explorador",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-cohete",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-nube",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-libro",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-estrella",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con capa-guardian",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con capa-celeste",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con capa-aurora",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-spider",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-iron",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-super",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-hermione",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-voldemort",
+      "ok": true
+    },
+    {
+      "name": "IDs únicos con espalda-barbie",
+      "ok": true
+    },
+    {
+      "name": "conceptos raster no equipables",
+      "ok": true
+    },
+    {
+      "name": "ninguna pieza vectorial marcada aprobada",
+      "ok": true
+    },
+    {
+      "name": "doce batches",
+      "ok": true
+    },
+    {
+      "name": "mecanismo de color por función",
+      "ok": true
+    }
+  ]
+}

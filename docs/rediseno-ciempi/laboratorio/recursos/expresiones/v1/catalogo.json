@@ -1,0 +1,268 @@
+[
+  {
+    "id": "b03-alegre",
+    "nombre": "Alegre · original",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/alegre.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "base-v2 conservada",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-carcajada",
+    "nombre": "Carcajada",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/carcajada.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "feliz",
+      "boca": "risa"
+    },
+    "irisVisible": false,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-curioso",
+    "nombre": "Curioso",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/curioso.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "curioso",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-pensativo",
+    "nombre": "Pensativo",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/pensativo.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "curioso",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-sorprendido",
+    "nombre": "Sorprendido",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/sorprendido.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sorpresa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-dormilon",
+    "nombre": "Dormilón",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/dormilon.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "dormilon",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-besito",
+    "nombre": "Besito",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/besito.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "feliz",
+      "boca": "beso"
+    },
+    "irisVisible": false,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-guino",
+    "nombre": "Guiño",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/guino.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "guino",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-orgulloso",
+    "nombre": "Orgulloso",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/orgulloso.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-confundido",
+    "nombre": "Confundido",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/confundido.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "curioso",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-triste",
+    "nombre": "Triste",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/triste.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-enojadito",
+    "nombre": "Enojadito",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/enojadito.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-asustado",
+    "nombre": "Asustado",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/asustado.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "alegre",
+      "boca": "sorpresa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  },
+  {
+    "id": "b03-concentrado",
+    "nombre": "Concentrado",
+    "batch": "B03",
+    "version": 1,
+    "svgFile": "./recursos/expresiones/v1/concentrado.svg",
+    "estado": "En revisión artística — pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "anterior": {
+      "expresion": "curioso",
+      "boca": "sonrisa"
+    },
+    "irisVisible": true,
+    "origen": "adaptación SVG de exploración IA",
+    "collections": [
+      "ciempi-original"
+    ]
+  }
+]

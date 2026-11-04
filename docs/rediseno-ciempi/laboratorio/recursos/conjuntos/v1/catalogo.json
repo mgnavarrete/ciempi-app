@@ -1,0 +1,175 @@
+[
+  {
+    "id": "b12-set-robot",
+    "nombre": "Robot Lumen",
+    "historia": "La misma máscara aprobada, ahora con armadura, botas y propulsor.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-robot",
+      "textura": "b11-robot",
+      "pies": "b10-robot",
+      "espalda": "b09-robot"
+    }
+  },
+  {
+    "id": "b12-set-draco",
+    "nombre": "Draco del bosque",
+    "historia": "Escamas blandas y mochila a juego con su gorro tejido.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-dragon",
+      "textura": "b11-draco",
+      "pies": "b10-lluvia",
+      "espalda": "b09-draco",
+      "expresion": "b03-curioso"
+    }
+  },
+  {
+    "id": "b12-set-cartografo",
+    "nombre": "Cartógrafo de cuentos",
+    "historia": "Cuero y lona para explorar historias nuevas.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-aventura",
+      "textura": "b11-pirata",
+      "pies": "b10-aventura",
+      "espalda": "b09-aventura",
+      "cara": "b04-lector",
+      "expresion": "b03-curioso"
+    }
+  },
+  {
+    "id": "b12-set-pirata",
+    "nombre": "Capitán Brisa",
+    "historia": "Tricornio, tejido marinero y capa al viento.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-pirata",
+      "textura": "b11-pirata",
+      "pies": "b10-aventura",
+      "espalda": "b08-ia-heroica",
+      "expresion": "b03-guino"
+    }
+  },
+  {
+    "id": "b12-set-luna",
+    "nombre": "Luna bibliotecaria",
+    "historia": "Terciopelo con constelaciones, zapatos curvos y bolso de lectura.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-mago",
+      "textura": "b11-mago",
+      "pies": "b10-mago",
+      "espalda": "b09-mago",
+      "cuello": "bufanda-calco32",
+      "variante": "ravenclaw",
+      "expresion": "b03-sorprendido"
+    }
+  },
+  {
+    "id": "b12-set-noctilio",
+    "nombre": "Noctilio, guardián nocturno",
+    "historia": "Hechicero original con la máscara Espíritu aprobada; no es Voldemort exacto.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-espiritu",
+      "textura": "b11-mago",
+      "pies": "b10-mago",
+      "espalda": "b08-ia-heroica",
+      "varianteCapa": "luna"
+    }
+  },
+  {
+    "id": "b12-set-araluz",
+    "nombre": "AraLuz",
+    "historia": "Héroe original de seda y luz, con identidad propia.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b12-araluz",
+      "textura": "b11-araluz",
+      "pies": "b10-deportiva",
+      "espalda": "b08-ia-heroica",
+      "varianteCapa": "oceano"
+    }
+  },
+  {
+    "id": "b12-set-raton",
+    "nombre": "Ratón Atlas",
+    "historia": "Un ratoncito explorador original, con mochila y mirada expresiva.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b12-raton",
+      "textura": "b11-pirata",
+      "pies": "b10-aventura",
+      "espalda": "b09-raton",
+      "expresion": "b03-alegre"
+    }
+  },
+  {
+    "id": "b12-set-reino",
+    "nombre": "Reino de relatos",
+    "historia": "Corona y constelaciones para contar historias reales.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-corona",
+      "textura": "b11-mago",
+      "pies": "b10-mago",
+      "espalda": "b08-ia-heroica",
+      "varianteCapa": "aurora",
+      "expresion": "b03-orgulloso"
+    }
+  },
+  {
+    "id": "b12-set-lluvia",
+    "nombre": "Explorador de charcos",
+    "historia": "Botas de goma y mochila; deja visible la paleta original.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-jockey",
+      "pies": "b10-lluvia",
+      "espalda": "b09-aventura",
+      "paleta": "bosque",
+      "expresion": "b03-carcajada"
+    }
+  }
+]

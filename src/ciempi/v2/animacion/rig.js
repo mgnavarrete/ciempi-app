@@ -145,15 +145,18 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
   // cadera queda dentro del cuerpo. Con otro largo, la escena envuelve cada pata
   // en un grupo que la traslada: se anima la pata de adentro.
   const esPata = (g) => [...g.children].some((c) => c.localName === 'g' && /rotate\(/.test(c.getAttribute('transform') || ''))
-  const patas = [...(patasG?.children || [])].map((g) => (esPata(g) ? g : [...g.querySelectorAll('g')].find(esPata))).filter(Boolean).map((g) => {
+  const patas = [...(patasG?.children || [])].map((h) => [h, esPata(h) ? h : [...h.querySelectorAll('g')].find(esPata)]).filter(([, g]) => g).map(([h, g]) => {
     const giro = [...g.children].find((c) => c.localName === 'g' && /rotate\(/.test(c.getAttribute('transform') || ''))
-    return { g, base: leerTraslado(g.getAttribute('transform')), giro, giroBase: leerGiro(giro?.getAttribute('transform')) }
+    return { g, envoltura: h, base: leerTraslado(g.getAttribute('transform')), giro, giroBase: leerGiro(giro?.getAttribute('transform')) }
   })
 
   // ── Segmentos del cuerpo, de la cola a la cabeza (las superficies B11 van dentro y los acompañan).
   const segmentos = [...(cuerpoG?.children || [])]
     .filter((g) => g.localName === 'g')
     .map((g) => ({ g, base: leerTraslado(g.getAttribute('transform')) }))
+  // Lo que se anima: todo, salvo que `crecer(n)` muestre solo una parte (escena creciente).
+  const vistos = { segmentos, patas }
+  const dibujosExtra = opciones.dibujos ?? {}
 
   // ── Antenas: cada una gira desde su base, con movimiento propio.
   const antenas = []
@@ -217,15 +220,50 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
   // ── Efectos (estrellas, corazones, zetas…): dibujos del laboratorio, no del personaje.
   const efectosPool = []
 
+  const pataCabeza = patas.find((q) => q.envoltura.hasAttribute('data-pata-cabeza'))
+  const patasDeSegmento = patas.filter((q) => q !== pataCabeza)
+  const ocultar = (n, si) => (si ? n.setAttribute('display', 'none') : n.removeAttribute('display'))
+
   const rig = {
     svg,
     prefijo,
+    /** Segmentos compuestos (en una escena creciente, el máximo que puede mostrar). */
+    capacidad: segmentos.length,
     tieneAntenas: antenas.length === 2,
-    ojosVisibles: () => rostro.ojos.length > 0,
     /**
-     * Cambia ojos, cejas y boca por los de otra expresión B03, tomados de la
-     * composición del mismo conjunto con esa expresión (`obtenerRostro(id)`).
+     * Escena creciente (`escenaCreciente` de pose.ts): muestra `n` segmentos en
+     * el mismo orden, roles y posiciones que `escena(svg, n)`, sin recomponer.
+     * `posiciones(n)` es la de pose.ts. Devuelve false si n supera la capacidad.
      */
+    crecer(n, posiciones) {
+      const total = segmentos.length
+      if (n > total || !pataCabeza || patasDeSegmento.length !== total) return false
+      // Cola, centrales en orden y frente: los mismos roles que una cadena de n.
+      const indices = n <= 0 ? [] : n === 1 ? [total - 1] : [...Array(n - 1).keys(), total - 1]
+      const pos = posiciones(n)
+      const XS = [187, 289, 390, 477, 558]
+      const en = new Set(indices)
+      segmentos.forEach((s, i) => ocultar(s.g, !en.has(i)))
+      patasDeSegmento.forEach((q, i) => ocultar(q.envoltura, !en.has(i)))
+      ocultar(pataCabeza.envoltura, n <= 0)
+      indices.forEach((i, k) => {
+        segmentos[i].base = [pos[k].x, pos[k].y]
+        segmentos[i].g.setAttribute('transform', `translate(${pos[k].x} ${pos[k].y})`)
+        // Con una forma de especie, la pata viene de otro rol del maestro: su x va anotada en la escena.
+        const env = patasDeSegmento[i].envoltura
+        const xPie = env.hasAttribute('data-x-pie') ? +env.getAttribute('data-x-pie') : XS[pos[k].role]
+        env.setAttribute('transform', `translate(${pos[k].x - xPie} 0)`)
+      })
+      // Lo que `escena` quita: sombras del maestro (solo con 5) y mochila/superficies con 0.
+      ocultar(sombras, n !== 5)
+      for (const e of raiz.querySelectorAll('[data-bag], [data-surface]')) ocultar(e, n <= 0)
+      vistos.segmentos = indices.map((i) => segmentos[i])
+      vistos.patas = n > 0 ? [...indices.map((i) => patasDeSegmento[i]), pataCabeza] : []
+      return true
+    },
+    ojosVisibles: () => rostro.ojos.length > 0,
+    /** Hay boca dibujada (una máscara completa la vacía: `data-hidden="costume"`). */
+    bocaVisible: () => !!cabezaG?.querySelector('[id="mouth"], [id$="-mouth"]')?.children.length,
     /** Prepara de antemano una expresión, para que el cambio no demore un cuadro. */
     precargarRostro(id) {
       if (!id || rostros.has(id) || !obtenerRostro) return
@@ -235,6 +273,12 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       const cabezaOtra = otro.querySelector(`[id="${prefijo}e-${id}-head"]`)
       rostros.set(id, ['eyes', 'b03-brows', 'mouth'].map((nombre) => [nombre, cabezaOtra?.querySelector(`[id$="-${nombre}"]`)]))
     },
+    /**
+     * Cambia ojos, cejas y boca por los de otra expresión B03, tomados de la
+     * composición del mismo conjunto con esa expresión (`obtenerRostro(id)`).
+     * Con una máscara que tapa la boca esa composición también la trae vacía:
+     * nunca aparece una boca sobre la máscara.
+     */
     cambiarRostro(id) {
       if (!id || rostro.expresion === id || !obtenerRostro) return
       this.precargarRostro(id)
@@ -251,13 +295,13 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       raiz.setAttribute('transform',
         `translate(${r2(pr.x)} ${r2(pr.y)}) rotate(${r2(pr.giroCentro)} ${cx} ${cy}) translate(${gx} ${gy}) scale(${r2(pr.sx)} ${r2(pr.sy)}) translate(${-gx} ${-gy}) rotate(${r2(pr.rot)} ${gx} ${gy})`)
 
-      segmentos.forEach((s, i) => {
+      vistos.segmentos.forEach((s, i) => {
         const q = p.segmentos[i]
         if (!q) return
         s.g.setAttribute('transform', `translate(${r2(s.base[0] + q.x)} ${r2(s.base[1] + q.y)}) rotate(${r2(q.rot)}) scale(${r2(q.sx)} ${r2(q.sy)})`)
       })
 
-      patas.forEach((pata, i) => {
+      vistos.patas.forEach((pata, i) => {
         const q = p.patas[i]
         if (!q) return
         const [hx, hy] = PIVOTES.cadera
@@ -322,12 +366,14 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
       let n = efectosPool[i]
       if (!n || n.dataset.tipo !== e.tipo) {
         const nuevo = crear('g', { 'data-tipo': e.tipo })
-        nuevo.innerHTML = DIBUJOS[e.tipo] || ''
+        nuevo.innerHTML = dibujosExtra[e.tipo] ?? DIBUJOS[e.tipo] ?? ''
         if (n) n.replaceWith(nuevo)
         else efectos.append(nuevo)
         efectosPool[i] = n = nuevo
       }
-      n.setAttribute('transform', `translate(${r2(e.x)} ${r2(e.y)}) rotate(${r2(e.rot || 0)}) scale(${r2(e.s ?? 1)})`)
+      const s = e.s ?? 1
+      // Aplastamiento opcional (sx, sy relativos a s), p. ej. la fruta de E08 al reaccionar.
+      n.setAttribute('transform', `translate(${r2(e.x)} ${r2(e.y)}) rotate(${r2(e.rot || 0)}) scale(${r2(s * (e.sx ?? 1))} ${r2(s * (e.sy ?? 1))})`)
       n.setAttribute('opacity', r2(e.opacidad ?? 1))
       if (e.color) n.style.setProperty('--fx', e.color)
       n.style.display = ''
@@ -353,4 +399,7 @@ export const DIBUJOS = {
   puntos: `<circle cx="-18" cy="0" r="6" fill="#243e5b"/><circle cx="0" cy="0" r="6" fill="#243e5b"/><circle cx="18" cy="0" r="6" fill="#243e5b"/>`,
   moneda: `<circle r="22" fill="#ffd137" ${C} stroke-width="5"/><circle r="13" fill="none" stroke="#f0b32b" stroke-width="4"/><path d="M-8 -10 Q-4 -15 1 -14" stroke="#fff6c4" stroke-width="4" stroke-linecap="round"/>`,
   suelo: `<path d="M-18 0 H18" ${C} stroke-width="5" opacity=".35"/>`,
+  // E08 Comer: la fruta por omisión (en el juego se usa la comida equipada, vía `opciones.dibujos.comida`) y sus migas.
+  comida: `<path d="M0 -14 C-8 -20 -26 -16 -26 2 C-26 18 -12 28 0 23 C12 28 26 18 26 2 C26 -16 8 -20 0 -14Z" fill="#ef5a46" ${C} stroke-width="5"/><path d="M-15 -6 Q-13 -12 -7 -13" fill="none" stroke="#ffd2c8" stroke-width="4" stroke-linecap="round"/><path d="M0 -14 Q1 -22 5 -27" fill="none" ${C} stroke-width="5"/><path d="M3 -22 Q12 -30 20 -24 Q12 -16 3 -22Z" fill="#83cda4" ${C} stroke-width="4"/>`,
+  miga: `<circle r="7" style="fill: var(--fx, #f7c873)" ${C} stroke-width="3"/>`,
 }

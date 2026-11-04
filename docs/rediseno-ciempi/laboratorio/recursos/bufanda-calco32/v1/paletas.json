@@ -1,0 +1,140 @@
+[
+  {
+    "id": "gryffindor",
+    "nombre": "Gryffindor",
+    "principal": "#8D253A",
+    "secundario": "#E6B84B",
+    "collection": "harry-potter",
+    "colores": {
+      "principal-94091e": "#681425",
+      "principal-9f0c22": "#701829",
+      "principal-b51127": "#801D31",
+      "principal-be1529": "#872135",
+      "principal-c0182c": "#892338",
+      "principal-c61a2e": "#8D253A",
+      "principal-d73a49": "#B13A52",
+      "principal-3a0706": "#290A10",
+      "secundario-e39116": "#CF9F2D",
+      "secundario-f4a31b": "#DCAB36",
+      "secundario-f8ae22": "#E1B03D",
+      "secundario-fcbc2c": "#E5B646",
+      "secundario-fcc031": "#E6B84B",
+      "secundario-fcd56a": "#ECCB7D"
+    }
+  },
+  {
+    "id": "slytherin",
+    "nombre": "Slytherin",
+    "principal": "#21644F",
+    "secundario": "#C1C9CC",
+    "collection": "harry-potter",
+    "colores": {
+      "principal-94091e": "#144A39",
+      "principal-9f0c22": "#164F3D",
+      "principal-b51127": "#1B5B47",
+      "principal-be1529": "#1E604B",
+      "principal-c0182c": "#1F614C",
+      "principal-c61a2e": "#21644F",
+      "principal-d73a49": "#388E73",
+      "principal-3a0706": "#091D17",
+      "secundario-e39116": "#9DA8AC",
+      "secundario-f4a31b": "#ACB6BA",
+      "secundario-f8ae22": "#B3BDC0",
+      "secundario-fcbc2c": "#BDC6C9",
+      "secundario-fcc031": "#C1C9CC",
+      "secundario-fcd56a": "#D2D8DA"
+    }
+  },
+  {
+    "id": "ravenclaw",
+    "nombre": "Ravenclaw",
+    "principal": "#284D85",
+    "secundario": "#BC8A58",
+    "collection": "harry-potter",
+    "colores": {
+      "principal-94091e": "#173562",
+      "principal-9f0c22": "#1A3A6A",
+      "principal-b51127": "#204379",
+      "principal-be1529": "#24487F",
+      "principal-c0182c": "#264A81",
+      "principal-c61a2e": "#284D85",
+      "principal-d73a49": "#3E68A9",
+      "principal-3a0706": "#0B1627",
+      "secundario-e39116": "#9C7249",
+      "secundario-f4a31b": "#AE7C4B",
+      "secundario-f8ae22": "#B5814D",
+      "secundario-fcbc2c": "#BB8855",
+      "secundario-fcc031": "#BC8A58",
+      "secundario-fcd56a": "#CEAA86"
+    }
+  },
+  {
+    "id": "hufflepuff",
+    "nombre": "Hufflepuff",
+    "principal": "#E5BE46",
+    "secundario": "#333B43",
+    "collection": "harry-potter",
+    "colores": {
+      "principal-94091e": "#C4970E",
+      "principal-9f0c22": "#D2A312",
+      "principal-b51127": "#E8B720",
+      "principal-be1529": "#E7BB33",
+      "principal-c0182c": "#E5BB3C",
+      "principal-c61a2e": "#E5BE46",
+      "principal-d73a49": "#E0C56F",
+      "principal-3a0706": "#4D3C09",
+      "secundario-e39116": "#2B3136",
+      "secundario-f4a31b": "#2E353C",
+      "secundario-f8ae22": "#30373F",
+      "secundario-fcbc2c": "#323A42",
+      "secundario-fcc031": "#333B43",
+      "secundario-fcd56a": "#617080"
+    }
+  },
+  {
+    "id": "oceano-coral",
+    "nombre": "Océano Coral",
+    "principal": "#41B8BB",
+    "secundario": "#FFAD91",
+    "collection": "ciempi-original",
+    "colores": {
+      "principal-94091e": "#27878A",
+      "principal-9f0c22": "#2C9294",
+      "principal-b51127": "#35A7AA",
+      "principal-be1529": "#3BB0B3",
+      "principal-c0182c": "#3EB2B5",
+      "principal-c61a2e": "#41B8BB",
+      "principal-d73a49": "#67BFC1",
+      "principal-3a0706": "#123636",
+      "secundario-e39116": "#F1805A",
+      "secundario-f4a31b": "#FA926E",
+      "secundario-f8ae22": "#FD9B7A",
+      "secundario-fcbc2c": "#FFA88A",
+      "secundario-fcc031": "#FFAD91",
+      "secundario-fcd56a": "#FFC4AF"
+    }
+  },
+  {
+    "id": "lavanda-magica",
+    "nombre": "Lavanda Mágica",
+    "principal": "#A38BC9",
+    "secundario": "#FFE096",
+    "collection": "ciempi-original",
+    "colores": {
+      "principal-94091e": "#6C45A9",
+      "principal-9f0c22": "#764FB5",
+      "principal-b51127": "#8D6DBF",
+      "principal-be1529": "#987CC4",
+      "principal-c0182c": "#9C82C6",
+      "principal-c61a2e": "#A38BC9",
+      "principal-d73a49": "#B4A2CF",
+      "principal-3a0706": "#2C1E43",
+      "secundario-e39116": "#F2C65D",
+      "secundario-f4a31b": "#FAD272",
+      "secundario-f8ae22": "#FDD87F",
+      "secundario-fcbc2c": "#FFDE8F",
+      "secundario-fcc031": "#FFE096",
+      "secundario-fcd56a": "#FFE8B3"
+    }
+  }
+]

@@ -1,0 +1,9 @@
+Color and surface-finish exploration sheet for an approved children's-app character, "Ciempi Dragon" (reference image 1). Draw SIX copies of exactly this character in a clean 3 columns x 2 rows grid on a plain off-white background, each one the SAME pose, SAME silhouette, SAME proportions, same round head with the same snout, horns, ear-fins, eyes and smile, same five round body segments with one small back spike each, same chunky legs and feet, same curled tail with an arrow tip. Do NOT change anatomy, do not add wings, do not add or remove segments, legs or spikes. Keep the Ciempi style: thick dark navy blue outline (#243e5b) on every shape, flat 2D cartoon volume with one soft shadow and one glossy highlight per round shape, rounded friendly shapes, kid-friendly, no text.
+Only colour, material and a small surface pattern change between the six:
+1. FIRE: red-orange body, yellow spikes, warm orange belly, small stylised flame marks on each segment.
+2. ICE: light sky-blue body, white-and-cyan spikes like ice crystals, pale icy belly, tiny white frost sparkles and a glassy sheen.
+3. NIGHT: dark bluish-black / deep indigo body (still clearly lighter than the navy outline), dark purple spikes, small glowing cyan and yellow dots like stars; the face must stay perfectly readable with a lighter muzzle.
+4. EARTH: warm brown body, moss-green spikes, sandy belly, small pebble speckles and one tiny mineral crystal per segment.
+5. WHITE: warm white body with soft lavender and pale sky-blue shadows, pale gold spikes, outline still clearly visible.
+6. EMERALD: intense emerald green body, gold spikes, mint belly, a faceted gem-like highlight and small gold dots.
+Each dragon centred in its cell, all at the same scale and facing right.

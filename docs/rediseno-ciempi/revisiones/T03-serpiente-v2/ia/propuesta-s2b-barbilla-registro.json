@@ -1,0 +1,13 @@
+{
+  "id": "propuesta-s2b-barbilla",
+  "archivo": "propuesta-s2b-barbilla.png",
+  "prompt": "propuesta-s2b-barbilla-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-646c-7c23-a73e-13108dd06592/exec-06ed289f-59c9-4a94-873e-48f9b3512936.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:01.576Z",
+  "segundos": 62
+}

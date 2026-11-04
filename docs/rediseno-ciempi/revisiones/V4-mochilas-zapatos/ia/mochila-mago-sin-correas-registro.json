@@ -1,0 +1,12 @@
+{
+  "id": "mochila-mago-sin-correas",
+  "archivo": "mochila-mago-sin-correas.png",
+  "prompt": "mochila-mago-sin-correas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/mago.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-efa9-7ac1-9beb-59675f8375cf/exec-22b2fab8-836d-4381-8faa-04ecaa0cb4fb.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:42:32.761Z",
+  "segundos": 61
+}

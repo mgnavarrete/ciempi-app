@@ -1,0 +1,13 @@
+{
+  "id": "pieza-camaleon-pata",
+  "archivo": "pieza-camaleon-pata.png",
+  "prompt": "pieza-camaleon-pata-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-647e-7cf2-b0b4-769c8df73065/exec-40a93d3a-e7a3-4537-86cf-a8b98a1d8ab6.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:00.035Z",
+  "segundos": 61
+}

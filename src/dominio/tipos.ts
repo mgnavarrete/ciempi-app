@@ -185,6 +185,11 @@ export type EstadoAsignacion = 'pendiente' | 'en_curso' | 'completada' | 'archiv
  */
 export type NivelLectura = 0 | 1 | 2 | 3 | 4
 
+export type Autorizacion = 'pendiente' | 'autorizada' | 'rechazada'
+
+/** ¿Este libro da monedas? (pendiente o rechazado: se lee, pero no paga). */
+export const sinAutorizar = (a: Pick<Asignacion, 'autorizacion'>) => a.autorizacion === 'pendiente' || a.autorizacion === 'rechazada'
+
 export interface Asignacion {
   id: Id
   /** Usuario que lo agregó a la biblioteca (un adulto o el propio niño). */
@@ -211,6 +216,13 @@ export interface Asignacion {
   premioHasta?: number
   /** Día (AAAA-MM-DD) de la última relectura premiada: se premia una por día. */
   relecturaPremiadaEn?: string | null
+  /**
+   * Un texto propio que agregó el niño queda `pendiente` hasta que un adulto lo
+   * aprueba con su PIN (lo verifica el servidor). Pendiente o rechazado se
+   * puede leer, pero no da monedas. Sin dato (modo local, servidor anterior): autorizado.
+   */
+  autorizacion?: Autorizacion
+  autorizadaEn?: FechaISO | null
   asignadaEn: FechaISO
   actualizadaEn: FechaISO
   completadaEn: FechaISO | null

@@ -2,6 +2,7 @@ import { TarjetaCarga } from '../adultos/AgregarLibro'
 import { useCargasDeLibros } from '../adultos/cargas'
 import { useCallback, useEffect, useState } from 'react'
 import { DialogoCompartir, DialogoNivel } from '../adultos/LectoresDelLibro'
+import { DialogoPin } from '../adultos/DialogoPin'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -34,15 +35,19 @@ interface Props {
   alVolver?: () => void
   /** Modo admin: los niños del adulto, para compartirles un libro. */
   ninosDelAdulto?: PerfilNino[]
+  /** Un adulto aprobó (o no) con su PIN un libro que agregó el niño. */
+  alAutorizar?: (a: Asignacion) => void
 }
 
 /** Los libros y textos del niño, con su avance. */
-export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alPersonalizar, alVolver, ninosDelAdulto = [] }: Props) {
+export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alPersonalizar, alVolver, ninosDelAdulto = [], alAutorizar }: Props) {
   const repos = useRepositorios()
   const [libros, setLibros] = useState<LibroEnBiblioteca[] | null>(null)
   // Adulto: cambiar el nivel de un libro o compartirlo con otro niño.
   const [cambiandoNivel, setCambiandoNivel] = useState<LibroEnBiblioteca | null>(null)
   const [compartiendo, setCompartiendo] = useState<Texto | null>(null)
+  // Un libro que agregó el niño y un adulto aprueba con su PIN (aquí mismo, en su dispositivo).
+  const [aprobando, setAprobando] = useState<LibroEnBiblioteca | null>(null)
   // Ver todos los libros o solo los de un nivel.
   const [filtro, setFiltro] = useState<NivelLectura | 'todos'>('todos')
 
@@ -183,6 +188,8 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                       <span className="rounded-full bg-amarillo/40 px-2 font-bold text-tinta">
                         Nivel {libro.asignacion.nivel} · {datosNivel(libro.asignacion.nivel).nombre}
                       </span>
+                      {libro.asignacion.autorizacion === 'pendiente' && <span className="rounded-full bg-naranjo/20 px-2 font-bold text-tinta">⏳ Pendiente de aprobación</span>}
+                      {libro.asignacion.autorizacion === 'rechazada' && <span className="rounded-full bg-crema px-2 font-bold text-tinta-suave">Sin monedas</span>}
                       {resumen.terminado ? '¡Terminado!' : conAvance && resumen.fraccion > 0 ? resumen.etiqueta : ''}
                     </span>
                     {conAvance && resumen.fraccion > 0 && <BarraProgreso valor={resumen.fraccion} />}
@@ -191,6 +198,11 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     </span>
                   </span>
                 </button>
+                {libro.asignacion.autorizacion === 'pendiente' && repos.autorizaciones && (
+                  <button onClick={() => setAprobando(libro)} className="mt-1 self-center text-sm font-bold text-petroleo underline underline-offset-4">
+                    Aprobar con PIN (adulto)
+                  </button>
+                )}
                 {modo === 'admin' && (
                   <div className="mt-1 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm font-bold">
                     <button onClick={() => setCambiandoNivel(libro)} className="text-petroleo underline underline-offset-4">
@@ -228,6 +240,20 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
           alCerrar={() => setCambiandoNivel(null)}
           alCambiar={() => {
             setCambiandoNivel(null)
+            void cargar().then(setLibros)
+          }}
+        />
+      )}
+      {aprobando && (
+        <DialogoPin
+          asignacionId={aprobando.asignacion.id}
+          titulo={aprobando.texto.titulo}
+          apodo={perfil.apodo}
+          muestra={aprobando.texto.frases.slice(0, 3)}
+          alCerrar={() => setAprobando(null)}
+          alListo={(a) => {
+            setAprobando(null)
+            alAutorizar?.(a)
             void cargar().then(setLibros)
           }}
         />

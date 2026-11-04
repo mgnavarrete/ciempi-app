@@ -1,0 +1,186 @@
+[
+  {
+    "id": "b07-ia-robot",
+    "nombre": "Robot Lumen",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/mascara-robot.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/mascara-robot.png",
+    "fuenteSha256": "ca7e4323200ce12f4111621b6a48a7a235951c55fc1176dc54e423e329660a7d",
+    "dimensionesMaestro": [
+      1312,
+      1199
+    ],
+    "encuadre": [
+      557,
+      179,
+      354.24,
+      323.73
+    ],
+    "splitY": null,
+    "rotation": -14,
+    "anterior": "b07-iron",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true
+  },
+  {
+    "id": "b07-ia-gatita",
+    "nombre": "Gatita de porcelana",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/mascara-gatita-aberturas.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/mascara-gatita-aberturas.png",
+    "fuenteSha256": "b7f7f264f5f6d047b2b1c89c03d6b9955c51b875c634baad79191aae07325555",
+    "dimensionesMaestro": [
+      1556,
+      1011
+    ],
+    "encuadre": [
+      619,
+      222,
+      280.08,
+      181.98
+    ],
+    "splitY": null,
+    "rotation": -7,
+    "anterior": "b07-kitty",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false,
+    "centroRotacion": [
+      700,
+      340
+    ]
+  },
+  {
+    "id": "b07-ia-espiritu",
+    "nombre": "Espíritu de los cuentos",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/mascara-espiritu.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/mascara-espiritu.png",
+    "fuenteSha256": "6ecba158dc3ba5f3c61de5e385abdac73ebd118fc56cb5c445f9f01559c13c56",
+    "dimensionesMaestro": [
+      1312,
+      1199
+    ],
+    "encuadre": [
+      572,
+      190,
+      328,
+      299.75
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b07-voldemort",
+    "novedad": true,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "mask": true,
+    "fullFace": true,
+    "ocultaRostro": true
+  },
+  {
+    "id": "b07-ia-dragon",
+    "nombre": "Antifaz Draco",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-dragon.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/antifaz-dragon.png",
+    "fuenteSha256": "174aa88c9ef395e9b5153d24435fd6ee86ec95f950692782c3f547428e629d1b",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      596,
+      224,
+      276.48,
+      184.32
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b07-dragon",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-buho",
+    "nombre": "Búho lector",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-buho.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/antifaz-buho.png",
+    "fuenteSha256": "8ed44ab9dfddc725782a59a8253feb408ae87436384a39fedf7910296e1ac483",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      597,
+      218,
+      276.48,
+      184.32
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b07-buho",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d4b-placa-crema",
+  "archivo": "propuesta-d4b-placa-crema.png",
+  "prompt": "propuesta-d4b-placa-crema-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d99-7903-9675-1eb72d6957c5/exec-b0d33daf-c787-40e9-af03-7ab6cf3fb22e.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:58.968Z",
+  "segundos": 107
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "b04-cicatriz",
+    "nombre": "Cicatriz de rayo",
+    "batch": "B04",
+    "tipo": "detalle",
+    "archivo": "./recursos/lentes/v1/cicatriz.svg",
+    "anterior": "cara-cicatriz",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "collections": [
+      "harry-potter"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  }
+]

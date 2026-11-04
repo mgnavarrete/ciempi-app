@@ -1,0 +1,12 @@
+{
+  "id": "cuncuna-variantes",
+  "archivo": "cuncuna-variantes.png",
+  "prompt": "cuncuna-variantes-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/V5-variantes/ia/referencias/cuncuna-v4b-aprobado.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a683-ef56-7722-a02c-dc2c5257ce2c/exec-ab7edab2-8027-4f3d-a28a-72a45e2bbdf0.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T12:24:50.106Z",
+  "segundos": 64
+}

@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d5b-hocico-frontal",
+  "archivo": "propuesta-d5b-hocico-frontal.png",
+  "prompt": "propuesta-d5b-hocico-frontal-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae08-7c52-8cf1-d30be864a850/exec-722bd85c-122c-40d1-9e96-1908ddfed752.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:28:53.313Z",
+  "segundos": 106
+}

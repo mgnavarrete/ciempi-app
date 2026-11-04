@@ -9,7 +9,10 @@ import {
   type SesionLectura,
   type Texto,
 } from '../../dominio/tipos'
-import type { Repositorios } from '../repositorios'
+import { crearColaPremios, type PedidoEnCola, type RespuestaEnvio } from '../colaPremios'
+import type { Desbloqueo, PendienteDeAutorizar, Repositorios } from '../repositorios'
+import type { ModeloEconomia } from '../../lectura/monedas'
+import { modeloDeCompilacion } from '../economia'
 
 /**
  * Implementación con el servidor propio de Ciempi (carpeta server/: Node +
@@ -53,7 +56,8 @@ export function crearRepositoriosApi(base: string): Repositorios {
   const tokenRecuperacion = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('recuperar') : null
   let recuperacionPendiente = tokenRecuperacion && tokenRecuperacion !== '1' ? tokenRecuperacion : null
 
-  async function pedir<T>(metodo: string, ruta: string, cuerpo?: unknown): Promise<T> {
+  /** El pedido tal cual: lanza solo si no hay conexión. */
+  async function pedirCrudo(metodo: string, ruta: string, cuerpo?: unknown): Promise<{ status: number; ok: boolean; datos: unknown }> {
     let r: Response
     try {
       r = await fetch(`${base}${ruta}`, {
@@ -67,7 +71,12 @@ export function crearRepositoriosApi(base: string): Repositorios {
     } catch {
       throw new Error('Sin conexión. Revisa tu internet e inténtalo de nuevo.')
     }
-    const datos = r.status === 204 ? null : await r.json().catch(() => null)
+    return { status: r.status, ok: r.ok, datos: r.status === 204 ? null : await r.json().catch(() => null) }
+  }
+
+  async function pedir<T>(metodo: string, ruta: string, cuerpo?: unknown): Promise<T> {
+    const r = await pedirCrudo(metodo, ruta, cuerpo)
+    const datos = r.datos
     if (r.status === 401 && token && !ruta.startsWith('/api/entrar')) {
       // La sesión venció o la cerraron (por ejemplo, le cambiaron la clave al niño).
       token = null
@@ -87,6 +96,82 @@ export function crearRepositoriosApi(base: string): Repositorios {
   }
 
   const nulo = <T>(p: Promise<T>) => p.catch(() => null)
+
+  /**
+   * Envía un pedido de premio de la cola y dice qué hacer con él. El servidor
+   * calcula las monedas; si no conoce el pedido (un servidor anterior a 2.5,
+   * por ejemplo después de volver atrás una actualización), se usa el
+   * endpoint viejo con lo que la app esperaba, como antes.
+   */
+  async function enviarPremio(p: PedidoEnCola): Promise<RespuestaEnvio> {
+    // Solo lo que el servidor lee (no el resto del pedido en cola). `segundosActivos` y `tropiezos`
+    // los ignora un servidor con la economía 2.4.1; con E2 los acota él (tope y reloj).
+    const cuerpo =
+      p.tipo === 'relectura'
+        ? { operationId: p.operationId, tipo: p.tipo, dia: p.dia, tropiezos: p.tropiezos, esperadas: p.esperadas }
+        : { operationId: p.operationId, tipo: p.tipo, hasta: p.hasta, conPremio: p.conPremio, segundosActivos: p.segundosActivos, ...(p.tipo === 'avance' ? { tropiezos: p.tropiezos } : {}), esperadas: p.esperadas }
+    let r: Awaited<ReturnType<typeof pedirCrudo>>
+    try {
+      r = await pedirCrudo('POST', `/api/asignaciones/${p.asignacionId}/premios`, cuerpo)
+    } catch {
+      return { tipo: 'reintentar' }
+    }
+    const datos = (r.datos ?? {}) as { otorgadas?: number; monedas?: number; reintentarEnSegundos?: number; error?: string; message?: string; economia?: string }
+    if (r.ok) {
+      recordarEconomia(datos.economia)
+      return { tipo: 'ok', otorgadas: datos.otorgadas ?? 0, monedas: datos.monedas ?? 0 }
+    }
+    if (r.status === 429) return { tipo: 'reintentar', esperarMs: Math.max(1, datos.reintentarEnSegundos ?? 30) * 1000 }
+    if (r.status === 404 && typeof datos.message === 'string' && datos.message.startsWith('Route ')) {
+      // Releer una unidad no paga en un servidor anterior: no hay nada que pedir por el endpoint viejo.
+      if (p.tipo === 'releida') return { tipo: 'descartar', motivo: 'servidor anterior' }
+      try {
+        const viejo = await pedirCrudo('POST', `/api/perfiles/${p.perfilId}/monedas`, { cantidad: p.esperadas })
+        if (viejo.ok) return { tipo: 'ok', otorgadas: p.esperadas, monedas: (viejo.datos as { monedas: number }).monedas }
+        return viejo.status >= 500 ? { tipo: 'reintentar' } : { tipo: 'descartar', motivo: `HTTP ${viejo.status}` }
+      } catch {
+        return { tipo: 'reintentar' }
+      }
+    }
+    // Sesión vencida o servidor con problemas: se guarda y se reintenta (con la sesión nueva).
+    if (r.status === 401 || r.status === 408 || r.status >= 500) return { tipo: 'reintentar' }
+    return { tipo: 'descartar', motivo: datos.error ?? `HTTP ${r.status}` }
+  }
+
+  /** Qué economía usa el servidor (lo dice en cada premio): con E2 la app pide también las relecturas por unidad. */
+  const CLAVE_ECONOMIA = 'ciempi-economia'
+  let economia: ModeloEconomia = modeloDeCompilacion()
+  try {
+    const guardada = typeof localStorage === 'undefined' ? null : localStorage.getItem(CLAVE_ECONOMIA)
+    if (guardada === 'e2' || guardada === 'e2r' || guardada === 'actual') economia = guardada
+  } catch {
+    /* sin almacenamiento: se aprende de la próxima respuesta */
+  }
+  function recordarEconomia(valor: unknown) {
+    if (valor !== 'e2' && valor !== 'e2r' && valor !== 'actual') return
+    economia = valor
+    try {
+      localStorage.setItem(CLAVE_ECONOMIA, valor)
+    } catch {
+      /* no importa */
+    }
+  }
+
+  const almacen = (() => {
+    try {
+      return typeof localStorage === 'undefined' ? null : localStorage
+    } catch {
+      return null
+    }
+  })()
+  const premios = crearColaPremios({ enviar: enviarPremio, almacen })
+  // Lo que quedó sin enviar sale al volver la conexión o al volver a la app.
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('online', () => void premios.reintentar())
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') void premios.reintentar()
+    })
+  }
 
   return {
     enLinea: true,
@@ -112,6 +197,8 @@ export function crearRepositoriosApi(base: string): Repositorios {
         await iniciar('/api/entrar-nino', { usuario, clave })
       },
       async cerrarSesion() {
+        // Lo ganado y todavía sin enviar sale antes de cerrar la sesión (con conexión).
+        await premios.reintentar()
         await pedir('POST', '/api/salir').catch(() => {})
         token = null
         guardarToken(null)
@@ -156,14 +243,18 @@ export function crearRepositoriosApi(base: string): Repositorios {
       async actualizarAjustes(id, ajustes) {
         return aPerfil(await pedir<PerfilNino>('PUT', `/api/perfiles/${id}/ajustes`, { ajustes }))
       },
-      async sumarMonedas(id, cantidad) {
-        return (await pedir<{ monedas: number }>('POST', `/api/perfiles/${id}/monedas`, { cantidad })).monedas
+      async sumarMonedas(id, cantidad, motivo) {
+        return (await pedir<{ monedas: number }>('POST', `/api/perfiles/${id}/monedas`, { cantidad, motivo })).monedas
       },
       async actualizarCiempi(id, apariencia) {
         return aPerfil(await pedir<PerfilNino>('PUT', `/api/perfiles/${id}/ciempi`, { apariencia }))
       },
       async comprar(id, itemId, precioVisto) {
-        return pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId, precioVisto })
+        // Primero lo ganado que quedó sin enviar: así alcanza para lo que el niño ve en su contador.
+        await premios.reintentar()
+        const r = await pedir<{ monedas: number; inventario: string[] }>('POST', `/api/perfiles/${id}/comprar`, { itemId, precioVisto })
+        // Como en el resto de la app, el saldo que se muestra incluye lo que sigue en la cola.
+        return { ...r, monedas: r.monedas + premios.pendientes(id) }
       },
       async crearInvitacion(perfilId) {
         return pedir<InvitacionNino>('POST', `/api/perfiles/${perfilId}/invitaciones`)
@@ -188,9 +279,26 @@ export function crearRepositoriosApi(base: string): Repositorios {
         pedir<Asignacion[]>('GET', `/api/perfiles/${perfilId}/asignaciones`).then((l) => l.map((a) => ({ ...a, nivel: a.nivel ?? 1 }))),
       asignar: (perfilId, textoId, nivel = 1) => pedir<Asignacion>('POST', `/api/perfiles/${perfilId}/asignaciones`, { textoId, nivel }),
       cambiarNivel: (id, nivel) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/nivel`, { nivel }),
-      guardarProgreso: (id, progreso) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/progreso`, progreso),
+      // `premiosPorRegistro`: esta app pide sus premios aparte (el servidor no los deduce del progreso).
+      guardarProgreso: (id, progreso) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/progreso`, { ...progreso, premiosPorRegistro: true }),
       async quitar(id) {
         await pedir('DELETE', `/api/asignaciones/${id}`)
+      },
+    },
+
+    desbloqueos: {
+      listar: (perfilId) => pedir<Desbloqueo[]>('GET', `/api/perfiles/${perfilId}/desbloqueos`),
+      async celebrar(perfilId, item) {
+        await pedir('POST', `/api/perfiles/${perfilId}/desbloqueos/${encodeURIComponent(item)}/celebrado`)
+      },
+    },
+    autorizaciones: {
+      pendientes: () => pedir<PendienteDeAutorizar[]>('GET', '/api/autorizaciones'),
+      autorizar: (asignacionId, pin, nivel) => pedir<Asignacion>('POST', `/api/asignaciones/${asignacionId}/autorizar`, { pin, ...(nivel === undefined ? {} : { nivel }) }),
+      rechazar: (asignacionId, pin) => pedir<Asignacion>('POST', `/api/asignaciones/${asignacionId}/rechazar`, { pin }),
+      miPin: () => pedir<{ tienePin: boolean }>('GET', '/api/mi-pin'),
+      async definirPin(pin, clave) {
+        await pedir('PUT', '/api/mi-pin', { pin, clave })
       },
     },
 
@@ -198,5 +306,7 @@ export function crearRepositoriosApi(base: string): Repositorios {
       guardar: (sesion) => pedir<SesionLectura>('PUT', `/api/sesiones-lectura/${sesion.id}`, sesion),
       listarPorPerfil: (perfilId) => pedir<SesionLectura[]>('GET', `/api/perfiles/${perfilId}/sesiones-lectura`),
     },
+
+    premios: { ...premios, economia: () => economia },
   }
 }

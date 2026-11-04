@@ -1,0 +1,13 @@
+{
+  "id": "pieza-camaleon-cola",
+  "archivo": "pieza-camaleon-cola.png",
+  "prompt": "pieza-camaleon-cola-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b3ed-77d2-b105-865dbd7c3a0c/exec-04ed13ad-b54f-41db-8451-3717ff912213.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:39:18.045Z",
+  "segundos": 78
+}

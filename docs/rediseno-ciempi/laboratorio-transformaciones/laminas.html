@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Láminas de transformaciones</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  body { padding: 16px; }
+  .lamina h1 { font-size: 1.1rem; margin: 0 0 4px; }
+  .lamina > p { font-size: .8rem; color: var(--suave); margin: 0 0 10px; }
+  .rejilla { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+  .celda { margin: 0; background: var(--lienzo); border: 1px solid var(--borde); border-radius: 8px; padding: 6px; }
+  .celda figcaption { font-size: .75rem; color: var(--suave); max-width: 340px; }
+  .celda svg { display: block; }
+  .fila-lamina { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 10px; flex-wrap: wrap; }
+  .fila-lamina > h2 { font-size: .9rem; width: 100%; margin: 6px 0 0; }
+</style>
+</head>
+<body data-fondo="claro">
+<p id="error" class="error" hidden></p>
+<section class="lamina" id="lamina"></section>
+<script type="module" src="laminas.js"></script>
+</body>
+</html>

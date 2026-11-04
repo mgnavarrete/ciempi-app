@@ -1,0 +1,13 @@
+{
+  "id": "propuesta-s2c-gota",
+  "archivo": "propuesta-s2c-gota.png",
+  "prompt": "propuesta-s2c-gota-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-6454-7b23-a58b-be8e76f5e626/exec-1997c9e4-279c-4fce-a787-319d4ad6e6ee.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:49.822Z",
+  "segundos": 110
+}

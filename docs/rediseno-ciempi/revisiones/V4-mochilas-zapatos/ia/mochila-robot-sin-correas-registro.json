@@ -1,0 +1,12 @@
+{
+  "id": "mochila-robot-sin-correas",
+  "archivo": "mochila-robot-sin-correas.png",
+  "prompt": "mochila-robot-sin-correas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-efac-7c90-bfc9-f58fb7bc4fb1/exec-0b2534a3-4bb6-4e33-8ed2-a67864667dee.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:42:32.762Z",
+  "segundos": 61
+}

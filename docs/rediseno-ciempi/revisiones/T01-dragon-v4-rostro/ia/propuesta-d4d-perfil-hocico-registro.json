@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d4d-perfil-hocico",
+  "archivo": "propuesta-d4d-perfil-hocico.png",
+  "prompt": "propuesta-d4d-perfil-hocico-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d8d-74a0-b2e8-7e2369c3eada/exec-2e94276b-24dc-4877-981c-ffa0f257388a.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:14.307Z",
+  "segundos": 63
+}
