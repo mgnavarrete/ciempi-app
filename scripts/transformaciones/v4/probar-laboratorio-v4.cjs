@@ -46,8 +46,17 @@ const ok = (cond, txt) => { console.log((cond ? 'ok   ' : 'FALLO') + ' ' + txt);
   // Serpiente: calzado oculto, lengüita apagable.
   await pagina.click('#criaturas button:text-is("Ciempi Serpiente")'); await esperar()
   await pagina.selectOption('#sel-pies', 'b10-deportiva'); await esperar()
-  ok((await pagina.textContent('[data-etiqueta="pies"]')).includes('oculto'), 'serpiente: el calzado figura como oculto')
-  ok(!(await pagina.$('#lienzo-a [data-footwear]')), 'serpiente: no se dibuja calzado')
+  // Decisión de la usuaria (2026-11-04): UNA sola zapatilla, en la punta de la cola.
+  ok((await pagina.textContent('[data-etiqueta="pies"]')).includes('adaptable'), 'serpiente: el calzado figura como adaptable (zapatilla en la cola)')
+  ok((await pagina.$$('#lienzo-a [data-footwear]')).length === 1 && (await pagina.$$('#lienzo-a [data-zapatilla-cola] [data-footwear]')).length === 1, 'serpiente: una sola zapatilla, dentro de la cola')
+  await pagina.click(`#n-rapidos button:text-is("1")`); await esperar()
+  ok((await pagina.$$('#lienzo-a [data-footwear]')).length === 0, 'serpiente: con N = 1 no hay cola ni zapatilla')
+  await pagina.click(`#n-rapidos button:text-is("40")`); await esperar()
+  ok((await pagina.$$('#lienzo-a [data-footwear]')).length === 1, 'serpiente: con N = 40 sigue habiendo una sola zapatilla')
+  await pagina.click(`#n-rapidos button:text-is("5")`); await esperar()
+  await pagina.selectOption('#sel-pies', 'pies-zapatillas'); await esperar()
+  ok((await pagina.$$('#lienzo-a [data-footwear], #lienzo-a [data-zapatilla-cola]')).length === 0, 'serpiente: sin calzado la cola queda tal cual')
+  await pagina.selectOption('#sel-pies', 'b10-deportiva'); await esperar()
   // Iteración 2: la lengüita es parte del rostro IA de Alegre/Carcajada; apagada usa la variante «-sinlengua».
   const rostro = () => pagina.$eval('#lienzo-a [data-rostro-v2="rostro"] image', (i) => i.getAttribute('href')).catch(() => '')
   ok(/\/alegre-rostro\.webp/.test(await rostro()), 'serpiente: rostro propio v2 con lengüita en Alegre')

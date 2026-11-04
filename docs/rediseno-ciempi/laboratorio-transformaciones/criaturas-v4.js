@@ -379,6 +379,39 @@ function aplicarRostro(doc, especieId, efectiva, rostro) {
   doc.documentElement.setAttribute('data-rostro', 'v2')
 }
 
+// ── Zapatilla en la cola (Serpiente) ─────────────────────────────────────────
+// Decisión de la usuaria (2026-11-04): «podríamos ponerle una zapatilla en la
+// cola y sería chistoso, pero solo en la cola y solo 1». `renderCiempi` pone el
+// calzado B10 en las seis patas (vacías en la serpiente): se quitan esas seis y
+// se pone UNA copia del mismo diseño dentro del grupo de la COLA (`tail`), así
+// acompaña al crecimiento (escena/escenaCreciente clonan la cola con N ≥ 2) y a
+// todas las animaciones del rig (que mueven ese segmento). La punta de la cola
+// (el corazón, que apunta hacia arriba) entra en la abertura: el zapato va boca
+// abajo, con la suela hacia arriba y la puntera hacia atrás, siguiendo la cola,
+// con una sombra de contacto sobre la cola, junto al cuello del zapato.
+/** Punta de la cola en coordenadas locales de la pieza `cola` (centro de la bola = 0,0). */
+export const COLA_PUNTA = [-92, -84] // centro del corazón de la punta (medido en cola.webp)
+const CENTRO_ZAPATO = [1, -11] // centro del calzado B10 en coordenadas de pie; su abertura está en (-10, -30)
+const COLA_GIRO = 196 // boca abajo (la abertura mira a la cola), un poco inclinado hacia atrás como la cola
+const COLA_ESCALA = 1.3 // tapa el corazón: la punta queda DENTRO del zapato
+
+function calzarCola(doc, efectiva) {
+  const usos = [...doc.querySelectorAll('[data-footwear]')]
+  if (!usos.length) return
+  const modelo = usos[0].cloneNode(true)
+  for (const u of usos) u.remove()
+  const cola = doc.querySelector('g[id="tail"]')
+  if (!cola) return
+  const [px, py] = COLA_PUNTA, [bx, by] = CENTRO_ZAPATO
+  const g = crear(doc, 'g', { 'data-calzado-cola': efectiva.pies, 'data-zapatilla-cola': '' })
+  // Sombra de contacto sobre la cola, justo debajo del cuello del zapato.
+  g.append(crear(doc, 'ellipse', { cx: px + 8, cy: py + 40, rx: 17, ry: 6, fill: '#243e5b', opacity: 0.28 }))
+  const zapato = crear(doc, 'g', { transform: `translate(${px} ${py}) rotate(${COLA_GIRO}) scale(${COLA_ESCALA}) translate(${-bx} ${-by})` })
+  zapato.append(modelo)
+  g.append(zapato)
+  cola.append(g)
+}
+
 /**
  * Retoques sobre la composición ya hecha por `renderCiempi` (doc DOM), con la
  * selección efectiva y la resolución de compatibilidad. Se aplica también a
@@ -397,6 +430,7 @@ export function posprocesarV4(doc, especieId, efectiva, res, base) {
       g.append(imagen(doc, base.lengua.url, [ex, ey, w, h], { 'data-pieza': 'lengua' }))
       boca.prepend(g)
     }
+    calzarCola(doc, efectiva)
     // La mochila se apoya en el segmento delantero, que en la serpiente está 44 u más abajo.
     const dy = 446 - 402
     for (const b of doc.querySelectorAll('[data-bag]')) b.setAttribute('transform', `translate(0 ${dy})`)

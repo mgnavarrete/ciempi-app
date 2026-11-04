@@ -174,6 +174,35 @@ async function camuflaje() {
   for (const s of env.sets.slice(0, 4)) h.append(celda(dibujar(await escenaDe('ciempi', { ...BASE, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
 }
 
+const CALZADOS = ['b10-deportiva', 'b10-robot', 'b10-aventura', 'b10-lluvia', 'b10-mago']
+/** Serpiente: UNA zapatilla en la punta de la cola (decisión de la usuaria, 2026-11-04). */
+async function cola() {
+  titulo('Ciempi Serpiente · zapatilla en la cola', 'Los 5 calzados B10: detalle de la cola ampliado (encuadre −40…160 × 240…520), cuerpo a 320 px y 84 px de alto, crecimiento y animaciones con el rig;')
+  const det = (svg) => { svg.setAttribute('viewBox', '0 260 220 260'); svg.setAttribute('width', 220); svg.setAttribute('height', 260); return svg }
+  const f = fila('Detalle de la cola (N = 5): sin calzado y los 5 calzados')
+  for (const pies of ['pies-zapatillas', ...CALZADOS]) f.append(celda(det(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5)).svg), pies === 'pies-zapatillas' ? 'sin calzado' : pies))
+  const g = fila('Cuerpo completo, N = 5 · 320 px')
+  for (const pies of CALZADOS) g.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5), { ancho: 320 }).svg, pies))
+  const h = fila('84 px de alto (pista)')
+  for (const pies of CALZADOS) h.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5), { alto: 84 }).svg, pies))
+  const c = fila('Crecimiento con b10-deportiva: N = 0, 1, 2, 5, 12, 40 (alto 150)')
+  for (const n of [0, 1, 2, 5, 12, 40]) c.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies: 'b10-deportiva' }, n), { alto: 150 }).svg, `N = ${n}`))
+  for (const id of ['A02', 'E04', 'A03']) {
+    const anim = ANIMACIONES.find((a) => a.id === id)
+    const a = fila(`${anim.id} · ${anim.nombre} con b10-robot (N = 8, 240 px, rig.js)`)
+    for (let i = 0; i < 6; i++) {
+      const t = (anim.duracion * i) / 6
+      const e = await escenaDe('serpiente', { ...BASE, pies: 'b10-robot' }, 8)
+      const { svg, g: gr } = dibujar(e, { ancho: 240 })
+      a.append(celda(svg, `t = ${t.toFixed(2).replace('.', ',')} s`))
+      const rig = nuevoRig(e, gr)
+      const pose = poseConInercia(anim, t, 8)
+      if (pose.expresion) rig.cambiarRostro(pose.expresion)
+      rig.aplicar(pose)
+    }
+  }
+}
+
 async function iteracion() {
   titulo(`${nombre(especie)} · antes (v1) y después (v2)`, 'Misma selección, pose y escala; v1 = rostro de Ciempi; v2 = rostro IA propio. Cabeza ampliada (encuadre 560–940 × 160–490) y cuerpo N = 5;')
   const cab = (svg) => { svg.setAttribute('viewBox', '560 160 380 330'); svg.setAttribute('width', 190); svg.setAttribute('height', 165); return svg }
@@ -190,7 +219,7 @@ async function iteracion() {
 }
 
 try {
-  await ({ iteracion,  crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
+  await ({ cola, iteracion,  crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
   await Promise.all([...document.querySelectorAll('image')].map((im) => new Promise((ok) => {
     const href = im.getAttribute('href'); if (!href) return ok()
     const i = new Image(); i.onload = i.onerror = ok; i.src = href

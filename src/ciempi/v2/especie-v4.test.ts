@@ -69,17 +69,31 @@ describe('compatibilidad V4', () => {
     cuello: 'cuello:bufanda-calco32', espalda: 'espalda:b09-aventura', pies: 'pies:b10-deportiva', textura: 'textura:b11-draco',
   }
 
-  it('serpiente: el calzado se oculta (guardado, no desequipado) y vuelve en otra especie', () => {
+  it('serpiente: el calzado equipado se muestra como UNA zapatilla en la cola (decisión de la usuaria)', () => {
     const copia = structuredClone(TODO)
     const r = resolver(TODO, 'serpiente')
     expect(TODO).toEqual(copia)
-    expect(r.visibles.pies).toBe(NINGUNO.pies)
-    expect(r.ocultos.map((o) => o.id)).toEqual(['pies:b10-deportiva'])
-    expect(r.etiquetas.pies).toMatchObject({ visible: false, motivo: expect.stringMatching(/no tiene patas/) })
+    expect(ESPECIES.serpiente.calzado).toBe('cola')
+    expect(ESPECIES.serpiente.partesOcultas).toBeUndefined()
+    expect(r.visibles.pies).toBe('pies:b10-deportiva')
+    expect(r.ocultos).toEqual([])
+    expect(r.etiquetas.pies).toMatchObject({ tipo: 'adaptable', visible: true, motivo: expect.stringMatching(/UNA sola zapatilla en la punta de la cola/) })
+    // Los cinco calzados del catálogo B10 siguen la misma regla.
+    for (const z of ['b10-deportiva', 'b10-robot', 'b10-aventura', 'b10-lluvia', 'b10-mago'])
+      expect(etiquetar('pies', 'pies:' + z, 'serpiente')).toMatchObject({ tipo: 'adaptable', visible: true })
+    // Sin calzado: nada que poner (la cola queda tal cual).
+    expect(etiquetar('pies', NINGUNO.pies!, 'serpiente')).toMatchObject({ tipo: 'universal', visible: true })
+    expect(etiquetar('pies', NINGUNO.pies!, 'serpiente').motivo).toBeUndefined()
+    // Las demás especies siguen con un zapato por pata.
+    for (const e of ['ciempi', 'dragon', 'cuncuna', 'camaleon'] as const) expect(ESPECIES[e].calzado ?? 'patas').toBe('patas')
     expect(resolver(TODO, 'dragon').visibles.pies).toBe('pies:b10-deportiva')
     expect(resolver(TODO, 'camaleon').visibles.pies).toBe('pies:b10-deportiva')
-    // «Sin calzado» no cuenta como oculto.
-    expect(etiquetar('pies', NINGUNO.pies!, 'serpiente').visible).toBe(true)
+  })
+
+  it('partesOcultas sigue disponible como regla genérica (oculta sin desequipar)', () => {
+    const conRegla = { ...ESPECIES.serpiente, partesOcultas: { pies: 'prueba' } }
+    expect(etiquetar('pies', 'pies:b10-robot', conRegla)).toMatchObject({ visible: false, motivo: 'prueba' })
+    expect(etiquetar('pies', NINGUNO.pies!, conRegla).visible).toBe(true)
   })
 
   it('serpiente: cabeza, cara, cuello, gesto y espalda se ven; espalda y textura son adaptables', () => {

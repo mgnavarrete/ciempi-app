@@ -53,3 +53,10 @@ Estado: **laboratorio, pendiente de aprobación del usuario**.
 
   Usan `LAB_URL`/`LAB_PUERTO` y el puerto 8803 por omisión.
 - Fichas: [T03](../revisiones/T03-serpiente-v1/REVISION.md) · [T04](../revisiones/T04-camaleon-v1/REVISION.md).
+
+### Iteración 2 de T03 y T04 (rostros propios y zapatilla en la cola)
+
+- Por omisión el laboratorio muestra la v2: rostros IA propios en `recursos/<especie>/rostro-v2/`, aplicados por `aplicarRostro` en `criaturas-v4.js`, y en el Camaleón la pata v2. Para comparar, se puede elegir «Iteración v1» en el panel o usar `?iter=v1`.
+- Serpiente: con calzado equipado lleva **una** zapatilla en la punta de la cola (`calzado: 'cola'` en `especie.ts`, `calzarCola` en `criaturas-v4.js`). Es decisión de la usuaria.
+- Láminas: `ITER=v1|v2 node scripts/transformaciones/v4/capturar-evidencia-v4.cjs` → `revisiones/T0x-*-v1|v2/evidencia/`. Incluye los tipos `iteracion` y `cola`.
+- Fichas: [T03 v2](../revisiones/T03-serpiente-v2/REVISION.md) · [T04 v2](../revisiones/T04-camaleon-v2/REVISION.md).

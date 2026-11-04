@@ -32,7 +32,7 @@ const SELS = {
 }
 const res = { crecer: [], bocas: [], errores }
 for (const especie of ['serpiente', 'camaleon', 'ciempi'])
-  for (const [nombre, sel] of Object.entries({ ...SELS, ...(especie === 'camaleon' ? { camuflaje: { cabeza: 'b07-ia-robot', textura: 'b11-robot', pies: 'b10-robot', espalda: 'b09-robot' } } : {}), ...(especie === 'serpiente' ? { sinLengua: { lengua: 'no', espalda: 'b09-aventura' } } : {}) }))
+  for (const [nombre, sel] of Object.entries({ ...SELS, ...(especie === 'camaleon' ? { camuflaje: { cabeza: 'b07-ia-robot', textura: 'b11-robot', pies: 'b10-robot', espalda: 'b09-robot' } } : {}), ...(especie === 'serpiente' ? { sinLengua: { lengua: 'no', espalda: 'b09-aventura' }, zapatillaCola: { pies: 'b10-deportiva', cabeza: 'b06-ia-mago' }, iterV1: { iter: 'v1' } } : {}), ...(especie === 'camaleon' ? { iterV1: { iter: 'v1' } } : {}) }))
     for (const n of [0, 1, 2, 3, 4, 5, 6, 12, 40])
       for (const t of [-1, 0.37]) {
         // Uno por vez, en el mismo lugar de la página (como capturas.mjs: evita diferencias subpíxel).

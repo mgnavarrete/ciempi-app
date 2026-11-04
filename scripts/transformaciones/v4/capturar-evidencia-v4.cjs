@@ -19,6 +19,7 @@ for (const especie of ['serpiente', 'camaleon']) {
   for (const tipo of ['conjuntos', 'comer', 'animacion', ...(ITER === 'v2' ? ['iteracion'] : [])]) trabajos.push({ especie, tipo, fondo: 'claro' })
 }
 trabajos.push({ especie: 'camaleon', tipo: 'camuflaje', fondo: 'claro' }, { especie: 'camaleon', tipo: 'camuflaje', fondo: 'oscuro' })
+if (ITER === 'v2') trabajos.push({ especie: 'serpiente', tipo: 'cola', fondo: 'claro' }, { especie: 'serpiente', tipo: 'cola', fondo: 'oscuro' })
 
 ;(async () => {
   const navegador = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {})
