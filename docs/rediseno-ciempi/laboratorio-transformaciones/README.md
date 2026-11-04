@@ -37,3 +37,7 @@ NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules node scripts/trans
 `probar-laboratorio.cjs` compara `escena()` original y actual (sin `forma` y con `FORMA_CIEMPI`) para N = 0, 1, 5, 12, 40 y recorre el laboratorio exigiendo consola sin errores ni avisos. `capturar-evidencia.cjs` escribe las láminas en `docs/rediseno-ciempi/revisiones/T0x-*/evidencia/` (no toca `auditoria/`).
 
 Fichas: [T01](../revisiones/T01-dragon-v1/REVISION.md) · [T02](../revisiones/T02-cuncuna-v1/REVISION.md).
+
+## Rostros v4 (Dragón y Cuncuna)
+
+Rostros propios generados con IA (AD-017), **pendientes de aprobación**. El v1 se conserva. Selector «Rostro v1 / v4» en el panel, o `?rostro=v4` en la URL (p. ej. `index.html?rostro=v4&especie=cuncuna`). Código: `rostros-v4.js` (más un gancho mínimo en `especies.js` y `laboratorio.js`); recursos en `recursos/<especie>/v4/` (`scripts/transformaciones/procesar-rostros-v4.py`); láminas antes/después en `laminas-rostros.html?tipo=crecimiento|expresiones|accesorios|tamanos|animacion|ciempi&especie=…&fondo=…`, capturadas con `scripts/transformaciones/capturar-rostros-v4.cjs`. Fichas: [T01 v4](../revisiones/T01-dragon-v4-rostro/REVISION.md) · [T02 v4](../revisiones/T02-cuncuna-v4-rostro/REVISION.md).

@@ -1,0 +1,130 @@
+{
+ "herramienta": "Codex CLI 0.166 exec + image_gen (scripts/transformaciones/generar-ia.mjs)",
+ "fallos": 0,
+ "generaciones": [
+  {
+   "id": "hoja-1",
+   "archivo": "hoja-1.png",
+   "prompt": "hoja-1-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6405-73c1-8864-161e00a7f9f9/exec-a092d30d-2970-4716-80d8-045157a1eee4.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:42:35.600Z",
+   "segundos": 100,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-2",
+   "archivo": "hoja-2.png",
+   "prompt": "hoja-2-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-641f-7e91-92fd-6e5fb9f6dc73/exec-58346bc7-37e9-4c75-8bb5-9467115d13a8.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:41:56.692Z",
+   "segundos": 61,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-3",
+   "archivo": "hoja-3.png",
+   "prompt": "hoja-3-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6435-7b42-b25e-e54b13a3a523/exec-b47585c2-41b0-45b8-b88e-c16b5dee8c48.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:42:27.816Z",
+   "segundos": 92,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-4",
+   "archivo": "hoja-4.png",
+   "prompt": "hoja-4-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6407-7393-a122-63813e1f0d31/exec-7dfa83be-1836-4ba6-8924-cd8c33394a90.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:42:03.135Z",
+   "segundos": 67,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "propuesta-d4a-hocico-corto",
+   "archivo": "propuesta-d4a-hocico-corto.png",
+   "prompt": "propuesta-d4a-hocico-corto-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0da9-7341-bfdc-57a0290a2815/exec-b66ca9b5-5b93-4779-ba78-a972001f66e1.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:53.100Z",
+   "segundos": 102,
+   "ronda": "1-propuestas",
+   "elegida": false
+  },
+  {
+   "id": "propuesta-d4b-placa-crema",
+   "archivo": "propuesta-d4b-placa-crema.png",
+   "prompt": "propuesta-d4b-placa-crema-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d99-7903-9675-1eb72d6957c5/exec-b0d33daf-c787-40e9-af03-7ab6cf3fb22e.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:58.968Z",
+   "segundos": 107,
+   "ronda": "1-propuestas",
+   "elegida": false
+  },
+  {
+   "id": "propuesta-d4c-mejillas-escamas",
+   "archivo": "propuesta-d4c-mejillas-escamas.png",
+   "prompt": "propuesta-d4c-mejillas-escamas-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0da4-7e93-89bd-3da9f12b9cd5/exec-cfa38434-0ba1-4809-bd2e-849e3f082d99.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:17.254Z",
+   "segundos": 66,
+   "ronda": "1-propuestas",
+   "elegida": false
+  },
+  {
+   "id": "propuesta-d4d-perfil-hocico",
+   "archivo": "propuesta-d4d-perfil-hocico.png",
+   "prompt": "propuesta-d4d-perfil-hocico-prompt.txt",
+   "referencias": [
+    "T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d8d-74a0-b2e8-7e2369c3eada/exec-2e94276b-24dc-4877-981c-ffa0f257388a.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:14.307Z",
+   "segundos": 63,
+   "ronda": "1-propuestas",
+   "elegida": true
+  }
+ ]
+}

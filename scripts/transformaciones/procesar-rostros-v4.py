@@ -160,6 +160,27 @@ def recortar(im_reg, clave, sobresale):
         finos = [i for i in al_borde if grosor[i - 1] <= 4.5]
         resto = np.isin(et, finos)
         alfa = np.where(ndimage.binary_dilation(resto, iterations=1) & (dist > R_INTERIOR - 8), 0.0, alfa)
+    # Franja del borde: solo se conserva lo que pertenece a un rasgo que entra en el rostro
+    # (hocico, boca); los restos del contorno IA y su halo, no.
+    solido = alfa > 0.12
+    et, n = ndimage.label(solido)
+    if n:
+        hondos = set(np.unique(et[solido & (dist < R_INTERIOR - 14)])) - {0}
+        superficial = solido & ~np.isin(et, list(hondos)) & (dist > R_INTERIOR - 14)
+        alfa = np.where(ndimage.binary_dilation(superficial, iterations=1) & (dist > R_INTERIOR - 15), 0.0, alfa)
+    # Franja de 10 unidades junto al borde: solo queda lo que rodea al crema del hocico
+    # (su contorno, la boca y las narinas que llegan al borde); el resto es contorno IA.
+    _, sat, val = hsv(rgb)
+    hocico = mascara_hocico(rgb, alfa)
+    crema = hocico
+    protegido = ndimage.binary_dilation(hocico, iterations=10)
+    # Manchas gruesas (boca abierta, lengua): la apertura morfológica borra lo delgado (arcos del contorno).
+    grueso = ndimage.binary_opening((alfa > 0.5) & ~crema & (dist < R_INTERIOR - 12), iterations=5)
+    eg, ng = ndimage.label(grueso)
+    if ng:  # solo manchas dentro del hocico (la boca), no cejas ni trozos del contorno IA pegados al borde
+        grueso = np.isin(eg, list(set(np.unique(eg[grueso & (dist < R_INTERIOR - 22) & ndimage.binary_dilation(hocico, iterations=25)])) - {0}))
+    protegido |= ndimage.binary_dilation(grueso, iterations=7)
+    alfa = np.where((dist > R_INTERIOR - 10) & ~protegido, 0.0, alfa)
     # Sin manchas sueltas.
     solido = alfa > 0.5
     et, n = ndimage.label(solido)
@@ -170,6 +191,18 @@ def recortar(im_reg, clave, sobresale):
     return rgb, alfa
 
 
+def mascara_hocico(rgb, alfa):
+    """La mayor mancha crema (hocico del Dragón); el blanco de los ojos tiene menos saturación."""
+    _, sat, val = hsv(rgb)
+    crema = (val > 0.85) & (sat > 0.09) & (sat < 0.35) & (alfa > 0.5)
+    et, n = ndimage.label(crema)
+    if not n:
+        return crema
+    tam = ndimage.sum(crema, et, range(1, n + 1))
+    i = int(np.argmax(tam))
+    return et == i + 1 if tam[i] > 4000 else np.zeros_like(crema)
+
+
 def separar_ojos(alfa, rgb):
     """Componentes de cada ojo (máscara) cerca de los centros de ojo de la base.
     Las mejillas (pompones coral) que tocan el ojo se quedan en la capa fija: no parpadean."""
@@ -177,7 +210,7 @@ def separar_ojos(alfa, rgb):
     mejilla = ((h > 330) | (h < 12)) & (sat > 0.35) & (v > 0.75) & (alfa > 0.5)
     mejilla = ndimage.binary_opening(mejilla, iterations=2)
     mejilla = ndimage.binary_dilation(ndimage.binary_fill_holes(mejilla), iterations=9)
-    solido = (alfa > 0.35) & ~mejilla
+    solido = (alfa > 0.35) & ~mejilla & ~ndimage.binary_dilation(mascara_hocico(rgb, alfa), iterations=6)
     et, n = ndimage.label(solido)
     centros = ndimage.center_of_mass(solido, et, range(1, n + 1)) if n else []
     tam = ndimage.sum(solido, et, range(1, n + 1)) if n else []
@@ -186,7 +219,7 @@ def separar_ojos(alfa, rgb):
         mejor, mejor_t = None, 0
         for i, (cy, cx) in enumerate(centros):
             ux, uy = ENCUADRE[0] + cx / PX, ENCUADRE[1] + cy / PX
-            if abs(ux - ox) < 48 and -36 < uy - oy < 42 and tam[i] > mejor_t and tam[i] > 150:
+            if abs(ux - ox) < 48 and -36 < uy - oy < 42 and tam[i] > mejor_t and tam[i] > 500:
                 mejor, mejor_t = i + 1, tam[i]
         if mejor is None:
             ojos.append(None)

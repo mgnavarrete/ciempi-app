@@ -1,0 +1,130 @@
+{
+ "herramienta": "Codex CLI 0.166 exec + image_gen (scripts/transformaciones/generar-ia.mjs)",
+ "fallos": 0,
+ "generaciones": [
+  {
+   "id": "hoja-1",
+   "archivo": "hoja-1.png",
+   "prompt": "hoja-1-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6420-7c10-a8d0-6b0084046c58/exec-419954f7-a384-4631-bc19-5d9e204ec008.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:41:59.594Z",
+   "segundos": 64,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-2",
+   "archivo": "hoja-2.png",
+   "prompt": "hoja-2-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6446-7243-966b-230c6815fbf1/exec-143cdfdf-748e-4127-9e46-0e9623c70d2a.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:42:01.459Z",
+   "segundos": 66,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-3",
+   "archivo": "hoja-3.png",
+   "prompt": "hoja-3-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-63fc-70c0-ace2-768aba7fe63d/exec-8163d37b-beb0-4862-a438-61e292027f75.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:41:56.485Z",
+   "segundos": 61,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-4",
+   "archivo": "hoja-4.png",
+   "prompt": "hoja-4-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-642e-7d32-bf59-ac20061b899a/exec-a1adea1d-4667-47f6-b74f-2927e94905f1.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:41:59.385Z",
+   "segundos": 64,
+   "ronda": "2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "propuesta-c4a-mejillas-pompon",
+   "archivo": "propuesta-c4a-mejillas-pompon.png",
+   "prompt": "propuesta-c4a-mejillas-pompon-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d8d-7883-b9c1-56ce663fc5aa/exec-f132a624-2eb1-48ee-b64f-c460d8e2926d.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:48.695Z",
+   "segundos": 97,
+   "ronda": "1-propuestas",
+   "elegida": true
+  },
+  {
+   "id": "propuesta-c4b-cejas-plumosas",
+   "archivo": "propuesta-c4b-cejas-plumosas.png",
+   "prompt": "propuesta-c4b-cejas-plumosas-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0df3-7ce3-b90f-0676287caf79/exec-c40f6472-c70b-4c9c-afda-e9fd0bcdc0eb.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:49.924Z",
+   "segundos": 98,
+   "ronda": "1-propuestas",
+   "elegida": false
+  },
+  {
+   "id": "propuesta-c4c-ocelos",
+   "archivo": "propuesta-c4c-ocelos.png",
+   "prompt": "propuesta-c4c-ocelos-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0db0-7ad0-b6ff-bb68b15c9a6d/exec-784ead52-ff53-4c88-9e31-d09dfd3097f6.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:16.894Z",
+   "segundos": 65,
+   "ronda": "1-propuestas",
+   "elegida": false
+  },
+  {
+   "id": "propuesta-c4d-hocico-peluche",
+   "archivo": "propuesta-c4d-hocico-peluche.png",
+   "prompt": "propuesta-c4d-hocico-peluche-prompt.txt",
+   "referencias": [
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d93-7d02-bab3-409906865284/exec-023e6bad-583e-4a21-b01c-bf27918093eb.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T01:37:21.436Z",
+   "segundos": 70,
+   "ronda": "1-propuestas",
+   "elegida": false
+  }
+ ]
+}

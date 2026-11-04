@@ -24,6 +24,7 @@ import { paletas } from '../../../src/ciempi/v2/arte/lib/armario-ciempi.mjs'
 import { escena } from './gen/pose.js'
 import { especie as buscarEspecie, ESPECIES } from './gen/especie.js'
 import { resolver, NINGUNO } from './gen/compatibilidad.js'
+import { prepararRostroV4, aplicarRostroV4 } from './rostros-v4.js'
 
 const NS = 'http://www.w3.org/2000/svg'
 const RECURSOS = new URL('./recursos/', import.meta.url)
@@ -255,14 +256,16 @@ const diseno = (id) => String(id).slice(String(id).indexOf(':') + 1)
 
 /** Carga y tiñe (una vez) la base de la especie para esa paleta; luego `componerCriatura` es síncrono. */
 export async function prepararCriatura(env, especieId, paletaId = 'clasica') {
-  if (especieId !== 'ciempi') await baseEspecie(env, especieId, paletaId)
+  if (especieId !== 'ciempi') await Promise.all([baseEspecie(env, especieId, paletaId), prepararRostroV4(especieId)])
 }
 
 /**
  * Compone una criatura con la selección del laboratorio (síncrono; ver prepararCriatura). No modifica `sel`.
  * Devuelve el SVG compuesto (texto), la resolución de compatibilidad y la selección efectiva.
  */
-export function componerCriatura(env, especieId, sel) {
+export function componerCriatura(env, especieId, selConRostro) {
+  // `rostro` (v1/v4, ver rostros-v4.js) no es parte de la selección del juego: no llega a renderCiempi.
+  const { rostro: versionRostro, ...sel } = selConRostro
   const res = resolver(aApariencia(sel), especieId)
   const efectiva = { ...sel }
   for (const [parte, id] of Object.entries(res.visibles)) efectiva[PARTE_A_CLAVE[parte]] = diseno(id)
@@ -298,6 +301,7 @@ export function componerCriatura(env, especieId, sel) {
     const body = doc.getElementById('body')
     body.parentNode.insertBefore(g, body.nextSibling)
   }
+  if (versionRostro === 'v4') aplicarRostroV4(doc, especieId, efectiva)
   doc.querySelector('desc').textContent += ` Especie: ${buscarEspecie(especieId).nombre} (laboratorio, pendiente de aprobación).`
   return { svg: new XMLSerializer().serializeToString(doc), resolucion: res, seleccion: efectiva }
 }
