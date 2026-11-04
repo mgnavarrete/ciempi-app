@@ -816,3 +816,30 @@ Rama y commits; ruta del laboratorio y cómo abrirlo; imágenes IA generadas (co
 pruebas (Ciempi idéntico, cuerpos aprobados idénticos, crecimiento, accesorios, consola sin errores); rúbrica;
 lo verificado, lo inferido y lo pendiente; decisiones que necesita la usuaria. Actualiza CONTINUIDAD-SESION.md.
 ```
+
+---
+
+## 10. EXPANSIÓN ARTÍSTICA V4 (3–4 de noviembre de 2026): entregada para aprobación
+
+- **Rama:** `expansion-v4-arte` (worktree `.claude/worktrees/arte-v4`), commit `f724fa6`. Parte de `b1c1d87` y, en `7ca0748`, se le copiaron los recursos artísticos sin versionar de `main`; `main` no se tocó.
+- **Sub-ramas:** `expansion-v4-rostros` (`222e0c1`), `expansion-v4-criaturas` (`e0ffd10`) y `expansion-v4-accesorios` (`1eeb864`), en los worktrees `v4-rostros`, `v4-criaturas` y `v4-accesorios`.
+- **Informe:** `docs/expansion-v4/INFORME-V4.md`. **Laboratorio:** `docs/expansion-v4/index.html`, que se abre con `python3 -m http.server 8830` desde el worktree.
+- **Entregables:**
+  - rostros v4b de Dragón y Cuncuna, con los cuerpos intactos;
+  - Serpiente v2;
+  - Camaleón v2;
+  - mochilas y zapatos v4.2.
+- **Pruebas:**
+  - Generales: tsc OK, vitest 292/292, Ciempi 35/35 y 108/108.
+  - Crecimiento de Serpiente y Camaleón: 306/306. Combinado: 240 casos sin errores.
+  - Cuerpos aprobados de Dragón y Cuncuna: sin cambios.
+- **Revisión independiente (Fable, 2 rondas):**
+  - Todo «aprobable con ajustes menores».
+  - Mochilas y zapatos: «listo».
+  - Camaleón: legibilidad 2 a 84 px.
+- **AD-019** (aprobada por la usuaria): Serpiente sin patas, con una sola zapatilla en la cola. Está registrada **solo en la copia de la guía de la rama V4**; falta llevarla a `main`.
+- **Riesgos del catálogo existente:** la máscara robot y el Propulsor recuerdan a Iron Man (alto); la gatita, a Hello Kitty (medio); el Bolso Ratón, a Mickey (medio-bajo).
+- **Siguiente:**
+  1. Aprobación de la usuaria pieza por pieza.
+  2. Ajustes menores según el informe §4.
+  3. Si se aprueba, llevar las piezas al compositor del juego detrás de una opción.
