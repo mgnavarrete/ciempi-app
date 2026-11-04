@@ -70,9 +70,13 @@ const ACCION_CLASICA: Record<string, string> = { A04: 'saludar', A03: 'saltar', 
  * El Ciempi del niño: pose aprobada y vestuario, animado por partes (mientras
  * carga el vestuario, o si falla, el clásico).
  */
-export function CiempiPersonaje({ accion = null, festejarCambios = false, ...props }: Props & {
+export function CiempiPersonaje({ accion = null, festejarCambios = false, base, tranquilo, ...props }: Props & {
   /** Acción que juega una vez (A04 saludar, A03 saltar…; ver animacion/animaciones.js). */
   accion?: EventoCiempi | null
+  /** Animación de fondo, en bucle (por omisión, reposo). Un baile en bucle para su miniatura. */
+  base?: string
+  /** Modo tranquilo: movimientos más suaves y sin partículas. */
+  tranquilo?: boolean
   /** Celebra cada cambio de vestuario (Estrenar ropa). */
   festejarCambios?: boolean
 }) {
@@ -96,7 +100,7 @@ export function CiempiPersonaje({ accion = null, festejarCambios = false, ...pro
   const segmentos = props.segmentos ?? 5
   return (
     <svg width={props.ancho} viewBox={art.viewBox} className={`overflow-visible ${props.className ?? ''}`} aria-hidden data-ciempi="v2" data-segments={segmentos}>
-      {props.animado === false ? <g dangerouslySetInnerHTML={{ __html: art.html }} /> : <CiempiVivo escena={art} segmentos={segmentos} evento={evento} />}
+      {props.animado === false ? <g dangerouslySetInnerHTML={{ __html: art.html }} /> : <CiempiVivo escena={art} segmentos={segmentos} evento={evento} base={base} tranquilo={tranquilo} />}
     </svg>
   )
 }

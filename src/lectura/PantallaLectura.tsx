@@ -3,7 +3,7 @@ import { AvisoVoz } from '../audio/AvisoVoz'
 import { desbloquearSonidos, sonarCelebracion, sonarMoneda, sonarTropiezo } from '../audio/sonidos'
 import { silabaParaLaVoz } from '../audio/pronunciacion'
 import { voz } from '../audio/voz'
-import type { AparienciaCiempi } from '../ciempi/catalogo'
+import { bailePorId, type AparienciaCiempi } from '../ciempi/catalogo'
 import { CiempiPersonaje } from '../ciempi/CiempiPersonaje'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -1092,9 +1092,9 @@ function Pausa(props: {
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-4 text-center apaisado:flex-row apaisado:gap-10">
-      {/* Su Ciempi celebra: Victoria si hubo premio, Celebración si no. */}
+      {/* Su Ciempi celebra con el baile que eligió (2.7; por omisión, Victoria) si hubo premio; Celebración si no. */}
       <div className="w-64 shrink-0 apaisado:w-56">
-        <CiempiPersonaje apariencia={props.apariencia} ancho="100%" animado={!props.tranquilo} accion={{ id: props.premio > 0 ? 'A10' : 'A03', n: 1 }} />
+        <CiempiPersonaje apariencia={props.apariencia} ancho="100%" animado={!props.tranquilo} accion={{ id: props.premio > 0 ? (bailePorId(props.apariencia.celebracion)?.animacion ?? 'A10') : 'A03', n: 1 }} />
       </div>
       <div className="flex flex-col items-center gap-4">
         <div>

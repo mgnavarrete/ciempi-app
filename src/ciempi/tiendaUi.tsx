@@ -3,8 +3,8 @@ import { BotonPrincipal } from '../ui/comunes'
 
 /** Piezas comunes de la tienda y el ropero de Ciempi (2.6). */
 
-/** Lo que llegó en la última tanda (2.5): se marca «Nuevo» en la tienda. */
-export const esNuevo = (id: string) => id.startsWith('espalda:b09-') || /^(especie|variante|paquete):/.test(id)
+/** Lo que llegó en las últimas tandas (criaturas 2.5, bailes 2.7): se marca «Nuevo» en la tienda. */
+export const esNuevo = (id: string) => id.startsWith('espalda:b09-') || /^(especie|variante|paquete|baile):/.test(id)
 /** La etiqueta del precio en la tienda: amarilla si le alcanza; gris si todavía no. */
 export function Precio({ precio, alcanza }: { precio: number; alcanza: boolean }) {
   return (

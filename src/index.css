@@ -221,6 +221,18 @@ body {
   50% { transform: translateY(-2.5px) rotate(-5deg); }
 }
 
+/* Rueda de bailes del inicio (2.7): cada opción sale desde Ciempi. En modo tranquilo no se usa. */
+.rueda-aparecer {
+  animation: rueda-aparecer 260ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+@keyframes rueda-aparecer {
+  from { opacity: 0; transform: translate(var(--desde-x, 0), var(--desde-y, 0)) scale(0.3); }
+  to { opacity: 1; transform: none; }
+}
+.aparecer-suave {
+  animation: aparecer-suave 200ms ease-out both;
+}
+
 /* ── Pista ───────────────────────────────────────────────────────────── */
 
 .pista {

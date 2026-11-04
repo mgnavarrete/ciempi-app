@@ -5,6 +5,7 @@ import { useRepositorios } from '../datos/DatosProvider'
 import type { PerfilNino } from '../dominio/tipos'
 import { BotonPrincipal, Encabezado, MensajeError, Monedas } from '../ui/comunes'
 import {
+  BAILES,
   CATALOGO,
   CATEGORIAS,
   CONJUNTOS,
@@ -12,6 +13,7 @@ import {
   SIN_ESTAMPADO,
   VARIANTES,
   ahorroDe,
+  bailePorId,
   buscarItem,
   lleva,
   loTiene,
@@ -19,6 +21,7 @@ import {
   precioDe,
   puedePonerse,
   type AparienciaCiempi,
+  type Baile,
   type CategoriaCiempi,
   type Genero,
   type ItemCiempi,
@@ -30,6 +33,9 @@ import { MiniaturaCiempi } from './v2/Miniatura'
 import { ESPECIES, especieDeItem, type EspecieId } from './criaturas'
 import { MiniaturaCriatura, TiendaCriaturas } from './TiendaCriaturas'
 import { MasEnLaTienda, Precio, SelloNuevo, Vacio, esNuevo } from './tiendaUi'
+import { GrillaBailes } from './BailesCiempi'
+import { ANIMACIONES } from './v2/animacion/animaciones.js'
+import type { EventoCiempi } from './v2/CiempiVivo'
 
 const CUNCUNA = 'especie:cuncuna'
 
@@ -39,6 +45,8 @@ interface Props {
   perfil: PerfilNino
   /** «tienda»: solo lo que no tiene (se prueba y se compra). «ropero»: solo lo suyo (se pone al tocar). */
   modo: ModoCiempi
+  /** Sección con que abre (p. ej. «bailes», desde la rueda del inicio). */
+  seccionInicial?: string
   alCambiarModo: (modo: ModoCiempi) => void
   alCambiarPerfil: (cambios: Partial<PerfilNino>) => void
   alVolver: () => void
@@ -51,6 +59,8 @@ const SECCIONES: { id: string; nombre: string; emoji: string; categorias: Catego
   { id: 'cabeza', nombre: 'Cabeza', emoji: '🎩', categorias: ['cabeza', 'pelo', 'cara', 'gesto', 'ojos', 'detalle'], fondo: 'bg-naranjo-claro' },
   { id: 'cuerpo', nombre: 'Cuerpo', emoji: '🐛', categorias: ['paleta', 'textura', 'cuello', 'espalda', 'pies'], fondo: 'bg-petroleo-claro' },
   { id: 'mundo', nombre: 'Su mundo', emoji: '🏞️', categorias: ['fondo', 'comida'], fondo: 'bg-amarillo/25' },
+  // Bailes (2.7): no cambian el dibujo; se miran bailando, se compran y uno se elige para celebrar.
+  { id: 'bailes', nombre: 'Bailes', emoji: '💃', categorias: ['baile'], fondo: 'bg-[#efe6fa]' },
   { id: 'conjuntos', nombre: 'Conjuntos', emoji: '🦸', categorias: ['conjunto'], fondo: 'bg-coral/15' },
 ]
 
@@ -86,12 +96,12 @@ const look = (a: AparienciaCiempi) => JSON.stringify([...PARTES.map((p) => a[p])
  * conjunto se prueba entero y se compra como pack). Lo comprado sale de la
  * tienda y queda en su ropero, donde tocar algo se lo pone y se guarda.
  */
-export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, alVolver }: Props) {
+export function PantallaCiempi({ perfil, modo, seccionInicial, alCambiarModo, alCambiarPerfil, alVolver }: Props) {
   const enTienda = modo === 'tienda'
   const repos = useRepositorios()
   const tranquilo = perfil.ajustes.modoTranquilo
-  const [seccion, setSeccion] = useState(SECCIONES[0])
-  const [categoria, setCategoria] = useState<CategoriaCiempi>('cabeza')
+  const [seccion, setSeccion] = useState(() => SECCIONES.find((s) => s.id === seccionInicial) ?? SECCIONES[0])
+  const [categoria, setCategoria] = useState<CategoriaCiempi>(() => SECCIONES.find((s) => s.id === seccionInicial)?.categorias[0] ?? 'cabeza')
   // Lo que se está probando (puede incluir cosas no compradas todavía).
   const [probando, setProbando] = useState<AparienciaCiempi>(perfil.ciempi)
   const [nombre, setNombre] = useState(perfil.ciempi.nombre)
@@ -269,6 +279,53 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
   }
   const enCriaturas = seccion.id === 'criaturas'
 
+  // ── Bailes (2.7) ──
+  const enBailes = seccion.id === 'bailes'
+  const [baileVisto, setBaileVisto] = useState<Baile | null>(null)
+  const [accionPrevia, setAccionPrevia] = useState<EventoCiempi | null>(null)
+  // En modo tranquilo Ciempi está quieto: baila (suave) solo lo que se toca.
+  const [bailando, setBailando] = useState(false)
+  const finBaile = useRef<number | undefined>(undefined)
+  useEffect(() => () => window.clearTimeout(finBaile.current), [])
+  useEffect(() => setBaileVisto(null), [modo, seccion.id])
+  const mirarBaile = (b: Baile) => {
+    setEstreno(null)
+    setBaileVisto(b)
+    setAccionPrevia({ id: b.animacion, n: (accionPrevia?.n ?? 0) + 1 })
+    if (tranquilo) {
+      setBailando(true)
+      window.clearTimeout(finBaile.current)
+      const dur = ANIMACIONES.find((a) => a.id === b.animacion)?.duracion ?? 3
+      finBaile.current = window.setTimeout(() => setBailando(false), dur * 1000 + 400)
+    }
+  }
+  // Tienda: los que no tiene (sin la celebración clásica, que es de todos). Ropero: los suyos, con la clásica.
+  const bailes = BAILES.filter((b) => (enTienda ? !b.oculto && !loTiene(inventario, b.id) : loTiene(inventario, b.id)))
+  const baileAComprar = enTienda && baileVisto && !loTiene(inventario, baileVisto.id) ? baileVisto : null
+  const comprarBaile = async (b: Baile) => {
+    setOcupado(true)
+    setError(null)
+    try {
+      const r = await repos.perfiles.comprar(perfil.id, b.id, b.precio)
+      alCambiarPerfil({ monedas: r.monedas, inventario: r.inventario })
+      setBaileVisto(null)
+      setEstreno(`¡${b.nombre} nuevo!`)
+      if (!tranquilo) sonarCelebracion()
+    } catch (e) {
+      setError((e as Error).message)
+    } finally {
+      setOcupado(false)
+    }
+  }
+  const elegirCelebracion = async (b: Baile) => {
+    mirarBaile(b)
+    if (guardado.current.celebracion === b.id) return
+    setOcupado(true)
+    await guardar({ ...guardado.current, celebracion: b.id })
+    setOcupado(false)
+    if (guardado.current.celebracion === b.id) setEstreno(`¡Celebrará con ${b.nombre}!`)
+  }
+
   const cambiarGenero = (g: Genero) => {
     const genero = probando.genero === g ? null : g
     setProbando({ ...probando, genero })
@@ -311,7 +368,7 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
           <div className="relative h-72 shrink-0 overflow-hidden rounded-3xl shadow-sm apaisado:h-56">
             <FondoTema fondo={probando.fondo} />
             <div className="pointer-events-none absolute inset-x-0 bottom-3 mx-auto w-[min(86%,440px)]">
-              <CiempiPersonaje apariencia={probando} ancho="100%" animado={!tranquilo} festejarCambios={!tranquilo} />
+              <CiempiPersonaje apariencia={probando} ancho="100%" animado={!tranquilo || bailando} tranquilo={tranquilo} festejarCambios={!tranquilo} accion={accionPrevia} />
             </div>
             {/* Lo que come, frente a su boca */}
             <svg viewBox="-14 -14 28 28" className="pointer-events-none absolute bottom-7 right-[4%] h-9 w-9 apaisado:bottom-5 apaisado:h-7 apaisado:w-7" aria-hidden>
@@ -378,14 +435,14 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
 
         <div className="flex min-w-0 flex-1 flex-col gap-3 apaisado:min-h-0 apaisado:gap-2">
           {/* Primero dónde (cabeza, cuerpo, su mundo, conjuntos) y después qué. */}
-          <div className="grid shrink-0 grid-cols-5 gap-1.5" role="tablist" aria-label="Secciones">
+          <div className="grid shrink-0 grid-cols-6 gap-1" role="tablist" aria-label="Secciones">
             {SECCIONES.map((s) => (
               <button
                 key={s.id}
                 role="tab"
                 aria-selected={seccion.id === s.id}
                 onClick={() => irA(s)}
-                className={`flex min-w-0 flex-col items-center rounded-2xl px-0.5 py-2 text-xs font-bold leading-tight apaisado:py-1.5 apaisado:text-xs ${animar} ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : `${s.fondo} text-tinta shadow-sm`}`}
+                className={`flex min-w-0 flex-col items-center rounded-2xl px-0.5 py-2 text-[11px] font-bold leading-tight apaisado:py-1.5 apaisado:text-xs ${animar} ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : `${s.fondo} text-tinta shadow-sm`}`}
               >
                 <span className="text-2xl apaisado:text-xl" aria-hidden>
                   {s.emoji}
@@ -414,7 +471,29 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
             />
             </div>
           )}
-          {!enCriaturas && categorias.length > 1 && (
+          {enBailes && enTienda && <p className="text-sm text-tinta-suave">Toca un baile para verlo. Después, toca a {perfil.ciempi.nombre} en el inicio para elegir qué baila.</p>}
+          {enBailes && !enTienda && <p className="text-sm text-tinta-suave">⭐ Elige con qué baile celebra {perfil.ciempi.nombre} cuando terminas un cuento.</p>}
+          {enBailes && bailes.length === 0 && (
+            <Vacio fondo={seccion.fondo} enTienda={enTienda} alIrALaTienda={irALaTienda}>
+              ¡Ya tienes todos los bailes! 🎉
+            </Vacio>
+          )}
+          {enBailes && bailes.length > 0 && (
+            <GrillaBailes
+              bailes={bailes}
+              apariencia={probando}
+              enTienda={enTienda}
+              tranquilo={tranquilo}
+              monedas={perfil.monedas}
+              elegido={baileVisto?.id ?? null}
+              celebracion={bailePorId(perfil.ciempi.celebracion)?.id ?? ''}
+              fondo={seccion.fondo}
+              ocupado={ocupado}
+              alElegir={mirarBaile}
+              alCelebrar={(b) => void elegirCelebracion(b)}
+            />
+          )}
+          {!enCriaturas && !enBailes && categorias.length > 1 && (
             <div className="-mx-5 flex shrink-0 gap-2 overflow-x-auto px-5 pb-1 apaisado:mx-0 apaisado:px-0" role="tablist" aria-label={seccion.nombre}>
               {categorias.map((c) => (
                 <button
@@ -432,12 +511,12 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
           {aviso && <p className="rounded-2xl bg-amarillo/40 px-3 py-2 text-sm font-bold">{aviso}</p>}
           {enTienda && categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y sale más barato que comprar cada cosa.</p>}
 
-          {!enCriaturas && tarjetas.length === 0 && (
+          {!enCriaturas && !enBailes && tarjetas.length === 0 && (
             <Vacio fondo={seccion.fondo} enTienda={enTienda} alIrALaTienda={irALaTienda}>
               {enTienda ? '¡Ya tienes todo aquí! 🎉' : `Todavía no tienes ${(CATEGORIAS.find((c) => c.id === categoria)?.nombre ?? 'nada').toLowerCase()}.`}
             </Vacio>
           )}
-          {!enCriaturas && tarjetas.length > 0 && (
+          {!enCriaturas && !enBailes && tarjetas.length > 0 && (
           <ul className={`grid grid-cols-3 gap-2.5 rounded-3xl p-2.5 ${seccion.fondo} apaisado:min-h-0 apaisado:flex-1 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-2 apaisado:pb-24`}>
             {tarjetas.map((t) => {
               const puesto = llevaTarjeta(perfil.ciempi, t)
@@ -495,7 +574,27 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
         </div>
       )}
 
-      {enTienda && !enCriaturas && pendientes.length > 0 && (
+      {baileAComprar && (
+        <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl items-center gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
+          <p className="min-w-0 flex-1 text-sm">
+            <span aria-hidden>{baileAComprar.emoji}</span> <span className="font-bold">{baileAComprar.nombre}</span>
+            {perfil.monedas < baileAComprar.precio && (
+              <>
+                {' '}
+                · Te faltan <span className="font-bold text-naranjo">{baileAComprar.precio - perfil.monedas} 🪙</span>: ¡sigue leyendo!
+              </>
+            )}
+          </p>
+          <button onClick={() => mirarBaile(baileAComprar)} className="shrink-0 font-bold text-petroleo underline underline-offset-4">
+            ↻ Otra vez
+          </button>
+          <BotonPrincipal onClick={() => void comprarBaile(baileAComprar)} disabled={ocupado || perfil.monedas < baileAComprar.precio} className="shrink-0 px-5 py-2 text-base">
+            Comprar · 🪙 {baileAComprar.precio}
+          </BotonPrincipal>
+        </div>
+      )}
+
+      {enTienda && !enCriaturas && !enBailes && pendientes.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl flex-col gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
           <div className="flex items-center gap-2">
             <p className="min-w-0 flex-1 text-sm">

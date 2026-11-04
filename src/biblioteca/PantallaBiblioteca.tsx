@@ -31,7 +31,7 @@ interface Props {
   alAgregarLibro?: () => void
   /** Abrir la tienda/armario de Ciempi (no se ofrece a un adulto mirando). */
   /** Abre la tienda o el ropero de Ciempi (sin esto, un adulto mirando: no hay botones). */
-  alAbrirCiempi?: (modo: 'tienda' | 'ropero') => void
+  alAbrirCiempi?: (modo: 'tienda' | 'ropero', seccion?: string) => void
   /** Volver (admin o sin conexión). En la app del niño no hay: salir está en Ajustes. */
   alVolver?: () => void
   /** Modo admin: los niños del adulto, para compartirles un libro. */

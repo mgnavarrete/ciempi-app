@@ -28,7 +28,7 @@ type Vista =
   | { tipo: 'leer'; perfilId: Id; libro: LibroEnBiblioteca; vistaPrevia: boolean; retomarEn?: number }
   | { tipo: 'ajustes'; perfilId: Id; volverA: Vista }
   | { tipo: 'agregarLibro'; perfilId: Id }
-  | { tipo: 'ciempi'; perfilId: Id; modo: 'tienda' | 'ropero' }
+  | { tipo: 'ciempi'; perfilId: Id; modo: 'tienda' | 'ropero'; seccion?: string }
   | { tipo: 'presentacion'; perfilId: Id }
   | { tipo: 'adultos' }
   | { tipo: 'nuevoTexto'; fuente: IdFuente; paraPerfilId?: Id }
@@ -263,6 +263,7 @@ export function App() {
           <PantallaCiempi
             perfil={perfil}
             modo={vista.modo}
+            seccionInicial={vista.seccion}
             alCambiarModo={(modo) => setVista({ tipo: 'ciempi', perfilId: perfil.id, modo })}
             alCambiarPerfil={(cambios) => actualizarPerfil(perfil.id, cambios)}
             alVolver={() => setVista({ tipo: 'biblioteca', perfilId: perfil.id })}
@@ -319,7 +320,7 @@ export function App() {
         alLeer={(libro, vistaPrevia = false) => setVista({ tipo: 'leer', perfilId, libro, vistaPrevia })}
         alAjustes={() => setVista({ tipo: 'ajustes', perfilId, volverA: { tipo: 'biblioteca', perfilId } })}
         alAgregarLibro={() => setVista({ tipo: 'agregarLibro', perfilId })}
-        alAbrirCiempi={modoAdmin ? undefined : (modo) => setVista({ tipo: 'ciempi', perfilId, modo })}
+        alAbrirCiempi={modoAdmin ? undefined : (modo, seccion) => setVista({ tipo: 'ciempi', perfilId, modo, seccion })}
         // En la sesión de un alumno se sale con la franja de arriba («Volver al panel»).
         alVolver={esNino || enSesionDe ? undefined : modoAdmin ? () => setVista({ tipo: 'adultos' }) : inicio}
         ninosDelAdulto={modoAdmin ? perfiles! : undefined}
