@@ -38,6 +38,13 @@ const FONDOS_Y_COMIDA: ItemCiempi[] = [
   { id: 'fondo-dulces', nombre: 'Dulces', categoria: 'fondo', precio: 20 },
   { id: 'fondo-nieve', nombre: 'Nieve', categoria: 'fondo', precio: 20 },
   { id: 'fondo-espacio', nombre: 'Espacio', categoria: 'fondo', precio: 25 },
+  // Fondos ilustrados (v2.7, IA): WebP en public/ciempi-v2/fondos/.
+  { id: 'fondo-bosque', nombre: 'Bosque', categoria: 'fondo', precio: 28 },
+  { id: 'fondo-playa', nombre: 'Playa', categoria: 'fondo', precio: 25 },
+  { id: 'fondo-ciudad', nombre: 'Ciudad', categoria: 'fondo', precio: 28 },
+  { id: 'fondo-castillo', nombre: 'Castillo', categoria: 'fondo', precio: 30 },
+  { id: 'fondo-arrecife', nombre: 'Arrecife', categoria: 'fondo', precio: 25 },
+  { id: 'fondo-nubes', nombre: 'Nubes', categoria: 'fondo', precio: 30 },
   { id: 'comida-manzana', nombre: 'Manzanas', categoria: 'comida', precio: 0 },
   { id: 'comida-frutilla', nombre: 'Frutillas', categoria: 'comida', precio: 8 },
   { id: 'comida-platano', nombre: 'Plátanos', categoria: 'comida', precio: 8 },
