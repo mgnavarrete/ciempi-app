@@ -26,7 +26,7 @@ const BANDAS = {
   // Torretas k3: anillos rosa/magenta y sus líneas rojas (h < 12) frente al caparazón naranja y el párpado (h 12–60).
   torreta: [[300, 360, 'anillo'], [0, 12, 'anillo'], [12, 60, 'borde']],
 }
-/** Qué claves se tiñen en el rostro IA v4b (los ojos nunca): hocico y cejas del Dragón, cejas de la Cuncuna. */
+/** Qué claves se tiñen en el rostro IA del diseño base (v4 en el Dragón, v4b en la Cuncuna; los ojos nunca). */
 // La Cuncuna no tiñe nada del rostro: ojos, cejas, mejillas y boca quedan como en el v4b aprobado.
 const CLAVES_ROSTRO = { dragon: ['escamas', 'vientre'], cuncuna: [] }
 /** Colores de la cabeza vectorial de la base (paleta clásica 0–2 y su sombra). */
@@ -42,7 +42,7 @@ const prod = (nombre) => ({ nombre, estado: 'experimental', precio: null })
 export const CATALOGO = {
   dragon: {
     nombre: 'Ciempi Dragón',
-    disenoBase: { id: 'dragon-v4', nombre: 'Dragón V4 (cuerpo d2 + rostro v4b)', estado: 'aprobado (AD-020)', rostro: 'v4b' },
+    disenoBase: { id: 'dragon-v4', nombre: 'Dragón V4 (cuerpo d2 + rostro v4, iteración 1)', estado: 'aprobado (AD-020, corregido: la usuaria eligió el rostro v4)', rostro: 'v4' },
     variantes: [
       { id: 'dragon-clasico', nombre: 'Dragón Clásico', base: true, producto: prod('Ciempi Dragón'), diferencias: 'Diseño base aprobado: escamas verde azulado, púas naranja, cabeza naranja.' },
       { id: 'dragon-fuego', nombre: 'Dragón de Fuego', producto: prod('Transformación Dragón de Fuego'),
@@ -250,12 +250,12 @@ export async function tenirVariante(url, bandasId, v, piezaId, claves = null) {
   return tintes.get(k)
 }
 
-// ── Rostro v4b teñido (Dragón y Cuncuna) ─────────────────────────────────────
+// ── Rostro del diseño base teñido (Dragón v4, Cuncuna v4b) ─────────────────────────────────────
 const rostros = new Map() // `${varianteId}|${carpeta}/${archivo}` → blob URL
 /** Tiñe (una vez) las capas «rostro» del v4b con la variante; los ojos no se tocan. */
 export async function prepararRostroVariante(especieId, v) {
   if (!CLAVES_ROSTRO[especieId] || !v.colores) return
-  const carpeta = especieId + '/v4b'
+  const carpeta = especieId + '/' + (CATALOGO[especieId]?.disenoBase?.rostro || 'v4b')
   const m = await (await fetch(new URL(`${carpeta}/manifiesto.json`, RECURSOS))).json()
   const claves = v.rostroClaves ?? CLAVES_ROSTRO[especieId]
   await Promise.all(Object.values(m.expresiones).map(async (e) => {
