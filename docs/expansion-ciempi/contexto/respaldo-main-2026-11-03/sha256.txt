@@ -1,0 +1,2 @@
+0127d7864fb507f8a8f8b80bce18de6269413114b792a47e0be2a3b214f97795  docs/expansion-ciempi/contexto/respaldo-main-2026-11-03/AGENTS.md
+46e6fae765e57b5b6012b912d88651c5efca8d801d42325f8c05329019c3d799  docs/expansion-ciempi/contexto/respaldo-main-2026-11-03/CIEMPI_ART_DIRECTION.md
