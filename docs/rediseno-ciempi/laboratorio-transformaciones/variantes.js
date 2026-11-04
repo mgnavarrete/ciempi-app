@@ -23,10 +23,12 @@ const BANDAS = {
   cuncuna: [[220, 330, 'lila'], [95, 220, 'menta'], [40, 85, 'amarillo'], [330, 360, 'salmon'], [0, 20, 'salmon'], [20, 40, 'naranja']],
   serpiente: [[15, 45, 'crema', 0.7, 1], [330, 360, 'rojo'], [0, 15, 'rojo'], [15, 80, 'amarillo']],
   camaleon: [[15, 55, 'vientre', 0.72, 1], [300, 360, 'rosa'], [0, 15, 'rosa'], [15, 55, 'amarillo'], [55, 210, 'piel']],
-  torreta: [[300, 360, 'anillo'], [0, 18, 'anillo'], [18, 60, 'borde']],
+  // Torretas k3: anillos rosa/magenta y sus líneas rojas (h < 12) frente al caparazón naranja y el párpado (h 12–60).
+  torreta: [[300, 360, 'anillo'], [0, 12, 'anillo'], [12, 60, 'borde']],
 }
 /** Qué claves se tiñen en el rostro IA v4b (los ojos nunca): hocico y cejas del Dragón, cejas de la Cuncuna. */
-const CLAVES_ROSTRO = { dragon: ['escamas', 'vientre'], cuncuna: ['amarillo'] }
+// La Cuncuna no tiñe nada del rostro: ojos, cejas, mejillas y boca quedan como en el v4b aprobado.
+const CLAVES_ROSTRO = { dragon: ['escamas', 'vientre'], cuncuna: [] }
 /** Colores de la cabeza vectorial de la base (paleta clásica 0–2 y su sombra). */
 const CABEZA_CLASICA = ['#ffb449', '#ff9e32', '#f58b2d', '#e8752b']
 
@@ -69,24 +71,24 @@ export const CATALOGO = {
     variantes: [
       { id: 'cuncuna-clasica', nombre: 'Cuncuna Clásica', base: true, producto: prod('Ciempi Cuncuna'), diferencias: 'Diseño base aprobado: segmentos lila y menta, mechones amarillo y salmón.' },
       { id: 'cuncuna-primavera', nombre: 'Cuncuna Primavera', producto: prod('Transformación Cuncuna Primavera'),
-        colores: { lila: '#9fe3b8', menta: '#ffe98a', amarillo: '#ffd84a', salmon: '#ff9fb4' },
+        colores: { lila: '#9fe3b8', menta: '#ffe98a', amarillo: '#ffd84a', salmon: '#ff9fb4', naranja: '#ff9fb4' }, cabeza: '#8fdcb0',
         patron: { tipo: 'flores', colores: ['#ffffff', '#ff8fb0', '#ffd23a'] }, diferencias: 'Menta y amarillo suave, mechones rosados y florcitas discretas.' },
       { id: 'cuncuna-frutilla', nombre: 'Cuncuna Frutilla', producto: prod('Transformación Cuncuna Frutilla'),
-        colores: { lila: ['#f0505c', '#c1323f'], menta: '#ff9fb0', amarillo: '#8fd03c', salmon: '#5fb23c' },
+        colores: { lila: ['#f0505c', '#c1323f'], menta: '#ff9fb0', amarillo: '#8fd03c', salmon: '#5fb23c', naranja: '#5fb23c' }, cabeza: '#e8434f',
         patron: { tipo: 'semillas', colores: ['#ffe27a'] }, diferencias: 'Rojo frutilla y rosado con pepitas; mechones verdes como hojas.' },
       { id: 'cuncuna-arcoiris', nombre: 'Cuncuna Arcoíris', producto: prod('Transformación Cuncuna Arcoíris'),
-        colores: { amarillo: '#fff0c4', salmon: '#ffe2d2' },
+        colores: { amarillo: '#fff0c4', salmon: '#ffe2d2', naranja: '#5cb2f5' }, cabeza: '#c8a2f2',
         // Orden visible al crecer: cola, B, C, D, A, B… y el frente al final (forma modular: ciclo A,B,C,D tras la cola).
         piezas: { cola: { lila: '#a77ff0' }, 'seg-b': { menta: '#ff6f86' }, 'seg-c': { lila: '#ffa53c' }, 'seg-d': { menta: '#ffd83a' }, 'seg-a': { lila: '#6fd07a' }, frente: { lila: '#5cb2f5' } },
         patron: { tipo: 'destellos', colores: ['#ffffff'], cantidad: 2 }, diferencias: 'Cada segmento de un color del arcoíris, mechones crema.' },
       { id: 'cuncuna-lavanda', nombre: 'Cuncuna Lavanda', producto: prod('Transformación Cuncuna Lavanda'),
-        colores: { lila: '#cfa8f3', menta: '#a9d6fb', amarillo: '#f2d6f6', salmon: '#e0bdfb' },
-        patron: { tipo: 'brotes', colores: ['#8f63d2', '#79b36a'] }, diferencias: 'Lila y celeste pastel con ramitos de lavanda.' },
+        colores: { lila: '#cfa8f3', menta: '#a9d6fb', amarillo: '#f2d6f6', salmon: '#e0bdfb', naranja: '#b08ce6' }, cabeza: '#c9a2f0',
+        patron: { tipo: 'brotes', colores: ['#6f45b8', '#5f9a52'], escala: 1.5 }, diferencias: 'Lila y celeste pastel con ramitos de lavanda.' },
       { id: 'cuncuna-bosque', nombre: 'Cuncuna Bosque', producto: prod('Transformación Cuncuna Bosque'),
-        colores: { lila: ['#73963a', '#4d6b2a'], menta: ['#ad6c3d', '#7a4a2a'], amarillo: '#f2c23a', salmon: '#7fb03c' },
-        patron: { tipo: 'hojas', colores: ['#a6d65c', '#5f8f2e'] }, diferencias: 'Musgo y madera, mechones amarillo cálido y verde, hojitas.' },
+        colores: { lila: ['#73963a', '#4d6b2a'], menta: ['#ad6c3d', '#7a4a2a'], amarillo: '#f2c23a', salmon: '#7fb03c', naranja: '#6b8f34' }, cabeza: '#b07a45',
+        patron: { tipo: 'hojas', colores: ['#d4ef7a', '#5f8f2e'], escala: 1.45 }, diferencias: 'Musgo y madera, mechones amarillo cálido y verde, hojitas.' },
       { id: 'cuncuna-dorada', nombre: 'Cuncuna Dorada', producto: prod('Transformación Cuncuna Dorada'),
-        colores: { lila: ['#ffc425', '#e08a12'], menta: '#ffe9ad', amarillo: '#ff9a1f', salmon: '#ffb631' },
+        colores: { lila: ['#ffc425', '#e08a12'], menta: '#ffe9ad', amarillo: '#ff9a1f', salmon: '#ffb631', naranja: '#ffc425' }, cabeza: '#f0a020',
         patron: { tipo: 'destellos', colores: ['#fffbe6'], cantidad: 3 }, diferencias: 'Oro y crema luminosos, mechones naranja y destellos.' },
     ],
   },
@@ -112,16 +114,16 @@ export const CATALOGO = {
     disenoBase: { id: 'camaleon-v2', nombre: 'Camaleón v2 (cuerpo, patas y boca v2) + ojos k3 «Atardecer»', estado: 'en revisión; ojos k3 elegidos (AD-020)' },
     variantes: [
       { id: 'camaleon-lima', nombre: 'Camaleón Lima', base: true, origen: 'k2a', producto: prod('Transformación Camaleón Lima'),
-        torreta: { borde: '#b6de3e', anillo: '#f06aa8' }, diferencias: 'El diseño actual (k2a): degradado turquesa→lima, casco arcoíris, anillos rosa.' },
+        torreta: { borde: '#b6de3e', anillo: '#2fb5b8' }, diferencias: 'El diseño actual (k2a): degradado turquesa→lima, casco arcoíris, torretas lima con anillos turquesa.' },
       { id: 'camaleon-arcoiris', nombre: 'Camaleón Arcoíris', origen: 'k1', producto: prod('Transformación Camaleón Arcoíris'),
         colores: { rosa: '#fff3c4', amarillo: '#fff3c4' },
         piezas: { cola: { piel: '#f2639a' }, 'seg-a': { piel: '#ff9b3d' }, 'seg-b': { piel: '#f6cf34' }, 'seg-c': { piel: '#6fcf55' }, 'seg-d': { piel: '#33bfb5' }, frente: { piel: '#4fa6ef' },
           casco: { piel: '#6fcf55', rosa: '#f2639a', amarillo: '#ffb43c' } },
-        torreta: { borde: '#b6de3e', anillo: '#ff6f9c' }, diferencias: 'Un color del arcoíris por segmento con lunares crema (k1).' },
+        torreta: { borde: '#b6de3e', anillo: '#4fa6ef' }, diferencias: 'Un color del arcoíris por segmento con lunares crema, torretas con anillos azules (k1).' },
       { id: 'camaleon-tropical', nombre: 'Camaleón Tropical', origen: 'k2', producto: prod('Transformación Camaleón Tropical'),
         colores: { piel: ['#6cc33f', '#3f9636'], rosa: '#ff8a2a', amarillo: '#ffd23a' },
         piezas: { cola: { piel: '#ff8a2a', rosa: '#ffd23a' }, 'cabeza-piel': { piel: '#bde23c' }, casco: { piel: '#7cc943', rosa: '#ff8a2a' } },
-        patron: { tipo: 'franja', colores: ['#fff3b8'] }, torreta: { borde: '#bde23c', anillo: '#3fae3a' }, diferencias: 'Verde selva con manchas naranja, franja ondulada y cola naranja (k2).' },
+        patron: { tipo: 'franja', colores: ['#fff3b8'] }, torreta: { borde: '#bde23c', anillo: '#ff8a2a' }, diferencias: 'Verde selva con manchas naranja, franja ondulada, cola y anillos de las torretas naranja (k2).' },
       { id: 'camaleon-atardecer', nombre: 'Camaleón Atardecer', origen: 'k3', producto: prod('Transformación Camaleón Atardecer'),
         colores: { piel: '#ff8f3a', rosa: '#ffe23d', amarillo: '#ffe23d', vientre: '#c9a6ec' },
         piezas: { cola: { piel: '#d6337a' }, 'seg-a': { piel: '#e9457a' }, 'seg-b': { piel: '#f45f68' }, 'seg-c': { piel: '#fb7656' }, 'seg-d': { piel: '#f45f68' }, frente: { piel: '#ff8540' },
@@ -130,7 +132,7 @@ export const CATALOGO = {
       { id: 'camaleon-pastel', nombre: 'Camaleón Pastel', origen: 'k4', producto: prod('Transformación Camaleón Pastel'),
         colores: { piel: '#a9e3c8', rosa: '#fff6e0', amarillo: '#fff6e0', vientre: '#9fcdf4' },
         piezas: { cola: { piel: '#c3a6ec' }, 'seg-a': { piel: '#a9e3c8' }, 'seg-b': { piel: '#a8d2f5' }, 'seg-c': { piel: '#c9b2ef' }, 'seg-d': { piel: '#a8d2f5' }, casco: { piel: '#c9b2ef' } },
-        patron: { tipo: 'nubes', colores: ['#fff8e8'] }, torreta: { borde: '#a9e3c8', anillo: '#9cc8f2' }, diferencias: 'Menta, celeste y lila pastel con nubes crema (k4).' },
+        patron: { tipo: 'nubes', colores: ['#fff8e8'] }, torreta: { borde: '#a9e3c8', anillo: '#c3a6ec' }, diferencias: 'Menta, celeste y lila pastel con nubes crema y anillos lila (k4).' },
     ],
   },
 }
@@ -392,7 +394,9 @@ export function aplicarPatronBase(doc, v) {
     const r = Number(g?.getAttribute('data-nucleo'))
     if (!g || !r) return
     const nucleo = [...g.children].find((n) => n.localName === 'g' && n.getAttribute('clip-path') === `url(#clip-${id})`)
-    const frag = new DOMParser().parseFromString(`<svg xmlns="${NS}"><g clip-path="url(#clip-${id})" data-patron-variante="${v.patron.tipo}">${patronSVG(v.patron, r - 3, rol)}</g></svg>`, 'image/svg+xml')
+    const k = v.patron.escala || 1, cy = n2(-0.3 * (r - 3))
+    const dentro = k === 1 ? patronSVG(v.patron, r - 3, rol) : `<g transform="translate(0 ${cy}) scale(${k}) translate(0 ${-cy})">${patronSVG(v.patron, r - 3, rol)}</g>`
+    const frag = new DOMParser().parseFromString(`<svg xmlns="${NS}"><g clip-path="url(#clip-${id})" data-patron-variante="${v.patron.tipo}">${dentro}</g></svg>`, 'image/svg+xml')
     const capa = doc.importNode(frag.documentElement.firstChild, true)
     g.insertBefore(capa, nucleo ?? null)
   })

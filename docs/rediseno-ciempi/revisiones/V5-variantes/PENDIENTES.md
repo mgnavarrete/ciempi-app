@@ -3,7 +3,12 @@
 Revisión del agente, no aprobación: ninguna variante nueva está aprobada.
 
 ## Problemas encontrados
-- **Patrones pequeños en Cuncuna.** A 320 px las hojitas de Bosque y los ramitos de Lavanda se ven poco, y a 84 px desaparecen. En esos casos la variante se reconoce solo por el color. Falta decidir si se agrandan o si se aceptan como «discretos».
+- **Corrección r2:**
+  - Las torretas k3 se tiñen por variante (anillos y párpado). Atardecer conserva los colores originales.
+  - La Cuncuna tiñe ya el disco de la cabeza y las patas. La base y su rostro v4b no cambian: ojos, cejas, mejillas y boca quedan sin teñir.
+  - Los patrones de Bosque y Lavanda se agrandaron (×1,45 y ×1,5) y se oscurecieron.
+- **Patrones en Cuncuna a 84 px.** Las hojitas de Bosque y los ramitos de Lavanda se ven a 320 px, pero a 84 px apenas se distinguen. A ese tamaño, la variante se reconoce sobre todo por el color.
+- **Contraste de la cabeza en Cuncuna.** En Dorada (ámbar) la cabeza queda cerca del naranja de la base, y las cejas amarillas contrastan menos. En Frutilla (cabeza roja), las mejillas rosadas siguen leyéndose.
 - **Rostro teñido.** En Hielo y Blanco, el hocico toma el color del vientre (celeste) y la cara pierde algo de contraste. En Nocturno, en cambio, el hocico se dejó crema a propósito para que se lea.
 - **Orejas y cuernos.** Las orejas del Dragón siguen el color de las escamas, mientras que en la IA quedaban menta. Es una decisión mía y se puede revisar.
 - **Ojos k3 (Camaleón):**
