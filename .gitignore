@@ -21,3 +21,7 @@ muestras-voces/
 android/firma/
 muestras-voz/
 server/voz-microsoft/.venv/
+# Paquete de actualización automática en preparación (scripts/empaquetar-ota.mjs).
+.ota/
+# APK publicadas en el servidor (se copian a dist/descargas al desplegar).
+/descargas/

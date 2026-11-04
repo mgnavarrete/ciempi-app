@@ -8,6 +8,9 @@ git pull --ff-only
 bash deploy/respaldar.sh
 npm ci --no-audit --no-fund
 npm run build
+# Actualización automática de la APK: la web en modo APK en dist/ota (zip + ultima.json)
+# y las APK de descargas/ en dist/descargas. Ver docs/despliegue.md, sección 7b.
+node scripts/empaquetar-ota.mjs
 npm --prefix server ci --omit=dev --no-audit --no-fund
 # La voz de Ciempi, si está instalada y activada (deploy/instalar-voz.sh). Si se pausó, sigue pausada.
 if [ -x server/voz/.venv/bin/python ] && systemctl is-enabled --quiet ciempi-voz 2>/dev/null; then

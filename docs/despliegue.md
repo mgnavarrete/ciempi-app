@@ -181,6 +181,108 @@ npm run apk                           # → release/CIEMPI-<versión>.apk
 
 Instálala en el teléfono **después** de que el paso 6 funcione (la APK solo habla HTTPS).
 
+## 7b. Actualizaciones automáticas de la APK
+
+Desde la APK **2.7.0**, la parte web (todo lo que no es nativo: pantallas, cuentos, dibujos) se
+actualiza sola desde este servidor, sin reinstalar la APK. Usa el plugin `@capgo/capacitor-updater`
+en modo manual y autoalojado: no habla con la nube de Capgo (sin `updateUrl` automático, sin
+estadísticas ni canales; ver `capacitor.config.ts`). Las APK anteriores a 2.7.0 no lo traen: hay que
+instalar la 2.7.0 una vez a mano.
+
+**Cómo funciona** (`src/plataforma/actualizacion/`):
+
+1. Al abrir la app, lee `https://ciempi.minttu.cl/ota/ultima.json`.
+2. Si la web publicada es más nueva que la que corre (versión de `package.json` y, con la misma
+   versión, el sello de compilación: la fecha del último commit) y es compatible con la APK
+   instalada, descarga el zip en segundo plano y comprueba su SHA-256.
+3. La usa **la próxima vez que se abra la app**, antes de mostrar nada. Nunca recarga con la app
+   abierta: no se corta una lectura. (Si Android deja la app en segundo plano días enteros, se
+   aplica cuando la vuelva a abrir desde cero.)
+4. Sin internet sigue con la última versión descargada (o con la de la APK).
+5. En la web normal (navegador) nada de esto hace algo.
+
+### Publicar una actualización
+
+```bash
+cd /var/www/ciempi-app && bash deploy/actualizar.sh
+```
+
+Basta con eso. Después de `npm run build`, `node scripts/empaquetar-ota.mjs` compila otra vez la web
+en **modo APK** (`vite build --mode apk`, con `VITE_API_URL=https://ciempi.minttu.cl` de `.env.apk`; la
+web de `dist/` usa `VITE_API_URL=/` y no serviría dentro de la APK) y deja:
+
+- `dist/ota/ciempi-web-<versión>-<sello>.zip`: la web en modo APK (unos 27 MB).
+- `dist/ota/ultima.json`: `version`, `compilacion`, `paquete`, `url` (relativa al manifiesto),
+  `sha256` (y `checksum`, el mismo valor, como lo llama el plugin), `nativaMinima`, `apk`, `tamano`
+  y `publicado`.
+
+Para probarlo en el computador: `npm run build && npm run ota`.
+
+### Cuándo hace falta una APK nueva (`nativaMinima`)
+
+`package.json` tiene `"ciempi": { "nativaMinima": "2.7.0" }`: la versión de APK más antigua que puede
+usar la web actual. **Súbela** a la versión que se está publicando cuando cambie algo nativo: un
+plugin de Capacitor nuevo o actualizado, Capacitor mismo, `android/` (permisos, `TelefonoPlugin`,
+etc.). Las tabletas con una APK más vieja no descargan ese paquete (podría pedir algo que no tienen)
+y siguen con lo que tenían.
+
+### Publicar una APK nueva
+
+1. En el computador: `npm run apk` → `release/CIEMPI-<versión>.apk`.
+2. Subirla al servidor, a la carpeta `descargas/` (no va en git):
+
+   ```bash
+   ssh mint@servidor mkdir -p /var/www/ciempi-app/descargas
+   scp release/CIEMPI-2.8.0.apk mint@servidor:/var/www/ciempi-app/descargas/
+   ```
+
+3. `bash deploy/actualizar.sh` (o, sin cambios de código, `node scripts/empaquetar-ota.mjs`). El
+   script copia las APK a `dist/descargas/` (dist se borra en cada compilación) y anota la más nueva
+   en `ultima.json` (`apk`).
+
+Si `nativaMinima` es mayor que la APK instalada, la app muestra «Hay una versión nueva de CIEMPI →
+Descargar», que abre `https://ciempi.minttu.cl/descargas/CIEMPI-x.y.z.apk` en el navegador del
+teléfono; la instalación la confirma la persona como siempre (la app **no** usa el permiso
+`REQUEST_INSTALL_PACKAGES`). El aviso solo existe en la APK compartida a mano: `VITE_CANAL=directo` en
+`.env.apk`.
+
+### Vuelta atrás
+
+- Si un paquete nuevo no llega a dibujar la app en 15 s (no llama a `notifyAppReady`), el plugin
+  vuelve solo a la versión anterior (la descargada antes o la de la APK) y marca el paquete como
+  fallido: no se vuelve a descargar ese mismo paquete.
+- Para retirar a mano una publicación mala: corregir (o revertir el commit) y publicar de nuevo;
+  el arreglo lleva un sello más nuevo y llega igual que cualquier actualización. No se puede
+  «bajar» a un paquete más viejo publicándolo: la app solo acepta paquetes más nuevos que el suyo.
+- Al instalar una APK nueva se descartan los paquetes descargados y vuelve la web de la APK (que
+  luego se pone al día sola si hay algo más nuevo).
+
+### nginx
+
+No hace falta nada nuevo para que funcione: `location /` ya sirve `dist/ota/` y `dist/descargas/`
+(las `.apk` salen con su tipo, `application/vnd.android.package-archive`, del `mime.types` de nginx).
+La app pide el manifiesto con `?t=<hora>` y por la vía nativa, así que no la frena ninguna caché ni
+el CORS. Aun así, `deploy/nginx-ciempi.conf` agrega una línea para que `ultima.json` nunca se guarde
+en caché; para aplicarla en el servidor, junto a las otras `location =`:
+
+```nginx
+location = /ota/ultima.json { add_header Cache-Control "no-cache"; }
+```
+
+y luego `sudo nginx -t && sudo systemctl reload nginx`.
+
+### Al llegar a Google Play / App Store
+
+- Compilar con `VITE_CANAL=tienda` (en `.env.apk`, o en un `.env.tienda` con
+  `vite build --mode tienda`): desaparece el aviso de descargar la APK; las tiendas la actualizan.
+- No publicar ni enlazar las APK de `descargas/` para esas instalaciones.
+- La actualización de la web puede seguir: las políticas de Google Play y de App Store permiten
+  cambiar JS/HTML/CSS que corre en el WebView mientras no cambie el propósito de la app ni se
+  agreguen funciones nativas sin revisión. Lo nativo nuevo siempre va en una versión de tienda
+  (y se sube `nativaMinima`).
+- Para iOS: `npx cap add ios` y `cap sync` incluyen el mismo plugin; revisar su sección de
+  privacidad (`PrivacyInfo.xcprivacy`) al publicar.
+
 ## 8. Actualizar a una versión nueva
 
 Después de subir cambios a GitHub, en el servidor:
@@ -189,8 +291,8 @@ Después de subir cambios a GitHub, en el servidor:
 cd /var/www/ciempi-app && bash deploy/actualizar.sh
 ```
 
-(pull, compila la web, instala lo del servidor y reinicia `ciempi-api`; las migraciones nuevas de
-`server/sql/` se aplican solas al arrancar).
+(pull, compila la web y el paquete de actualización de la APK (7b), instala lo del servidor y
+reinicia `ciempi-api`; las migraciones nuevas de `server/sql/` se aplican solas al arrancar).
 
 ## 9. Tareas de administración
 
