@@ -15,8 +15,11 @@ const el = (tag, attrs = {}, ...hijos) => { const n = document.createElement(tag
 const celda = (svg, texto) => el('figure', { className: 'celda' }, svg, el('figcaption', { textContent: texto }))
 const nombre = ESPECIES[especie].nombre
 const fondoTxt = document.body.dataset.fondo === 'oscuro' ? 'fondo oscuro' : 'fondo claro'
-const VERS = ['v1', 'v4']
-const TXT = { v1: 'antes · rostro v1', v4: 'después · rostro v4' }
+// ?it=2: iteración 2 (v4b) frente a v1 y v4.
+const IT2 = p.get('it') === '2'
+const VERS = IT2 ? ['v1', 'v4', 'v4b'] : ['v1', 'v4']
+const NUEVA = IT2 ? 'v4b' : 'v4'
+const TXT = IT2 ? { v1: 'rostro v1', v4: 'v4 (iteración 1)', v4b: 'v4b (iteración 2)' } : { v1: 'antes · rostro v1', v4: 'después · rostro v4' }
 const sel = (v, extra = {}) => ({ ...INICIAL, ...extra, rostro: v })
 const CABEZA = [575, 150, 330, 330]
 const titulo = (t, sub) => raiz.append(el('h1', { textContent: `${nombre} · ${t}` }), el('p', { textContent: `${sub} ${fondoTxt}. Laboratorio, pendiente de aprobación del usuario.` }))
@@ -38,15 +41,15 @@ async function expresiones() {
     for (const f of env.facial) fila.append(celda(recorte(dibujar(await escenaDe(especie, sel(v, { expresion: f.id }), 5)).svg, CABEZA, 150), f.nombre))
     raiz.append(fila)
   }
-  const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: 'Seis gestos a 84 px de alto (pista), v4' }))
-  for (const id of ['b03-alegre', 'b03-carcajada', 'b03-sorprendido', 'b03-guino', 'b03-triste', 'b03-dormilon'])
-    fila.append(celda(dibujar(await escenaDe(especie, sel('v4', { expresion: id }), 5), { alto: 84 }).svg, id.slice(4)))
+  const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: `Gestos a 84 px de alto (pista), ${NUEVA}` }))
+  for (const id of ['b03-alegre', 'b03-carcajada', 'b03-sorprendido', 'b03-guino', 'b03-triste', 'b03-dormilon', 'b03-orgulloso', 'b03-asustado'])
+    fila.append(celda(dibujar(await escenaDe(especie, sel(NUEVA, { expresion: id }), 5), { alto: 84 }).svg, id.slice(4)))
   raiz.append(fila)
 }
 
 export const CABEZA_ACC = [
   ['Sin accesorios', {}], ['Gorro mago (B06)', { cabeza: 'b06-ia-mago' }], ['Gorro jockey (B06)', { cabeza: 'b06-ia-jockey' }],
-  ['Máscara gatita, parcial (B07)', { cabeza: 'b07-ia-gatita' }], ['Máscara robot, tapa el rostro (B07)', { cabeza: 'b07-ia-robot' }],
+  ['Máscara gatita, parcial (B07)', { cabeza: 'b07-ia-gatita' }], ['Máscara búho, parcial (B07)', { cabeza: 'b07-ia-buho' }], ['Máscara robot, tapa el rostro (B07)', { cabeza: 'b07-ia-robot' }],
   ['Lentes redondos (B04)', { cara: 'b04-redondos' }], ['Visor opaco (B04)', { cara: 'b04-visor' }], ['Peinado coletas (B05)', { pelo: 'b05-coletas' }],
   ['Bufanda B01 + gorro mago', { cuello: 'bufanda-calco32', variante: 'gryffindor', cabeza: 'b06-ia-mago' }],
   ['Lentes redondos + guiño', { cara: 'b04-redondos', expresion: 'b03-guino' }], ['Paleta Océano', { paleta: 'oceano' }],
@@ -75,9 +78,10 @@ async function tamanos() {
 
 async function animacion() {
   titulo('rig de animación con rostro v4 (cuadros congelados)', 'N = 5, cabeza ampliada; mismo rig (rig.js) y poses (animaciones.js) que Ciempi. Fila de v1 como referencia en E08.')
-  const casos = [['A01', 'Reposo · parpadeo', [1.2, 1.32, 1.385, 1.42, 1.5, 1.6], 'v4'], ['E08', 'Comer (boca sorprendida, AD-018)', [0, 0.16, 0.28, 0.36, 0.5, 0.7], 'v4'],
-    ['E08', 'Comer · rostro v1 (referencia)', [0, 0.16, 0.28, 0.36, 0.5, 0.7], 'v1'], ['A10', 'Victoria (sorprendido → carcajada → orgulloso)', [0.3, 0.7, 1.2, 2.4, 2.8, 3.2], 'v4'],
-    ['A04', 'Saludar (guiño)', [0.5, 1.0, 1.2, 1.4, 1.6, 2.2], 'v4'], ['A06', 'Dormir', [0.5, 2, 3.5], 'v4']]
+  const n = NUEVA
+  const casos = [['A01', 'Reposo · parpadeo', [1.2, 1.32, 1.385, 1.42, 1.5, 1.6], n], ['E08', 'Comer (boca sorprendida, AD-018)', [0, 0.16, 0.28, 0.36, 0.5, 0.7], n],
+    ['E08', 'Comer · rostro v1 (referencia)', [0, 0.16, 0.28, 0.36, 0.5, 0.7], 'v1'], ['A10', 'Victoria (sorprendido → carcajada → orgulloso)', [0.3, 0.7, 1.2, 2.4, 2.8, 3.2], n],
+    ['A04', 'Saludar (guiño)', [0.5, 1.0, 1.2, 1.4, 1.6, 2.2], n], ['A06', 'Dormir', [0.5, 2, 3.5], n]]
   for (const [id, texto, tiempos, v] of casos) {
     const anim = ANIMACIONES.find((a) => a.id === id)
     const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: `${id} · ${texto}` }))
@@ -95,15 +99,15 @@ async function animacion() {
 }
 
 async function ciempi() {
-  raiz.append(el('h1', { textContent: 'Rostros: Ciempi · Dragón v4 · Cuncuna v4' }), el('p', { textContent: `Diferenciación del rostro. Cabeza ampliada y criatura a 84 px de alto. ${fondoTxt}.` }))
-  for (const exp of ['b03-alegre', 'b03-sorprendido', 'b03-triste']) {
+  raiz.append(el('h1', { textContent: `Rostros: Ciempi · Dragón ${NUEVA} · Cuncuna ${NUEVA}` }), el('p', { textContent: `Diferenciación del rostro. Cabeza ampliada y criatura a 84 px de alto. ${fondoTxt}.` }))
+  for (const exp of ['b03-alegre', 'b03-sorprendido', 'b03-triste', 'b03-dormilon', 'b03-orgulloso']) {
     const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: exp.slice(4) }))
-    for (const [id, v] of [['ciempi', 'v1'], ['dragon', 'v1'], ['dragon', 'v4'], ['cuncuna', 'v1'], ['cuncuna', 'v4']])
+    for (const [id, v] of [['ciempi', 'v1'], ...['dragon', 'cuncuna'].flatMap((e) => VERS.map((v) => [e, v]))])
       fila.append(celda(recorte(dibujar(await escenaDe(id, sel(v, { expresion: exp }), 5)).svg, [560, 60, 370, 430], 170), `${ESPECIES[id].nombre}${id === 'ciempi' ? '' : ' · ' + v}`))
     raiz.append(fila)
   }
   const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: '84 px de alto, N = 5' }))
-  for (const [id, v] of [['ciempi', 'v1'], ['dragon', 'v4'], ['cuncuna', 'v4']]) fila.append(celda(dibujar(await escenaDe(id, sel(v), 5), { alto: 84 }).svg, `${ESPECIES[id].nombre}${id === 'ciempi' ? '' : ' · ' + v}`))
+  for (const [id, v] of [['ciempi', 'v1'], ...['dragon', 'cuncuna'].flatMap((e) => VERS.filter((x) => x !== 'v1').map((x) => [e, x]))]) fila.append(celda(dibujar(await escenaDe(id, sel(v), 5), { alto: 84 }).svg, `${ESPECIES[id].nombre}${id === 'ciempi' ? '' : ' · ' + v}`))
   raiz.append(fila)
 }
 

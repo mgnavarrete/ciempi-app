@@ -24,25 +24,31 @@
 //    el rostro IA trae sus propias mejillas y su hocico.
 const RECURSOS = new URL('./recursos/', import.meta.url)
 const NS = 'http://www.w3.org/2000/svg'
-export const VERSIONES_ROSTRO = ['v1', 'v4']
+/** v4b = iteración 2 tras la revisión independiente (v4 se conserva para comparar). */
+export const VERSIONES_ROSTRO = ['v1', 'v4', 'v4b']
+const esRostroIA = (v) => v === 'v4' || v === 'v4b'
+export { esRostroIA }
 export const ESPECIES_CON_V4 = ['dragon', 'cuncuna']
 
 /** Versión pedida en la URL (`?rostro=v4`); por omisión v1. */
 export function rostroDeUrl() {
-  try { return new URLSearchParams(location.search).get('rostro') === 'v4' ? 'v4' : 'v1' } catch { return 'v1' }
+  try { const v = new URLSearchParams(location.search).get('rostro'); return esRostroIA(v) ? v : 'v1' } catch { return 'v1' }
 }
 
 const manifiestos = new Map()
 /** Carga (una vez) el manifiesto v4 de la especie. */
 export async function prepararRostroV4(especieId) {
   if (!ESPECIES_CON_V4.includes(especieId)) return null
-  if (!manifiestos.has(especieId)) {
-    manifiestos.set(especieId, fetch(new URL(`${especieId}/v4/manifiesto.json`, RECURSOS)).then((r) => {
-      if (!r.ok) throw Error('Falta el manifiesto del rostro v4 de ' + especieId)
-      return r.json()
-    }).then((m) => { manifiestos.set(especieId, m); return m }))
-  }
-  return manifiestos.get(especieId)
+  return Promise.all(['v4', 'v4b'].map((v) => {
+    const clave = especieId + '/' + v
+    if (!manifiestos.has(clave)) {
+      manifiestos.set(clave, fetch(new URL(`${clave}/manifiesto.json`, RECURSOS)).then((r) => {
+        if (!r.ok) throw Error('Falta el manifiesto del rostro ' + clave)
+        return r.json()
+      }).then((m) => { manifiestos.set(clave, m); return m }))
+    }
+    return manifiestos.get(clave)
+  }))
 }
 
 /** Rostro del manifiesto para una expresión B03 (o el de Alegre si no es B03). */
@@ -51,24 +57,27 @@ function entradaDe(m, expresion) {
   return lista.find((e) => e.b03 === expresion) ?? lista.find((e) => e.b03 === m.porDefecto)
 }
 
+/** Centros y radios de los ojos de la base v2 (los de rig.js), donde están los agujeros de las máscaras. */
+const OJOS_BASE = [[708, 342, 33, 39], [808, 320, 27, 35]]
 const crear = (doc, tag, attrs = {}) => {
   const n = doc.createElementNS(NS, tag)
   for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v))
   return n
 }
-const imagen = (doc, especieId, p) => {
+const imagen = (doc, carpeta, p) => {
   const [x, y, width, height] = p.encuadre
-  return crear(doc, 'image', { x, y, width, height, href: new URL(`${especieId}/v4/${p.archivo}`, RECURSOS).href, preserveAspectRatio: 'none' })
+  return crear(doc, 'image', { x, y, width, height, href: new URL(`${carpeta}/${p.archivo}`, RECURSOS).href, preserveAspectRatio: 'none' })
 }
 
 /**
  * Sustituye el rostro v1 de una especie por el v4 en el documento ya compuesto
  * (después de `renderCiempi`). Síncrono: requiere `prepararRostroV4` antes.
  */
-export function aplicarRostroV4(doc, especieId, sel) {
-  // Solo Dragón y Cuncuna tienen rostro v4; Serpiente y Camaleón (T03/T04) traen su propia cara.
+export function aplicarRostroV4(doc, especieId, sel, version = 'v4', mascara = false) {
+  // Solo Dragón y Cuncuna tienen rostro v4/v4b; Serpiente y Camaleón (T03/T04) traen su propia cara.
   if (!ESPECIES_CON_V4.includes(especieId)) return
-  const m = manifiestos.get(especieId)
+  const carpeta = especieId + '/' + version
+  const m = manifiestos.get(carpeta)
   if (!m || m instanceof Promise) throw Error('Rostro v4 sin preparar: usar prepararRostroV4() antes')
   const e = entradaDe(m, sel.expresion)
   const cabeza = doc.getElementById('head')
@@ -88,7 +97,17 @@ export function aplicarRostroV4(doc, especieId, sel) {
       if (!o) return
       const abierto = b03 ? abiertos.get('eye-' + i) === true : true
       const g = crear(doc, 'g', { 'data-component': abierto ? 'eye-' + i : 'eyelids', 'data-rostro-v4': 'ojo-' + i })
-      g.append(imagen(doc, especieId, o))
+      const img = imagen(doc, carpeta, o)
+      if (mascara && version === 'v4b' && OJOS_BASE[i]) {
+        // Máscara con agujeros (gatita, búho…): los agujeros están en los ojos de Ciempi.
+        // En v4b el ojo IA se centra en ese agujero y se escala a su tamaño: no asoma por el antifaz.
+        const [hx, hy, rx, ry] = OJOS_BASE[i], [x, y, w, h] = o.encuadre
+        const [cx, cy] = o.centro ?? [x + w / 2, y + h / 2]
+        const k = Math.min((2 * rx + 6) / w, (2 * ry + 6) / h, 1)
+        const t = crear(doc, 'g', { transform: `translate(${hx} ${hy}) scale(${k.toFixed(3)}) translate(${-cx} ${-cy})`, 'data-ajuste-mascara': '' })
+        t.append(img)
+        g.append(t)
+      } else g.append(img)
       if (abierto) {
         // Marca de ojo abierto para el rig (invisible): mismo centro que el ojo IA.
         const [x, y, w, h] = o.encuadre
@@ -104,12 +123,12 @@ export function aplicarRostroV4(doc, especieId, sel) {
   const boca = cabeza.querySelector('#mouth')
   if (boca && !boca.hasAttribute('data-hidden')) {
     const g = crear(doc, 'g', { 'data-rostro-v4': 'rostro' })
-    g.append(imagen(doc, especieId, e.rostro))
+    g.append(imagen(doc, carpeta, e.rostro))
     boca.replaceChildren(g)
   }
-  doc.documentElement.setAttribute('data-rostro', 'v4')
+  doc.documentElement.setAttribute('data-rostro', version)
   const desc = doc.querySelector('desc')
-  if (desc) desc.textContent += ` Rostro v4 IA (${e.b03 ?? m.porDefecto}; laboratorio, pendiente de aprobación).`
+  if (desc) desc.textContent += ` Rostro ${version} IA (${e.b03 ?? m.porDefecto}; laboratorio, pendiente de aprobación).`
 }
 
 /**
@@ -126,14 +145,14 @@ export function montarSelectorRostro({ estado, inicial, actualizar }) {
   fs.id = 'rostro-version'
   fs.innerHTML = '<legend>Rostro (Dragón y Cuncuna)</legend><div class="botones pequenos">' +
     VERSIONES_ROSTRO.map((x) => `<label><input type="radio" name="rostro" value="${x}"${x === v ? ' checked' : ''}> Rostro ${x}</label>`).join('') +
-    '</div><p class="ayuda">v1: rostro de Ciempi (no aprobado, AD-017). v4: rostro propio generado con IA, con las 14 expresiones B03. Pendiente de aprobación. Ciempi no cambia.</p>'
+    '</div><p class="ayuda">v1: rostro de Ciempi (no aprobado, AD-017). v4: rostro propio generado con IA, con las 14 expresiones B03. v4b: iteración 2 tras la revisión independiente. Pendientes de aprobación. Ciempi no cambia.</p>'
   panel.insertBefore(fs, panel.children[1] ?? null)
   for (const r of fs.querySelectorAll('input[name=rostro]')) {
     r.onchange = () => {
       inicial.rostro = r.value
       estado.sel.rostro = r.value
       const u = new URL(location.href)
-      if (r.value === 'v4') u.searchParams.set('rostro', 'v4'); else u.searchParams.delete('rostro')
+      if (esRostroIA(r.value)) u.searchParams.set('rostro', r.value); else u.searchParams.delete('rostro')
       history.replaceState(null, '', u)
       actualizar()
     }

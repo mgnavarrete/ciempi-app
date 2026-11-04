@@ -54,3 +54,27 @@ Igual que T01: `recursos/cuncuna/v4/` (WebP 2 px/u, ≈0,61 MB, `manifiesto.json
 - **Decisión:** funcional en laboratorio; ajustes menores (lentes) y **aprobación del usuario pendiente**.
 - **Cambio significativo de identidad:** sí para la especie (§13); no toca la base de Ciempi.
 - **Aprobación del usuario:** no existe.
+
+---
+
+## Iteración 2 · v4b (revisión independiente)
+
+Pedido (revisión independiente; su nota de v4: coherencia 3, calidad 3, legibilidad 3; dirección «más tierna» correcta): (1) cejas amarillas invisibles sobre naranja: contorno azul o marrón claro; (2) ojos 15 % más chicos y con un solo brillo (quitar el aire kawaii genérico); (3) pompones 20 % más chicos o menos saturados (a 84 px tapan el gesto; Triste y Alegre se confundían); (4) Asustado: boca deformada. **v4 se conserva**; v4b en `recursos/cuncuna/v4b/`, `?rostro=v4b`.
+
+- **IA (6 generaciones, 0 fallos; [generaciones-it2.json](generaciones-it2.json), [prompts/it2](prompts/it2/), [ia/it2](ia/it2/)):** 2 propuestas con c4a como referencia 1. **c5a «sobria» elegida**: cejas amarillas con contorno azul, que mantienen el vínculo con los penachos amarillos. c5b «cejas marrón» descartada: el marrón pierde ese vínculo. Luego 4 hojas con Asustado «boca ovalada simple». [control-recortes-it2](piezas/control-recortes-it2.png).
+- **Medido (4 expresiones, área de píxeles opacos):**
+  - Ojos: −15 % de **área** (≈ −8 % de diámetro), por debajo del −15 % pedido.
+  - Pompones: −27 % de área (≈ −15 % de diámetro), y además más pálidos.
+  - Un solo brillo por ojo: cumple.
+- **Evidencia (sufijo -it2):** [expresiones](evidencia/expresiones-claro-it2.png) / [oscuro](evidencia/expresiones-oscuro-it2.png), [accesorios](evidencia/accesorios-claro-it2.png) / [oscuro](evidencia/accesorios-oscuro-it2.png), [crecimiento](evidencia/crecimiento-claro-it2.png), [tamaños](evidencia/tamanos-claro-it2.png) / [oscuro](evidencia/tamanos-oscuro-it2.png), [animación](evidencia/animacion-claro-it2.png), [comparación con Ciempi](../T01-dragon-v4-rostro/evidencia/comparacion-ciempi-claro-it2.png).
+- **Pruebas:** como T01 (sha256 19/19, cabeza oculta 75/75, 35/35, tsc, vitest 279/279).
+
+| Dimensión | v4 | v4b | Observación (evidencia -it2) |
+|---|---|---|---|
+| Coherencia con Ciempi | 3 (rev.) / 4 (agente) | 4 | Un brillo y contorno azul en las cejas, como el trazo de Ciempi; ojos aún más grandes que los de Ciempi. |
+| Calidad de ilustración | 3 (rev.) / 4 | 4 | Cejas legibles con contorno; Asustado con boca ovalada limpia; pompones menos estridentes. |
+| Integración con el cuerpo | 4 | 4 | Igual que v4; gatita y búho con los ojos ajustados a los agujeros. |
+| Legibilidad | 3 (rev.) / 4 | 4 | A 84 px las cejas contorneadas marcan el gesto y Triste se separa de Alegre por cejas y boca ([expresiones](evidencia/expresiones-claro-it2.png), fila inferior). Dormilón (cejas planas, ojos cerrados) muy claro. |
+| Originalidad | 4 | 4 | Los pompones y las cejas de penacho siguen siendo su rasgo propio; menos «anime genérico». |
+
+**Pendiente:** aprobación del usuario; si se quiere el −15 % lineal exacto en los ojos, otra iteración IA o un escalado controlado de la capa de ojos.

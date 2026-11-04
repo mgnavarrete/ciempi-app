@@ -309,7 +309,7 @@ export function componerCriatura(env, especieId, selConRostro) {
     body.parentNode.insertBefore(g, body.nextSibling)
   }
   posprocesarV4(doc, especieId, efectiva, res, base)
-  if (versionRostro === 'v4') aplicarRostroV4(doc, especieId, efectiva)
+  if (versionRostro === 'v4' || versionRostro === 'v4b') aplicarRostroV4(doc, especieId, efectiva, versionRostro, !!env.masks?.some((x) => x.id === efectiva.cabeza && !x.ocultaRostro))
   doc.querySelector('desc').textContent += ` Especie: ${buscarEspecie(especieId).nombre} (laboratorio, pendiente de aprobación).`
   return { svg: new XMLSerializer().serializeToString(doc), resolucion: res, seleccion: efectiva }
 }

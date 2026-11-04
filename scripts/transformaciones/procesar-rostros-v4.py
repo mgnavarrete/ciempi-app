@@ -300,6 +300,12 @@ def control(caras, ruta, titulo):
 def main():
     import sys
     solo_propuestas = '--propuestas' in sys.argv
+    # Iteración 2 (revisión independiente): hojas en ia/it2, recursos en <especie>/v4b, sin tocar v4.
+    it2 = '--it2' in sys.argv
+    sub, version, sufijo = ('it2', 'v4b', '-it2') if it2 else ('', 'v4', '')
+    if it2:
+        ESPECIES['dragon']['propuesta'] = 'it2/propuesta-d5a-hocico-3cuartos'
+        ESPECIES['cuncuna']['propuesta'] = 'it2/propuesta-c5a-sobria'
     for especie, cfg in ESPECIES.items():
         rev = os.path.join(REV, cfg['carpeta'])
         os.makedirs(os.path.join(rev, 'piezas'), exist_ok=True)
@@ -317,17 +323,17 @@ def main():
             import shutil
             shutil.rmtree(tmp)
             continue
-        destino = os.path.join(RECURSOS, especie, 'v4')
+        destino = os.path.join(RECURSOS, especie, version)
         os.makedirs(destino, exist_ok=True)
-        manifiesto = {'especie': especie, 'version': 'v4', 'estado': 'laboratorio — rostro v4 pendiente de aprobación del usuario',
+        manifiesto = {'especie': especie, 'version': version, 'estado': 'laboratorio — rostro v4 pendiente de aprobación del usuario',
                       'unidades': 'viewBox de la base (0 0 1000 650); coordenadas absolutas de la cabeza (736,340 r130)',
-                      'formato': f'raster WebP con alfa, {PX} px por unidad, calidad {CALIDAD}; maestros IA en docs/rediseno-ciempi/revisiones/{cfg["carpeta"]}/ia',
+                      'formato': f'raster WebP con alfa, {PX} px por unidad, calidad {CALIDAD}; maestros IA en docs/rediseno-ciempi/revisiones/{cfg["carpeta"]}/ia/{sub}',
                       'capas': {'rostro': 'grupo #mouth (hocico, cejas, boca, mejillas; fijo por expresión)',
                                 'ojos': 'grupo #eyes, un grupo data-component="eye-i" por ojo abierto (parpadeo del rig) o "eyelids" si la expresión B03 lo cierra'},
                       'diseno': cfg['propuesta'], 'porDefecto': 'b03-alegre', 'expresiones': {}, 'fuentes': {}}
         caras = []
         for n, hoja in enumerate(HOJAS, 1):
-            ruta = os.path.join(rev, 'ia', f'hoja-{n}.png')
+            ruta = os.path.join(rev, 'ia', sub, f'hoja-{n}.png')
             if not os.path.exists(ruta):
                 print('falta', ruta)
                 continue
@@ -335,7 +341,7 @@ def main():
             ds = discos(np.array(img.convert('RGB')).astype(float))
             if len(ds) != 4:
                 print(f'{ruta}: {len(ds)} discos (se esperaban 4)')
-            manifiesto['fuentes'][f'hoja-{n}'] = {'archivo': f'docs/rediseno-ciempi/revisiones/{cfg["carpeta"]}/ia/hoja-{n}.png', 'sha256': sha(ruta), 'expresiones': hoja}
+            manifiesto['fuentes'][f'hoja-{n}'] = {'archivo': f'docs/rediseno-ciempi/revisiones/{cfg["carpeta"]}/ia/{sub + "/" if sub else ""}hoja-{n}.png', 'sha256': sha(ruta), 'expresiones': hoja}
             for nombre, disco in zip(hoja, ds):
                 entrada, datos = procesar_cara(img, disco, especie, nombre, destino)
                 entrada['fuente'] = f'hoja-{n}'
@@ -349,7 +355,7 @@ def main():
                 manifiesto['expresiones'][nombre]['b03'] = 'b03-' + base
         manifiesto['bytesTotales'] = sum(os.path.getsize(os.path.join(destino, f)) for f in os.listdir(destino) if f.endswith('.webp'))
         json.dump(manifiesto, open(os.path.join(destino, 'manifiesto.json'), 'w'), indent=1, ensure_ascii=False)
-        control(caras, os.path.join(rev, 'piezas', 'control-recortes.png'), f'{especie}: rostros v4 recortados (cian = ojo separado para el parpadeo; cruz = centro de ojo del rig)')
+        control(caras, os.path.join(rev, 'piezas', f'control-recortes{sufijo}.png'), f'{especie}: rostros {version} recortados (cian = ojo separado para el parpadeo; cruz = centro de ojo del rig)')
         print(especie, len(caras), 'rostros,', manifiesto['bytesTotales'], 'bytes')
 
 

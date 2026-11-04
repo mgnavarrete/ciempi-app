@@ -103,3 +103,53 @@ for carpeta, (texto, _) in DISENO.items():
     for i, hoja in enumerate(HOJAS, 1):
         celdas = ' '.join(f"Cell {pos}: {EXPR[e]}." for pos, e in zip(['top-left', 'top-right', 'bottom-left', 'bottom-right'], hoja))
         open(os.path.join(d, f'hoja-{i}.txt'), 'w').write(texto + "Draw these four expressions. " + celdas + " " + POSICION + " " + ESTILO + " " + ORIGINAL + " " + FORMATO2 + '\n')
+
+# ── Iteración 2 (v4b): correcciones de la revisión independiente ─────────────
+IT2 = {
+ 'T01-dragon-v4-rostro': {
+  'base': ("Reference image 1 is the CURRENT baby-dragon face design for 'Ciempi Dragon' (keep its identity: golden-amber eyes with a rounded vertical pupil and white sparkles, short mint scale brows, "
+           "small cream freckles, cream snout with two nostrils and tiny white fangs). Reference image 2 is the dragon head with its approved horns and fin ears. Reference image 3 shows the expression style of the original character. "
+           "Problem to fix: in reference 1 the snout is drawn in PROFILE and touches/crosses the right edge of the head while the head and eyes are frontal: it looks like three mixed views. "),
+  'propuestas': {
+   'propuesta-d5a-hocico-3cuartos': "Redraw the face with the cream SNOUT turned about 30 degrees toward the viewer: a rounded three-quarter, almost frontal muzzle centred slightly right of the head centre, in the lower half of the face, "
+     "FULLY INSIDE the head circle with a clear orange margin all around it (it must not touch the outline). Both oval nostrils on the front top of the snout, well inside. The happy open mouth spans the lower part of the snout with two tiny fangs. "
+     "Eyes, brows and freckles as in reference 1, in the same places.",
+   'propuesta-d5b-hocico-frontal': "Redraw the face with a softly rounded, nearly FRONTAL cream snout (a wide rounded bean shape) in the lower centre-right of the face, FULLY INSIDE the head circle with a clear orange margin all around; "
+     "two oval nostrils on its upper part, a wide happy open smile below them with two tiny fangs and a pink tongue. Eyes, brows and freckles as in reference 1, in the same places.",
+  },
+ },
+ 'T02-cuncuna-v4-rostro': {
+  'base': ("Reference image 1 is the CURRENT face design for 'Ciempi Cuncuna' (a sweet fuzzy caterpillar): keep its identity (plum eyes, fuzzy yellow eyebrows, fluffy coral cheek pompoms, small sweet mouth). "
+           "Reference image 2 is the cuncuna head with its approved tuft and antennae. Reference image 3 shows the original character's expression style (simpler eyes, one highlight, navy line work). "
+           "Problems to fix: the yellow eyebrows are almost invisible on orange; the eyes are too big and too sparkly (generic anime look); the cheek pompoms are too big and hide the expression at small size. "),
+  'propuestas': {
+   'propuesta-c5a-sobria': "Redraw the face: eyes about 15 percent SMALLER than in reference 1, with a softer deep plum-brown iris and ONE single white highlight per eye (no extra sparkles), only one or two very short eyelashes at the outer corner; "
+     "the fuzzy yellow eyebrows now have a clear thick navy #243e5b OUTLINE so they read on orange; the coral cheek pompoms about 20 percent SMALLER and slightly softer, less saturated pink-coral, placed low on the cheeks away from the mouth; small sweet open smile with a pink tongue.",
+   'propuesta-c5b-cejas-marron': "Redraw the face: eyes about 15 percent SMALLER than in reference 1, simple round eyes with a deep plum iris and ONE single white highlight, no eyelashes; fuzzy eyebrows in a warm LIGHT BROWN / caramel colour with a thin navy outline; "
+     "small soft muted coral cheek pompoms (about 20 percent smaller than in reference 1); small sweet open smile with a pink tongue.",
+  },
+ },
+}
+for carpeta, d in IT2.items():
+    out = os.path.join(REV, carpeta, 'prompts', 'it2'); os.makedirs(out, exist_ok=True)
+    for k, v in d['propuestas'].items():
+        open(os.path.join(out, k + '.txt'), 'w').write(d['base'] + v + " " + POSICION + " " + ESTILO + " " + ORIGINAL + " " + LIENZO + '\n')
+
+# Hojas de la iteración 2 sobre las propuestas elegidas (d5a, c5a).
+EXPR2 = dict(EXPR)
+EXPR2['dormilon'] = "SLEEPY: eyelids almost completely CLOSED (only a thin sliver of each eye visible under heavy lids), brows LOWERED, relaxed and flat, tiny calm closed mouth"
+EXPR2['orgulloso'] = "PROUD: confident half-lidded eyes with brows RAISED high, a wide closed smug smile (clearly different from sleepy)"
+EXPR2['asustado'] = "SCARED: eyes wide open with small pupils, worried raised brows, a small rounded OVAL open mouth (simple and cute, not distorted, no zigzag lips)"
+DISENO2 = {
+ 'T01-dragon-v4-rostro': ("Reference image 1 is the APPROVED new baby-dragon face for 'Ciempi Dragon' (keep it exactly: the cream three-quarter SNOUT fully inside the head circle with an orange margin all around, "
+     "two oval nostrils on its top, the mouth on the snout with two tiny white fangs when open, golden-amber eyes with a rounded vertical pupil and white sparkles, short mint scale brows, small cream freckles). "
+     "Reference image 2 shows the expression set of the original character: match each expression's MEANING, but keep the dragon design of reference 1. The snout, nostrils and freckles never change and never touch the head outline. "),
+ 'T02-cuncuna-v4-rostro': ("Reference image 1 is the APPROVED new face for 'Ciempi Cuncuna' (keep it exactly: medium-size round eyes with a deep plum-brown iris and ONE single white highlight, one or two tiny eyelashes, "
+     "fuzzy yellow eyebrows with a clear thick navy outline, small soft coral cheek pompoms placed low on the cheeks, small sweet mouth with a pink tongue). Do NOT make the eyes bigger or add extra sparkles. "
+     "Reference image 2 shows the expression set of the original character: match each expression's MEANING, but keep the cuncuna design of reference 1. The cheek pompoms never change; the outlined yellow brows carry the emotion. "),
+}
+for carpeta, texto in DISENO2.items():
+    d = os.path.join(REV, carpeta, 'prompts', 'it2')
+    for i, hoja in enumerate(HOJAS, 1):
+        celdas = ' '.join(f"Cell {pos}: {EXPR2[e]}." for pos, e in zip(['top-left', 'top-right', 'bottom-left', 'bottom-right'], hoja))
+        open(os.path.join(d, f'hoja-{i}.txt'), 'w').write(texto + "Draw these four expressions. " + celdas + " " + POSICION + " " + ESTILO + " " + ORIGINAL + " " + FORMATO2 + '\n')
