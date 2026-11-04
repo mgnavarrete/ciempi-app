@@ -29,23 +29,29 @@ import { Comida, FondoTema } from './dibujos'
 import { MiniaturaCiempi } from './v2/Miniatura'
 import { ESPECIES, especieDeItem, type EspecieId } from './criaturas'
 import { MiniaturaCriatura, TiendaCriaturas } from './TiendaCriaturas'
+import { Precio, SelloNuevo, Vacio, esNuevo } from './tiendaUi'
 
 const CUNCUNA = 'especie:cuncuna'
 
+export type ModoCiempi = 'tienda' | 'ropero'
+
 interface Props {
   perfil: PerfilNino
+  /** «tienda»: solo lo que no tiene (se prueba y se compra). «ropero»: solo lo suyo (se pone al tocar). */
+  modo: ModoCiempi
+  alCambiarModo: (modo: ModoCiempi) => void
   alCambiarPerfil: (cambios: Partial<PerfilNino>) => void
   alVolver: () => void
 }
 
 /** La tienda ordenada como se viste a Ciempi: cabeza, cuerpo, su mundo y, al final, conjuntos completos. */
-const SECCIONES: { id: string; nombre: string; emoji: string; categorias: CategoriaCiempi[] }[] = [
+const SECCIONES: { id: string; nombre: string; emoji: string; categorias: CategoriaCiempi[]; fondo: string }[] = [
   // Criaturas (2.5; primera desde 2.5.2): su propia vista (pestañas por especie), no categorías de PARTES.
-  { id: 'criaturas', nombre: 'Criaturas', emoji: '🐉', categorias: [] },
-  { id: 'cabeza', nombre: 'Cabeza', emoji: '🎩', categorias: ['cabeza', 'pelo', 'cara', 'gesto', 'ojos', 'detalle'] },
-  { id: 'cuerpo', nombre: 'Cuerpo', emoji: '🐛', categorias: ['paleta', 'textura', 'cuello', 'espalda', 'pies'] },
-  { id: 'mundo', nombre: 'Su mundo', emoji: '🏞️', categorias: ['fondo', 'comida'] },
-  { id: 'conjuntos', nombre: 'Conjuntos', emoji: '🦸', categorias: ['conjunto'] },
+  { id: 'criaturas', nombre: 'Criaturas', emoji: '🐉', categorias: [], fondo: 'bg-verde-claro' },
+  { id: 'cabeza', nombre: 'Cabeza', emoji: '🎩', categorias: ['cabeza', 'pelo', 'cara', 'gesto', 'ojos', 'detalle'], fondo: 'bg-naranjo-claro' },
+  { id: 'cuerpo', nombre: 'Cuerpo', emoji: '🐛', categorias: ['paleta', 'textura', 'cuello', 'espalda', 'pies'], fondo: 'bg-petroleo-claro' },
+  { id: 'mundo', nombre: 'Su mundo', emoji: '🏞️', categorias: ['fondo', 'comida'], fondo: 'bg-amarillo/25' },
+  { id: 'conjuntos', nombre: 'Conjuntos', emoji: '🦸', categorias: ['conjunto'], fondo: 'bg-coral/15' },
 ]
 
 /** Una tarjeta de la tienda: una pieza o uno de sus colores (todos vienen con la pieza). */
@@ -67,16 +73,21 @@ const colorPuesto = (a: AparienciaCiempi, t: Tarjeta) => {
   return !t.color || (a.variantes[parte] ?? VARIANTES[t.item.id][0].id) === t.color.id
 }
 const llevaTarjeta = (a: AparienciaCiempi, t: Tarjeta) => lleva(a, t.item) && colorPuesto(a, t)
+/** ¿Ya es suyo? Un conjunto también, si ya tiene todas sus piezas (no le queda nada por pagar). */
+const esSuya = (inventario: string[], t: Tarjeta) =>
+  loTiene(inventario, t.item.id) || (t.item.categoria === 'conjunto' && precioDe(t.item, inventario) === 0)
 /** Lo que se ve de Ciempi (sin nombre ni género). */
 const look = (a: AparienciaCiempi) => JSON.stringify([...PARTES.map((p) => a[p]), a.variantes, a.criatura])
 
 /**
- * Armario y tienda de Ciempi (solo los diseños nuevos). Tocar algo se lo
- * prueba; si ya es suyo, se lo pone; si no, abajo aparece qué falta comprar.
- * «Volver a lo mío» deshace las pruebas. Un conjunto se prueba entero y se
- * compra como pack.
+ * La tienda y el ropero de Ciempi: una sola pantalla con dos modos (2.6).
+ * En la tienda solo está lo que todavía no tiene: tocar algo se lo prueba y
+ * abajo aparece qué falta comprar («Volver a lo mío» deshace las pruebas; un
+ * conjunto se prueba entero y se compra como pack). Lo comprado sale de la
+ * tienda y queda en su ropero, donde tocar algo se lo pone y se guarda.
  */
-export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
+export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, alVolver }: Props) {
+  const enTienda = modo === 'tienda'
   const repos = useRepositorios()
   const tranquilo = perfil.ajustes.modoTranquilo
   const [seccion, setSeccion] = useState(SECCIONES[0])
@@ -135,8 +146,25 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
     setCategoria(s.categorias[0])
   }
 
+  // Al pasar de la tienda al ropero (o al revés), se deshacen las pruebas.
+  useEffect(() => {
+    setProbando(guardado.current)
+    setConjunto(null)
+    setAviso(null)
+    setEstreno(null)
+  }, [modo])
+
   const elegir = (t: Tarjeta) => {
     setEstreno(null)
+    if (!enTienda) {
+      // Ropero: se lo pone al tiro, sobre lo que tiene guardado.
+      const puesta = conColor(guardado.current, t)
+      setAviso(t.item.categoria === 'paleta' && guardado.current.textura !== SIN_ESTAMPADO ? 'Quitamos el estampado para que se vean los colores.' : null)
+      setConjunto(null)
+      setProbando(puesta)
+      if (puedePonerse(puesta, inventario)) void guardar(puesta)
+      return
+    }
     setAviso(t.item.categoria === 'paleta' && probando.textura !== SIN_ESTAMPADO ? 'Quitamos el estampado para que se vean los colores.' : null)
     setConjunto(t.item.categoria === 'conjunto' ? t.item : null)
     setProbando(conColor(probando, t))
@@ -253,13 +281,27 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
     if (limpio !== perfil.ciempi.nombre) void guardar({ ...guardado.current, nombre: limpio })
   }
 
-  const tarjetas = tarjetasDe(categoria)
+  const tarjetas = tarjetasDe(categoria).filter((t) => esSuya(inventario, t) !== enTienda)
+  const animar = tranquilo ? '' : 'transition active:scale-95'
+  const irALaTienda = () => alCambiarModo('tienda')
   const categorias = CATEGORIAS.filter((c) => seccion.categorias.includes(c.id)).sort((a, b) => seccion.categorias.indexOf(a.id) - seccion.categorias.indexOf(b.id))
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <Encabezado alVolver={alVolver} titulo={`Mi ${perfil.ciempi.nombre}`}>
-        <Monedas cantidad={perfil.monedas} />
+      <Encabezado alVolver={alVolver} titulo={enTienda ? 'Tienda' : 'Mi ropero'}>
+        {enTienda ? (
+          <span className="flex shrink-0 items-center gap-1 rounded-full bg-amarillo px-3.5 py-1 text-2xl font-bold text-tinta shadow-md apaisado:py-0.5 apaisado:text-xl" aria-label={`${perfil.monedas} monedas`}>
+            🪙 {perfil.monedas}
+          </span>
+        ) : (
+          <Monedas cantidad={perfil.monedas} />
+        )}
+        <button
+          onClick={() => alCambiarModo(enTienda ? 'ropero' : 'tienda')}
+          className={`flex shrink-0 items-center gap-1 rounded-full px-3 py-2 text-sm font-bold shadow-sm apaisado:py-1.5 ${enTienda ? 'bg-petroleo text-white' : 'bg-naranjo text-white'} ${animar}`}
+        >
+          <span aria-hidden>{enTienda ? '👕' : '🛍️'}</span> {enTienda ? 'Ropero' : 'Tienda'}
+        </button>
       </Encabezado>
 
       {/* En horizontal: Ciempi fijo a la izquierda; a la derecha las secciones y la grilla con su propio scroll. */}
@@ -281,7 +323,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
               </p>
             )}
             {/* En «Criaturas», «Volver a lo mío» está en la barra de abajo (aquí taparía el aviso). */}
-            {cambiado && !enCriaturas && (
+            {enTienda && cambiado && !enCriaturas && (
               <button onClick={volverALoMio} className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1.5 font-bold text-petroleo shadow-sm active:scale-95">
                 ↺ Volver a lo mío
               </button>
@@ -343,7 +385,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
                 role="tab"
                 aria-selected={seccion.id === s.id}
                 onClick={() => irA(s)}
-                className={`flex min-w-0 flex-col items-center rounded-2xl px-0.5 py-2 text-xs font-bold leading-tight apaisado:py-1.5 apaisado:text-xs ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : 'bg-white text-tinta shadow-sm'}`}
+                className={`flex min-w-0 flex-col items-center rounded-2xl px-0.5 py-2 text-xs font-bold leading-tight apaisado:py-1.5 apaisado:text-xs ${animar} ${seccion.id === s.id ? 'bg-petroleo text-white shadow-md' : `${s.fondo} text-tinta shadow-sm`}`}
               >
                 <span className="text-2xl apaisado:text-xl" aria-hidden>
                   {s.emoji}
@@ -357,6 +399,9 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
             <TiendaCriaturas
               probando={probando}
               puesta={perfil.ciempi}
+              modo={modo}
+              alIrATienda={irALaTienda}
+              tranquilo={tranquilo}
               inventario={inventario}
               monedas={perfil.monedas}
               ocupado={ocupado}
@@ -385,29 +430,41 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
             </div>
           )}
           {aviso && <p className="rounded-2xl bg-amarillo/40 px-3 py-2 text-sm font-bold">{aviso}</p>}
-          {categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y sale más barato que comprar cada cosa.</p>}
+          {enTienda && categoria === 'conjunto' && <p className="text-sm text-tinta-suave">Un conjunto viste a Ciempi entero y sale más barato que comprar cada cosa.</p>}
 
-          {!enCriaturas && (
-          <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 apaisado:min-h-0 apaisado:flex-1 apaisado:grid-cols-4 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-1 apaisado:pb-24">
+          {!enCriaturas && tarjetas.length === 0 && (
+            <Vacio fondo={seccion.fondo} enTienda={enTienda} alIrALaTienda={irALaTienda}>
+              {enTienda ? '¡Ya tienes todo aquí! 🎉' : `Todavía no tienes ${(CATEGORIAS.find((c) => c.id === categoria)?.nombre ?? 'nada').toLowerCase()}.`}
+            </Vacio>
+          )}
+          {!enCriaturas && tarjetas.length > 0 && (
+          <ul className={`grid grid-cols-3 gap-2.5 rounded-3xl p-2.5 ${seccion.fondo} apaisado:min-h-0 apaisado:flex-1 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-2 apaisado:pb-24`}>
             {tarjetas.map((t) => {
-              const suyo = loTiene(inventario, t.item.id)
               const puesto = llevaTarjeta(perfil.ciempi, t)
               const elegido = llevaTarjeta(probando, t) && (t.item.categoria !== 'conjunto' || conjunto?.id === t.item.id || puesto)
-              const ahorro = !suyo ? ahorroDe(t.item, inventario) : 0
+              const precio = precioDe(t.item, inventario)
+              const alcanza = perfil.monedas >= precio
+              const ahorro = enTienda ? ahorroDe(t.item, inventario) : 0
               return (
                 <li key={t.clave}>
                   <button
                     onClick={() => elegir(t)}
                     aria-pressed={elegido}
-                    className={`flex w-full flex-col items-center gap-1 rounded-2xl bg-white p-2 pb-2.5 shadow-sm transition active:scale-95 ${elegido ? 'ring-4 ring-petroleo' : ''}`}
+                    className={`relative flex h-full w-full flex-col items-center gap-1 rounded-2xl bg-white p-1.5 pb-2 shadow-md ${animar} ${elegido ? 'ring-4 ring-petroleo' : ''}`}
                   >
+                    {enTienda && esNuevo(t.item.id) && <SelloNuevo />}
                     <Miniatura tarjeta={t} base={probando} />
                     <span className="text-center text-sm font-bold leading-tight">{t.color ? t.color.nombre : t.item.nombre}</span>
-                    {t.color && <span className="-mt-1 text-center text-[11px] leading-tight text-tinta-suave">{t.item.nombre}</span>}
-                    <span className={`text-xs font-bold ${puesto ? 'text-verde' : suyo ? 'text-petroleo' : 'text-naranjo'}`}>
-                      {puesto ? '✓ Puesto' : suyo ? 'Usar' : `🪙 ${precioDe(t.item, inventario)}`}
-                    </span>
-                    {ahorro > 0 && <span className="-mt-1 text-[11px] font-bold text-verde">Ahorras {ahorro}</span>}
+                    {t.color && <span className="-mt-1 text-center text-xs leading-tight text-tinta-suave">{t.item.nombre}</span>}
+                    {enTienda ? (
+                      <>
+                        <Precio precio={precio} alcanza={alcanza} />
+                        {!alcanza && <span className="-mt-0.5 text-[11px] font-bold leading-tight text-tinta-suave">Te faltan {precio - perfil.monedas}</span>}
+                        {alcanza && ahorro > 0 && <span className="-mt-0.5 text-[11px] font-bold text-verde">Ahorras {ahorro}</span>}
+                      </>
+                    ) : (
+                      <span className={`mt-auto text-xs font-bold ${puesto ? 'text-verde' : 'text-petroleo'}`}>{puesto ? '✓ Puesto' : 'Ponérmelo'}</span>
+                    )}
                   </button>
                 </li>
               )
@@ -437,7 +494,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
         </div>
       )}
 
-      {!enCriaturas && pendientes.length > 0 && (
+      {enTienda && !enCriaturas && pendientes.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl flex-col gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
           <div className="flex items-center gap-2">
             <p className="min-w-0 flex-1 text-sm">
@@ -483,7 +540,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
 
 /** Dibujo chico de cada cosa de la tienda: su Ciempi con la pieza puesta, de cerca. */
 function Miniatura({ tarjeta, base }: { tarjeta: Tarjeta; base: AparienciaCiempi }) {
-  const caja = 'h-16 w-full apaisado:h-12'
+  const caja = 'h-24 w-full apaisado:h-[4.5rem]'
   const { item } = tarjeta
   if (item.categoria === 'fondo')
     return (
@@ -501,3 +558,4 @@ function Miniatura({ tarjeta, base }: { tarjeta: Tarjeta; base: AparienciaCiempi
     return <MiniaturaAccesorio item={item} apariencia={conColor(base, tarjeta)} color={tarjeta.color?.id} className={caja} />
   return <MiniaturaCiempi apariencia={conColor(base, tarjeta)} categoria={item.categoria} className={caja} />
 }
+

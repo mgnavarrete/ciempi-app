@@ -30,7 +30,8 @@ interface Props {
   alAjustes: () => void
   alAgregarLibro?: () => void
   /** Abrir la tienda/armario de Ciempi (no se ofrece a un adulto mirando). */
-  alPersonalizar?: () => void
+  /** Abre la tienda o el ropero de Ciempi (sin esto, un adulto mirando: no hay botones). */
+  alAbrirCiempi?: (modo: 'tienda' | 'ropero') => void
   /** Volver (admin o sin conexión). En la app del niño no hay: salir está en Ajustes. */
   alVolver?: () => void
   /** Modo admin: los niños del adulto, para compartirles un libro. */
@@ -40,7 +41,7 @@ interface Props {
 }
 
 /** Los libros y textos del niño, con su avance. */
-export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alPersonalizar, alVolver, ninosDelAdulto = [], alAutorizar }: Props) {
+export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes, alAgregarLibro, alAbrirCiempi, alVolver, ninosDelAdulto = [], alAutorizar }: Props) {
   const repos = useRepositorios()
   const [libros, setLibros] = useState<LibroEnBiblioteca[] | null>(null)
   // Adulto: cambiar el nivel de un libro o compartirlo con otro niño.
@@ -107,7 +108,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
 
       <div className="mx-auto w-full max-w-3xl flex-1 overflow-y-auto px-5 pb-8 pt-3">
         <AvisoVoz className="mb-3" />
-        <PortadaCiempi perfil={perfil} alPersonalizar={alPersonalizar} />
+        <PortadaCiempi perfil={perfil} alAbrir={alAbrirCiempi} />
         <div className="mb-4 flex items-center justify-between gap-3">
           <h1 className="text-2xl font-bold">{modo === 'admin' ? 'Su biblioteca' : 'Mis libros'}</h1>
           {alAgregarLibro && (

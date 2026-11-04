@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BotonPrincipal, BotonSecundario } from '../ui/comunes'
+import { Precio, SelloNuevo, Vacio } from './tiendaUi'
 import { ahorroDe, buscarItem, loTiene, precioDe, soloDesbloqueo, type AparienciaCiempi } from './catalogo'
 import { ESPECIES, especieDeItem, variantesDe, variantesDePaquete, miniaturaDe, type EspecieCriatura, type EspecieId } from './criaturas'
 
@@ -9,8 +10,14 @@ import { ESPECIES, especieDeItem, variantesDe, variantesDePaquete, miniaturaDe, 
  * probando. Tocar una tarjeta solo prueba (no guarda ni cobra). Comprar no
  * pone la criatura: después aparece «¡Usar ahora!». Toda compra muestra el
  * desglose y pide confirmación; `precioVisto` es el total mostrado.
+ *
+ * En la tienda solo están las que no tiene; en el ropero, solo las suyas
+ * (tocar una se la pone y se guarda, sin precios ni paquetes).
  */
 interface Props {
+  modo: 'tienda' | 'ropero'
+  alIrATienda: () => void
+  tranquilo?: boolean
   probando: AparienciaCiempi
   /** Lo guardado (lo que tiene puesto). */
   puesta: AparienciaCiempi
@@ -44,9 +51,16 @@ export function desglose(itemId: string, inventario: string[]) {
 }
 
 export function TiendaCriaturas(props: Props) {
-  const { probando, puesta, inventario, monedas, ocupado, especie } = props
-  const e = ESPECIES.find((x) => x.id === especie)!
-  const bloqueada = soloDesbloqueo(e.item, inventario)
+  const { probando, puesta, inventario, monedas, ocupado, modo } = props
+  const enTienda = modo === 'tienda'
+  const animar = props.tranquilo ? '' : 'transition active:scale-95'
+  // Tienda: lo que le falta. Ropero: lo suyo.
+  const mostrar = (item: string) => loTiene(inventario, item) !== enTienda
+  const especies = ESPECIES.filter((x) => x.id === props.especie || variantesDe(x.id).some((v) => mostrar(v.item)))
+  const visibles = enTienda ? especies : especies.filter((x) => variantesDe(x.id).some((v) => mostrar(v.item)))
+  const e = visibles.find((x) => x.id === props.especie) ?? visibles[0]
+  const especie = e?.id
+  const variantes = e ? variantesDe(e.id).filter((v) => mostrar(v.item)) : []
   const [confirmar, setConfirmar] = useState<string | null>(null)
   // Recién comprada (sin ponérsela todavía): ofrece «¡Usar ahora!».
   const [recien, setRecien] = useState<string | null>(null)
@@ -55,8 +69,9 @@ export function TiendaCriaturas(props: Props) {
   const elegidaEsDeEsta = !!elegida && especieDeItem(elegida)?.id === especie
   const suya = !!elegida && loTiene(inventario, elegida)
   const yaPuesta = probando.criatura === puesta.criatura
-  const paquete = buscarItem(e.paquete)!
-  const tienePaquete = loTiene(inventario, e.paquete)
+  const bloqueada = !!e && soloDesbloqueo(e.item, inventario)
+  const paquete = e ? buscarItem(e.paquete)! : null
+  const tienePaquete = !!e && loTiene(inventario, e.paquete)
 
   const comprar = async (itemId: string) => {
     const { total } = desglose(itemId, inventario)
@@ -67,14 +82,18 @@ export function TiendaCriaturas(props: Props) {
   return (
     <div className="flex flex-col gap-3">
       <div className="-mx-5 flex shrink-0 gap-2 overflow-x-auto px-5 pb-1 apaisado:mx-0 apaisado:px-0" role="tablist" aria-label="Criaturas">
-        <button
-          aria-pressed={probando.criatura === null}
-          onClick={() => props.alProbar(null)}
-          className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:py-1.5 apaisado:text-sm ${probando.criatura === null ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
-        >
-          <img src="/ciempi.svg" alt="" className="h-6 w-6 rounded-full bg-white p-0.5" /> Ciempi
-        </button>
-        {ESPECIES.map((x) => (
+        {/* En el ropero, volver a ser Ciempi (sin criatura). */}
+        {!enTienda && (
+          <button
+            aria-pressed={puesta.criatura === null}
+            onClick={() => props.alUsar(null)}
+            disabled={ocupado}
+            className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:py-1.5 apaisado:text-sm ${animar} ${puesta.criatura === null ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
+          >
+            <img src="/ciempi.svg" alt="" className="h-6 w-6 rounded-full bg-white p-0.5" /> Ciempi {puesta.criatura === null && '✓'}
+          </button>
+        )}
+        {visibles.map((x) => (
           <button
             key={x.id}
             role="tab"
@@ -88,36 +107,61 @@ export function TiendaCriaturas(props: Props) {
         ))}
       </div>
 
+      {!e && (
+        <Vacio fondo="bg-verde-claro" enTienda={enTienda} alIrALaTienda={props.alIrATienda}>
+          {enTienda ? '¡Ya tienes todo aquí! 🎉' : 'Todavía no tienes criaturas.'}
+        </Vacio>
+      )}
+      {e && variantes.length === 0 && (
+        <Vacio fondo="bg-verde-claro" enTienda={enTienda} alIrALaTienda={props.alIrATienda}>
+          ¡Ya tienes todos los colores de {e.nombre}! 🎉
+        </Vacio>
+      )}
 
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 apaisado:grid-cols-3 apaisado:gap-2">
-        {variantesDe(especie).map((v) => {
+      {e && variantes.length > 0 && (
+      <ul className="grid grid-cols-3 gap-2.5 rounded-3xl bg-verde-claro p-2.5 apaisado:gap-2 apaisado:p-2">
+        {variantes.map((v) => {
           const item = buscarItem(v.item)!
           const esSuya = loTiene(inventario, v.item)
           const esPuesta = puesta.criatura === v.item
-          const probada = probando.criatura === v.item
+          const probada = enTienda ? probando.criatura === v.item : esPuesta
+          const precio = precioDe(item, inventario)
           return (
             <li key={v.id}>
               <button
                 onClick={() => {
                   setRecien(null)
-                  props.alProbar(v.item)
+                  if (enTienda) props.alProbar(v.item)
+                  else props.alUsar(v.item)
                 }}
+                disabled={!enTienda && ocupado}
                 aria-pressed={probada}
-                className={`flex w-full flex-col items-center gap-1 rounded-2xl bg-white p-2 pb-2.5 shadow-sm transition active:scale-95 ${probada ? 'ring-4 ring-petroleo' : ''}`}
+                className={`relative flex h-full w-full flex-col items-center gap-1 rounded-2xl bg-white p-1.5 pb-2 shadow-md ${animar} ${probada ? 'ring-4 ring-petroleo' : ''}`}
               >
-                <MiniaturaCriatura varianteId={v.item} especie={e} bloqueada={bloqueada} />
-                <span className="text-center font-bold leading-tight">{item.nombre}</span>
-                <span className={`text-sm font-bold ${esPuesta ? 'text-verde' : esSuya ? 'text-petroleo' : bloqueada ? 'text-tinta-suave' : 'text-naranjo'}`}>
-                  {esPuesta ? '✓ Puesta' : esSuya ? 'Tuya' : bloqueada ? '🔒 Bloqueada' : `🪙 ${precioDe(item, inventario)}`}
-                </span>
+                {enTienda && !bloqueada && <SelloNuevo />}
+                <MiniaturaCriatura varianteId={v.item} especie={e} bloqueada={bloqueada} className="h-24 w-full apaisado:h-[4.5rem]" />
+                <span className="text-center text-sm font-bold leading-tight">{item.nombre}</span>
+                {!enTienda ? (
+                  <span className={`mt-auto text-xs font-bold ${esPuesta ? 'text-verde' : 'text-petroleo'}`}>{esPuesta ? '✓ Puesta' : 'Ponérmela'}</span>
+                ) : esSuya ? (
+                  <span className="mt-auto text-xs font-bold text-petroleo">Tuya</span>
+                ) : bloqueada ? (
+                  <span className="mt-auto text-xs font-bold text-tinta-suave">🔒 Leyendo</span>
+                ) : (
+                  <>
+                    <Precio precio={precio} alcanza={monedas >= precio} />
+                    {monedas < precio && <span className="-mt-0.5 text-[11px] font-bold leading-tight text-tinta-suave">Te faltan {precio - monedas}</span>}
+                  </>
+                )}
               </button>
             </li>
           )
         })}
       </ul>
+      )}
 
-      {/* El paquete: todos los colores de la especie, con su ahorro. */}
-      {!bloqueada && (
+      {/* El paquete: todos los colores de la especie, con su ahorro (solo en la tienda). */}
+      {enTienda && e && paquete && !bloqueada && !tienePaquete && (
         <div className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm">
           <span className="text-3xl" aria-hidden>
             📦
@@ -142,7 +186,7 @@ export function TiendaCriaturas(props: Props) {
       )}
 
       {/* Lo que se puede hacer con la que se está probando. */}
-      {(!yaPuesta || (elegidaEsDeEsta && !suya)) && (
+      {enTienda && (!yaPuesta || (elegidaEsDeEsta && !suya)) && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl flex-col gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
           {elegida && !suya && !soloDesbloqueo(elegida, inventario) && (
             <p className="text-sm">

@@ -8,8 +8,8 @@ import { useVozDeCiempi } from './vozDeCiempi'
 
 interface Props {
   perfil: PerfilNino
-  /** Sin esto (un adulto mirando), no se muestra el botón de personalizar. */
-  alPersonalizar?: () => void
+  /** Abre la tienda o su ropero. Sin esto (un adulto mirando), no se muestran los botones. */
+  alAbrir?: (modo: 'tienda' | 'ropero') => void
 }
 
 /**
@@ -24,7 +24,7 @@ const SALUDAR = 'A04'
  * Ciempi del niño sobre su fondo, arriba de "Mis libros". Está vivo: ondula y
  * pestañea, y cada tanto salta, saluda o baila. Si el niño lo toca, lo saluda.
  */
-export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
+export function PortadaCiempi({ perfil, alAbrir }: Props) {
   const { ciempi } = perfil
   const tranquilo = perfil.ajustes.modoTranquilo
   useVozDeCiempi(ciempi.genero)
@@ -46,15 +46,41 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
     ciempi.genero === 'nina' ? `Soy ${ciempi.nombre}, tu amiga lectora.` : ciempi.genero === 'nino' ? `Soy ${ciempi.nombre}, tu amigo lector.` : `Soy ${ciempi.nombre}.`
 
   return (
-    <section className="relative mb-5 h-72 overflow-hidden rounded-3xl shadow-sm apaisado:h-52" aria-label={`${ciempi.nombre}, tu Ciempi`}>
+    <section className="relative mb-5 h-80 overflow-hidden rounded-3xl shadow-sm apaisado:h-56" aria-label={`${ciempi.nombre}, tu Ciempi`}>
       <FondoTema fondo={ciempi.fondo} />
-      <p className="absolute left-3 top-3 z-10 max-w-[calc(100%-12rem)] rounded-2xl rounded-bl-sm bg-white/95 px-3 py-2 text-sm leading-snug shadow-sm">
-        <span className="font-bold">¡Hola, {perfil.apodo}!</span> {presentacion}
-      </p>
-      {alPersonalizar && (
-        <button onClick={alPersonalizar} className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-4 py-2 font-bold text-petroleo shadow-md active:scale-95">
-          🎨 Personalizar
-        </button>
+      <div className="absolute left-3 top-3 z-10 flex max-w-[calc(100%-10.5rem)] flex-col items-start gap-2">
+        <p className="rounded-2xl rounded-bl-sm bg-white/95 px-3 py-2 text-sm leading-snug shadow-sm">
+          <span className="font-bold">¡Hola, {perfil.apodo}!</span> {presentacion}
+        </p>
+        {/* Su cartel: cómo se llama su Ciempi y cuántas monedas tiene. */}
+        <p className="flex max-w-full items-center gap-2 rounded-xl border-2 border-[#8a5a2b] bg-[#c98e52] px-3 py-1 font-bold text-white shadow-md [text-shadow:0_1px_0_#8a5a2b]">
+          <span className="truncate">{ciempi.nombre}</span>
+          <span className="shrink-0 rounded-full bg-white/95 px-2 text-naranjo [text-shadow:none]" aria-label={`${perfil.monedas} monedas`}>
+            🪙 {perfil.monedas}
+          </span>
+        </p>
+      </div>
+      {alAbrir && (
+        <div className="absolute right-3 top-3 z-10 flex w-36 flex-col gap-2 apaisado:w-40">
+          <button
+            onClick={() => alAbrir('tienda')}
+            className="flex items-center gap-2 rounded-2xl border-b-4 border-[#a34b18] bg-naranjo px-3 py-2 text-left font-bold text-white shadow-md transition active:translate-y-0.5 active:border-b-2"
+          >
+            <span className="text-2xl" aria-hidden>
+              🛍️
+            </span>
+            Tienda
+          </button>
+          <button
+            onClick={() => alAbrir('ropero')}
+            className="flex items-center gap-2 rounded-2xl border-b-4 border-[#1a5966] bg-petroleo px-3 py-2 text-left font-bold text-white shadow-md transition active:translate-y-0.5 active:border-b-2"
+          >
+            <span className="text-2xl" aria-hidden>
+              👕
+            </span>
+            Mi ropero
+          </button>
+        </div>
       )}
       {/* Sus frutas (la comida que eligió en la tienda), en el pasto delante de Ciempi. */}
       <svg viewBox="0 0 120 40" className="pointer-events-none absolute bottom-1 right-[3%] z-0 w-[34%] max-w-[170px] apaisado:right-[7%] apaisado:w-[19%]" aria-hidden>
