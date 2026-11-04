@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import { paletaDe, type AparienciaClasica as AparienciaCiempi } from './clasico'
+import { FONDOS_IMAGEN, rutaFondo } from './fondos'
 
 /**
  * Piezas de Ciempi dibujadas en SVG (sin imágenes: livianas, offline y
@@ -698,6 +699,18 @@ function ComidaSvg({ comida, x, y, tamano }: { comida: string; x: number; y: num
 
 /** Escena de fondo (llena el contenedor, recortando lo que sobre). */
 export function FondoTema({ fondo, className = '' }: { fondo: string; className?: string }) {
+  // Fondos ilustrados: la imagen cubre el contenedor anclada abajo (el suelo queda siempre a la vista).
+  if (FONDOS_IMAGEN.has(fondo))
+    return (
+      <img
+        src={rutaFondo(fondo)}
+        alt=""
+        aria-hidden
+        draggable={false}
+        decoding="async"
+        className={`absolute inset-0 h-full w-full select-none object-cover object-bottom ${className}`}
+      />
+    )
   return (
     <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice" className={`absolute inset-0 h-full w-full ${className}`} aria-hidden>
       <Escena fondo={fondo} />
