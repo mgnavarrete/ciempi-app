@@ -1,0 +1,829 @@
+[
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-nada",
+    "nombre": "Sin gorro",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-jockey",
+    "nombre": "Jockey",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-gorro-lana",
+    "nombre": "Gorro de lana",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-corona",
+    "nombre": "Corona",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mago",
+    "nombre": "Mago",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-astronauta",
+    "nombre": "Astronauta",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-flor",
+    "nombre": "Flor",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-orejas-gato",
+    "nombre": "Orejas de gato",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-lazo",
+    "nombre": "Lazo de fiesta",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-tiara",
+    "nombre": "Tiara aurora",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-sol",
+    "nombre": "Sombrero de verano",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mariposa",
+    "nombre": "Mariposa del jardín",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-audifonos",
+    "nombre": "Audífonos musicales",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-pirata",
+    "nombre": "Capitán de cuentos",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-guardian",
+    "nombre": "Casco guardián",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-unicornio",
+    "nombre": "Unicornio de nubes",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-super",
+    "nombre": "Peinado Superman",
+    "coleccion": "superman"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-harry",
+    "nombre": "Peinado Harry",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-hermione",
+    "nombre": "Rizos Hermione",
+    "coleccion": "hermione"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-kitty",
+    "nombre": "Orejas y lazo Hello Kitty",
+    "coleccion": "hello-kitty"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-barbie",
+    "nombre": "Peinado Barbie",
+    "coleccion": "barbie"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mickey",
+    "nombre": "Orejas Mickey Mouse",
+    "coleccion": "mickey"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-minnie",
+    "nombre": "Orejas Minnie Mouse",
+    "coleccion": "minnie"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mascara-antifaz",
+    "nombre": "Antifaz guardián",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mascara-spider",
+    "nombre": "Máscara Spider-Man",
+    "coleccion": "spider-man"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mascara-iron",
+    "nombre": "Máscara Iron Man",
+    "coleccion": "iron-man"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mascara-voldemort",
+    "nombre": "Máscara Voldemort",
+    "coleccion": "voldemort"
+  },
+  {
+    "categoria": "cabeza",
+    "id": "cabeza-mascara-kitty",
+    "nombre": "Carita Hello Kitty",
+    "coleccion": "hello-kitty"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-nada",
+    "nombre": "Sin lentes",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes",
+    "nombre": "Lentes de lector",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes-sol",
+    "nombre": "Lentes de sol",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes-corazon",
+    "nombre": "Corazones",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes-estrella",
+    "nombre": "Estrellas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes-fuego",
+    "nombre": "Llamas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-lentes-arcoiris",
+    "nombre": "Arcoíris",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-visor",
+    "nombre": "Visor cósmico",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-harry",
+    "nombre": "Lentes y cicatriz Harry",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-cicatriz",
+    "nombre": "Cicatriz de Harry",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "cara",
+    "id": "cara-barbie",
+    "nombre": "Lentes Barbie",
+    "coleccion": "barbie"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-zapatillas",
+    "nombre": "Zapatillas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-botas",
+    "nombre": "Botas de lluvia",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-pantuflas",
+    "nombre": "Pantuflas de conejo",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-futbol",
+    "nombre": "Zapatillas de fútbol",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-patines",
+    "nombre": "Patines retro",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-bailarina",
+    "nombre": "Ballerinas con lazo",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-espaciales",
+    "nombre": "Botas lunares",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-botines",
+    "nombre": "Botines de aventura",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-aleatorios",
+    "nombre": "Un zapato en cada pie",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-spider",
+    "nombre": "Zapatillas Spider-Man",
+    "coleccion": "spider-man"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-iron",
+    "nombre": "Botas Iron Man",
+    "coleccion": "iron-man"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-super",
+    "nombre": "Botas Superman",
+    "coleccion": "superman"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-kitty",
+    "nombre": "Zapatillas Hello Kitty",
+    "coleccion": "hello-kitty"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-barbie",
+    "nombre": "Ballerinas Barbie",
+    "coleccion": "barbie"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-mickey",
+    "nombre": "Zapatos Mickey Mouse",
+    "coleccion": "mickey"
+  },
+  {
+    "categoria": "pies",
+    "id": "pies-minnie",
+    "nombre": "Zapatos Minnie Mouse",
+    "coleccion": "minnie"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-nada",
+    "nombre": "Sin accesorio",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-explorador",
+    "nombre": "Mochila exploradora",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-cohete",
+    "nombre": "Mochila cohete",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-nube",
+    "nombre": "Mochila nube",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-libro",
+    "nombre": "Libro de hechizos",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-estrella",
+    "nombre": "Bolso estrella",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "capa-guardian",
+    "nombre": "Capa guardiana",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "capa-celeste",
+    "nombre": "Capa de magia celeste",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "capa-aurora",
+    "nombre": "Capa aurora",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-spider",
+    "nombre": "Mochila Spider-Man",
+    "coleccion": "spider-man"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-iron",
+    "nombre": "Propulsores Iron Man",
+    "coleccion": "iron-man"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-super",
+    "nombre": "Capa Superman",
+    "coleccion": "superman"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-gryffindor",
+    "nombre": "Bufanda Gryffindor",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-slytherin",
+    "nombre": "Bufanda Slytherin",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-ravenclaw",
+    "nombre": "Bufanda Ravenclaw",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-hufflepuff",
+    "nombre": "Bufanda Hufflepuff",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-hermione",
+    "nombre": "Bolso de Hermione",
+    "coleccion": "hermione"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-voldemort",
+    "nombre": "Capa Voldemort",
+    "coleccion": "voldemort"
+  },
+  {
+    "categoria": "espalda",
+    "id": "espalda-barbie",
+    "nombre": "Bolso Barbie",
+    "coleccion": "barbie"
+  },
+  {
+    "categoria": "paleta",
+    "id": "clasica",
+    "nombre": "Clásico",
+    "coleccion": "ciempi",
+    "paleta": [
+      "#ff9e32",
+      "#83cda4",
+      "#ffd137"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "oceano",
+    "nombre": "Océano",
+    "coleccion": "ciempi",
+    "paleta": [
+      "#66c7ce",
+      "#83b9dc",
+      "#8bd6c5"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "rosa",
+    "nombre": "Jardín rosa",
+    "coleccion": "ciempi",
+    "paleta": [
+      "#eea2c7",
+      "#c5a9e4",
+      "#f4d780"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "bosque",
+    "nombre": "Bosque",
+    "coleccion": "ciempi",
+    "paleta": [
+      "#a6c96c",
+      "#8dc8a3",
+      "#e8c471"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "noche",
+    "nombre": "Noche mágica",
+    "coleccion": "ciempi",
+    "paleta": [
+      "#9480c9",
+      "#709cc3",
+      "#e1bc75"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "spider",
+    "nombre": "Spider-Man",
+    "coleccion": "spider-man",
+    "paleta": [
+      "#cb3a45",
+      "#3066a4",
+      "#cb3a45"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "iron",
+    "nombre": "Iron Man",
+    "coleccion": "iron-man",
+    "paleta": [
+      "#bd3a37",
+      "#deb555",
+      "#a53a37"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "super",
+    "nombre": "Superman",
+    "coleccion": "superman",
+    "paleta": [
+      "#efb372",
+      "#3278bb",
+      "#cf4045"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "gryffindor",
+    "nombre": "Colores Gryffindor",
+    "coleccion": "harry-potter",
+    "paleta": [
+      "#953b42",
+      "#e5ba55",
+      "#953b42"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "slytherin",
+    "nombre": "Colores Slytherin",
+    "coleccion": "harry-potter",
+    "paleta": [
+      "#32715d",
+      "#bec8c8",
+      "#32715d"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "ravenclaw",
+    "nombre": "Colores Ravenclaw",
+    "coleccion": "harry-potter",
+    "paleta": [
+      "#345a89",
+      "#c09a60",
+      "#345a89"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "hufflepuff",
+    "nombre": "Colores Hufflepuff",
+    "coleccion": "harry-potter",
+    "paleta": [
+      "#d8b44e",
+      "#35404b",
+      "#d8b44e"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "harry",
+    "nombre": "Harry Potter",
+    "coleccion": "harry-potter",
+    "paleta": [
+      "#edbc8d",
+      "#953b42",
+      "#e5ba55"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "hermione",
+    "nombre": "Hermione",
+    "coleccion": "hermione",
+    "paleta": [
+      "#edc4a3",
+      "#9d4544",
+      "#e5bd69"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "voldemort",
+    "nombre": "Voldemort",
+    "coleccion": "voldemort",
+    "paleta": [
+      "#d7dfce",
+      "#46685b",
+      "#263e3c"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "kitty",
+    "nombre": "Hello Kitty",
+    "coleccion": "hello-kitty",
+    "paleta": [
+      "#fff2df",
+      "#ef9eb5",
+      "#e55d7b"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "barbie",
+    "nombre": "Barbie",
+    "coleccion": "barbie",
+    "paleta": [
+      "#f5b8d5",
+      "#ec6fab",
+      "#eec967"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "mickey",
+    "nombre": "Mickey Mouse",
+    "coleccion": "mickey",
+    "paleta": [
+      "#efb776",
+      "#c84642",
+      "#e8c24c"
+    ]
+  },
+  {
+    "categoria": "paleta",
+    "id": "minnie",
+    "nombre": "Minnie Mouse",
+    "coleccion": "minnie",
+    "paleta": [
+      "#f2b2ce",
+      "#d66d99",
+      "#f6dfb7"
+    ]
+  },
+  {
+    "categoria": "textura",
+    "id": "liso",
+    "nombre": "Liso",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "pecas",
+    "nombre": "Pecas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "estrellas",
+    "nombre": "Estrellas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "corazones",
+    "nombre": "Corazones",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "escamas",
+    "nombre": "Escamas suaves",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "rayas",
+    "nombre": "Rayas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "textura",
+    "id": "telarana",
+    "nombre": "Traje Spider-Man",
+    "coleccion": "spider-man"
+  },
+  {
+    "categoria": "textura",
+    "id": "arana",
+    "nombre": "Emblemas de araña",
+    "coleccion": "spider-man"
+  },
+  {
+    "categoria": "textura",
+    "id": "armadura",
+    "nombre": "Armadura Iron Man",
+    "coleccion": "iron-man"
+  },
+  {
+    "categoria": "textura",
+    "id": "escudo-super",
+    "nombre": "Escudos Superman",
+    "coleccion": "superman"
+  },
+  {
+    "categoria": "textura",
+    "id": "reliquias",
+    "nombre": "Rayos mágicos",
+    "coleccion": "harry-potter"
+  },
+  {
+    "categoria": "textura",
+    "id": "serpiente",
+    "nombre": "Serpientes",
+    "coleccion": "voldemort"
+  },
+  {
+    "categoria": "textura",
+    "id": "lazos-kitty",
+    "nombre": "Lazos Hello Kitty",
+    "coleccion": "hello-kitty"
+  },
+  {
+    "categoria": "textura",
+    "id": "textura-mickey",
+    "nombre": "Botones Mickey",
+    "coleccion": "mickey"
+  },
+  {
+    "categoria": "textura",
+    "id": "textura-minnie",
+    "nombre": "Lunares Minnie",
+    "coleccion": "minnie"
+  },
+  {
+    "categoria": "expresion",
+    "id": "alegre",
+    "nombre": "Alegre",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "expresion",
+    "id": "guino",
+    "nombre": "Guiño",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "expresion",
+    "id": "feliz",
+    "nombre": "Ojos felices",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "expresion",
+    "id": "curioso",
+    "nombre": "Curioso",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "expresion",
+    "id": "dormilon",
+    "nombre": "Dormilón",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "ojos",
+    "id": "oscuro",
+    "nombre": "Azul oscuro",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "ojos",
+    "id": "azul",
+    "nombre": "Azules",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "ojos",
+    "id": "verde",
+    "nombre": "Verdes",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "ojos",
+    "id": "miel",
+    "nombre": "Miel",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "ojos",
+    "id": "violeta",
+    "nombre": "Violetas",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "boca",
+    "id": "sonrisa",
+    "nombre": "Sonrisa",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "boca",
+    "id": "risa",
+    "nombre": "Risa",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "boca",
+    "id": "sorpresa",
+    "nombre": "Sorpresa",
+    "coleccion": "ciempi"
+  },
+  {
+    "categoria": "boca",
+    "id": "beso",
+    "nombre": "Besito",
+    "coleccion": "ciempi"
+  }
+]

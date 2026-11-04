@@ -1,0 +1,359 @@
+[
+  {
+    "id": "b06-jockey",
+    "nombre": "Jockey aventurero",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/jockey.svg",
+    "anterior": "cabeza-jockey",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-lana",
+    "nombre": "Lana de invierno",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/lana.svg",
+    "anterior": "cabeza-gorro-lana",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-corona",
+    "nombre": "Corona de cuentos",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/corona.svg",
+    "anterior": "cabeza-corona",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-mago",
+    "nombre": "Mago de punta dormida",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/mago.svg",
+    "anterior": "cabeza-mago",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-astronauta",
+    "nombre": "Casco orbital abierto",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/astronauta.svg",
+    "anterior": "cabeza-astronauta",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": false,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-flor",
+    "nombre": "Flor de pétalos suaves",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/flor.svg",
+    "anterior": "cabeza-flor",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-gato",
+    "nombre": "Orejas de gato",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/gato.svg",
+    "anterior": "cabeza-orejas-gato",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-lazo",
+    "nombre": "Lazo de seda",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/lazo.svg",
+    "anterior": "cabeza-lazo",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-tiara",
+    "nombre": "Tiara aurora",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/tiara.svg",
+    "anterior": "cabeza-tiara",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-verano",
+    "nombre": "Sombrero de verano",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/verano.svg",
+    "anterior": "cabeza-sol",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-mariposa",
+    "nombre": "Mariposa del jardín",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/mariposa.svg",
+    "anterior": "cabeza-mariposa",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-audifonos",
+    "nombre": "Audífonos acolchados",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/audifonos.svg",
+    "anterior": "cabeza-audifonos",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-pirata",
+    "nombre": "Capitán de cuentos",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/pirata.svg",
+    "anterior": "cabeza-pirata",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-guardian",
+    "nombre": "Casco guardián",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/guardian.svg",
+    "anterior": "cabeza-guardian",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-unicornio",
+    "nombre": "Diadema unicornio",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/unicornio.svg",
+    "anterior": "cabeza-unicornio",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-kitty",
+    "nombre": "Orejas y lazo Kitty",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/kitty.svg",
+    "anterior": "cabeza-kitty",
+    "collections": [
+      "hello-kitty"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-mickey",
+    "nombre": "Orejas Mickey",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/mickey.svg",
+    "anterior": "cabeza-mickey",
+    "collections": [
+      "mickey"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-minnie",
+    "nombre": "Orejas Minnie con lazo",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/minnie.svg",
+    "anterior": "cabeza-minnie",
+    "collections": [
+      "minnie"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-aventura",
+    "nombre": "Explorador del bosque",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/aventura.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-rana",
+    "nombre": "Gorro ranita",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/rana.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-boina",
+    "nombre": "Boina de artista",
+    "batch": "B06",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/gorros/v1/boina.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  }
+]

@@ -1,0 +1,307 @@
+[
+  {
+    "id": "B01",
+    "nombre": "Bufandas",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "maestro": "bufanda-calco32",
+    "variantesProducidas": 6,
+    "informe": "../revisiones/B01-calco32-produccion-v1/REVISION.md",
+    "aprobadoParaProduccion": false,
+    "cierre": "./aprobaciones/B01-v1.md",
+    "observacionesAceptadas": [
+      "Líneas finas entre tonos del calco: conocidas y aceptadas en esta revisión.",
+      "Superposición parcial de flecos cortos con zapatilla delantera: conocida y aceptada; conservar para revisión final de compatibilidad."
+    ]
+  },
+  {
+    "id": "B02",
+    "nombre": "Paletas y variantes",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "informe": "../revisiones/B02-auditoria-paletas-v1/PROPUESTA.md",
+    "planAprobado": true,
+    "revisionActual": "../revisiones/B02-cierre-v1/REVISION.md",
+    "aprobacionPlan": {
+      "fuente": "Usuario: apruebo tu propuesta",
+      "alcance": "Plan de reorganización B02; no aprobación automática de nuevos colores"
+    },
+    "aprobadoParaProduccion": false,
+    "cierre": "./aprobaciones/B02-v1.md"
+  },
+  {
+    "id": "B03",
+    "nombre": "Expresiones, ojos y bocas",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "informe": "../revisiones/B03-auditoria-expresiones-v1/PROPUESTA.md",
+    "revisionActual": "../revisiones/B03-produccion-ia-v1/REVISION.md",
+    "expresionesProvisionales": 14,
+    "aprobadoParaProduccion": false,
+    "validacion": "../revisiones/B03-produccion-ia-v1/pruebas/matriz.json",
+    "fuenteAprobacion": "Mensaje actual del usuario: B01, B02, B03, B04 y B05 ya están aprobados artísticamente para el laboratorio."
+  },
+  {
+    "id": "B04",
+    "nombre": "Lentes",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B04-B05-produccion-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B04",
+      "B05"
+    ],
+    "cierre": "./aprobaciones/B04-B05-v1.md",
+    "observacionesAceptadas": [
+      "Arcoíris pierde diferenciación en pequeño; mejora futura no bloqueante.",
+      "Llamas puede leerse como alas; mejora futura no bloqueante."
+    ]
+  },
+  {
+    "id": "B05",
+    "nombre": "Peinados",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B04-B05-produccion-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B04",
+      "B05"
+    ],
+    "cierre": "./aprobaciones/B04-B05-v1.md",
+    "observacionesAceptadas": [
+      "Arcoíris pierde diferenciación en pequeño; mejora futura no bloqueante.",
+      "Llamas puede leerse como alas; mejora futura no bloqueante."
+    ]
+  },
+  {
+    "id": "B06",
+    "nombre": "Gorros",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+    "proyectoConjunto": [
+      "B06",
+      "B07",
+      "B08"
+    ],
+    "validacion": "../revisiones/B06-B07-B08-ia-v2/pruebas/matriz.json",
+    "disenosProvisionales": 6,
+    "revisionAnteriorRechazada": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+    "metodo": "Generación real IA, PNG transparente, composición por planos",
+    "cierre": "./aprobaciones/B06-B08-v2.md",
+    "observacionesAceptadas": [
+      "Gatita: abertura limita parte de los párpados.",
+      "Bosque: sujeción parcialmente oculta.",
+      "PNG transparentes, sin edición de trazados.",
+      "Máscaras completas con expresión e iris fijos."
+    ],
+    "personajesPendientes": [
+      "Spider-Man exacto no generado; salida rechazada por herramienta.",
+      "Voldemort y Mickey exactos no se consideran completados por las caracterizaciones originales."
+    ]
+  },
+  {
+    "id": "B07",
+    "nombre": "Máscaras",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+    "proyectoConjunto": [
+      "B06",
+      "B07",
+      "B08"
+    ],
+    "validacion": "../revisiones/B06-B07-B08-ia-v2/pruebas/matriz.json",
+    "disenosProvisionales": 5,
+    "revisionAnteriorRechazada": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+    "metodo": "Generación real IA, PNG transparente, composición por planos",
+    "cierre": "./aprobaciones/B06-B08-v2.md",
+    "observacionesAceptadas": [
+      "Gatita: abertura limita parte de los párpados.",
+      "Bosque: sujeción parcialmente oculta.",
+      "PNG transparentes, sin edición de trazados.",
+      "Máscaras completas con expresión e iris fijos."
+    ],
+    "personajesPendientes": [
+      "Spider-Man exacto no generado; salida rechazada por herramienta.",
+      "Voldemort y Mickey exactos no se consideran completados por las caracterizaciones originales."
+    ]
+  },
+  {
+    "id": "B08",
+    "nombre": "Capas",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": true,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B06-B07-B08-ia-v2/REVISION.md",
+    "proyectoConjunto": [
+      "B06",
+      "B07",
+      "B08"
+    ],
+    "validacion": "../revisiones/B06-B07-B08-ia-v2/pruebas/matriz.json",
+    "disenosProvisionales": 2,
+    "revisionAnteriorRechazada": "../revisiones/B06-B07-B08-produccion-v1/REVISION.md",
+    "metodo": "Generación real IA, PNG transparente, composición por planos",
+    "cierre": "./aprobaciones/B06-B08-v2.md",
+    "observacionesAceptadas": [
+      "Gatita: abertura limita parte de los párpados.",
+      "Bosque: sujeción parcialmente oculta.",
+      "PNG transparentes, sin edición de trazados.",
+      "Máscaras completas con expresión e iris fijos."
+    ],
+    "personajesPendientes": [
+      "Spider-Man exacto no generado; salida rechazada por herramienta.",
+      "Voldemort y Mickey exactos no se consideran completados por las caracterizaciones originales."
+    ]
+  },
+  {
+    "id": "B09",
+    "nombre": "Mochilas y bolsos",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": false,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B09-B12-ia-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "validacion": "../revisiones/B09-B12-ia-v1/pruebas/matriz.json",
+    "validacionInterfaz": "../revisiones/B09-B12-ia-v1/pruebas/interfaz.json",
+    "metodo": "Generación real IA, PNG y composición sobre geometría original",
+    "disenosProvisionales": 5
+  },
+  {
+    "id": "B10",
+    "nombre": "Calzado",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": false,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B09-B12-ia-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "validacion": "../revisiones/B09-B12-ia-v1/pruebas/matriz.json",
+    "validacionInterfaz": "../revisiones/B09-B12-ia-v1/pruebas/interfaz.json",
+    "metodo": "Generación real IA, PNG y composición sobre geometría original",
+    "disenosProvisionales": 5
+  },
+  {
+    "id": "B11",
+    "nombre": "Estampados",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": false,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B09-B12-ia-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "validacion": "../revisiones/B09-B12-ia-v1/pruebas/matriz.json",
+    "validacionInterfaz": "../revisiones/B09-B12-ia-v1/pruebas/interfaz.json",
+    "metodo": "Generación real IA, PNG y composición sobre geometría original",
+    "disenosProvisionales": 5
+  },
+  {
+    "id": "B12",
+    "nombre": "Trajes y conjuntos completos",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "etapas": [
+      "diseño maestro",
+      "variantes",
+      "preparación vectorial",
+      "pruebas HTML"
+    ],
+    "aprobado": false,
+    "aprobadoParaProduccion": false,
+    "revisionActual": "../revisiones/B09-B12-ia-v1/REVISION.md",
+    "proyectoConjunto": [
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "validacion": "../revisiones/B09-B12-ia-v1/pruebas/matriz.json",
+    "validacionInterfaz": "../revisiones/B09-B12-ia-v1/pruebas/interfaz.json",
+    "metodo": "Generación real IA, PNG y composición sobre geometría original",
+    "disenosProvisionales": 10,
+    "personajesOriginalesNuevos": 2
+  }
+]

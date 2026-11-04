@@ -1,0 +1,201 @@
+[
+  {
+    "id": "b06-ia-jockey",
+    "nombre": "Jockey Chispa",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-jockey.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/gorro-jockey.png",
+    "fuenteSha256": "d9052523b786c8b754a364d66d75605474bb291c834edea3a30b99626b2f90fa",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      548,
+      79,
+      353.28000000000003,
+      235.52
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b06-jockey",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-dragon",
+    "nombre": "Draco abrigado",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-dragon.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/gorro-dragon.png",
+    "fuenteSha256": "c7264daa39ec2d1f05f993fe9cb72c7b8cd6d6378c7a76bd98c1d8769c46f133",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      523.5,
+      122.5,
+      384,
+      256
+    ],
+    "splitY": 280,
+    "rotation": 0,
+    "anterior": "b06-lana",
+    "novedad": true,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-mago",
+    "nombre": "Luna bibliotecaria",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-mago.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/gorro-mago.png",
+    "fuenteSha256": "456e065789433abd7262d8b57b57d21b6d1bd736463530a9de6fe4d084e9e065",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      558,
+      56,
+      353.28000000000003,
+      235.52
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b06-mago",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-aventura",
+    "nombre": "Cartógrafo de cuentos",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-aventura.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/gorro-aventura.png",
+    "fuenteSha256": "a5597e5ed37cd7c9d1efabbe039b9d9ce43b8990c047b4d0ff5ea35ad3825941",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      574,
+      70,
+      322.56,
+      215.04
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b06-aventura",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-pirata",
+    "nombre": "Capitán Brisa",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-pirata.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/gorro-pirata.png",
+    "fuenteSha256": "6039dcd76340f3558572f4b4964547098a5609c96d92e9f3e5d2fb6905ab8ece",
+    "dimensionesMaestro": [
+      1555,
+      1011
+    ],
+    "encuadre": [
+      568,
+      76,
+      326.55,
+      212.31
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b06-pirata",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-corona",
+    "nombre": "Corona de relatos",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/corona.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/corona.png",
+    "fuenteSha256": "756cedd223f8e7902ad3ac3b4bed7ddf91a40954551108356a1baaf1e6954321",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      575,
+      76,
+      322.56,
+      215.04
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": "b06-corona",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "soloPosterior": true
+  }
+]

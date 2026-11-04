@@ -1,0 +1,98 @@
+[
+  {
+    "id": "b08-ia-heroica",
+    "nombre": "Brisa heroica",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-heroica.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/capa-heroica.png",
+    "fuenteSha256": "cff953968739094c1514d330738a6cd44172352dab8a241e1089a2f03fbbd750",
+    "dimensionesMaestro": [
+      1555,
+      1011
+    ],
+    "encuadre": [
+      168,
+      198,
+      544.25,
+      353.84999999999997
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": "b08-super",
+    "novedad": false,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Escarlata",
+        "tono": null
+      },
+      {
+        "id": "luna",
+        "nombre": "Luna · índigo",
+        "tono": 245
+      },
+      {
+        "id": "aurora",
+        "nombre": "Aurora · orquídea",
+        "tono": 285
+      },
+      {
+        "id": "oceano",
+        "nombre": "Océano · turquesa",
+        "tono": 177
+      }
+    ],
+    "centroRotacion": [
+      650,
+      440
+    ]
+  },
+  {
+    "id": "b08-ia-bosque",
+    "nombre": "Guardián del bosque",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-bosque.png",
+    "fuente": "../revisiones/B06-B07-B08-ia-v2/ia/capa-bosque.png",
+    "fuenteSha256": "8ff2b0a7cfcebbb1744bef3995b564092412b06b61d2a50e0a51630e8d12eb53",
+    "dimensionesMaestro": [
+      1555,
+      1011
+    ],
+    "encuadre": [
+      150,
+      198,
+      544.25,
+      353.84999999999997
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": "b08-bosque",
+    "novedad": true,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
+  }
+]

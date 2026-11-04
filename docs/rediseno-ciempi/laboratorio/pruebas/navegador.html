@@ -1,0 +1,31 @@
+<!doctype html><html><meta charset="utf-8"><title>Pruebas del laboratorio</title><pre id="result">RUNNING</pre><iframe src="../index.html" width="1200" height="900"></iframe><script type="module">
+const f=document.querySelector('iframe'),results=[];const assert=(name,ok)=>{results.push({name,ok:!!ok});if(!ok)throw Error(name);};
+try{
+for(let i=0;i<200;i++){if(f.contentWindow?.__lab)break;await new Promise(r=>setTimeout(r,50));}
+const w=f.contentWindow,d=f.contentDocument;assert('carga real de módulos y catálogo',w.__lab);const initial=w.__lab.current;
+const click=(s)=>{const e=d.querySelector(s);if(!e)throw Error('No existe '+s);e.click();};
+click('[data-item="bufanda-b-tecnica"]');assert('selección vector en revisión',w.__lab.selection.cuello==='bufanda-b-tecnica');
+click('[data-category="espalda"]');click('[data-item="espalda-explorador"]');assert('mochila y bufanda independientes',w.__lab.selection.espalda==='espalda-explorador'&&w.__lab.selection.cuello==='bufanda-b-tecnica');
+let xml=new DOMParser().parseFromString(w.__lab.current,'image/svg+xml');assert('ambos planos de bufanda y espalda',xml.querySelector('#lab-scarf-lab-neck-back')&&xml.querySelector('#lab-scarf-lab-neck-front')&&xml.querySelector('#back-accessory').children.length);
+click('#compare');assert('comparación visible y distinta',d.querySelectorAll('#views .view').length===2&&w.__lab.current!==w.__lab.previous);
+click('#detail');assert('ampliación de cuello',decodeURIComponent(d.querySelector('#views img').src).includes('440 270 460 320'));
+click('#dark');assert('fondo oscuro',d.body.classList.contains('dark'));
+assert('tamaños nominales',JSON.stringify([...d.querySelectorAll('#sizes img')].map(x=>x.width))==='[240,320]');
+click('[data-category="cabeza"]');const mask=w.__lab.env.groups.find(x=>x[0]==='cabeza')[2].find(x=>x.mask);click(`[data-item="${mask.id}"]`);click('[data-category="cara"]');assert('máscara restringe lentes',[...d.querySelectorAll('[data-item]')].some(x=>x.disabled));
+click('#reset');assert('restauración exacta',w.__lab.current===initial);assert('restauración de controles',!d.querySelector('#compare').checked&&!d.body.classList.contains('dark'));
+const env=w.__lab.env;let count=0;
+for(const [key,,items]of env.groups)for(const item of items){const s=w.__lab.renderCiempi(env,{...w.__lab.defaults,[key]:item.id});const doc=new DOMParser().parseFromString(s,'image/svg+xml');if(doc.querySelector('parsererror'))throw Error('XML '+item.id);count++;}
+assert('todas las opciones reales renderizan ('+count+')',count>100);
+for(const bag of env.groups.find(x=>x[0]==='espalda')[2]){
+ const svg=w.__lab.renderCiempi(env,{...w.__lab.defaults,cuello:'bufanda-b-tecnica',espalda:bag.id});const doc=new DOMParser().parseFromString(svg,'image/svg+xml');const ids=[...doc.querySelectorAll('[id]')].map(x=>x.id);assert('IDs únicos con '+bag.id,new Set(ids).size===ids.length);
+ for(const n of doc.querySelectorAll('*'))for(const a of n.attributes){for(const m of a.value.matchAll(/url\(#([^)]*)\)/g))if(!ids.includes(m[1]))throw Error('Referencia rota '+m[1]);if(a.localName==='href'&&a.value.startsWith('#')&&!ids.includes(a.value.slice(1)))throw Error('href roto');}
+}
+assert('conceptos raster no equipables',!env.neck.some(x=>x.id==='bufanda-acolchada'));
+assert('ninguna pieza vectorial marcada aprobada',!env.catalogo.recursos.some(x=>x.estado==='aprobado'));
+assert('doce batches',env.batches.length===12);
+const piece=env.neck.find(x=>x.id==='bufanda-b-tecnica'),saved=piece.svg;const p=new DOMParser().parseFromString(saved,'image/svg+xml');const stop=p.querySelector('stop');stop.setAttribute('data-color-role','test-material');piece.svg=new XMLSerializer().serializeToString(p);piece.variantes.push({id:'test',nombre:'Solo prueba en memoria',colores:{'test-material':'#123456'}});
+const recolored=w.__lab.renderCiempi(env,{...w.__lab.defaults,cuello:piece.id,variante:'test'});assert('mecanismo de color por función',recolored.includes('stop-color="#123456"'));piece.svg=saved;piece.variantes.pop();
+click('#reset');
+document.querySelector('#result').textContent=JSON.stringify({passed:true,results},null,2);document.documentElement.dataset.tests='passed';
+}catch(e){document.querySelector('#result').textContent=JSON.stringify({passed:false,error:e.message,results},null,2);document.documentElement.dataset.tests='failed';}
+</script></html>

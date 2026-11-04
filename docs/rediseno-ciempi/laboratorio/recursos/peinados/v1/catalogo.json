@@ -1,0 +1,204 @@
+[
+  {
+    "id": "b05-harry",
+    "nombre": "Harry · mechones libres",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/harry.svg",
+    "anterior": "cabeza-harry",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original",
+      "harry-potter"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-hermione",
+    "nombre": "Hermione · rizos grandes",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/hermione.svg",
+    "anterior": "cabeza-hermione",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original",
+      "hermione"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-super",
+    "nombre": "Superman · onda heroica",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/super.svg",
+    "anterior": "cabeza-super",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original",
+      "superman"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-barbie",
+    "nombre": "Barbie · ondas largas",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/barbie.svg",
+    "anterior": "cabeza-barbie",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original",
+      "barbie"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-flequillo",
+    "nombre": "Flequillo de cobre",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/flequillo.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-coletas",
+    "nombre": "Coletas saltarinas",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/coletas.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-trenza",
+    "nombre": "Trenza de aventura",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/trenza.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-monos",
+    "nombre": "Dos moños",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/monos.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-cresta",
+    "nombre": "Cresta de nube",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/cresta.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-ondas",
+    "nombre": "Ondas al lado",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/ondas.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b05-mechon",
+    "nombre": "Mechón travieso",
+    "batch": "B05",
+    "tipo": "peinado",
+    "archivo": "./recursos/peinados/v1/mechon.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "version": 1,
+    "compatibleGorros": [
+      "cabeza-nada"
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  }
+]

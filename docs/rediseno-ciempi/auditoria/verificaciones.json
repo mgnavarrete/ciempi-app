@@ -1,0 +1,127 @@
+[
+  {
+    "theme": "iron-man",
+    "palettes": 19,
+    "distinctImages": 18,
+    "groups": [
+      [
+        "clasica"
+      ],
+      [
+        "oceano"
+      ],
+      [
+        "rosa"
+      ],
+      [
+        "bosque"
+      ],
+      [
+        "noche"
+      ],
+      [
+        "spider"
+      ],
+      [
+        "iron"
+      ],
+      [
+        "super"
+      ],
+      [
+        "gryffindor"
+      ],
+      [
+        "slytherin"
+      ],
+      [
+        "ravenclaw"
+      ],
+      [
+        "hufflepuff"
+      ],
+      [
+        "harry",
+        "hermione"
+      ],
+      [
+        "voldemort"
+      ],
+      [
+        "kitty"
+      ],
+      [
+        "barbie"
+      ],
+      [
+        "mickey"
+      ],
+      [
+        "minnie"
+      ]
+    ]
+  },
+  {
+    "theme": "spider-man",
+    "palettes": 19,
+    "distinctImages": 11,
+    "groups": [
+      [
+        "clasica"
+      ],
+      [
+        "oceano"
+      ],
+      [
+        "rosa"
+      ],
+      [
+        "bosque"
+      ],
+      [
+        "noche"
+      ],
+      [
+        "spider",
+        "hufflepuff"
+      ],
+      [
+        "iron"
+      ],
+      [
+        "super"
+      ],
+      [
+        "gryffindor",
+        "ravenclaw",
+        "harry",
+        "hermione",
+        "voldemort",
+        "mickey",
+        "minnie"
+      ],
+      [
+        "slytherin"
+      ],
+      [
+        "kitty",
+        "barbie"
+      ]
+    ]
+  },
+  {
+    "expression": "guino",
+    "eyeColors": 5,
+    "distinctImages": 5
+  },
+  {
+    "expression": "feliz",
+    "eyeColors": 5,
+    "distinctImages": 1
+  },
+  {
+    "expression": "dormilon",
+    "eyeColors": 5,
+    "distinctImages": 5
+  }
+]

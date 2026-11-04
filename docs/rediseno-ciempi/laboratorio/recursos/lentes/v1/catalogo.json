@@ -1,0 +1,297 @@
+[
+  {
+    "id": "b04-lector",
+    "nombre": "Lector turquesa",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/lector.svg",
+    "anterior": "cara-lentes",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-redondos",
+    "nombre": "Redondos · Harry",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/redondos.svg",
+    "anterior": "cara-harry",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      },
+      {
+        "id": "bronce",
+        "nombre": "Bronce mágico",
+        "colores": {
+          "#5d778e": "#c8a16b",
+          "#243e5b": "#806246"
+        }
+      }
+    ],
+    "collections": [
+      "ciempi-original",
+      "harry-potter"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-corazones",
+    "nombre": "Corazones",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/corazones.svg",
+    "anterior": "cara-lentes-corazon",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      },
+      {
+        "id": "barbie",
+        "nombre": "Rosa Barbie",
+        "colores": {
+          "#ef91ac": "#f3b1d4",
+          "#bd4776": "#ce6c9d"
+        },
+        "anterior": "cara-barbie"
+      }
+    ],
+    "collections": [
+      "ciempi-original",
+      "barbie"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-estrellas",
+    "nombre": "Estrellas de fiesta",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/estrellas.svg",
+    "anterior": "cara-lentes-estrella",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": true,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-llamas",
+    "nombre": "Llamas de sol",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/llamas.svg",
+    "anterior": "cara-lentes-fuego",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": true,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-arcoiris",
+    "nombre": "Arcoíris",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/arcoiris.svg",
+    "anterior": "cara-lentes-arcoiris",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-visor",
+    "nombre": "Visor cósmico",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/visor.svg",
+    "anterior": "cara-visor",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": true,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-aviador",
+    "nombre": "Aviador",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/aviador.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-mariposa",
+    "nombre": "Mariposa",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/mariposa.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-deportivo",
+    "nombre": "Deportivo",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/deportivo.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": true,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-cientifico",
+    "nombre": "Científico",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/cientifico.svg",
+    "anterior": null,
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": false,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  },
+  {
+    "id": "b04-sol",
+    "nombre": "Sol clásico",
+    "batch": "B04",
+    "tipo": "lentes",
+    "archivo": "./recursos/lentes/v1/sol.svg",
+    "anterior": "cara-lentes-sol",
+    "estado": "Aprobado artísticamente para el laboratorio — pendiente de integración futura al juego",
+    "opaco": true,
+    "version": 1,
+    "variantes": [
+      {
+        "id": "original",
+        "nombre": "Original",
+        "colores": {}
+      }
+    ],
+    "collections": [
+      "ciempi-original"
+    ],
+    "aprobadoParaLaboratorio": true,
+    "aprobadoParaProduccion": false
+  }
+]

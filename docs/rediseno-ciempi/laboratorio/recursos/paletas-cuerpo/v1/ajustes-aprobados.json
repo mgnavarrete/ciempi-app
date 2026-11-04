@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "aprobadoPara": "laboratorio",
+  "paletas": [
+    {
+      "id": "bosque",
+      "colors": [
+        "#c9df91",
+        "#a6c96c",
+        "#88af51",
+        "#a3cfb0",
+        "#6faf8b",
+        "#4d8c6c",
+        "#f8da91",
+        "#e8c471",
+        "#ccab58"
+      ],
+      "fuente": "B02-maestros-paletas-v1/bosque-b02-m1"
+    },
+    {
+      "id": "ravenclaw",
+      "colors": [
+        "#7497bd",
+        "#4f76a3",
+        "#3b5e88",
+        "#cdae80",
+        "#c09a60",
+        "#a38352",
+        "#7497bd",
+        "#4f76a3",
+        "#3b5e88"
+      ],
+      "fuente": "B02-maestros-paletas-v1/ravenclaw-b02-m1"
+    },
+    {
+      "id": "voldemort",
+      "colors": [
+        "#dfe5d8",
+        "#d7dfce",
+        "#b7beaf",
+        "#92b1a0",
+        "#648b78",
+        "#4b6e5e",
+        "#6e9993",
+        "#426e68",
+        "#31534f"
+      ],
+      "fuente": "B02-maestros-paletas-v1/voldemort-b02-m1"
+    }
+  ]
+}

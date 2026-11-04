@@ -1,0 +1,169 @@
+[
+  {
+    "id": "b10-robot",
+    "nombre": "Botas Lumen",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/robot.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/robot-bota.png",
+    "fuenteSha256": "d623724d3de2e193a9b909d58b3d3d750205dea6dc3410d214deb604ae40a054",
+    "recorte": {
+      "left": 115,
+      "top": 137,
+      "width": 1110,
+      "height": 918
+    },
+    "dimensiones": [
+      512,
+      423
+    ],
+    "anterior": "pies-iron",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "robot"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-aventura",
+    "nombre": "Botas de travesía",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/aventura.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/aventura-bota.png",
+    "fuenteSha256": "5856adf291cd40d67d022b41b838a89848f6a8d892f2200de33cc4c73c9aed48",
+    "recorte": {
+      "left": 73,
+      "top": 101,
+      "width": 1205,
+      "height": 973
+    },
+    "dimensiones": [
+      512,
+      413
+    ],
+    "anterior": "pies-botines",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "aventura"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-lluvia",
+    "nombre": "Botas de charcos",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/lluvia.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/lluvia-bota.png",
+    "fuenteSha256": "cd907943500236ddc5e73868b9ed6b95befad48d1f8dad2e4d0df06b2a63cd1f",
+    "recorte": {
+      "left": 117,
+      "top": 64,
+      "width": 1158,
+      "height": 1031
+    },
+    "dimensiones": [
+      512,
+      456
+    ],
+    "anterior": "pies-botas",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "lluvia"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-mago",
+    "nombre": "Zapatos de luna",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/mago.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/mago-zapato-ajuste.png",
+    "fuenteSha256": "5da401ded96ecffe4b5507f2c6f5cf75b51c8a26492e33040c9b888c99f31c31",
+    "recorte": {
+      "left": 86,
+      "top": 167,
+      "width": 1400,
+      "height": 751
+    },
+    "dimensiones": [
+      512,
+      275
+    ],
+    "anterior": "pies-bailarina",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "mago"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24,
+    "alto": 70
+  },
+  {
+    "id": "b10-deportiva",
+    "nombre": "Deportivas Brisa",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/deportiva.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/deportiva-zapato-ajuste.png",
+    "fuenteSha256": "a41bf8555e5b878990b397d8179bcb86efeb532599c41f18dfaaa606ebcf5f0c",
+    "recorte": {
+      "left": 29,
+      "top": 56,
+      "width": 1458,
+      "height": 925
+    },
+    "dimensiones": [
+      512,
+      325
+    ],
+    "anterior": "pies-futbol",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "deportiva"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24,
+    "alto": 70
+  }
+]

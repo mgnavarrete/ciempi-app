@@ -1,0 +1,130 @@
+[
+  {
+    "id": "b08-guardian",
+    "nombre": "Capa guardiana",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/guardian.svg",
+    "anterior": "capa-guardian",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-celeste",
+    "nombre": "Capa de magia celeste",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/celeste.svg",
+    "anterior": "capa-celeste",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-aurora",
+    "nombre": "Capa aurora",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/aurora.svg",
+    "anterior": "capa-aurora",
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-super",
+    "nombre": "Capa Superman",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/super.svg",
+    "anterior": "espalda-super",
+    "collections": [
+      "superman"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-voldemort",
+    "nombre": "Manto de mago oscuro",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/voldemort.svg",
+    "anterior": "espalda-voldemort",
+    "collections": [
+      "voldemort"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-real",
+    "nombre": "Capa real de terciopelo",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/real.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-bosque",
+    "nombre": "Capa corta de explorador",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/bosque.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  },
+  {
+    "id": "b08-lluvia",
+    "nombre": "Capa de lluvia y cuentos",
+    "batch": "B08",
+    "version": "1",
+    "estado": "En revisión artística",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/capas/v1/lluvia.svg",
+    "anterior": null,
+    "collections": [
+      "ciempi-original"
+    ],
+    "antenna": true,
+    "svg": true
+  }
+]

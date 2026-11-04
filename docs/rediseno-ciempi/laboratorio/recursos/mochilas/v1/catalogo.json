@@ -1,0 +1,182 @@
+[
+  {
+    "id": "b09-robot",
+    "nombre": "Propulsor Lumen",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/robot.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/robot-mochila.png",
+    "fuenteSha256": "34c55934628f50cc429d8cdb881993aa9d1a1073879a57bfbdfc18e8241cdb28",
+    "recorte": {
+      "left": 299,
+      "top": 96,
+      "width": 1030,
+      "height": 818
+    },
+    "dimensiones": [
+      768,
+      610
+    ],
+    "anterior": "espalda-iron",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "robot"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      162.82552083333334
+    ]
+  },
+  {
+    "id": "b09-aventura",
+    "nombre": "Mochila Cartógrafo",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/aventura.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/aventura-mochila.png",
+    "fuenteSha256": "81c37fc86016acc50706ffbf20104f12070ded284d283691983b5376fa006876",
+    "recorte": {
+      "left": 173,
+      "top": 64,
+      "width": 1170,
+      "height": 957
+    },
+    "dimensiones": [
+      768,
+      628
+    ],
+    "anterior": "espalda-explorador",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "aventura"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      167.63020833333334
+    ]
+  },
+  {
+    "id": "b09-draco",
+    "nombre": "Mochila Draco",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/draco.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/draco-mochila.png",
+    "fuenteSha256": "0569bd7f1e9d8e07608267a6df23d73556c0daf94cbafdc8987157dc0c57d66d",
+    "recorte": {
+      "left": 25,
+      "top": 51,
+      "width": 1233,
+      "height": 1120
+    },
+    "dimensiones": [
+      768,
+      698
+    ],
+    "anterior": "espalda-nube",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "draco"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      186.31510416666666
+    ]
+  },
+  {
+    "id": "b09-mago",
+    "nombre": "Bolso Luna",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/mago.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/mago-bolso.png",
+    "fuenteSha256": "6c726d201ff25f7b4a68551be191822f09785753a65e613f24ebc306b5b49e25",
+    "recorte": {
+      "left": 221,
+      "top": 101,
+      "width": 1254,
+      "height": 843
+    },
+    "dimensiones": [
+      768,
+      516
+    ],
+    "anterior": "espalda-libro",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "mago"
+    ],
+    "encuadre": [
+      370,
+      250,
+      215,
+      144.453125
+    ]
+  },
+  {
+    "id": "b09-raton",
+    "nombre": "Bolso Ratón Atlas",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/raton.png",
+    "fuente": "../revisiones/B09-B12-ia-v1/ia/raton-bolso.png",
+    "fuenteSha256": "0ccb8922d53d8daaa025fc6fad85e4043f4f918fd6a6507bcd42f09426646296",
+    "recorte": {
+      "left": 105,
+      "top": 82,
+      "width": 1164,
+      "height": 1039
+    },
+    "dimensiones": [
+      768,
+      686
+    ],
+    "anterior": "espalda-hermione",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "raton"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      183.11197916666666
+    ]
+  }
+]
