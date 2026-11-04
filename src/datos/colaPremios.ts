@@ -95,7 +95,11 @@ export function crearColaPremios(opciones: {
 
   function procesar(): Promise<void> {
     if (enCurso) return enCurso
-    enCurso = (async () => {
+    // Ojo: con la cola vacía la función async termina sin esperar nada, y su `finally`
+    // correría ANTES de asignar `enCurso`, que quedaría tomado para siempre (la cola no
+    // volvería a enviar hasta recargar la app: el bug de 2.6.0). Por eso se libera aparte.
+    let terminada = false
+    const corrida = (async () => {
       try {
         for (;;) {
           const pedido = leer()[0]
@@ -120,10 +124,16 @@ export function crearColaPremios(opciones: {
           avisar(pedido, final)
         }
       } finally {
-        enCurso = null
+        terminada = true
       }
     })()
-    return enCurso
+    if (terminada) return corrida
+    enCurso = corrida
+    const liberar = () => {
+      if (enCurso === corrida) enCurso = null
+    }
+    corrida.then(liberar, liberar)
+    return corrida
   }
 
   return {

@@ -45,6 +45,19 @@ function reloj() {
 }
 
 describe('cola de premios', () => {
+  it('revisar la cola vacía (al iniciar sesión) no la deja trabada: lo pedido después sale y se paga', async () => {
+    // Bug de 2.6.0: `reintentar()` con la cola vacía dejaba `enCurso` tomado para siempre
+    // y ningún premio salía hasta recargar la app (con E2 no se veía ni sumaba nada).
+    const red = servidor(() => ({ tipo: 'ok', otorgadas: 2, monedas: 12 }))
+    const cola = crearColaPremios({ enviar: red.enviar, almacen: almacenEnMemoria(), programar: reloj().programar })
+    await cola.reintentar()
+    await cola.reintentar()
+    expect(await cola.reclamar(pedido(1, { esperadas: 0 }))).toEqual({ estado: 'otorgado', otorgadas: 2, monedas: 12 })
+    expect(await cola.reclamar(pedido(2, { esperadas: 0 }))).toEqual({ estado: 'otorgado', otorgadas: 2, monedas: 12 })
+    expect(red.recibidos.map((p) => p.operationId)).toEqual(['operacion-1', 'operacion-2'])
+    expect(cola.enCola()).toEqual([])
+  })
+
   it('sin conexión: queda pendiente, guardada en el dispositivo, y suma lo esperado', async () => {
     const almacen = almacenEnMemoria()
     const red = servidor(() => {
