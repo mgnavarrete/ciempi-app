@@ -919,3 +919,12 @@ Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuent
 - **Saldos:** no se tocan. Lo ya pagado con 2.4.1 se paga como relectura.
 - **Cuncuna:** se quitaron los textos «Lee 6 cuentos…» y «Leíste muchos cuentos»; ahora solo se compra con 40 monedas.
 - **Pendiente:** revisar los precios con datos reales de E2.
+
+## 15. CIEMPI 2.6.0 (4-nov-2026)
+- **Tienda y Mi ropero, separados** (una sola pantalla con `modo`):
+  - la tienda muestra solo lo que no se tiene;
+  - el ropero, solo lo propio, y se pone al tocarlo.
+  - Grilla de 3 columnas con miniaturas más grandes, sello «Nuevo», precio destacado y «Te faltan N».
+- **Inicio:** botones Tienda y Mi ropero, y un cartel con el nombre y las monedas. Capturas en `docs/expansion-v6/tienda/2.6/`.
+- **Comidas nuevas generadas con IA** (10, WebP de 3–6 KB) en `public/ciempi-v2/comida/`. `Comida` usa la imagen y cae al SVG anterior si falta. Antes y después en `docs/expansion-v6/frutas/`.
+- **Sin cambios** en precios, compras, servidor ni economía (sigue E2 si está activado en `server/.env`).
