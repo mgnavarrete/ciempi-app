@@ -1,0 +1,12 @@
+{
+  "id": "mochila-aventura-sin-correas",
+  "archivo": "mochila-aventura-sin-correas.png",
+  "prompt": "mochila-aventura-sin-correas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/aventura.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-ef9c-7e70-bb09-8cd8b0ae4e7f/exec-0fba98ee-9987-4c4c-9ea9-2bc0a3a749a8.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:42:39.687Z",
+  "segundos": 68
+}

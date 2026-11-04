@@ -1,0 +1,12 @@
+{
+  "id": "mochila-draco-sin-correas",
+  "archivo": "mochila-draco-sin-correas.png",
+  "prompt": "mochila-draco-sin-correas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/draco.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-ef9e-7353-94d7-e85be6450fd0/exec-718d7a2a-8190-450d-8b3a-a6a92b1bc503.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:42:58.670Z",
+  "segundos": 87
+}
