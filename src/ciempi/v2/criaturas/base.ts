@@ -24,8 +24,12 @@ import { idVariante, varianteDatos, type EspecieCriatura, type VarianteDatos } f
 import { MAESTRO_IDS, PIEZA_DE_ROL, PIES_CIEMPI, cargarJson, crear, imagen, parse, pieza, radioNucleo, recurso, type Encuadre, type Manifiesto } from './comun'
 import { aplicarPatronBase, recolorCabeza } from './patrones'
 import { aplicarRostroIA, prepararRostroIA } from './rostros'
-import { tenirVariante } from './tinte'
+import { HORNEADAS } from './horneadas.generado'
+import { tenirVariante, usarHorneadas } from './tinte'
 import { baseCriaturaV4, esV4, posprocesarV4, type BaseV4 } from './v4'
+
+// Piezas ya teñidas por adelantado (el tinte en vivo tarda más de ~300 ms con la CPU frenada 4×).
+usarHorneadas(HORNEADAS)
 
 /** Lo que usa el compositor del vestuario cargado (además de `Entorno`). */
 type Env = Entorno & { base: string; masks: { id: string; ocultaRostro?: boolean }[] }
@@ -168,7 +172,9 @@ export function componerCriatura(seleccion: Seleccion, varianteId: string): stri
   if (!env || !base) throw Error('Criatura sin preparar: usar prepararCriatura() antes')
   const especieId = v.especie
   const res = resolver(aApariencia(seleccion), especieId)
-  const efectiva: Seleccion = { ...seleccion }
+  // `criatura`, `varianteEspecie` y `especie` (aSeleccion con criatura) no son vestuario: no llegan a renderCiempi.
+  const { criatura: _c, varianteEspecie: _v, especie: _e, ...vestuario } = seleccion
+  const efectiva: Seleccion = { ...vestuario }
   for (const [parte, id] of Object.entries(res.visibles) as [Parte, string][]) efectiva[PARTE_A_CLAVE[parte]!] = diseno(id)
   const alasPuestas = efectiva.espalda === 'dragon-alas'
   const svg = renderCiempi({ ...env, base: base.svg } as Env, alasPuestas ? { ...efectiva, espalda: 'espalda-nada' } : efectiva)

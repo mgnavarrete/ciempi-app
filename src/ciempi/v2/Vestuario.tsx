@@ -24,7 +24,7 @@ export interface EscenaViva extends Escena {prefijo:string;clave:string;cabeza:s
  /** Posiciones de los segmentos con la forma de la criatura (solo criaturas; Ciempi usa las de pose.ts). */
  posiciones?:(n:number)=>{role:number;x:number;y:number}[]}
 /** La criatura puesta (`variante:<id>`) o null (Ciempi). Tolerante: la apariencia antigua no la trae. */
-export const criaturaDe=(a:AparienciaCiempi):string|null=>(a as AparienciaCiempi&{criatura?:string|null}).criatura??null
+export const criaturaPuesta=(a:AparienciaCiempi):string|null=>(a as AparienciaCiempi&{criatura?:string|null}).criatura??null
 /**
  * Prepara la criatura de la apariencia (asíncrono, con caché) y dice cuál dibujar:
  * la criatura si está lista; mientras carga, la que se estaba dibujando (escena
@@ -44,7 +44,7 @@ export function useCriatura(criatura:string|null):string|null{
 interface Composicion{svg:string|null;rostro:(exp:string)=>string;forma:FormaCuerpo|undefined;key:string}
 /** El SVG del conjunto y sus expresiones: Ciempi (`renderCiempi`, el camino de siempre) o la criatura. */
 function useComposicion(env:Entorno|null,a:AparienciaCiempi):Composicion{
- const s=aSeleccion(a),usar=useCriatura(criaturaDe(a));const key=usar?JSON.stringify(s)+'|'+usar:JSON.stringify(s)
+ const s=aSeleccion(a),usar=useCriatura(criaturaPuesta(a));const key=usar?JSON.stringify(s)+'|'+usar:JSON.stringify(s)
  const svg=useMemo(()=>{try{return env?(usar?componerCriatura(s,usar):renderCiempi(env,s)):null}catch(e){console.error("Composición Ciempi:",e);return null}},[env,key]) // composición solo cuando cambia selección
  // El mismo conjunto con otra expresión, para que la animación cambie el gesto (se compone una vez por expresión).
  const rostro=useMemo(()=>{const cache=new Map<string,string>();return (exp:string)=>{if(!cache.has(exp))cache.set(exp,usar?componerCriatura({...s,expresion:exp},usar):renderCiempi(env!,{...s,expresion:exp}));return cache.get(exp)!}},[env,key])

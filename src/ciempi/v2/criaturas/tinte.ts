@@ -94,6 +94,15 @@ function destinosDe(v: Tintable, piezaId: string, claves: readonly string[] | nu
 }
 
 const tintes = new Map<string, Promise<string>>()
+/**
+ * Piezas teñidas por adelantado (scripts/criaturas/hornear.mjs): clave
+ * `<ruta en public/criaturas>|<pieza>|<claves>` → archivo horneado (PNG,
+ * los mismos píxeles que el tinte en vivo). Si una pieza no está horneada, se tiñe aquí.
+ */
+let horneadas: Readonly<Record<string, Readonly<Record<string, string>>>> = {}
+export function usarHorneadas(indice: typeof horneadas) { horneadas = indice }
+/** Lo teñido en esta página: [url original, variante, pieza, claves, blob: URL] (para hornear). */
+export const tintesHechos: [string, string, string, string, Promise<string>][] = []
 /** Cuántas piezas se tiñeron de verdad (para medir). */
 export const estadisticasTinte = { piezas: 0, ms: 0 }
 
@@ -105,6 +114,8 @@ export const estadisticasTinte = { piezas: 0, ms: 0 }
 export async function tenirVariante(url: string, bandasId: EspecieCriatura | 'torreta', v: Tintable, piezaId: string, claves: readonly string[] | null = null): Promise<string> {
   const destinos = destinosDe(v, piezaId, claves)
   if (!Object.keys(destinos).length) return url
+  const horneada = horneadas[v.id]?.[`${url.replace(/^\/criaturas\//, '')}|${piezaId}|${claves || ''}`]
+  if (horneada) return '/criaturas/' + horneada
   const k = `${url}|${v.id}|${piezaId}|${claves || ''}`
   if (!tintes.has(k)) {
     const p = (async () => {
@@ -132,6 +143,7 @@ export async function tenirVariante(url: string, bandasId: EspecieCriatura | 'to
     // Un fallo no queda en caché: se puede reintentar.
     p.catch(() => tintes.delete(k))
     tintes.set(k, p)
+    tintesHechos.push([url, v.id, piezaId, String(claves || ''), p])
   }
   return tintes.get(k)!
 }
