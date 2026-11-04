@@ -11,7 +11,7 @@
 // (hasta el labio delantero): la pierna tapa el interior y el borde trasero, y
 // el labio delantero tapa la pierna. Debajo, una sombra de contacto bajo la suela.
 //
-// Mochilas: ya no son una imagen fija en coordenadas absolutas. Viven DENTRO
+// Mochilas (v4.2, ver abajo): ya no son una imagen fija en coordenadas absolutas. Viven DENTRO
 // del grupo del segmento delantero (`mint-front`), así que siguen su posición,
 // giro y escala al crecer (pose.ts) y al animar (rig.js) sin tocar ninguno de
 // los dos. Capas, de atrás hacia adelante: mitad lejana de las dos correas
@@ -118,63 +118,86 @@ function calzar(doc, id, z) {
   doc.querySelector('desc').textContent += ' Calzado v4: pierna dentro de la boca del zapato y sombra de contacto.'
 }
 
-// ── Mochilas ─────────────────────────────────────────────────────────────────
+// ── Mochilas (v4.2) ──────────────────────────────────────────────────────────
+// La bolsa vuelve al flanco trasero superior del segmento delantero, con un alto
+// cercano al de v1. Dos correas finas, del material de la bolsa, salen de su borde
+// y rodean el lomo: cada una es un tramo de círculo máximo de la esfera (elipse
+// tangente a la silueta) desde la bolsa hasta la silueta, recortado a la esfera;
+// su continuación por el lado lejano asoma detrás del segmento. No se dibuja
+// ningún tramo sobre la cara frontal hacia la panza.
 function equiparMochila(doc, id, m) {
   for (const n of doc.querySelectorAll('[data-bag]')) n.remove()
   const seg = doc.getElementById('mint-front')
   if (!seg) return
   const nucleo = +seg.getAttribute('data-nucleo')
   const R = nucleo ? nucleo - 2 : 96
+  const k = R / 96 // las medidas están pensadas para el segmento de Ciempi
   const defs = defsDe(doc)
   const arteId = `v4-arte-${id}`
   if (!doc.getElementById(arteId)) defs.append(crear(doc, 'image', { id: arteId, width: m.px[0], height: m.px[1], href: new URL(m.archivo, RECURSOS).href }))
   const discoId = `v4-disco-${id}`
-  // Disco del segmento, para que sombra y correas cercanas no se salgan de la esfera.
   const disco = crear(doc, 'clipPath', { id: discoId })
-  disco.append(crear(doc, 'circle', { r: R + 1 }))
+  disco.append(crear(doc, 'circle', { r: r2(R + 0.5) }))
 
-  const giro = m.giro ?? -26
-  const s = m.ancho / m.px[0]
-  const apoyoY = -R * (m.apoyo ?? 0.86)
-  const [ax, ay] = m.base
-  // Correas: dos anillos paralelos alrededor de la esfera, a ambos lados de la mochila.
-  // Proyección de un anillo inclinado: elipse de centro (c, 0), ry = ρ, rx = ρ·k.
-  const anillos = (m.correas ?? [-0.3, 0.3]).map((c) => { const cx = c * R, rho = Math.sqrt(R * R - cx * cx); return { cx, rho, rx: rho * (m.inclinacion ?? 0.3) } })
-  const arco = ({ cx, rho, rx }, lado) => `M${r2(cx)} ${r2(-rho)} A${r2(rx)} ${r2(rho)} 0 0 ${lado === 'cerca' ? 0 : 1} ${r2(cx)} ${r2(rho)}`
-  const ancho = m.correa?.ancho ?? 14
-  const banda = (d, extra = {}) => {
-    const g = crear(doc, 'g', { fill: 'none', 'stroke-linecap': 'butt', ...extra })
-    g.append(
-      crear(doc, 'path', { d, stroke: OSCURO, 'stroke-width': ancho + 9 }),
-      crear(doc, 'path', { d, stroke: m.correa.color, 'stroke-width': ancho }),
-      crear(doc, 'path', { d, stroke: m.correa.luz, 'stroke-width': 3.5, opacity: 0.8, transform: 'translate(-3 0)' }),
-    )
-    return g
+  const alto = m.alto * k, s = alto / m.px[1], ancho = m.px[0] * s
+  const [cx, cy] = m.centro.map((v) => v * k)
+  const g = (m.giro * Math.PI) / 180
+  /** Punto de la bolsa (fracciones de su caja desde el centro) en coordenadas del segmento. */
+  const enSegmento = ([fx, fy]) => { const x = fx * ancho, y = fy * alto; return [cx + x * Math.cos(g) - y * Math.sin(g), cy + x * Math.sin(g) + y * Math.cos(g)] }
+
+  const fino = m.correa.ancho ?? 6
+  const trazo = (d) => {
+    const n = crear(doc, 'g', { fill: 'none', 'stroke-linecap': 'butt' })
+    n.append(crear(doc, 'path', { d, stroke: OSCURO, 'stroke-width': fino + 4.5 }), crear(doc, 'path', { d, stroke: m.correa.color, 'stroke-width': fino }))
+    return n
   }
-  const rot = `rotate(${giro})`
-  const lejos = crear(doc, 'g', { transform: rot, 'data-v4': 'correas-lejanas' })
-  for (const a of anillos) lejos.append(banda(arco(a, 'lejos')))
+  const lejos = crear(doc, 'g', { 'data-v4': 'correas-lejanas', 'data-bag': id })
   const cerca = crear(doc, 'g', { 'clip-path': `url(#${discoId})`, 'data-v4': 'correas-cercanas' })
-  const cercaRot = crear(doc, 'g', { transform: rot })
-  for (const a of anillos) {
-    cercaRot.append(banda(arco(a, 'cerca')))
-    // Hebilla donde la correa cruza el ecuador visible del segmento.
-    if (m.hebilla) cercaRot.append(crear(doc, 'rect', { x: r2(a.cx - a.rx - ancho / 2 - 2), y: -9, width: ancho + 4, height: 18, rx: 4, fill: m.hebilla, stroke: OSCURO, 'stroke-width': 4 }))
+  for (const c of m.correas) {
+    const [ax, ay] = enSegmento(c.desde)
+    const th = (c.silueta * Math.PI) / 180
+    const u = [Math.cos(th), Math.sin(th)]
+    let v = [-u[1], u[0]], horario = 1
+    let au = ax * u[0] + ay * u[1], av = ax * v[0] + ay * v[1]
+    if (av < 0) { v = [-v[0], -v[1]]; av = -av; horario = 0 }
+    const ry = R * Math.max(0.08, Math.min(1, av / (R * Math.sqrt(Math.max(1e-6, 1 - (au / R) ** 2)))))
+    const P = (t) => [R * Math.cos(t) * u[0] + ry * Math.sin(t) * v[0], R * Math.cos(t) * u[1] + ry * Math.sin(t) * v[1]]
+    const [ex, ey] = P(0), [fx, fy] = P(-0.3)
+    const rot = r2(c.silueta)
+    cerca.append(trazo(`M${r2(ex)} ${r2(ey)} A${r2(R)} ${r2(ry)} ${rot} 0 ${horario} ${r2(ax)} ${r2(ay)}`))
+    lejos.append(trazo(`M${r2(fx)} ${r2(fy)} A${r2(R)} ${r2(ry)} ${rot} 0 ${horario} ${r2(ex)} ${r2(ey)}`))
   }
-  cerca.append(cercaRot)
+  // Sombra de contacto: la bolsa oscurece la esfera alrededor de su apoyo.
+  const [sx, sy] = enSegmento([0.02, 0.1])
   const sombra = crear(doc, 'g', { 'clip-path': `url(#${discoId})`, 'data-v4': 'sombra-contacto' })
-  sombra.append(crear(doc, 'ellipse', { cx: 0, cy: r2(apoyoY + 6), rx: r2(m.ancho * 0.36), ry: 10, fill: OSCURO, opacity: 0.2, transform: rot }))
-  const bolsa = crear(doc, 'g', { transform: `${rot} translate(0 ${r2(apoyoY)}) scale(${r2(s * 1e4) / 1e4}) translate(${-ax} ${-ay})`, 'data-v4': 'mochila' })
-  bolsa.append(crear(doc, 'use', { href: '#' + arteId }))
+  sombra.append(crear(doc, 'ellipse', { cx: r2(sx * 0.9), cy: r2(sy * 0.9), rx: r2(ancho * 0.44), ry: r2(alto * 0.4), fill: OSCURO, opacity: 0.17, transform: `rotate(${m.giro} ${r2(sx * 0.9)} ${r2(sy * 0.9)})` }))
+  const bolsa = crear(doc, 'g', { transform: `translate(${r2(cx)} ${r2(cy)}) rotate(${m.giro}) scale(${r2(s * 1e4) / 1e4}) translate(${-m.px[0] / 2} ${-m.px[1] / 2})`, 'data-v4': 'mochila' })
+  if (m.borde) {
+    // Borde propio (Bolso Luna): ribete dorado y contorno exterior, para no perderse sobre cuerpos oscuros.
+    const fid = `v4-borde-${id}`
+    if (!doc.getElementById(fid)) {
+      const f = crear(doc, 'filter', { id: fid, x: '-10%', y: '-10%', width: '120%', height: '120%' })
+      f.append(
+        crear(doc, 'feMorphology', { in: 'SourceAlpha', operator: 'dilate', radius: m.borde.exterior, result: 'ext' }),
+        crear(doc, 'feFlood', { 'flood-color': OSCURO, result: 'oscuro' }),
+        crear(doc, 'feComposite', { in: 'oscuro', in2: 'ext', operator: 'in', result: 'a' }),
+        crear(doc, 'feMorphology', { in: 'SourceAlpha', operator: 'dilate', radius: m.borde.interior, result: 'int' }),
+        crear(doc, 'feFlood', { 'flood-color': m.borde.color, result: 'oro' }),
+        crear(doc, 'feComposite', { in: 'oro', in2: 'int', operator: 'in', result: 'b' }),
+      )
+      const merge = crear(doc, 'feMerge')
+      merge.append(crear(doc, 'feMergeNode', { in: 'a' }), crear(doc, 'feMergeNode', { in: 'b' }))
+      f.append(merge)
+      defs.append(f)
+    }
+    bolsa.append(crear(doc, 'use', { href: '#' + arteId, filter: `url(#${fid})` }))
+  }
   // Sin <image> dentro de [data-bag]: pose.ts lee el x de esas imágenes para el encuadre de la mochila absoluta.
+  bolsa.append(crear(doc, 'use', { href: '#' + arteId }))
   const grupo = crear(doc, 'g', { id: `${id}-equipped`, 'data-bag': id, 'data-v4': 'mochila-en-segmento' })
-  const frente = crear(doc, 'g', {})
-  frente.append(sombra, cerca, bolsa)
-  grupo.append(frente)
+  grupo.append(sombra, cerca, bolsa)
   seg.insertBefore(lejos, seg.firstChild)
   seg.insertBefore(crear(doc, 'defs', {}), seg.firstChild).append(disco)
   seg.append(grupo)
-  // La mitad lejana también se oculta sin cuerpo (N = 0 ya quita el segmento entero).
-  lejos.setAttribute('data-bag', id)
-  doc.querySelector('desc').textContent += ` Mochila v4: ${id} en el segmento delantero con correas alrededor.`
+  doc.querySelector('desc').textContent += ` Mochila v4.2: ${id} en el flanco trasero superior del segmento delantero con dos correas que rodean el lomo.`
 }

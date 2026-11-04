@@ -4,7 +4,7 @@
 //   python3 -m http.server 8810 --bind 127.0.0.1
 //   NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules \
 //     node scripts/transformaciones/capturar-accesorios-v4.cjs v1 antes
-//   … capturar-accesorios-v4.cjs v4 despues
+//   … capturar-accesorios-v4.cjs v4 despues      (iteración 4.2: v4 despues-v4.2)
 // Escribe en docs/rediseno-ciempi/revisiones/V4-mochilas-zapatos/<carpeta>/ y nunca sobrescribe
 // una carpeta existente salvo con FORZAR=1. Falla si hay errores de consola.
 const path = require('node:path')
@@ -31,6 +31,10 @@ for (const especie of ['ciempi', 'dragon', 'cuncuna']) {
   trabajos.push({ tipo: 'animacion', familia: 'mochilas', especie, fondo: 'claro' })
 }
 for (const especie of ['dragon', 'cuncuna']) trabajos.push({ tipo: 'detalle', familia: 'zapatos', especie, fondo: 'claro' }, { tipo: 'detalle', familia: 'mochilas', especie, fondo: 'claro' })
+for (const fondo of ['claro', 'oscuro']) trabajos.push({ tipo: 'conjuntos', familia: 'mochilas', especie: 'ciempi', fondo })
+// SOLO=conjuntos,detalle… limita los tipos (p. ej. para capturar en otra carpeta solo lo que faltaba).
+const solo = process.env.SOLO ? process.env.SOLO.split(',') : null
+if (solo) trabajos.splice(0, trabajos.length, ...trabajos.filter((t) => solo.includes(t.tipo)))
 
 ;(async () => {
   const navegador = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {})
@@ -43,7 +47,7 @@ for (const especie of ['dragon', 'cuncuna']) trabajos.push({ tipo: 'detalle', fa
     await pagina.waitForSelector('body[data-cargado]', { timeout: 180000 })
     if ((await pagina.getAttribute('body', 'data-cargado')) !== '1') errores.push(`${t.tipo}/${t.especie}: la lámina no terminó`)
     await pagina.waitForTimeout(400)
-    const nombre = ['crecimiento', 'animacion'].includes(t.tipo) ? `${t.tipo}-${t.especie}` : `${t.tipo}-${t.familia}${t.especie === 'ciempi' ? '' : '-' + t.especie}`
+    const nombre = t.tipo === 'conjuntos' ? 'conjuntos' : ['crecimiento', 'animacion'].includes(t.tipo) ? `${t.tipo}-${t.especie}` : `${t.tipo}-${t.familia}${t.especie === 'ciempi' ? '' : '-' + t.especie}`
     const archivo = path.join(destino, `${nombre}-${t.fondo}.png`)
     await pagina.screenshot({ path: archivo, fullPage: true })
     console.log(path.relative(raiz, archivo))
