@@ -1,0 +1,12 @@
+{
+  "id": "dragon-variantes",
+  "archivo": "dragon-variantes.png",
+  "prompt": "dragon-variantes-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/V5-variantes/ia/referencias/dragon-v4b-aprobado.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a683-ef56-7993-aac4-1df568b3dc52/exec-8892135f-20e1-41ea-baee-19867102768d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T12:24:54.243Z",
+  "segundos": 68
+}

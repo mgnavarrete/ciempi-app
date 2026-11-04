@@ -23,6 +23,8 @@
 //    guarda bajo gorros, cola en espiral y patas prensiles. Gancho «camuflaje»:
 //    con la paleta clásica, el cuerpo toma los colores del conjunto puesto.
 import { paletas } from '../../../src/ciempi/v2/arte/lib/armario-ciempi.mjs'
+// V5: catálogo experimental de variantes (color, patrón y ojos k3 del Camaleón).
+import { sufijoVariante, varianteDeClave, tenirVariante, aplicarPatronBase, prepararOjosK3, aplicarOjosK3 } from './variantes.js'
 
 const NS = 'http://www.w3.org/2000/svg'
 const RECURSOS = new URL('./recursos/', import.meta.url)
@@ -81,6 +83,9 @@ const esV4 = (id) => !!CRIATURAS_V4[id]
  * anteriores es exactamente la paleta (como antes).
  */
 export function clavePaleta(env, especieId, sel) {
+  // V5: con una variante del catálogo, la variante manda (paleta y camuflaje no aplican).
+  const sv = sufijoVariante(especieId, sel)
+  if (sv) return 'variante' + sv
   const c = claveTinte(env, especieId, sel)
   // Iteración: v2 (rostro propio, por omisión) o v1 (`sel.iter = 'v1'`, para comparar). Solo criaturas V4.
   return esV4(especieId) && sel?.iter === 'v1' ? c + '@v1' : c
@@ -213,7 +218,10 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
   const v1 = clave.endsWith('@v1')
   const m = await cargarManifiesto(especieId)
   const v = (id) => (!v1 && m.piezas.some((x) => x.id === id + '-v2') ? id + '-v2' : id)
-  const url = async (p) => tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, clave)
+  const vari = varianteDeClave(clave)
+  const url = async (p) => (vari
+    ? tenirVariante(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, vari, p.id)
+    : tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, clave))
   const doc = parse(env.base)
 
   // Cuerpo: seis segmentos con los ids del maestro (las superficies B11 se ponen en su núcleo).
@@ -286,11 +294,14 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
     cabeza.insertBefore(gt, doc.getElementById('eyes'))
   }
 
+  if (vari) aplicarPatronBase(doc, vari)
   const lengua = v1 ? m.piezas.find((x) => x.id === 'lengua') : null
   return {
     svg: new XMLSerializer().serializeToString(doc), alas: null, iter: v1 ? 'v1' : 'v2',
     lengua: lengua ? { ...lengua, url: await url(lengua) } : null,
     rostro: v1 ? null : await prepararRostro(especieId, clave),
+    // V5: ojos k3 «Atardecer», compartidos por todas las variantes del Camaleón (AD-020).
+    k3: vari && especieId === 'camaleon' ? await prepararOjosK3(vari) : null,
   }
 }
 
@@ -320,7 +331,8 @@ async function prepararRostro(especieId, clave) {
     for (const capa of [e.rostro, e.torretas, ...(e.ojos || [])]) {
       if (!capa?.archivo || urls.has(capa.archivo)) continue
       const href = new URL(`${especieId}/rostro-v2/${capa.archivo}`, RECURSOS).href
-      urls.set(capa.archivo, teñir && !capa.archivo.includes('-ojo-') ? await tenir(href, especieId, clave) : href)
+      const vari = varianteDeClave(clave)
+      urls.set(capa.archivo, teñir && !capa.archivo.includes('-ojo-') ? await (vari ? tenirVariante(href, especieId, vari, 'rostro') : tenir(href, especieId, clave)) : href)
     }
   }
   return { m, urls }
@@ -333,13 +345,25 @@ function entradaRostro(m, expresion, sinLengua) {
   return lista.find(([, e]) => e.b03 === expresion)?.[1] ?? lista.find(([, e]) => e.b03 === m.porDefecto)?.[1]
 }
 
-function aplicarRostro(doc, especieId, efectiva, rostro) {
+function aplicarRostro(doc, especieId, efectiva, rostro, k3 = null, extra = {}) {
   const { m, urls } = rostro
   const e = entradaRostro(m, efectiva.expresion, efectiva.lengua === 'no')
   const cabeza = doc.querySelector('g[id="head"]')
   if (!cabeza || !e) return
   const capa = (c, extra = {}) => imagen(doc, urls.get(c.archivo), c.encuadre, extra)
   for (const n of [...cabeza.children]) if (n.localName === 'ellipse' && n.getAttribute('fill') === '#ee724b') n.remove()
+  if (k3) {
+    // V5 (variantes): boca y mejillas v2 de la expresión + ojos B03 en torretas k3; sin las torretas k2a.
+    const boca = cabeza.querySelector('[id="mouth"]')
+    if (boca && !boca.hasAttribute('data-hidden')) {
+      const g = crear(doc, 'g', { 'data-rostro-v2': 'rostro' })
+      g.append(capa(e.rostro))
+      boca.replaceChildren(g)
+    }
+    aplicarOjosK3(doc, cabeza, k3, { ajustada: !!extra.ajustada })
+    doc.documentElement.setAttribute('data-rostro', 'v2-k3')
+    return
+  }
   const ojos = cabeza.querySelector('[id="eyes"]')
   const ojosOcultos = !ojos || ojos.hasAttribute('data-hidden')
   let cejas = doc.querySelector('[id="b03-brows"]')
@@ -417,9 +441,9 @@ function calzarCola(doc, efectiva) {
  * selección efectiva y la resolución de compatibilidad. Se aplica también a
  * cada rostro (`obtenerRostro`) porque `componerCriatura` es el mismo camino.
  */
-export function posprocesarV4(doc, especieId, efectiva, res, base) {
+export function posprocesarV4(doc, especieId, efectiva, res, base, extra = {}) {
   if (!esV4(especieId)) return
-  if (base.rostro) aplicarRostro(doc, especieId, efectiva, base.rostro)
+  if (base.rostro) aplicarRostro(doc, especieId, efectiva, base.rostro, base.k3, extra)
   if (especieId === 'serpiente') {
     // Lengüita: dentro de la boca (primer hijo: el labio la tapa arriba), solo si hay boca dibujada.
     const boca = doc.querySelector('g[id="head"] g[id="mouth"]')

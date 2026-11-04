@@ -218,8 +218,31 @@ async function iteracion() {
   }
 }
 
+// V5: lámina de variantes de una especie (catálogo experimental variantes.js).
+// ?tipo=variantes&especie=dragon|cuncuna|serpiente|camaleon
+async function variantes() {
+  const { CATALOGO } = await import('./variantes.js')
+  const cat = CATALOGO[especie]
+  raiz.append(el('h1', { textContent: `${cat.nombre} · diseño base y variantes (V5, catálogo experimental)` }),
+    el('p', { textContent: `Diseño base: ${cat.disenoBase.nombre} — ${cat.disenoBase.estado}. N = 5, 320 px de ancho, misma escala y orientación; debajo, miniaturas a 84 px de alto. Solo color, material y patrón; misma geometría, rostro y animaciones.${cat.calzadoMuestra ? ' Con calzado ' + cat.calzadoMuestra + ': zapatilla única en la cola.' : ''}${especie === 'camaleon' ? ' Todas con los ojos k3 «Atardecer».' : ''} ${fondoTxt}. Laboratorio.` }))
+  const sel = (v) => ({ ...BASE, rostro: cat.disenoBase.rostro, varianteEspecie: v.id, ...(cat.calzadoMuestra ? { pies: cat.calzadoMuestra } : {}) })
+  const r = el('div', { className: 'rejilla' }); raiz.append(r)
+  for (const v of cat.variantes) r.append(celda(dibujar(await escenaDe(especie, sel(v), 5), { ancho: 320 }).svg, `${v.nombre}${v.base ? ' (base)' : ''} · ${v.id}`))
+  const f = fila('Miniaturas a 84 px de alto (pista de lectura)')
+  for (const v of cat.variantes) f.append(celda(dibujar(await escenaDe(especie, sel(v), 5), { alto: 84 }).svg, v.nombre.split(' ').slice(1).join(' ')))
+  if (especie === 'camaleon') {
+    const cab = (svg) => { svg.setAttribute('viewBox', '580 170 350 300'); svg.setAttribute('width', 175); svg.setAttribute('height', 150); return svg }
+    const g = fila('Ojos k3 compartidos: cabeza ampliada de cada variante (Alegre)')
+    for (const v of cat.variantes) g.append(celda(cab(dibujar(await escenaDe(especie, sel(v), 5)).svg), v.nombre.split(' ').slice(1).join(' ')))
+    const h = fila('Ojos k3 con otras expresiones y accesorios (Camaleón Atardecer)')
+    const k3 = cat.variantes.find((v) => v.origen === 'k3')
+    for (const [t, extra] of [['guiño', { expresion: 'b03-guino' }], ['carcajada (ojos cerrados)', { expresion: 'b03-carcajada' }], ['dormilón', { expresion: 'b03-dormilon' }], ['asustado', { expresion: 'b03-asustado' }], ['máscara robot (tapa)', { cabeza: 'b07-ia-robot' }], ['máscara gatita', { cabeza: 'b07-ia-gatita' }], ['lentes redondos', { cara: 'b04-redondos' }], ['gorro mago', { cabeza: 'b06-ia-mago' }]])
+      h.append(celda(cab(dibujar(await escenaDe(especie, { ...sel(k3), ...extra }, 5)).svg), t))
+  }
+}
+
 try {
-  await ({ cola, iteracion,  crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
+  await ({ variantes, cola, iteracion,  crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
   await Promise.all([...document.querySelectorAll('image')].map((im) => new Promise((ok) => {
     const href = im.getAttribute('href'); if (!href) return ok()
     const i = new Image(); i.onload = i.onerror = ok; i.src = href

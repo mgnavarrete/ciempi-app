@@ -27,6 +27,8 @@ import { resolver, NINGUNO } from './gen/compatibilidad.js'
 // V4 (T03 Serpiente, T04 Camaleón): su base y sus retoques viven en criaturas-v4.js.
 import { CRIATURAS_V4, baseCriaturaV4, clavePaleta, posprocesarV4 } from './criaturas-v4.js'
 import { prepararRostroV4, aplicarRostroV4 } from './rostros-v4.js'
+// V5: variantes experimentales (variantes.js): tinte por claves semánticas, patrón y cabeza.
+import { varianteDeClave, varianteDe, tenirVariante, aplicarPatronBase, recolorCabeza, prepararRostroVariante } from './variantes.js'
 
 const NS = 'http://www.w3.org/2000/svg'
 const RECURSOS = new URL('./recursos/', import.meta.url)
@@ -182,7 +184,10 @@ export async function baseEspecie(env, especieId, paletaId = 'clasica') {
     return r
   }
   const m = await cargarManifiesto(especieId)
-  const url = async (p) => tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, paletaId)
+  const vari = varianteDeClave(paletaId)
+  const url = async (p) => (vari
+    ? tenirVariante(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, vari, p.id)
+    : tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, paletaId))
   const forma = buscarEspecie(especieId).forma
   const doc = parse(env.base)
 
@@ -244,8 +249,10 @@ export async function baseEspecie(env, especieId, paletaId = 'clasica') {
     cabeza.insertBefore(h, doc.getElementById('eyes'))
   }
 
+  // V5: patrón de superficie de la variante y cabeza vectorial recoloreada.
+  if (vari) aplicarPatronBase(doc, vari)
   // Alas exclusivas: se guardan como plantilla y se añaden solo si están equipadas.
-  const svg = new XMLSerializer().serializeToString(doc)
+  const svg = vari ? recolorCabeza(new XMLSerializer().serializeToString(doc), vari) : new XMLSerializer().serializeToString(doc)
   const alas = m.piezas.find((x) => x.id === 'alas')
   const resultado = { svg, alas: alas ? { ...alas, url: await url(alas) } : null }
   bases.set(clave, resultado)
@@ -263,7 +270,8 @@ const diseno = (id) => String(id).slice(String(id).indexOf(':') + 1)
 
 /** Carga y tiñe (una vez) la base de la especie para esa paleta; luego `componerCriatura` es síncrono. */
 export async function prepararCriatura(env, especieId, paletaId = 'clasica', sel = null) {
-  if (especieId !== 'ciempi') await Promise.all([baseEspecie(env, especieId, sel ? clavePaleta(env, especieId, sel) : paletaId), prepararRostroV4(especieId)])
+  const vari = varianteDe(especieId, sel)
+  if (especieId !== 'ciempi') await Promise.all([baseEspecie(env, especieId, sel ? clavePaleta(env, especieId, sel) : paletaId), prepararRostroV4(especieId), vari && prepararRostroVariante(especieId, vari)])
 }
 
 /**
@@ -308,7 +316,8 @@ export function componerCriatura(env, especieId, selConRostro) {
     const body = doc.getElementById('body')
     body.parentNode.insertBefore(g, body.nextSibling)
   }
-  posprocesarV4(doc, especieId, efectiva, res, base)
+  const mascara = !!env.masks?.some((x) => x.id === efectiva.cabeza && !x.ocultaRostro)
+  posprocesarV4(doc, especieId, efectiva, res, base, { ajustada: mascara || (!!efectiva.cara && efectiva.cara !== 'cara-nada') })
   if (versionRostro === 'v4' || versionRostro === 'v4b') aplicarRostroV4(doc, especieId, efectiva, versionRostro, !!env.masks?.some((x) => x.id === efectiva.cabeza && !x.ocultaRostro))
   doc.querySelector('desc').textContent += ` Especie: ${buscarEspecie(especieId).nombre} (laboratorio, pendiente de aprobación).`
   return { svg: new XMLSerializer().serializeToString(doc), resolucion: res, seleccion: efectiva }

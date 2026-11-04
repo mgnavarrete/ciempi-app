@@ -22,6 +22,7 @@
 //    o boca sobre una máscara. Gorros, peinados y lentes transparentes van encima.
 //  - Se quitan el rubor vectorial de Ciempi y el hocico vectorial v1 del Dragón:
 //    el rostro IA trae sus propias mejillas y su hocico.
+import { rostroTenido } from './variantes.js'
 const RECURSOS = new URL('./recursos/', import.meta.url)
 const NS = 'http://www.w3.org/2000/svg'
 /** v4b = iteración 2 tras la revisión independiente (v4 se conserva para comparar). */
@@ -64,9 +65,9 @@ const crear = (doc, tag, attrs = {}) => {
   for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v))
   return n
 }
-const imagen = (doc, carpeta, p) => {
+const imagen = (doc, carpeta, p, href = null) => {
   const [x, y, width, height] = p.encuadre
-  return crear(doc, 'image', { x, y, width, height, href: new URL(`${carpeta}/${p.archivo}`, RECURSOS).href, preserveAspectRatio: 'none' })
+  return crear(doc, 'image', { x, y, width, height, href: href ?? new URL(`${carpeta}/${p.archivo}`, RECURSOS).href, preserveAspectRatio: 'none' })
 }
 
 /**
@@ -123,7 +124,8 @@ export function aplicarRostroV4(doc, especieId, sel, version = 'v4', mascara = f
   const boca = cabeza.querySelector('#mouth')
   if (boca && !boca.hasAttribute('data-hidden')) {
     const g = crear(doc, 'g', { 'data-rostro-v4': 'rostro' })
-    g.append(imagen(doc, carpeta, e.rostro))
+    // V5: con una variante del catálogo, la capa fija (hocico, cejas) va teñida (variantes.js); los ojos no.
+    g.append(imagen(doc, carpeta, e.rostro, rostroTenido(sel.varianteEspecie, carpeta, e.rostro.archivo)))
     boca.replaceChildren(g)
   }
   doc.documentElement.setAttribute('data-rostro', version)
