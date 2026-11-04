@@ -10,6 +10,7 @@ export async function dibujarEscena(e, ancho = 640) {
   svg.setAttribute('width', ancho)
   svg.setAttribute('height', Math.round((ancho * h) / w))
   svg.innerHTML = `<g>${e.html}</g>`
+  if (new URLSearchParams(location.search).has('transparente')) document.documentElement.style.background = document.body.style.background = 'transparent'
   lienzo.replaceChildren(svg)
   const hrefs = [...new Set([...svg.querySelectorAll('image')].map((i) => i.getAttribute('href')))]
   await Promise.all(hrefs.map((u) => { const im = new Image(); im.src = u; return im.decode().catch(() => { throw Error('No carga ' + u) }) }))
