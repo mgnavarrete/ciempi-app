@@ -37,3 +37,19 @@ NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules node scripts/trans
 `probar-laboratorio.cjs` compara `escena()` original y actual (sin `forma` y con `FORMA_CIEMPI`) para N = 0, 1, 5, 12, 40 y recorre el laboratorio exigiendo consola sin errores ni avisos. `capturar-evidencia.cjs` escribe las láminas en `docs/rediseno-ciempi/revisiones/T0x-*/evidencia/` (no toca `auditoria/`).
 
 Fichas: [T01](../revisiones/T01-dragon-v1/REVISION.md) · [T02](../revisiones/T02-cuncuna-v1/REVISION.md).
+
+## V4: T03 Serpiente y T04 Camaleón (rama `expansion-v4-criaturas`)
+
+Estado: **laboratorio, pendiente de aprobación del usuario**.
+
+- Abrir: `?especie=serpiente` o `?especie=camaleon` (botones «Ciempi Serpiente» y «Ciempi Camaleón»). Por ejemplo: `?especie=serpiente&n=12&comparar=camaleon` y `?especie=camaleon&sel={"textura":"b11-draco"}`.
+- Código propio: `criaturas-v4.js`, que contiene la base de especie, la piel de cabeza, la lengüita, las torretas, el casco y el camuflaje. Se engancha a `especies.js` mediante `baseCriaturaV4`, `clavePaleta` y `posprocesarV4`. Además, `laboratorio-v4.js` añade la casilla «Lengüita» y avisos, y `laminas-v4.html/js` genera las láminas. Los cambios en archivos compartidos son mínimos: `especies.js` (+ 8 líneas), `nucleo.js` (pasa `sel` a `prepararCriatura`) e `index.html` (un `<script>`).
+- Forma y compatibilidad: `FORMA_SERPIENTE` y `FORMA_CAMALEON` en `src/ciempi/v2/especie.ts`, y el campo opcional `partesOcultas` (serpiente: `pies`) leído por `compatibilidad.ts`.
+- Piezas: `node scripts/transformaciones/generar-ia.mjs` con los prompts de `scripts/transformaciones/prompts-v4/` y `python3 scripts/transformaciones/v4/procesar-piezas-v4.py`. Solo escribe `recursos/serpiente` y `recursos/camaleon`.
+- Pruebas:
+  - `node scripts/transformaciones/v4/probar-laboratorio-v4.cjs` (20 comprobaciones);
+  - `node scripts/transformaciones/v4/comprobar-fusion-v4.mjs` (`escenaCreciente` + `rig.crecer` frente a `escena`, con `comprobar-crecer-v4.html`);
+  - `node scripts/transformaciones/v4/capturar-evidencia-v4.cjs` (láminas T03/T04).
+
+  Usan `LAB_URL`/`LAB_PUERTO` y el puerto 8803 por omisión.
+- Fichas: [T03](../revisiones/T03-serpiente-v1/REVISION.md) · [T04](../revisiones/T04-camaleon-v1/REVISION.md).
