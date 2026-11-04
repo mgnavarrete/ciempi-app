@@ -1,0 +1,13 @@
+{
+  "id": "hoja-1",
+  "archivo": "hoja-1.png",
+  "prompt": "hoja-1-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/it2/propuesta-c5a-sobria.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cc06-7020-9cc6-1663ff50e73c/exec-2da46188-bfdb-44af-8150-35fe2876a0b7.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:35.502Z",
+  "segundos": 70
+}

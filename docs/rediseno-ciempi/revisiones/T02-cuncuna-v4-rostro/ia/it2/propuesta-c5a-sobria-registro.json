@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-c5a-sobria",
+  "archivo": "propuesta-c5a-sobria.png",
+  "prompt": "propuesta-c5a-sobria-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae0c-7672-bd67-119cd639dd56/exec-4cff34db-7b9a-4c22-a0ae-b494016f7ff1.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:28:08.263Z",
+  "segundos": 61
+}

@@ -1,0 +1,100 @@
+{
+ "iteracion": 2,
+ "motivo": "revisión artística independiente (Fable) transmitida por el coordinador",
+ "herramienta": "Codex CLI 0.166 exec + image_gen",
+ "fallos": 0,
+ "generaciones": [
+  {
+   "id": "hoja-1",
+   "archivo": "hoja-1.png",
+   "prompt": "hoja-1-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/it2/propuesta-c5a-sobria.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cc06-7020-9cc6-1663ff50e73c/exec-2da46188-bfdb-44af-8150-35fe2876a0b7.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:30:35.502Z",
+   "segundos": 70,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-2",
+   "archivo": "hoja-2.png",
+   "prompt": "hoja-2-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/it2/propuesta-c5a-sobria.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cba5-7a11-8d82-0cd6deff1ab8/exec-7efc57cb-8844-42d9-9af2-98e36d669a9b.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:31:12.516Z",
+   "segundos": 107,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-3",
+   "archivo": "hoja-3.png",
+   "prompt": "hoja-3-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/it2/propuesta-c5a-sobria.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cbbb-7062-b9bf-70c5864d4cca/exec-3cd251d0-5013-4f80-8bfc-a8dcf58966d3.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:30:34.181Z",
+   "segundos": 68,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "hoja-4",
+   "archivo": "hoja-4.png",
+   "prompt": "hoja-4-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/it2/propuesta-c5a-sobria.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cbda-7e32-9129-b22080bc36b3/exec-4fb353e3-5be6-4d10-ae00-751a78364e57.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:30:18.657Z",
+   "segundos": 53,
+   "ronda": "it2-hojas-expresiones",
+   "elegida": null
+  },
+  {
+   "id": "propuesta-c5a-sobria",
+   "archivo": "propuesta-c5a-sobria.png",
+   "prompt": "propuesta-c5a-sobria-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae0c-7672-bd67-119cd639dd56/exec-4cff34db-7b9a-4c22-a0ae-b494016f7ff1.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:28:08.263Z",
+   "segundos": 61,
+   "ronda": "it2-propuestas",
+   "elegida": true
+  },
+  {
+   "id": "propuesta-c5b-cejas-marron",
+   "archivo": "propuesta-c5b-cejas-marron.png",
+   "prompt": "propuesta-c5b-cejas-marron-prompt.txt",
+   "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/ia/propuesta-c4a-mejillas-pompon.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+   ],
+   "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a461-ae08-7c31-8649-8a5fd6ef82b5/exec-d2842ee9-1ed8-4de6-a4eb-b273acbc568b.png",
+   "herramienta": "Codex CLI 0.166 exec + image_gen",
+   "fecha": "2026-11-04T02:28:13.745Z",
+   "segundos": 66,
+   "ronda": "it2-propuestas",
+   "elegida": false
+  }
+ ]
+}

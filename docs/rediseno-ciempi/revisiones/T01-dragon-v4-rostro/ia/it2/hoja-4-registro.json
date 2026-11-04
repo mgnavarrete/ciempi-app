@@ -1,0 +1,13 @@
+{
+  "id": "hoja-4",
+  "archivo": "hoja-4.png",
+  "prompt": "hoja-4-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/it2/propuesta-d5a-hocico-3cuartos.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-cbc2-77b2-a23b-f5ab7dc13612/exec-847d655b-f6a6-41fe-bb91-846a2e922cec.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:31:34.222Z",
+  "segundos": 128
+}

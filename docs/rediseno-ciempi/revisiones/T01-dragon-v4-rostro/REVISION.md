@@ -68,3 +68,24 @@ Codex CLI 0.166 `exec` + `image_gen` vía `scripts/transformaciones/generar-ia.m
 - **Cambio significativo de identidad:** sí para la especie (rediseño del rostro del Dragón, §13); no toca la base de Ciempi. No se registra en la guía: lo hará la usuaria si lo aprueba.
 - **Aprobación del usuario:** no existe.
 - **Limitaciones y siguiente acción:** decidir v4; si se aprueba, valorar una capa de iris aparte (mirada y color de ojos), ajustar los lentes B04 a la posición de ojos v4 y el punto de boca de E08 por especie, y revisar las combinaciones pendientes.
+
+---
+
+## Iteración 2 · v4b (revisión independiente)
+
+Pedido (revisión artística independiente vía coordinador; su nota de v4: coherencia 3, calidad 4, integración 4, legibilidad 4, originalidad 4): (1) el hocico de perfil que sobresale mezcla tres vistas: girarlo ~30° hacia el espectador y meterlo dentro del contorno; (2) Dormilón y Orgulloso casi iguales a 84 px; (3) el ojo ámbar asoma tras la máscara gatita. **v4 se conserva**; v4b es otra carpeta (`recursos/dragon/v4b/`) y otra opción del selector (`?rostro=v4b`).
+
+- **IA (6 generaciones, 0 fallos; [generaciones-it2.json](generaciones-it2.json), [prompts/it2](prompts/it2/), [ia/it2](ia/it2/)):** 2 propuestas con d4d como referencia 1. **d5a «hocico 3/4» elegida**: hocico en 3/4 casi frontal, dentro del círculo con margen, narinas en la parte superior. d5b «hocico frontal» descartada: las dos narinas redondas sobre un óvalo se leen como hocico de cerdo. Luego 4 hojas 2×2 (14 B03 + 2 de control) con Dormilón «párpados casi cerrados, cejas bajas» y Orgulloso «cejas altas, sonrisa amplia». Recortes: [control-recortes-it2](piezas/control-recortes-it2.png).
+- **Máscaras con agujeros (gatita, búho, ratón, Draco), en v4b:** cada ojo IA se centra en el agujero de la máscara (que está en los ojos de Ciempi, `OJOS_BASE`) y se escala a su tamaño (`rostros-v4.js`), así que ya no asoma por el antifaz. Vaciar los ojos se probó y se descartó: dejaba los agujeros vacíos.
+- **Evidencia (sufijo -it2):** [expresiones](evidencia/expresiones-claro-it2.png) / [oscuro](evidencia/expresiones-oscuro-it2.png), [accesorios](evidencia/accesorios-claro-it2.png) / [oscuro](evidencia/accesorios-oscuro-it2.png) (incluye búho), [crecimiento](evidencia/crecimiento-claro-it2.png), [tamaños](evidencia/tamanos-claro-it2.png) / [oscuro](evidencia/tamanos-oscuro-it2.png), [animación](evidencia/animacion-claro-it2.png), [comparación con Ciempi](evidencia/comparacion-ciempi-claro-it2.png) / [oscuro](evidencia/comparacion-ciempi-oscuro-it2.png), [laboratorio](evidencia/laboratorio-rostro-v4b.png).
+- **Pruebas:** sha256 de los cuerpos 19/19; cabeza oculta v1 y v4b idénticas en 75/75; v1 sin cambios en 75/75; Ciempi 35/35 sin errores de consola; tsc sin errores; vitest 279/279; selector v4b sin errores.
+
+| Dimensión | v4 | v4b | Observación (evidencia -it2) |
+|---|---|---|---|
+| Coherencia con Ciempi | 3 (revisión independiente) / 4 (agente) | 4 | Cabeza, hocico y ojos en la misma vista frontal-3/4; el hocico ya no rompe el círculo ([comparación](evidencia/comparacion-ciempi-claro-it2.png)). |
+| Calidad de ilustración | 4 | 4 | Hocico limpio, con narinas y colmillos dentro; ya no hay narina cortada. El hocico es más pequeño y menos «dragón» que el de perfil. |
+| Integración con el cuerpo | 4 | 4 | Sin cortes en el contorno. E08: la fruta llega ahora a la boca del hocico (la boca quedó cerca del punto 765,405) ([animación](evidencia/animacion-claro-it2.png)). Gatita y búho, ojos dentro de los agujeros. |
+| Legibilidad | 4 | 4 | A 84 px, Dormilón (ojos cerrados, cejas planas) y Orgulloso (ojos medio abiertos, cejas altas) se distinguen ([expresiones](evidencia/expresiones-claro-it2.png), fila inferior). |
+| Originalidad | 4 | 3–4 | El hocico frontal es menos característico que el de perfil y se acerca al hocico genérico de animal bebé; sigue siendo propio (colmillos, pupila de reptil, cejas de escama). |
+
+**Pendiente:** aprobación del usuario. Limitaciones como v4 (color de ojos, mirada y rubor sin efecto; pivote del parpadeo aproximado). La regla de ajuste a los agujeros de máscara solo se aplica en v4b.
