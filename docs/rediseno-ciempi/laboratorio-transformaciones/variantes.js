@@ -230,13 +230,15 @@ export async function tenirVariante(url, bandasId, v, piezaId, claves = null) {
       const [h, s, l] = [hsl[j * 3], hsl[j * 3 + 1], hsl[j * 3 + 2]]
       const [rh, rs, rl] = ref[b], { luz, sombra } = dest[b]
       let dh = h - rh; if (dh > 180) dh -= 360; if (dh < -180) dh += 360
-      let [ph, ps, pl] = luz
+      const [ph, ps, pl] = luz
+      const L = Math.max(0.05, Math.min(0.97, pl + (l - rl)))
+      let [r, g, bl] = hslARgb(ph + dh * 0.5, Math.min(1, ps * (s / rs)), L)
       if (sombra) {
+        // Sombra de otro tono: mezcla en RGB (no por el círculo de tonos, que pasaría por el rosado).
         const t = Math.max(0, Math.min(1, (rl - l) / 0.16))
-        let d2 = sombra[0] - ph; if (d2 > 180) d2 -= 360; if (d2 < -180) d2 += 360
-        ph += d2 * t; ps += (sombra[1] - ps) * t; pl += (sombra[2] - luz[2]) * t * 0.6
+        const [r2, g2, b2] = hslARgb(sombra[0] + dh * 0.5, Math.min(1, sombra[1] * (s / rs)), Math.max(0.05, Math.min(0.97, L + (sombra[2] - pl) * 0.6)))
+        r += (r2 - r) * t; g += (g2 - g) * t; bl += (b2 - bl) * t
       }
-      const [r, g, bl] = hslARgb(ph + dh * 0.5, Math.min(1, ps * (s / rs)), Math.max(0.05, Math.min(0.97, pl + (l - rl))))
       px[i] = r * 255; px[i + 1] = g * 255; px[i + 2] = bl * 255
     }
     ctx.putImageData(datos, 0, 0)

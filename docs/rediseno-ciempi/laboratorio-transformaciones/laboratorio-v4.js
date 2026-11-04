@@ -32,3 +32,47 @@ if (caja) {
   for (const b of document.querySelectorAll('#criaturas button')) b.addEventListener('click', () => requestAnimationFrame(pintar))
   pintar()
 }
+
+// ── V5: variantes del catálogo experimental (variantes.js) ──────────────────
+// `?variante=<id>` elige la especie y la variante (Dragón y Cuncuna con su rostro
+// aprobado v4b). El selector lista las variantes de la criatura mostrada.
+{
+  const { CATALOGO, buscarVariante } = await import('./variantes.js')
+  const fila = document.createElement('label')
+  fila.className = 'fila'
+  fila.id = 'v5-variante'
+  fila.innerHTML = 'Variante <select id="variante-v5"></select>'
+  caja?.append(fila)
+  const sel = fila.querySelector('select')
+  const elegir = (id) => {
+    if (id) lab.estado.sel.varianteEspecie = id; else delete lab.estado.sel.varianteEspecie
+    const r = id && buscarVariante(id)
+    if (r && CATALOGO[r.especie].disenoBase.rostro && lab.estado.sel.rostro !== CATALOGO[r.especie].disenoBase.rostro) {
+      lab.estado.sel.rostro = CATALOGO[r.especie].disenoBase.rostro
+      const radio = document.querySelector(`input[name=rostro][value=${lab.estado.sel.rostro}]`)
+      if (radio) radio.checked = true
+    }
+    const u = new URL(location.href)
+    if (id) u.searchParams.set('variante', id); else u.searchParams.delete('variante')
+    history.replaceState(null, '', u)
+  }
+  const pintarVariantes = () => {
+    const cat = CATALOGO[lab.estado.especie]
+    fila.hidden = !cat
+    if (!cat) return
+    const actual = lab.estado.sel.varianteEspecie
+    sel.innerHTML = '<option value="">— sin variante (vista histórica) —</option>' + cat.variantes.map((v) => `<option value="${v.id}">${v.nombre} · ${v.id}</option>`).join('')
+    sel.value = cat.variantes.some((v) => v.id === actual) ? actual : ''
+  }
+  sel.onchange = () => { elegir(sel.value); lab.actualizar() }
+  for (const b of document.querySelectorAll('#criaturas button')) b.addEventListener('click', () => requestAnimationFrame(pintarVariantes))
+  const pedida = new URLSearchParams(location.search).get('variante')
+  const r = pedida && buscarVariante(pedida)
+  if (r) {
+    lab.estado.especie = r.especie
+    for (const b of document.querySelectorAll('#criaturas button')) b.setAttribute('aria-checked', String(b.dataset.especie === r.especie))
+    elegir(pedida)
+    await lab.actualizar()
+  } else if (pedida) console.warn('Variante desconocida: ' + pedida)
+  pintarVariantes()
+}
