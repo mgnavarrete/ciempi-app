@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Prueba combinada V4 (rostros + criaturas + accesorios juntos), escrita al integrar las tres ramas.
-// Recorre 5 criaturas × rostro v1/v4 × accesorios v1/v4 × 4 selecciones × N, exige consola sin errores
+// Recorre 5 criaturas × rostro v1/v4/v4b × accesorios v1/v4 × 4 selecciones × N, exige consola sin errores
 // ni avisos, y guarda una lámina de contacto (solo lectura del laboratorio) en SALIDA.
 // Uso (raíz del árbol, servidor en LAB_PUERTO, 8820 por omisión):
 //   NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules SALIDA=/tmp/salida node scripts/transformaciones/v4/probar-combinado-v4.cjs
@@ -30,7 +30,7 @@ const SELS = {
   let casos = 0
   const capturas = []
   for (const especie of CRIATURAS)
-    for (const rostro of ['v1', 'v4'])
+    for (const rostro of ['v1', 'v4', 'v4b'])
       for (const accesorios of ['v1', 'v4'])
         for (const [nombre, sel] of Object.entries(SELS))
           for (const n of [1, 12]) {
@@ -39,7 +39,7 @@ const SELS = {
             await page.waitForSelector('body[data-cargado]', { timeout: 120000 })
             await page.waitForTimeout(250)
             casos++
-            if (n === 12 && rostro === accesorios && nombre !== 'nada') {
+            if (n === 12 && nombre !== 'nada' && ((rostro === 'v1' && accesorios === 'v1') || (rostro === 'v4b' && accesorios === 'v4'))) {
               const svg = page.locator('#lienzo-a')
               const f = path.join(SAL, `${especie}-${rostro}-${nombre}.png`)
               await svg.screenshot({ path: f })
