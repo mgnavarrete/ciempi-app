@@ -1,0 +1,13 @@
+{
+  "id": "propuesta-k2c-mirada",
+  "archivo": "propuesta-k2c-mirada.png",
+  "prompt": "propuesta-k2c-mirada-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-649a-73e2-b353-be0144d37f03/exec-bb93a1f6-bb77-4128-9f13-94a70cac5acd.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:29:59.713Z",
+  "segundos": 60
+}

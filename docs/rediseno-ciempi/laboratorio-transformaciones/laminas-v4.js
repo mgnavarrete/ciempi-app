@@ -14,12 +14,15 @@ const p = new URLSearchParams(location.search)
 const tipo = p.get('tipo') || 'crecimiento'
 const especie = p.get('especie') in ESPECIES ? p.get('especie') : 'serpiente'
 if (p.get('fondo') === 'oscuro') document.body.dataset.fondo = 'oscuro'
+// Iteración de las criaturas V4: v2 (rostro propio, por omisión) o v1 (`?iter=v1`, para comparar).
+const ITER = p.get('iter') === 'v1' ? 'v1' : 'v2'
+const BASE = ITER === 'v1' ? { ...INICIAL, iter: 'v1' } : INICIAL
 const raiz = document.querySelector('#lamina')
 const el = (tag, attrs = {}, ...hijos) => { const n = document.createElement(tag); Object.assign(n, attrs); n.append(...hijos); return n }
 const celda = (svg, texto) => el('figure', { className: 'celda' }, svg, el('figcaption', { textContent: texto }))
 const nombre = (id) => ESPECIES[id].nombre
 const fondoTxt = document.body.dataset.fondo === 'oscuro' ? 'fondo oscuro' : 'fondo claro'
-const titulo = (h, t) => raiz.append(el('h1', { textContent: h }), el('p', { textContent: `${t} ${fondoTxt}. Laboratorio, pendiente de aprobación del usuario.` }))
+const titulo = (h, t) => raiz.append(el('h1', { textContent: `${h} · iteración ${ITER}` }), el('p', { textContent: `${t} ${fondoTxt}. Laboratorio, pendiente de aprobación del usuario.` }))
 const fila = (h) => { const f = el('div', { className: 'fila-lamina' }, el('h2', { textContent: h })); raiz.append(f); return f }
 
 const MUESTRAS = [
@@ -43,32 +46,32 @@ const MUESTRAS = [
 const PARTE_DE = { paleta: 'paleta', expresion: 'gesto', ojos: 'ojos', cabeza: 'cabeza', cara: 'cara', pelo: 'pelo', cuello: 'cuello', espalda: 'espalda', pies: 'pies', textura: 'textura' }
 function etiquetas(sel, esp) {
   const a = aApariencia(sel)
-  return Object.keys(sel).filter((k) => PARTE_DE[k] && sel[k] !== INICIAL[k])
+  return Object.keys(sel).filter((k) => PARTE_DE[k] && sel[k] !== BASE[k])
     .map((k) => { const e = etiquetar(PARTE_DE[k], a[PARTE_DE[k]], esp); return e.visible ? e.tipo : 'oculto' }).join(' + ')
 }
 
 async function crecimiento() {
   titulo(`${nombre(especie)} · crecimiento modular (cola y frente únicos, A→B→C→D)`, 'Misma escala (alto 180 px = 800 u), sin accesorios, paleta clásica,')
-  for (const n of [0, 1, 2, 5, 12, 40]) fila(`N = ${n}`).append(celda(dibujar(await escenaDe(especie, INICIAL, n), { alto: 180 }).svg, `N = ${n}`))
+  for (const n of [0, 1, 2, 5, 12, 40]) fila(`N = ${n}`).append(celda(dibujar(await escenaDe(especie, BASE, n), { alto: 180 }).svg, `N = ${n}`))
   const f = fila('Tamaños de uso, N = 5 y 12')
-  for (const n of [5, 12]) for (const t of [{ alto: 84 }, { ancho: 320 }]) f.append(celda(dibujar(await escenaDe(especie, INICIAL, n), t).svg, `N = ${n} · ${t.alto ? '84 px de alto' : '320 px de ancho'}`))
+  for (const n of [5, 12]) for (const t of [{ alto: 84 }, { ancho: 320 }]) f.append(celda(dibujar(await escenaDe(especie, BASE, n), t).svg, `N = ${n} · ${t.alto ? '84 px de alto' : '320 px de ancho'}`))
 }
 
 async function expresiones() {
   const ids = env.facial.filter((x) => x.id.startsWith('b03-')).map((x) => x.id)
   titulo(`${nombre(especie)} · expresiones B03`, 'N = 5, 240 px de ancho, recorte de cabeza a 2× debajo;')
   const r = el('div', { className: 'rejilla' }); raiz.append(r)
-  for (const id of ids) r.append(celda(dibujar(await escenaDe(especie, { ...INICIAL, expresion: id }, 5), { ancho: 240 }).svg, id.slice(4)))
+  for (const id of ids) r.append(celda(dibujar(await escenaDe(especie, { ...BASE, expresion: id }, 5), { ancho: 240 }).svg, id.slice(4)))
   const f = fila('Cabeza ampliada (encuadre 590–900 × 190–490)')
   for (const id of ids) {
-    const { svg } = dibujar(await escenaDe(especie, { ...INICIAL, expresion: id }, 5))
+    const { svg } = dibujar(await escenaDe(especie, { ...BASE, expresion: id }, 5))
     svg.setAttribute('viewBox', '590 190 310 300'); svg.setAttribute('width', 155); svg.setAttribute('height', 150)
     f.append(celda(svg, id.slice(4)))
   }
   if (especie === 'serpiente') {
     const g = fila('Lengüita opcional: con / sin (selección lengua: "no")')
     for (const id of ['b03-alegre', 'b03-carcajada', 'b03-guino']) for (const lengua of ['si', 'no']) {
-      const { svg } = dibujar(await escenaDe(especie, { ...INICIAL, expresion: id, lengua }, 5))
+      const { svg } = dibujar(await escenaDe(especie, { ...BASE, expresion: id, lengua }, 5))
       svg.setAttribute('viewBox', '590 190 310 300'); svg.setAttribute('width', 186); svg.setAttribute('height', 180)
       g.append(celda(svg, `${id.slice(4)} · lengua ${lengua}`))
     }
@@ -79,18 +82,18 @@ async function accesorios() {
   titulo(`${nombre(especie)} · accesorios (cabeza, cara, cuello, espalda, mochila, pies, superficie, paletas)`, 'N = 5, 320 px de ancho; la etiqueta es la de compatibilidad.ts;')
   const r = el('div', { className: 'rejilla' }); raiz.append(r)
   for (const [texto, extra] of [['Sin accesorios', {}], ...MUESTRAS]) {
-    const sel = { ...INICIAL, ...extra }
+    const sel = { ...BASE, ...extra }
     r.append(celda(dibujar(await escenaDe(especie, sel, 5), { ancho: 320 }).svg, `${texto} — ${etiquetas(sel, especie) || 'base'}`))
   }
   const f = fila('Mochila y capa con N = 1, 12 y 40 (240 px)')
   for (const extra of [{ espalda: 'b09-aventura' }, { espalda: 'b08-ia-heroica' }]) for (const n of [1, 12, 40])
-    f.append(celda(dibujar(await escenaDe(especie, { ...INICIAL, ...extra }, n), { ancho: 240 }).svg, `${extra.espalda} · N = ${n}`))
+    f.append(celda(dibujar(await escenaDe(especie, { ...BASE, ...extra }, n), { ancho: 240 }).svg, `${extra.espalda} · N = ${n}`))
 }
 
 async function conjuntos() {
   titulo(`${nombre(especie)} · conjuntos B12`, 'N = 5, 240 px de ancho;')
   const r = el('div', { className: 'rejilla' }); raiz.append(r)
-  for (const s of env.sets) r.append(celda(dibujar(await escenaDe(especie, { ...INICIAL, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
+  for (const s of env.sets) r.append(celda(dibujar(await escenaDe(especie, { ...BASE, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
 }
 
 let contadorV4 = 0
@@ -113,7 +116,7 @@ async function comer_() {
   for (const [texto, cabeza, boca] of [['Boca sorprendida', 'cabeza-nada', 'sorprendido'], ['Carcajada (comparación)', 'cabeza-nada', 'carcajada'], ['Gorro mago', 'b06-ia-mago', 'sorprendido'], ['Máscara robot (tapa la boca)', 'b07-ia-robot', 'sorprendido']]) {
     const f = fila(`${texto}${tapan.includes(cabeza) ? ' · bocaTapada' : ''}`)
     for (const t of [0, 0.12, 0.22, 0.34, 0.42, 0.6, 0.78]) {
-      const sel = { ...INICIAL, cabeza }
+      const sel = { ...BASE, cabeza }
       const { svg, rig } = await rigCreciente(especie, sel, 6, 240)
       const pose = comer(ANIMACIONES.find((a) => a.id === 'A02').pose(t, 6), t, 6, { boca, bocaTapada: tapan.includes(cabeza) })
       rig.cambiarRostro(pose.expresion ?? sel.expresion)
@@ -130,7 +133,7 @@ async function animacion() {
     const f = fila(`${anim.id} · ${anim.nombre}`)
     for (let i = 0; i < 6; i++) {
       const t = (anim.duracion * i) / 6
-      const e = await escenaDe(especie, INICIAL, 8)
+      const e = await escenaDe(especie, BASE, 8)
       const { svg, g } = dibujar(e, { ancho: 240 })
       f.append(celda(svg, `t = ${t.toFixed(2).replace('.', ',')} s`))
       const rig = nuevoRig(e, g)
@@ -146,33 +149,77 @@ async function comparacion() {
   titulo('Comparación: Ciempi, Dragón, Cuncuna, Serpiente y Camaleón', 'Sin accesorios, misma longitud por fila;')
   for (const n of [5, 12]) for (const t of [{ alto: 84 }, { ancho: 320 }]) {
     const f = fila(`N = ${n} · ${t.alto ? '84 px de alto (pista)' : '320 px de ancho'}`)
-    for (const id of todas) f.append(celda(dibujar(await escenaDe(id, INICIAL, n), t).svg, nombre(id)))
+    for (const id of todas) f.append(celda(dibujar(await escenaDe(id, BASE, n), t).svg, nombre(id)))
   }
   const f = fila('Siluetas a 84 px de alto (N = 5)')
   for (const id of todas) {
-    const { svg } = dibujar(await escenaDe(id, INICIAL, 5), { alto: 84 })
+    const { svg } = dibujar(await escenaDe(id, BASE, 5), { alto: 84 })
     svg.style.filter = 'brightness(0)'
     f.append(celda(svg, nombre(id)))
   }
   const g = fila('Mismo conjunto (Luna bibliotecaria), N = 5, 240 px')
   const luna = env.sets.find((s) => s.nombre === 'Luna bibliotecaria')
-  for (const id of todas) g.append(celda(dibujar(await escenaDe(id, { ...INICIAL, ...luna.seleccion }, 5), { ancho: 240 }).svg, nombre(id)))
+  for (const id of todas) g.append(celda(dibujar(await escenaDe(id, { ...BASE, ...luna.seleccion }, 5), { ancho: 240 }).svg, nombre(id)))
 }
 
 async function camuflaje() {
   titulo('Ciempi Camaleón · gancho «camuflaje»', 'Con la paleta clásica el cuerpo toma los colores del conjunto (B12) o de la superficie (B11); una paleta elegida a mano manda. N = 5, 240 px;')
   const f = fila('Conjuntos B12 (paleta clásica)')
-  for (const s of env.sets) f.append(celda(dibujar(await escenaDe('camaleon', { ...INICIAL, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
+  for (const s of env.sets) f.append(celda(dibujar(await escenaDe('camaleon', { ...BASE, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
   const g = fila('Solo superficie B11 / mismo conjunto con paleta Océano a mano')
-  for (const t of ['b11-robot', 'b11-draco', 'b11-pirata', 'b11-mago', 'b11-araluz']) g.append(celda(dibujar(await escenaDe('camaleon', { ...INICIAL, textura: t }, 5), { ancho: 240 }).svg, t))
+  for (const t of ['b11-robot', 'b11-draco', 'b11-pirata', 'b11-mago', 'b11-araluz']) g.append(celda(dibujar(await escenaDe('camaleon', { ...BASE, textura: t }, 5), { ancho: 240 }).svg, t))
   const robot = env.sets.find((s) => s.nombre === 'Robot Lumen')
-  g.append(celda(dibujar(await escenaDe('camaleon', { ...INICIAL, ...robot.seleccion, paleta: 'oceano' }, 5), { ancho: 240 }).svg, 'Robot Lumen + paleta Océano'))
+  g.append(celda(dibujar(await escenaDe('camaleon', { ...BASE, ...robot.seleccion, paleta: 'oceano' }, 5), { ancho: 240 }).svg, 'Robot Lumen + paleta Océano'))
   const h = fila('Mismo conjunto en Ciempi (referencia: Ciempi no cambia de color)')
-  for (const s of env.sets.slice(0, 4)) h.append(celda(dibujar(await escenaDe('ciempi', { ...INICIAL, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
+  for (const s of env.sets.slice(0, 4)) h.append(celda(dibujar(await escenaDe('ciempi', { ...BASE, ...s.seleccion }, 5), { ancho: 240 }).svg, s.nombre))
+}
+
+const CALZADOS = ['b10-deportiva', 'b10-robot', 'b10-aventura', 'b10-lluvia', 'b10-mago']
+/** Serpiente: UNA zapatilla en la punta de la cola (decisión de la usuaria, 2026-11-04). */
+async function cola() {
+  titulo('Ciempi Serpiente · zapatilla en la cola', 'Los 5 calzados B10: detalle de la cola ampliado (encuadre −40…160 × 240…520), cuerpo a 320 px y 84 px de alto, crecimiento y animaciones con el rig;')
+  const det = (svg) => { svg.setAttribute('viewBox', '0 260 220 260'); svg.setAttribute('width', 220); svg.setAttribute('height', 260); return svg }
+  const f = fila('Detalle de la cola (N = 5): sin calzado y los 5 calzados')
+  for (const pies of ['pies-zapatillas', ...CALZADOS]) f.append(celda(det(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5)).svg), pies === 'pies-zapatillas' ? 'sin calzado' : pies))
+  const g = fila('Cuerpo completo, N = 5 · 320 px')
+  for (const pies of CALZADOS) g.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5), { ancho: 320 }).svg, pies))
+  const h = fila('84 px de alto (pista)')
+  for (const pies of CALZADOS) h.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies }, 5), { alto: 84 }).svg, pies))
+  const c = fila('Crecimiento con b10-deportiva: N = 0, 1, 2, 5, 12, 40 (alto 150)')
+  for (const n of [0, 1, 2, 5, 12, 40]) c.append(celda(dibujar(await escenaDe('serpiente', { ...BASE, pies: 'b10-deportiva' }, n), { alto: 150 }).svg, `N = ${n}`))
+  for (const id of ['A02', 'E04', 'A03']) {
+    const anim = ANIMACIONES.find((a) => a.id === id)
+    const a = fila(`${anim.id} · ${anim.nombre} con b10-robot (N = 8, 240 px, rig.js)`)
+    for (let i = 0; i < 6; i++) {
+      const t = (anim.duracion * i) / 6
+      const e = await escenaDe('serpiente', { ...BASE, pies: 'b10-robot' }, 8)
+      const { svg, g: gr } = dibujar(e, { ancho: 240 })
+      a.append(celda(svg, `t = ${t.toFixed(2).replace('.', ',')} s`))
+      const rig = nuevoRig(e, gr)
+      const pose = poseConInercia(anim, t, 8)
+      if (pose.expresion) rig.cambiarRostro(pose.expresion)
+      rig.aplicar(pose)
+    }
+  }
+}
+
+async function iteracion() {
+  titulo(`${nombre(especie)} · antes (v1) y después (v2)`, 'Misma selección, pose y escala; v1 = rostro de Ciempi; v2 = rostro IA propio. Cabeza ampliada (encuadre 560–940 × 160–490) y cuerpo N = 5;')
+  const cab = (svg) => { svg.setAttribute('viewBox', '560 160 380 330'); svg.setAttribute('width', 190); svg.setAttribute('height', 165); return svg }
+  for (const exp of ['b03-alegre', 'b03-carcajada', 'b03-sorprendido', 'b03-dormilon', 'b03-guino', 'b03-triste', 'b03-enojadito']) {
+    const f = fila(exp.slice(4))
+    for (const iter of ['v1', 'v2']) f.append(celda(cab(dibujar(await escenaDe(especie, { ...INICIAL, iter, expresion: exp }, 5)).svg), iter))
+  }
+  const g = fila('Cuerpo N = 5 · 320 px y 84 px de alto')
+  for (const iter of ['v1', 'v2']) for (const t of [{ ancho: 320 }, { alto: 84 }]) g.append(celda(dibujar(await escenaDe(especie, { ...INICIAL, iter }, 5), t).svg, `${iter} · ${t.ancho ? '320 px' : '84 px de alto'}`))
+  if (especie === 'camaleon') {
+    const h = fila('Patas (detalle 180–620 × 380–600)')
+    for (const iter of ['v1', 'v2']) { const { svg } = dibujar(await escenaDe(especie, { ...INICIAL, iter }, 5)); svg.setAttribute('viewBox', '180 380 440 220'); svg.setAttribute('width', 440); svg.setAttribute('height', 220); h.append(celda(svg, iter)) }
+  }
 }
 
 try {
-  await ({ crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
+  await ({ cola, iteracion,  crecimiento, expresiones, accesorios, conjuntos, comer: comer_, animacion, comparacion, camuflaje })[tipo]()
   await Promise.all([...document.querySelectorAll('image')].map((im) => new Promise((ok) => {
     const href = im.getAttribute('href'); if (!href) return ok()
     const i = new Image(); i.onload = i.onerror = ok; i.src = href

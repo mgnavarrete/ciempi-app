@@ -88,6 +88,12 @@ export interface Especie {
    * especie. Opcional: las especies anteriores no lo usan.
    */
   partesOcultas?: Partial<Record<Parte, string>>
+  /**
+   * Dónde se pone el calzado (`pies`): 'patas' (por omisión, un zapato por pata,
+   * como Ciempi) o 'cola' (UNA sola zapatilla en la punta de la cola: Serpiente,
+   * decisión de la usuaria del 2026-11-04). Sin calzado equipado no se dibuja nada.
+   */
+  calzado?: 'patas' | 'cola'
   /** Manifiesto de recursos del laboratorio (ruta relativa a la raíz del repositorio). */
   manifiesto?: string
 }
@@ -225,15 +231,14 @@ export const ESPECIES: Record<EspecieId, Especie> = {
     estado: 'laboratorio — pendiente de aprobación',
     forma: FORMA_SERPIENTE,
     adaptables: {
+      pies: { como: 'La serpiente no tiene patas: el calzado equipado se pone como UNA sola zapatilla en la punta de la cola (sin calzado, la cola queda tal cual).' },
       espalda: { como: 'Capas y mochilas se anclan al cuello; la mochila baja con el segmento delantero, que en la serpiente apoya más abajo.' },
       paleta: ADAPTABLES_COMUNES.paleta!,
       textura: ADAPTABLES_COMUNES.textura!,
     },
     exclusivos: [],
     ocultas: [],
-    partesOcultas: {
-      pies: 'La serpiente no tiene patas: el calzado se guarda puesto y vuelve a verse al cambiar a una criatura con patas.',
-    },
+    calzado: 'cola',
     rasgosOcultosCon: [
       { parte: 'cabeza', ids: MASCARAS_COMPLETAS, rasgos: ['lengua'], motivo: 'La máscara completa cubre la cara: la lengüita no se dibuja encima del disfraz.' },
     ],

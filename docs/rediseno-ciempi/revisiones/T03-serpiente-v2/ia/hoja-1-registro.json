@@ -1,0 +1,13 @@
+{
+  "id": "hoja-1",
+  "archivo": "hoja-1.png",
+  "prompt": "hoja-1-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/propuesta-s2a-diamante.png",
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a469-3953-7dc2-a60d-f8749137ea3c/exec-00ea5268-e3c9-48d7-9162-f4e108b6757b.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:37:04.572Z",
+  "segundos": 103
+}

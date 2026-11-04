@@ -57,3 +57,10 @@ Estado: **laboratorio, pendiente de aprobación del usuario**.
 ## Rostros v4 (Dragón y Cuncuna)
 
 Rostros propios generados con IA (AD-017), **pendientes de aprobación**. El v1 se conserva; v4b es la iteración 2 tras la revisión independiente (v4 se conserva). Selector «Rostro v1 / v4 / v4b» (`?rostro=v4b`); láminas con `&it=2`, capturadas con `ITER=2`. Selector «Rostro v1 / v4» en el panel, o `?rostro=v4` en la URL (p. ej. `index.html?rostro=v4&especie=cuncuna`). Código: `rostros-v4.js` (más un gancho mínimo en `especies.js` y `laboratorio.js`); recursos en `recursos/<especie>/v4/` (`scripts/transformaciones/procesar-rostros-v4.py`); láminas antes/después en `laminas-rostros.html?tipo=crecimiento|expresiones|accesorios|tamanos|animacion|ciempi&especie=…&fondo=…`, capturadas con `scripts/transformaciones/capturar-rostros-v4.cjs`. Fichas: [T01 v4](../revisiones/T01-dragon-v4-rostro/REVISION.md) · [T02 v4](../revisiones/T02-cuncuna-v4-rostro/REVISION.md).
+
+### Iteración 2 de T03 y T04 (rostros propios y zapatilla en la cola)
+
+- Por omisión el laboratorio muestra la v2: rostros IA propios en `recursos/<especie>/rostro-v2/`, aplicados por `aplicarRostro` en `criaturas-v4.js`, y en el Camaleón la pata v2. Para comparar, se puede elegir «Iteración v1» en el panel o usar `?iter=v1`.
+- Serpiente: con calzado equipado lleva **una** zapatilla en la punta de la cola (`calzado: 'cola'` en `especie.ts`, `calzarCola` en `criaturas-v4.js`). Es decisión de la usuaria.
+- Láminas: `ITER=v1|v2 node scripts/transformaciones/v4/capturar-evidencia-v4.cjs` → `revisiones/T0x-*-v1|v2/evidencia/`. Incluye los tipos `iteracion` y `cola`.
+- Fichas: [T03 v2](../revisiones/T03-serpiente-v2/REVISION.md) · [T04 v2](../revisiones/T04-camaleon-v2/REVISION.md).

@@ -4,7 +4,7 @@
  "estado": "laboratorio — pendiente de aprobación del usuario",
  "unidades": "viewBox de la base (0 0 1000 650)",
  "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia",
- "bytesTotales": 224196,
+ "bytesTotales": 235152,
  "piezas": [
   {
    "id": "seg-a",
@@ -258,6 +258,48 @@
    "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/pieza-camaleon-torretas.png",
    "fuenteSha256": "18c572c0a2a2789e",
    "notas": "Origen = centro del hueco (radio 20.9 u); radio exterior 46 u; se centra en el ojo B03 y va detrás de #eyes."
+  },
+  {
+   "id": "pierna-v2",
+   "rol": "pierna",
+   "archivo": "pierna-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    100,
+    110
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -33.0,
+    -70.11,
+    50,
+    55.11
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "4695acd0d5b29ad1",
+   "notas": "Origen = pie; la pierna baja hasta y=-15 (dentro del pie)."
+  },
+  {
+   "id": "pie-v2",
+   "rol": "pie",
+   "archivo": "pie-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    208,
+    119
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -44,
+    -37.6,
+    104,
+    59.6
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/ia/pieza-camaleon-pata.png",
+   "fuenteSha256": "4695acd0d5b29ad1",
+   "notas": "Encuadre igual al calzado B10: suela en y=+22, talón en x=-44."
   }
  ],
  "origenes": {

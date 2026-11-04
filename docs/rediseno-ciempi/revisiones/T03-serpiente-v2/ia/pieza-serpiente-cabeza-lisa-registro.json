@@ -1,0 +1,13 @@
+{
+  "id": "pieza-serpiente-cabeza-lisa",
+  "archivo": "pieza-serpiente-cabeza-lisa.png",
+  "prompt": "pieza-serpiente-cabeza-lisa-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-6483-76e2-8373-e3109b84b6ee/exec-4ede5e9b-217c-46d8-b22e-c875a7bf7dce.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:51.265Z",
+  "segundos": 112
+}

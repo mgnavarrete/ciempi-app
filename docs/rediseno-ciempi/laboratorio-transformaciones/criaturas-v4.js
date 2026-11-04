@@ -81,6 +81,12 @@ const esV4 = (id) => !!CRIATURAS_V4[id]
  * anteriores es exactamente la paleta (como antes).
  */
 export function clavePaleta(env, especieId, sel) {
+  const c = claveTinte(env, especieId, sel)
+  // Iteración: v2 (rostro propio, por omisión) o v1 (`sel.iter = 'v1'`, para comparar). Solo criaturas V4.
+  return esV4(especieId) && sel?.iter === 'v1' ? c + '@v1' : c
+}
+
+function claveTinte(env, especieId, sel) {
   const paleta = sel?.paleta || 'clasica'
   if (especieId !== 'camaleon' || paleta !== 'clasica') return paleta
   const conjunto = env.sets?.find((s) => CAMUFLAJE.conjuntos[s.nombre] && Object.entries(s.seleccion).every(([k, v]) => k === 'expresion' || sel[k] === v))
@@ -91,6 +97,7 @@ export function clavePaleta(env, especieId, sel) {
 
 /** Colores destino [naranja, menta, amarillo] de una clave, o null (clásica: colores IA tal cual). */
 function destinoDe(clave) {
+  clave = clave.split('@')[0]
   if (clave === 'clasica') return null
   if (clave.startsWith('camuflaje:')) {
     const k = clave.slice(10)
@@ -203,7 +210,9 @@ const radioNucleo = (p) => p.encuadre[1] + p.encuadre[3] - 3
 
 /** Base SVG de una criatura V4 (texto con los ids de la base aprobada), teñida según `clave`. */
 export async function baseCriaturaV4(env, especieId, clave, forma) {
+  const v1 = clave.endsWith('@v1')
   const m = await cargarManifiesto(especieId)
+  const v = (id) => (!v1 && m.piezas.some((x) => x.id === id + '-v2') ? id + '-v2' : id)
   const url = async (p) => tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, clave)
   const doc = parse(env.base)
 
@@ -226,7 +235,7 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
   const pies = doc.getElementById('legs-and-sneakers')
   pies.replaceChildren()
   const conPatas = m.piezas.some((x) => x.id === 'pierna')
-  const [pierna, pie] = conPatas ? [pieza(m, 'pierna'), pieza(m, 'pie')] : []
+  const [pierna, pie] = conPatas ? [pieza(m, v('pierna')), pieza(m, v('pie'))] : []
   const [urlPierna, urlPie] = conPatas ? [await url(pierna), await url(pie)] : []
   PIES_CIEMPI.forEach(([x, y, giro], i) => {
     const px = i === 0 || i === 5 ? x : i === 4 ? Math.min(x, forma.xMaestro[4] + 42) : forma.xMaestro[i] - 8
@@ -251,7 +260,7 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
   const cabeza = doc.getElementById('head')
   const disco = [...cabeza.children].find((n) => n.localName === 'circle' && /url\(#orange\)/.test(n.getAttribute('fill') || ''))
   const sombra = [...cabeza.children].find((n) => n.localName === 'g' && n.getAttribute('clip-path') === 'url(#face)')
-  const piel = pieza(m, 'cabeza-piel')
+  const piel = pieza(m, v('cabeza-piel'))
   const gp = crear(doc, 'g', { 'clip-path': 'url(#face)', 'data-rasgo': 'piel' })
   gp.append(imagen(doc, await url(piel), piel.encuadre, { 'data-pieza': 'cabeza-piel' }))
   disco.setAttribute('fill', '#fff9e9')
@@ -268,7 +277,7 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
 
   // Torretas del Camaleón: párpados IA centrados en cada ojo, detrás de #eyes.
   const torretas = ['torreta-izq', 'torreta-der'].map((id) => m.piezas.find((x) => x.id === id)).filter(Boolean)
-  if (torretas.length === 2) {
+  if (v1 && torretas.length === 2) {
     const gt = crear(doc, 'g', { 'data-rasgo': 'torretas' })
     for (const [i, t] of torretas.entries()) {
       const [x, y, w, h] = t.encuadre
@@ -277,8 +286,130 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
     cabeza.insertBefore(gt, doc.getElementById('eyes'))
   }
 
-  const lengua = m.piezas.find((x) => x.id === 'lengua')
-  return { svg: new XMLSerializer().serializeToString(doc), alas: null, lengua: lengua ? { ...lengua, url: await url(lengua) } : null }
+  const lengua = v1 ? m.piezas.find((x) => x.id === 'lengua') : null
+  return {
+    svg: new XMLSerializer().serializeToString(doc), alas: null, iter: v1 ? 'v1' : 'v2',
+    lengua: lengua ? { ...lengua, url: await url(lengua) } : null,
+    rostro: v1 ? null : await prepararRostro(especieId, clave),
+  }
+}
+
+// ── Rostro propio (iteración 2) ──────────────────────────────────────────────
+// Mismo método que los rostros v4 de Dragón y Cuncuna (rostros-v4.js, rama
+// expansion-v4-rostros): una cara IA por expresión B03 en capas que sustituyen el
+// CONTENIDO de los grupos que usa el rig, así cambiarRostro() y las animaciones
+// (también E08 con b03-sorprendido) usan la cara propia de cada expresión.
+//  - Serpiente: #eyes → un grupo eye-i por ojo abierto (con elipse invisible: el
+//    rig lo hace parpadear) o eyelids si la B03 lo cierra; #mouth → capa fija
+//    (cejas, boca con lengüita corta, rombo, escamas); #b03-brows vacío.
+//  - Camaleón: las torretas (cono + ojo en la punta) van en #b03-brows, NO en
+//    #eyes: el rig no las aplasta al parpadear (el parpadeo aplastaría el cono);
+//    #eyes queda vacío; #mouth → boca ancha y mejillas de escamas.
+//  - Si el compositor vació #eyes o #mouth (lentes opacos, máscaras: data-hidden),
+//    se respeta: nunca aparecen ojos, torretas ni boca sobre una máscara.
+//  - Se quita el rubor vectorial de Ciempi: la cara IA trae sus mejillas.
+//  - Tinte: en el Camaleón la cara se tiñe con el cuerpo (camuflaje/paleta),
+//    porque torretas y escamas son piel; en la Serpiente no (ojos y boca fijos).
+async function prepararRostro(especieId, clave) {
+  const r = await fetch(new URL(`${especieId}/rostro-v2/manifiesto.json`, RECURSOS))
+  if (!r.ok) return null
+  const m = await r.json()
+  const urls = new Map()
+  const teñir = especieId === 'camaleon'
+  for (const e of Object.values(m.expresiones)) {
+    for (const capa of [e.rostro, e.torretas, ...(e.ojos || [])]) {
+      if (!capa?.archivo || urls.has(capa.archivo)) continue
+      const href = new URL(`${especieId}/rostro-v2/${capa.archivo}`, RECURSOS).href
+      urls.set(capa.archivo, teñir && !capa.archivo.includes('-ojo-') ? await tenir(href, especieId, clave) : href)
+    }
+  }
+  return { m, urls }
+}
+
+function entradaRostro(m, expresion, sinLengua) {
+  const lista = Object.entries(m.expresiones)
+  const nombre = String(expresion || '').replace(/^b03-/, '')
+  if (sinLengua && m.expresiones[nombre + '-sinlengua']) return m.expresiones[nombre + '-sinlengua']
+  return lista.find(([, e]) => e.b03 === expresion)?.[1] ?? lista.find(([, e]) => e.b03 === m.porDefecto)?.[1]
+}
+
+function aplicarRostro(doc, especieId, efectiva, rostro) {
+  const { m, urls } = rostro
+  const e = entradaRostro(m, efectiva.expresion, efectiva.lengua === 'no')
+  const cabeza = doc.querySelector('g[id="head"]')
+  if (!cabeza || !e) return
+  const capa = (c, extra = {}) => imagen(doc, urls.get(c.archivo), c.encuadre, extra)
+  for (const n of [...cabeza.children]) if (n.localName === 'ellipse' && n.getAttribute('fill') === '#ee724b') n.remove()
+  const ojos = cabeza.querySelector('[id="eyes"]')
+  const ojosOcultos = !ojos || ojos.hasAttribute('data-hidden')
+  let cejas = doc.querySelector('[id="b03-brows"]')
+  if (!cejas) { cejas = crear(doc, 'g', { id: 'b03-brows' }); cabeza.insertBefore(cejas, cabeza.querySelector('[id="mouth"]')) }
+  cejas.replaceChildren()
+  if (!ojosOcultos) {
+    if (e.torretas) {
+      ojos.replaceChildren()
+      const g = crear(doc, 'g', { 'data-rasgo': 'torretas', 'data-rostro-v2': 'torretas' })
+      g.append(capa(e.torretas))
+      cejas.append(g)
+    } else {
+      const abiertos = new Map([...ojos.querySelectorAll(':scope > [data-component^="eye-"]')].map((g) => [g.getAttribute('data-component'), !!g.querySelector('ellipse')]))
+      const b03 = abiertos.size > 0
+      const nuevos = []
+      ;(e.ojos || []).forEach((o, i) => {
+        if (!o) return
+        const abierto = b03 ? abiertos.get('eye-' + i) === true : true
+        const g = crear(doc, 'g', { 'data-component': abierto ? 'eye-' + i : 'eyelids', 'data-rostro-v2': 'ojo-' + i })
+        g.append(capa(o))
+        if (abierto) {
+          const [x, y, w, h] = o.encuadre
+          g.append(crear(doc, 'ellipse', { cx: o.centro?.[0] ?? x + w / 2, cy: o.centro?.[1] ?? y + h / 2, rx: w / 2, ry: h / 2, fill: 'none', opacity: 0 }))
+        }
+        nuevos.push(g)
+      })
+      nuevos.sort((a, b) => (a.getAttribute('data-component') === 'eyelids') - (b.getAttribute('data-component') === 'eyelids'))
+      ojos.replaceChildren(...nuevos)
+    }
+  }
+  const boca = cabeza.querySelector('[id="mouth"]')
+  if (boca && !boca.hasAttribute('data-hidden')) {
+    const g = crear(doc, 'g', { 'data-rostro-v2': 'rostro' })
+    g.append(capa(e.rostro))
+    boca.replaceChildren(g)
+  }
+  doc.documentElement.setAttribute('data-rostro', 'v2')
+}
+
+// ── Zapatilla en la cola (Serpiente) ─────────────────────────────────────────
+// Decisión de la usuaria (2026-11-04): «podríamos ponerle una zapatilla en la
+// cola y sería chistoso, pero solo en la cola y solo 1». `renderCiempi` pone el
+// calzado B10 en las seis patas (vacías en la serpiente): se quitan esas seis y
+// se pone UNA copia del mismo diseño dentro del grupo de la COLA (`tail`), así
+// acompaña al crecimiento (escena/escenaCreciente clonan la cola con N ≥ 2) y a
+// todas las animaciones del rig (que mueven ese segmento). La punta de la cola
+// (el corazón, que apunta hacia arriba) entra en la abertura: el zapato va boca
+// abajo, con la suela hacia arriba y la puntera hacia atrás, siguiendo la cola,
+// con una sombra de contacto sobre la cola, junto al cuello del zapato.
+/** Punta de la cola en coordenadas locales de la pieza `cola` (centro de la bola = 0,0). */
+export const COLA_PUNTA = [-92, -84] // centro del corazón de la punta (medido en cola.webp)
+const CENTRO_ZAPATO = [1, -11] // centro del calzado B10 en coordenadas de pie; su abertura está en (-10, -30)
+const COLA_GIRO = 196 // boca abajo (la abertura mira a la cola), un poco inclinado hacia atrás como la cola
+const COLA_ESCALA = 1.3 // tapa el corazón: la punta queda DENTRO del zapato
+
+function calzarCola(doc, efectiva) {
+  const usos = [...doc.querySelectorAll('[data-footwear]')]
+  if (!usos.length) return
+  const modelo = usos[0].cloneNode(true)
+  for (const u of usos) u.remove()
+  const cola = doc.querySelector('g[id="tail"]')
+  if (!cola) return
+  const [px, py] = COLA_PUNTA, [bx, by] = CENTRO_ZAPATO
+  const g = crear(doc, 'g', { 'data-calzado-cola': efectiva.pies, 'data-zapatilla-cola': '' })
+  // Sombra de contacto sobre la cola, justo debajo del cuello del zapato.
+  g.append(crear(doc, 'ellipse', { cx: px + 8, cy: py + 40, rx: 17, ry: 6, fill: '#243e5b', opacity: 0.28 }))
+  const zapato = crear(doc, 'g', { transform: `translate(${px} ${py}) rotate(${COLA_GIRO}) scale(${COLA_ESCALA}) translate(${-bx} ${-by})` })
+  zapato.append(modelo)
+  g.append(zapato)
+  cola.append(g)
 }
 
 /**
@@ -288,6 +419,7 @@ export async function baseCriaturaV4(env, especieId, clave, forma) {
  */
 export function posprocesarV4(doc, especieId, efectiva, res, base) {
   if (!esV4(especieId)) return
+  if (base.rostro) aplicarRostro(doc, especieId, efectiva, base.rostro)
   if (especieId === 'serpiente') {
     // Lengüita: dentro de la boca (primer hijo: el labio la tapa arriba), solo si hay boca dibujada.
     const boca = doc.querySelector('g[id="head"] g[id="mouth"]')
@@ -298,6 +430,7 @@ export function posprocesarV4(doc, especieId, efectiva, res, base) {
       g.append(imagen(doc, base.lengua.url, [ex, ey, w, h], { 'data-pieza': 'lengua' }))
       boca.prepend(g)
     }
+    calzarCola(doc, efectiva)
     // La mochila se apoya en el segmento delantero, que en la serpiente está 44 u más abajo.
     const dy = 446 - 402
     for (const b of doc.querySelectorAll('[data-bag]')) b.setAttribute('transform', `translate(0 ${dy})`)
