@@ -10,6 +10,19 @@ export const pool = new pg.Pool({
  * Cada uno corre en una transacción: si falla, no queda a medias.
  */
 export async function migrar(): Promise<void> {
+  // Un solo proceso migra a la vez (la API y la CLI de grabar cuentos arrancan juntas al
+  // actualizar): el otro espera el candado y, al entrar, ve las migraciones ya aplicadas.
+  const candado = await pool.connect()
+  try {
+    await candado.query('select pg_advisory_lock(7203161)')
+    await migrarConCandado()
+  } finally {
+    await candado.query('select pg_advisory_unlock(7203161)').catch(() => {})
+    candado.release()
+  }
+}
+
+async function migrarConCandado(): Promise<void> {
   await pool.query('create table if not exists migraciones (archivo text primary key, aplicada_en timestamptz not null default now())')
   const carpeta = new URL('../sql/', import.meta.url)
   const archivos = (await readdir(carpeta)).filter((f) => f.endsWith('.sql')).sort()
