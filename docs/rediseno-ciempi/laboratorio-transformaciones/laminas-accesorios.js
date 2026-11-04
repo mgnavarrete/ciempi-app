@@ -1,6 +1,6 @@
 // Láminas de evidencia V4 · mochilas (B09) y calzado (B10) sobre Ciempi, Dragón y Cuncuna.
 // Las captura scripts/transformaciones/capturar-accesorios-v4.cjs. Parámetros:
-//   ?tipo=piezas|detalle|crecimiento|animacion|especies
+//   ?tipo=piezas|detalle|crecimiento|animacion|especies|conjuntos
 //   &familia=mochilas|zapatos  &especie=ciempi|dragon|cuncuna  &fondo=claro|oscuro
 //   &accesorios=v1|v4   (v1 = vestuario del juego tal cual; v4 = construcción nueva del laboratorio)
 import { ESPECIES } from './especies.js'
@@ -111,8 +111,21 @@ async function especies() {
   }
 }
 
+async function conjuntos() {
+  titulo(`conjuntos B12 con mochila o calzado B09/B10 · ${ESPECIES[especie].nombre}`, 'Selecciones exactas de los conjuntos: N = 5 a 320 px, N = 12 a 84 px de alto y detalle de la espalda (×0,9).')
+  for (const s of env.sets.filter((x) => String(x.seleccion.espalda).startsWith('b09-') || String(x.seleccion.pies).startsWith('b10-'))) {
+    const sel = { ...s.seleccion }
+    const fila = el('div', { className: 'fila-lamina' }, el('h2', { textContent: `${s.nombre} · ${sel.espalda || '—'} · ${sel.pies || '—'}` }))
+    fila.append(celda(await vista(especie, sel, 5, { tam: { ancho: 320 } }), 'N = 5 · 320 px'))
+    fila.append(celda(await vista(especie, sel, 12, { tam: { alto: 84 } }), 'N = 12 · 84 px alto'))
+    fila.append(celda(await vista(especie, sel, 5, { tam: { k: 0.9 }, recorte: RECORTE.mochilas }), 'espalda'))
+    fila.append(celda(await vista(especie, sel, 5, { tam: { k: 0.9 }, recorte: RECORTE.zapatos }), 'pies'))
+    raiz.append(fila)
+  }
+}
+
 try {
-  await ({ piezas, detalle, crecimiento, animacion, especies })[tipo]()
+  await ({ piezas, detalle, crecimiento, animacion, especies, conjuntos })[tipo]()
   await Promise.all([...document.querySelectorAll('image')].map((im) => new Promise((ok) => {
     const href = im.getAttribute('href'); if (!href) return ok()
     const i = new Image(); i.onload = i.onerror = ok; i.src = href

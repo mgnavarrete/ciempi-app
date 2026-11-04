@@ -13,19 +13,23 @@ import medidas from './recursos/accesorios-v4/medidas.json' with { type: 'json' 
 
 const bolsa = (k, extra) => ({ archivo: medidas[k].archivo, px: medidas[k].px, base: medidas[k].baseInferior, ...extra })
 
+// v4.2: `alto` = alto de la bolsa en v1 (encuadre B09); `centro` = centro de la bolsa en coordenadas
+// del segmento delantero (radio 96); `correas`: punto de salida en la bolsa (fracciones de su caja
+// desde el centro) y ángulo de la silueta por donde la correa pasa al lado lejano.
+const CORREAS = [{ desde: [0.36, 0.02], silueta: -81 }, { desde: [0.36, 0.3], silueta: -61 }]
 export const V4_MOCHILAS = {
-  'b09-aventura': bolsa('aventura', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#b9772f', luz: '#e9b46c' }, hebilla: '#d9a441' }),
-  'b09-draco': bolsa('draco', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#2a9d8f', luz: '#86dccb' }, hebilla: '#f2c23a' }),
-  'b09-mago': bolsa('mago', { ancho: 184, giro: -20, apoyo: 0.86, correas: [-0.08], correa: { color: '#2b2a72', luz: '#6a6ad0', ancho: 13 }, hebilla: '#f2c23a' }),
-  'b09-raton': bolsa('raton', { ancho: 168, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#4fae9e', luz: '#a6e3d4' }, hebilla: '#e9a35a' }),
-  'b09-robot': bolsa('robot', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#3b4270', luz: '#7480b8' }, hebilla: '#f2c23a' }),
+  'b09-aventura': bolsa('aventura', { alto: 168, centro: [-78, -62], giro: -10, correas: CORREAS, correa: { color: '#a8662b' } }),
+  'b09-draco': bolsa('draco', { alto: 180, centro: [-78, -64], giro: -10, correas: CORREAS, correa: { color: '#2a9d8f' } }),
+  'b09-mago': bolsa('mago', { alto: 144, centro: [-82, -56], giro: -8, correas: [{ desde: [0.4, 0.1], silueta: -81 }, { desde: [0.4, 0.32], silueta: -61 }], correa: { color: '#e2b23a' }, borde: { color: '#f2c23a', interior: 9, exterior: 18 } }),
+  'b09-raton': bolsa('raton', { alto: 178, centro: [-78, -66], giro: -10, correas: CORREAS, correa: { color: '#c97a33' } }),
+  'b09-robot': bolsa('robot', { alto: 163, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#e2a52f' } }),
 }
 
 export const V4_CALZADO = {
   'b10-robot': { px: [512, 423], suela: 419, ancho: 80, boca: { izq: [62, 36], der: [268, 40], labio: [170, 63], arriba: 5 } },
   'b10-aventura': { px: [512, 413], suela: 410, ancho: 84, boca: { izq: [88, 45], der: [210, 34], labio: [148, 68], arriba: 13 } },
   'b10-lluvia': { px: [512, 456], suela: 450, ancho: 74, boca: { izq: [48, 33], der: [300, 30], labio: [165, 52], arriba: 4 } },
-  'b10-mago': { px: [512, 275], suela: 270, ancho: 100, boca: { izq: [42, 28], der: [205, 40], labio: [120, 56], arriba: 4 } },
+  'b10-mago': { px: [512, 275], suela: 270, ancho: 86, boca: { izq: [42, 28], der: [205, 40], labio: [120, 56], arriba: 4 } },
   'b10-deportiva': { px: [512, 325], suela: 318, ancho: 92, boca: { izq: [100, 55], der: [222, 52], labio: [160, 76], arriba: 28 } },
 }
 for (const z of Object.values(V4_CALZADO)) { z.boca.x0 = z.boca.izq[0]; z.boca.x1 = z.boca.der[0] }

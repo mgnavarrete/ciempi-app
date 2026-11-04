@@ -149,3 +149,57 @@ Por pieza:
 5. Costuras de antialias de 1 px en el borde del recorte de la pierna, visibles al ampliar ×2.
 6. Deportiva: la boca es una interpretación del dibujo. Si el usuario la rechaza, se puede regenerar la pieza con la boca visible.
 7. Las combinaciones pendientes listadas arriba.
+
+---
+
+# Iteración v4.2 (tras la revisión independiente)
+
+**Hallazgos de la revisión (coordinador y Fable) sobre v4.1:**
+- Cada mochila llevaba 3 o 4 correas verticales anchas, de borde a borde. A 84 px y con N = 1/5 el segmento se leía como «un barril a rayas».
+- La bolsa subía a la cima, se achicaba y quedaba «posada como un gorro».
+- El Bolso Luna se perdía sobre el cuerpo morado del conjunto mago.
+- La punta de los zapatos de luna pisaba el pie vecino al caminar.
+
+Coincido con los hallazgos al revisar `despues/detalle-mochilas-claro.png` y `despues/piezas-mochilas-claro.png`.
+
+**Cambios** (`accesorios-v4.js` y `accesorios-v4-datos.js`). La v4.1 queda en git: `eb73977` y `despues/`.
+1. **Posición y tamaño:** la bolsa vuelve al **flanco trasero superior** del segmento delantero, con el alto de v1 (encuadre B09: 144–180 u). Inclinación −8°/−10° y sigue en el grupo del segmento, así que crece y se anima con él.
+2. **Correas:** **dos correas finas** (6 u, antes 14 + contorno), del material de cada bolsa: cuero en Cartógrafo y Ratón, verde azulado en Draco, dorado en Propulsor y Bolso Luna. Nunca azul marino.
+   - Cada una es un tramo de círculo máximo de la esfera, desde el borde derecho de la bolsa hasta la silueta del lomo, recortado a la esfera.
+   - Su continuación lejana asoma por detrás de la silueta.
+   - **No se dibuja ningún tramo sobre la cara frontal hacia la panza.**
+3. **Sombra de contacto** bajo la bolsa, recortada a la esfera (17 %).
+4. **Bolso Luna:** ribete dorado y contorno exterior oscuro, mediante un filtro de dilatación del propio alfa.
+5. **Zapatos de luna:** ancho 100 → 86 (−14 %). La punta rizada ya no alcanza al pie vecino en A02 ni en reposo.
+6. **Nueva lámina `conjuntos`:** los 10 conjuntos B12 a 320 px, a 84 px y con detalle de espalda y pies. Su «antes» está en `antes-conjuntos/`.
+
+**Evidencia:** `despues-v4.2/` (20 PNG) y `comparaciones-v4.2/` (20 JPG, v1 | v4.2). Ninguna lámina de v4.1 se sobrescribió.
+
+## Rúbrica v4.2 (agente; v1 → v4.1 → v4.2)
+
+### Mochilas
+
+| Dimensión | v1 | v4.1 | v4.2 | Observación concreta (evidencia) |
+|---|---|---|---|---|
+| Coherencia con Ciempi | 3 | 2 | 4 | Vuelve la escala y la posición de v1, que no compiten con la cabeza, y desaparecen las rayas. El cuerpo vuelve a leerse como segmentos de Ciempi (`comparaciones-v4.2/piezas-mochilas-claro.jpg`, 320 px y 84 px). |
+| Calidad de ilustración | 3 | 3 | 4 | Dos correas finas del color del material, con contorno. La sombra suave ya no forma una «lente». Las correas son vector plano junto a una bolsa raster (se nota al ampliar ×2). |
+| Integración con el cuerpo | 1 | 2 | 4 | La bolsa se apoya en el flanco, con sombra. Las correas salen de su borde y pasan por encima del lomo hacia el lado lejano, sin cruzar la cara visible (`despues-v4.2/detalle-mochilas-claro.png`). Sigue al segmento en E04 y A03 y al crecer (`despues-v4.2/crecimiento-*.png`). Con N = 1 la bolsa sobresale por detrás del único segmento, como en v1. |
+| Legibilidad | 4 | 2 | 4 | A 84 px se reconoce como una bolsa en la espalda. Las correas son discretas y a ese tamaño casi no se ven, aunque no estorban. El Bolso Luna se distingue sobre el cuerpo morado gracias al ribete (`despues-v4.2/conjuntos-claro.png`, «Luna bibliotecaria»). |
+| Originalidad | 4 | 4 | 4 | Diseños B09 intactos. |
+
+Por pieza:
+- **Propulsor:** sobre la Armadura Lumen del conjunto Robot, el rojo de la bolsa se confunde con la armadura. Mejor que v1, pero sigue siendo el caso más débil.
+- **Draco:** el verde menta se acerca al segmento menta de Ciempi, aunque la silueta con alas lo separa.
+- **Cartógrafo y Ratón:** las más claras.
+
+### Calzado
+
+Las notas no cambian respecto de v4.1: coherencia 4, ilustración 4, integración 4, legibilidad 4, originalidad 4. Única diferencia: **zapatos de luna**, integración 3 → 4. La punta ya no se solapa al caminar y queda un hueco entre pies (`despues-v4.2/piezas-zapatos-claro.png`, A02 con N = 12). Se mantiene la observación de que se ve más pierna en ese zapato bajo.
+
+### Pendientes v4.2
+
+- Combinaciones con superficie B11, bufanda o máscara: revisadas en la lámina `conjuntos` con las selecciones exactas de B12.
+- Siguen pendientes Firefox y Safari, el componente real del juego y la aprobación del usuario de las mochilas IA sin correas.
+- Las correas son casi invisibles a 84 px (es intencional).
+- Robot sobre la Armadura Lumen tiene poco contraste.
+- Con N = 1 la bolsa sobresale por detrás del cuerpo.
