@@ -5,7 +5,6 @@ import type { PerfilNino } from '../dominio/tipos'
 import { BotonPrincipal, Encabezado, MensajeError, Monedas } from '../ui/comunes'
 import {
   CATALOGO,
-  visibleEnTienda,
   CATEGORIAS,
   CONJUNTOS,
   PARTES,
@@ -54,8 +53,8 @@ interface Tarjeta {
   item: ItemCiempi
   color?: { id: string; nombre: string }
 }
-const tarjetasDe = (categoria: CategoriaCiempi, inventario: string[]): Tarjeta[] =>
-  CATALOGO.filter((i) => i.categoria === categoria && visibleEnTienda(i.id, inventario)).flatMap((item) =>
+const tarjetasDe = (categoria: CategoriaCiempi): Tarjeta[] =>
+  CATALOGO.filter((i) => i.categoria === categoria).flatMap((item) =>
     VARIANTES[item.id] ? VARIANTES[item.id].map((color) => ({ clave: `${item.id}|${color.id}`, item, color })) : [{ clave: item.id, item }],
   )
 const conColor = (a: AparienciaCiempi, t: Tarjeta): AparienciaCiempi => {
@@ -253,7 +252,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
     if (limpio !== perfil.ciempi.nombre) void guardar({ ...guardado.current, nombre: limpio })
   }
 
-  const tarjetas = tarjetasDe(categoria, inventario)
+  const tarjetas = tarjetasDe(categoria)
   const categorias = CATEGORIAS.filter((c) => seccion.categorias.includes(c.id)).sort((a, b) => seccion.categorias.indexOf(a.id) - seccion.categorias.indexOf(b.id))
 
   return (

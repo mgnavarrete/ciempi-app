@@ -889,7 +889,11 @@ Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuent
 - Máscaras robot y gatita: parecido con personajes protegidos.
 
 ## 12. CIEMPI 2.5.1 (4-nov-2026)
-- **Textos sin aprobación:** el niño agrega un texto y lo lee de inmediato. La migración 015 autoriza lo que estuviera pendiente o rechazado; no destruye columnas ni tablas del PIN. El panel del adulto ya no muestra «Textos por aprobar» ni «PIN de adulto». Las rutas del PIN se conservan sin uso.
-- **Máscaras retiradas de la venta:** `cabeza:b07-ia-robot`, `cabeza:b07-ia-gatita` y `conjunto:b12-set-robot` (incluye la máscara Robot). Quien ya las tiene las conserva, las ve y se las puede poner. No se tocan compras, inventarios ni saldos. La textura y las botas robot siguen a la venta sueltas.
-- **Economía sin cambios:** activa la 2.4.1; E2 apagado (bandera `ECONOMIA` sin definir). Los precios de las criaturas no cambian.
+- **Textos sin aprobación:** el niño agrega un texto y lo lee de inmediato.
+  - La migración 015 autoriza lo que estaba **pendiente**.
+  - Lo **rechazado** explícitamente por un adulto no se toca: queda para revisarlo.
+  - No es destructiva: las columnas y las rutas del PIN siguen, sin uso.
+  - El panel del adulto ya no muestra «Textos por aprobar» ni «PIN de adulto».
+- **Catálogo intacto:** la usuaria canceló la idea de retirar las máscaras Robot y Gatita. No se elimina, oculta ni deshabilita ningún producto.
+- **Economía sin cambios:** rige la 2.4.1 y E2 está apagado. Los precios de las criaturas no cambian.
 - **SIGUIENTE TAREA:** revisión profunda de la economía de monedas y precios, después del despliegue.

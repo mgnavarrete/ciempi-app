@@ -152,23 +152,17 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   it('tienda: un conjunto se compra como pack (20 % menos), trae sus piezas y no cobra más de lo mostrado', async () => {
-    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 78, motivo: 'Para probar los conjuntos' })
+    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 96, motivo: 'Para probar los conjuntos' })
     // Si la app mostró un precio menor (por ejemplo, una versión antigua), no se cobra.
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-draco', precioVisto: 40 })).body.error).toMatch(/ahora cuesta 53/)
-    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-draco', precioVisto: 53 })
-    // Máscara 26 + estampado 28 + botas 12 = 66 → 53.
-    expect(r.body.monedas).toBe(82 - 53)
-    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-draco', 'cabeza:b06-ia-dragon', 'textura:b11-draco', 'pies:b10-lluvia']))
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 60 })).body.error).toMatch(/ahora cuesta 71/)
+    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 71 })
+    // Máscara 32 + armadura 32 + botas 24 = 88 → 71.
+    expect(r.body.monedas).toBe(100 - 71)
+    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot']))
     const puesto = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, {
-      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b06-ia-dragon', textura: 'textura:b11-draco', pies: 'pies:b10-lluvia' },
+      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b07-ia-robot', textura: 'textura:b11-robot', pies: 'pies:b10-robot' },
     })
-    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b06-ia-dragon', pies: 'pies:b10-lluvia' })
-    // 2.5.1: las máscaras retiradas no se venden (el saldo no cambia).
-    for (const itemId of ['cabeza:b07-ia-robot', 'cabeza:b07-ia-gatita', 'conjunto:b12-set-robot']) {
-      const x = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId })
-      expect(x.status).toBe(400)
-      expect(x.body.error).toMatch(/ya no está a la venta/)
-    }
+    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b07-ia-robot', pies: 'pies:b10-robot' })
   })
 
   it('la terapeuta cambia la clave del niño: la vieja deja de servir y se cierran sus sesiones', async () => {
