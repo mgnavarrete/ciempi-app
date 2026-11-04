@@ -123,4 +123,4 @@ export const variantesDe = (especieId: EspecieId) => VARIANTES_CRIATURAS.filter(
 /** Ids de item de las variantes no base (las que incluye el paquete). */
 export const variantesDePaquete = (especieId: EspecieId) => variantesDe(especieId).filter((v) => !v.base).map((v) => v.item)
 /** Miniatura horneada por RENDER (puede no existir todavía: la tienda tiene respaldo). */
-export const miniaturaDe = (varianteId: string) => `criaturas/miniaturas/${varianteDeItem(varianteId)?.id ?? varianteId}.webp`
+export const miniaturaDe = (varianteId: string) => `/criaturas/miniaturas/${varianteDeItem(varianteId)?.id ?? varianteId}.webp`
