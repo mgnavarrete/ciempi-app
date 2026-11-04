@@ -15,6 +15,8 @@ export type CategoriaCiempi =
   | 'paleta' | 'ojos' | 'gesto' | 'cabeza' | 'pelo' | 'detalle' | 'cara' | 'cuello' | 'espalda' | 'pies' | 'textura' | 'fondo' | 'comida' | 'conjunto'
   /** Criaturas (2.5): fuera de PARTES; se ponen con `apariencia.criatura`. */
   | 'especie' | 'variante' | 'paquete'
+  /** Bailes (2.7): fuera de PARTES; no cambian el dibujo. Ver BAILES y `apariencia.celebracion`. */
+  | 'baile'
 
 /** Las partes de Ciempi que se pueden cambiar (una cosa puesta por parte). */
 export const PARTES = ['paleta', 'ojos', 'gesto', 'cabeza', 'pelo', 'detalle', 'cara', 'cuello', 'espalda', 'pies', 'textura', 'fondo', 'comida'] as const
@@ -47,6 +49,43 @@ const FONDOS_Y_COMIDA: ItemCiempi[] = [
   { id: 'comida-pizza', nombre: 'Pizza', categoria: 'comida', precio: 15 },
   { id: 'comida-helado', nombre: 'Helados', categoria: 'comida', precio: 15 },
 ]
+
+/**
+ * Bailes (2.7): animaciones aprobadas del rig (ciempi/v2/animacion/animaciones.js)
+ * que Ciempi hace cuando el niño lo toca en el inicio y, la elegida, al terminar
+ * un cuento. No se crean animaciones: cada baile es una existente (id
+ * `baile:<animación>`). Dos gratis; «Celebración clásica» (A10 Victoria, lo que
+ * hacía siempre al terminar un cuento) es gratis y oculta: solo se ve en el ropero,
+ * para volver a elegirla para celebrar.
+ */
+export interface Baile {
+  id: string
+  /** Animación del rig (A04, E02…). */
+  animacion: string
+  nombre: string
+  emoji: string
+  precio: number
+  /** No se vende ni sale en la rueda (la celebración de siempre). */
+  oculto?: boolean
+}
+export const BAILES: Baile[] = [
+  { id: 'baile:a04', animacion: 'A04', nombre: 'Saludo', emoji: '👋', precio: 0 },
+  { id: 'baile:a03', animacion: 'A03', nombre: 'Saltito', emoji: '🦘', precio: 0 },
+  { id: 'baile:e01', animacion: 'E01', nombre: 'Carcajada', emoji: '😂', precio: 15 },
+  { id: 'baile:e06', animacion: 'E06', nombre: 'Estirón', emoji: '🙆', precio: 15 },
+  { id: 'baile:a12', animacion: 'A12', nombre: 'Resorte', emoji: '🪀', precio: 20 },
+  { id: 'baile:a11', animacion: 'A11', nombre: 'Besito', emoji: '😘', precio: 20 },
+  { id: 'baile:a09', animacion: 'A09', nombre: 'Pose de modelo', emoji: '😎', precio: 20 },
+  { id: 'baile:e02', animacion: 'E02', nombre: 'Baile alegre', emoji: '💃', precio: 25 },
+  { id: 'baile:a10', animacion: 'A10', nombre: 'Celebración clásica', emoji: '🏆', precio: 0, oculto: true },
+]
+/** La celebración de siempre al terminar un cuento (A10 Victoria). */
+export const CELEBRACION_INICIAL = 'baile:a10'
+export const bailePorId = (id: string | null | undefined) => BAILES.find((b) => b.id === id)
+/** ¿Es un id de baile existente? */
+export const esBaileValido = (id: unknown): id is string => typeof id === 'string' && !!bailePorId(id)
+/** Los bailes que tiene (gratis o comprados), en el orden de la tienda. Con `ocultos`, también la celebración clásica. */
+export const bailesDe = (inventario: string[], ocultos = false) => BAILES.filter((b) => (ocultos || !b.oculto) && loTiene(inventario, b.id))
 
 /** Un conjunto cuesta 20 % menos que sus piezas sueltas (y no se cobra lo que ya tiene). */
 const DESCUENTO_CONJUNTO = 0.8
@@ -132,6 +171,7 @@ export const CATALOGO: ItemCiempi[] = [
   ...ESPECIES.map((e) => ({ id: e.item, nombre: e.nombre, categoria: 'especie' as const, precio: e.precio })),
   ...VARIANTES_CRIATURAS.map((v) => ({ id: v.item, nombre: v.nombre, categoria: 'variante' as const, precio: v.base ? 0 : especieDeItem(v.item)!.precioVariante })),
   ...ESPECIES.map((e) => ({ id: e.paquete, nombre: e.nombrePaquete, categoria: 'paquete' as const, precio: 0 })),
+  ...BAILES.map((b) => ({ id: b.id, nombre: b.nombre, categoria: 'baile' as const, precio: b.precio })),
 ]
 for (const c of CATALOGO) if (c.categoria === 'conjunto' || c.categoria === 'paquete') c.precio = precioDe(c, [])
 
@@ -212,6 +252,7 @@ export const CATEGORIAS: { id: CategoriaCiempi; nombre: string; emoji: string }[
   { id: 'detalle', nombre: 'Detalles', emoji: '⚡' },
   { id: 'fondo', nombre: 'Fondos', emoji: '🏞️' },
   { id: 'comida', nombre: 'Comida', emoji: '🍎' },
+  { id: 'baile', nombre: 'Bailes', emoji: '💃' },
 ]
 
 export type Genero = 'nino' | 'nina'
@@ -228,6 +269,8 @@ export interface AparienciaCiempi extends Record<ParteCiempi, string> {
   presentado: boolean
   /** La criatura puesta (`variante:<id>`; la especie se deduce de ella). null = Ciempi. */
   criatura: string | null
+  /** El baile con que celebra al terminar un cuento (`baile:<animación>`, suyo). */
+  celebracion: string
 }
 
 export const APARIENCIA_INICIAL: AparienciaCiempi = {
@@ -250,6 +293,7 @@ export const APARIENCIA_INICIAL: AparienciaCiempi = {
   variantes: {},
   presentado: false,
   criatura: null,
+  celebracion: CELEBRACION_INICIAL,
 }
 
 /** El diseño sin la categoría: «cabeza:b06-ia-mago» → «b06-ia-mago». */
@@ -270,6 +314,8 @@ export function ponerItem(a: AparienciaCiempi, item: ItemCiempi): AparienciaCiem
   if (item.categoria === 'variante') return { ...a, criatura: item.id }
   if (item.categoria === 'especie') return { ...a, criatura: `variante:${especieDeItem(item.id)!.base}` }
   if (item.categoria === 'paquete') return a
+  // Un baile no se «pone»: se elige para celebrar (`celebracion`).
+  if (item.categoria === 'baile') return a
   if (item.categoria === 'conjunto') {
     // Un conjunto es un look completo: parte del Ciempi inicial (conserva nombre, fondo y comida).
     const conjunto = CONJUNTOS.find((c) => c.id === item.id)
@@ -300,6 +346,7 @@ export function lleva(a: AparienciaCiempi, item: ItemCiempi): boolean {
   if (item.categoria === 'variante') return a.criatura === item.id
   if (item.categoria === 'especie') return !!a.criatura && especieDeItem(a.criatura)?.item === item.id
   if (item.categoria === 'paquete') return false
+  if (item.categoria === 'baile') return a.celebracion === item.id
   if (item.categoria === 'conjunto') return (CONJUNTOS.find((c) => c.id === item.id)?.pone ?? []).every((id) => PARTES.some((p) => a[p] === id))
   return a[item.categoria as ParteCiempi] === item.id
 }
@@ -307,9 +354,9 @@ export function lleva(a: AparienciaCiempi, item: ItemCiempi): boolean {
 /** Las partes de la apariencia que todavía no son suyas. */
 export const sinComprar = (a: AparienciaCiempi, inventario: string[]) => PARTES.filter((p) => !loTiene(inventario, a[p]))
 
-/** ¿Puede ponerse esta apariencia? (todas sus partes y su criatura son suyas). */
+/** ¿Puede ponerse esta apariencia? (todas sus partes, su criatura y su baile de celebrar son suyos). */
 export const puedePonerse = (a: AparienciaCiempi, inventario: string[]) =>
-  PARTES.every((p) => loTiene(inventario, a[p])) && (a.criatura === null || loTiene(inventario, a.criatura))
+  PARTES.every((p) => loTiene(inventario, a[p])) && (a.criatura === null || loTiene(inventario, a.criatura)) && loTiene(inventario, a.celebracion ?? CELEBRACION_INICIAL)
 
 /** ¿Es un id de criatura válido para `apariencia.criatura`? (`variante:<id>` existente). */
 export const esCriaturaValida = (id: unknown): id is string => typeof id === 'string' && buscarItem(id)?.categoria === 'variante'
@@ -317,8 +364,10 @@ export const esCriaturaValida = (id: unknown): id is string => typeof id === 'st
 /**
  * Completa una apariencia guardada (o vacía) con los valores iniciales. Lo que
  * ya no existe (las piezas del Ciempi clásico) vuelve al valor inicial.
+ * Con `inventario`, un baile de celebración que no es suyo también vuelve al
+ * inicial (sin él solo se revisa que el baile exista: el servidor lo valida aparte).
  */
-export function normalizarApariencia(guardada: Partial<AparienciaCiempi> | null | undefined): AparienciaCiempi {
+export function normalizarApariencia(guardada: Partial<AparienciaCiempi> | null | undefined, inventario?: string[]): AparienciaCiempi {
   const g = (guardada ?? {}) as Partial<AparienciaCiempi>
   const a: AparienciaCiempi = { ...APARIENCIA_INICIAL, variantes: {} }
   for (const c of PARTES) if (typeof g[c] === 'string' && buscarItem(g[c])?.categoria === c) a[c] = g[c]
@@ -332,5 +381,7 @@ export function normalizarApariencia(guardada: Partial<AparienciaCiempi> | null 
   a.presentado = g.presentado === true
   // Lo que no es una variante existente (o falta, como en lo guardado antes de 2.5) es Ciempi.
   a.criatura = esCriaturaValida(g.criatura) ? g.criatura : null
+  // Lo guardado antes de 2.7 (sin celebración) celebra como siempre.
+  a.celebracion = esBaileValido(g.celebracion) && (!inventario || loTiene(inventario, g.celebracion)) ? g.celebracion : CELEBRACION_INICIAL
   return a
 }

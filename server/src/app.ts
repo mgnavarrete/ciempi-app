@@ -1,7 +1,7 @@
 import { randomInt } from 'node:crypto'
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify'
 import type pg from 'pg'
-import { PARTES, buscarItem, comprarItem, esCriaturaValida, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
+import { PARTES, buscarItem, comprarItem, esBaileValido, esCriaturaValida, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
 import {
   MIN_CLAVE_ADULTO,
   MIN_CLAVE_NINO,
@@ -85,7 +85,7 @@ const aPerfil = (f: Fila) => ({
   pinHash: null,
   ajustes: f.ajustes,
   monedas: f.monedas,
-  ciempi: normalizarApariencia(f.ciempi as object),
+  ciempi: normalizarApariencia(f.ciempi as object, (f.inventario as string[] | null) ?? []),
   inventario: f.inventario,
   creadoEn: f.creado_en,
 })
@@ -431,7 +431,9 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
   /**
    * Cómo se ve su Ciempi: solo puede ponerse lo gratis o lo comprado. La
    * criatura (2.5) también: `criatura` null es Ciempi; si el cuerpo no trae la
-   * clave (una APK anterior a 2.5), se conserva la guardada.
+   * clave (una APK anterior a 2.5), se conserva la guardada. Igual el baile
+   * de celebrar (2.7, `celebracion`): tiene que ser suyo y, si no viene, se
+   * conserva el guardado.
    */
   app.put('/api/perfiles/:id/ciempi', conUsuario, async (req) => {
     const id = param(req, 'id')
@@ -440,9 +442,13 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
     if (typeof pedido.nombre === 'string' && pedido.nombre.trim().length > 20) throw new Problema('El nombre de Ciempi puede tener hasta 20 letras')
     const traeCriatura = Object.prototype.hasOwnProperty.call(pedido, 'criatura')
     if (traeCriatura && pedido.criatura !== null && !esCriaturaValida(pedido.criatura)) throw new Problema('Esa criatura no existe')
+    const traeCelebracion = Object.prototype.hasOwnProperty.call(pedido, 'celebracion')
+    if (traeCelebracion && !esBaileValido(pedido.celebracion)) throw new Problema('Ese baile no existe')
     const apariencia = normalizarApariencia(pedido)
     const { rows } = await pool.query('select inventario, ciempi from perfiles_ninos where id = $1', [id])
     if (!traeCriatura) apariencia.criatura = normalizarApariencia(rows[0].ciempi).criatura
+    if (!traeCelebracion) apariencia.celebracion = normalizarApariencia(rows[0].ciempi, rows[0].inventario).celebracion
+    else if (!loTiene(rows[0].inventario, apariencia.celebracion)) throw new Problema('Primero hay que comprarlo', 403)
     for (const parte of PARTES) {
       if (!loTiene(rows[0].inventario, apariencia[parte])) throw new Problema('Primero hay que comprarlo', 403)
     }

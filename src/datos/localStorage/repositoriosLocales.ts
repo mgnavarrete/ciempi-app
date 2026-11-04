@@ -306,7 +306,7 @@ function nuevaAsignacion(perfilId: Id, textoId: Id, asignadaPor: Id, nivel: Nive
 const SIN_CONEXION = 'Esta función necesita una cuenta en línea.'
 
 /** Completa perfiles guardados antes de que existiera la tienda de Ciempi. */
-const completarPerfil = (p: PerfilNino): PerfilNino => ({ ...p, ciempi: normalizarApariencia(p.ciempi), inventario: p.inventario ?? [] })
+const completarPerfil = (p: PerfilNino): PerfilNino => ({ ...p, ciempi: normalizarApariencia(p.ciempi, p.inventario ?? []), inventario: p.inventario ?? [] })
 
 export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.localStorage): Repositorios {
   const tablas: Tablas = {

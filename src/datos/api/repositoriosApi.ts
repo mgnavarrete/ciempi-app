@@ -41,7 +41,7 @@ function guardarToken(token: string | null) {
 }
 
 /** Lo que el servidor devuelve de un perfil se completa con los valores por defecto de la app. */
-const aPerfil = (p: PerfilNino): PerfilNino => ({ ...p, ajustes: normalizarAjustes(p.ajustes ?? {}), ciempi: normalizarApariencia(p.ciempi), inventario: p.inventario ?? [] })
+const aPerfil = (p: PerfilNino): PerfilNino => ({ ...p, ajustes: normalizarAjustes(p.ajustes ?? {}), ciempi: normalizarApariencia(p.ciempi, p.inventario ?? []), inventario: p.inventario ?? [] })
 
 /**
  * @param base dirección del servidor: "" para el mismo sitio (la web servida
