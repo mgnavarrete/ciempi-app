@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { motivoCuncuna } from './desbloqueoCuncuna'
+import { ORIGINALES_N0, motivoCuncuna } from './desbloqueoCuncuna'
 import { CUENTOS } from '../contenido/cuentos'
 
 describe('regla local de la Cuncuna', () => {
