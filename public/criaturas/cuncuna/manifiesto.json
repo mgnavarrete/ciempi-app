@@ -1,0 +1,206 @@
+{
+ "nota": "Copia para el juego (scripts/criaturas/copiar-recursos.mjs): solo lo que usa src/ciempi/v2/criaturas/. Original en docs/rediseno-ciempi/laboratorio-transformaciones/recursos/.",
+ "especie": "cuncuna",
+ "version": "v1",
+ "estado": "aprobado para el juego (AD-022)",
+ "unidades": "viewBox de la base (0 0 1000 650)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia",
+ "piezas": [
+  {
+   "id": "seg-a",
+   "rol": 1,
+   "archivo": "seg-a.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    343,
+    619
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -78.84,
+    -226.62,
+    171.72,
+    309.62
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-segmentos.png",
+   "fuenteSha256": "52151139396bf956",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-b",
+   "rol": 2,
+   "archivo": "seg-b.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    317,
+    581
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -79.13,
+    -207.38,
+    158.74,
+    290.38
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-segmentos.png",
+   "fuenteSha256": "52151139396bf956",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-c",
+   "rol": 3,
+   "archivo": "seg-c.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    318,
+    577
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -79.61,
+    -205.44,
+    159.22,
+    288.44
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-segmentos.png",
+   "fuenteSha256": "52151139396bf956",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "seg-d",
+   "rol": 5,
+   "archivo": "seg-d.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    330,
+    599
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -78.51,
+    -216.6,
+    165,
+    299.6
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-segmentos.png",
+   "fuenteSha256": "52151139396bf956",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "frente",
+   "rol": 4,
+   "archivo": "frente.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    448,
+    537
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -107.56,
+    -173.68,
+    223.9,
+    268.68
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-segmentos.png",
+   "fuenteSha256": "52151139396bf956",
+   "notas": "Origen = centro de la bola; ancho de bola normalizado."
+  },
+  {
+   "id": "cola",
+   "rol": 0,
+   "archivo": "cola.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    503,
+    620
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -168.52,
+    -226.97,
+    251.52,
+    309.97
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-cola.png",
+   "fuenteSha256": "846b978a34d51d28",
+   "notas": "Bola = 0.66 del ancho del recorte (medido sobre la lámina de anclajes)."
+  },
+  {
+   "id": "pierna",
+   "rol": "pierna",
+   "archivo": "pierna.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    80,
+    131
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -28,
+    -80.3,
+    40,
+    65.3
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-pata.png",
+   "fuenteSha256": "9da12cc1c9440c16",
+   "notas": "Origen = pie; la pierna baja hasta y=-15 (dentro del pie) y su extremo superior queda oculto dentro del cuerpo."
+  },
+  {
+   "id": "pie",
+   "rol": "pie",
+   "archivo": "pie.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    176,
+    119
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -44,
+    -37.57,
+    88,
+    59.57
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-pata.png",
+   "fuenteSha256": "9da12cc1c9440c16",
+   "notas": "Encuadre igual al calzado B10: suela en y=+22, talón en x=-44."
+  },
+  {
+   "id": "cabeza-rasgos",
+   "rol": "cabeza",
+   "archivo": "cabeza-rasgos.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    641,
+    367
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    590.08,
+    113.18,
+    320.6,
+    183.26
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T02-cuncuna-v1/ia/pieza-cuncuna-cabeza.png",
+   "fuenteSha256": "576169fe0c164d84",
+   "notas": "Registrado contra el disco naranja de la imagen IA; el disco y su contorno se quitaron.",
+   "plano": "delante"
+  }
+ ],
+ "origenes": {
+  "segmentos/cola": "centro de la bola; el grupo del segmento se traslada a (x, y) de pose.ts",
+  "pierna/pie": "punto de apoyo del pie (grupo translate de cada pata); pie dentro del giro rotate(g -10 -32)",
+  "cabeza-rasgos": "coordenadas absolutas de la base (cabeza 736,340 r130)",
+  "alas": "coordenadas absolutas de la base"
+ }
+}

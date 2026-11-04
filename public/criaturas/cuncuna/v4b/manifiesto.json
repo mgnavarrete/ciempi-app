@@ -1,0 +1,568 @@
+{
+ "nota": "Copia para el juego (scripts/criaturas/copiar-recursos.mjs): solo lo que usa src/ciempi/v2/criaturas/. Original en docs/rediseno-ciempi/laboratorio-transformaciones/recursos/.",
+ "especie": "cuncuna",
+ "version": "v4b",
+ "porDefecto": "b03-alegre",
+ "expresiones": {
+  "alegre": {
+   "b03": "b03-alegre",
+   "rostro": {
+    "archivo": "alegre-rostro.webp",
+    "encuadre": [
+     636,
+     245,
+     211,
+     179.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "alegre-ojo-0.webp",
+     "encuadre": [
+      646,
+      296.5,
+      94.5,
+      86
+     ],
+     "centro": [
+      695.8,
+      338.2
+     ]
+    },
+    {
+     "archivo": "alegre-ojo-1.webp",
+     "encuadre": [
+      761.5,
+      284,
+      66.5,
+      73
+     ],
+     "centro": [
+      795.1,
+      319.6
+     ]
+    }
+   ]
+  },
+  "carcajada": {
+   "b03": "b03-carcajada",
+   "rostro": {
+    "archivo": "carcajada-rostro.webp",
+    "encuadre": [
+     636,
+     245,
+     212,
+     192.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "carcajada-ojo-0.webp",
+     "encuadre": [
+      643,
+      314,
+      92,
+      36.5
+     ],
+     "centro": [
+      684.7,
+      328.7
+     ]
+    },
+    {
+     "archivo": "carcajada-ojo-1.webp",
+     "encuadre": [
+      763,
+      304,
+      76.5,
+      35.5
+     ],
+     "centro": [
+      802.1,
+      317.8
+     ]
+    }
+   ]
+  },
+  "curioso": {
+   "b03": "b03-curioso",
+   "rostro": {
+    "archivo": "curioso-rostro.webp",
+    "encuadre": [
+     636,
+     235.5,
+     211,
+     190.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "curioso-ojo-0.webp",
+     "encuadre": [
+      646,
+      293.5,
+      96.5,
+      90
+     ],
+     "centro": [
+      697.5,
+      336.9
+     ]
+    },
+    {
+     "archivo": "curioso-ojo-1.webp",
+     "encuadre": [
+      761,
+      280.5,
+      68.5,
+      75
+     ],
+     "centro": [
+      796.5,
+      317.2
+     ]
+    }
+   ]
+  },
+  "pensativo": {
+   "b03": "b03-pensativo",
+   "rostro": {
+    "archivo": "pensativo-rostro.webp",
+    "encuadre": [
+     636,
+     240,
+     210.5,
+     184.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "pensativo-ojo-0.webp",
+     "encuadre": [
+      643.5,
+      293,
+      99,
+      90
+     ],
+     "centro": [
+      696.4,
+      336.7
+     ]
+    },
+    {
+     "archivo": "pensativo-ojo-1.webp",
+     "encuadre": [
+      761.5,
+      281,
+      67.5,
+      74
+     ],
+     "centro": [
+      795.7,
+      316.9
+     ]
+    }
+   ]
+  },
+  "sorprendido": {
+   "b03": "b03-sorprendido",
+   "rostro": {
+    "archivo": "sorprendido-rostro.webp",
+    "encuadre": [
+     635.5,
+     232,
+     210.5,
+     191.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "sorprendido-ojo-0.webp",
+     "encuadre": [
+      646.5,
+      292,
+      92,
+      85.5
+     ],
+     "centro": [
+      694.9,
+      333.9
+     ]
+    },
+    {
+     "archivo": "sorprendido-ojo-1.webp",
+     "encuadre": [
+      760,
+      280,
+      65.5,
+      73
+     ],
+     "centro": [
+      793.3,
+      315.7
+     ]
+    }
+   ]
+  },
+  "dormilon": {
+   "b03": "b03-dormilon",
+   "rostro": {
+    "archivo": "dormilon-rostro.webp",
+    "encuadre": [
+     636.5,
+     289,
+     211,
+     135.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "dormilon-ojo-0.webp",
+     "encuadre": [
+      650,
+      292.5,
+      79,
+      28.5
+     ],
+     "centro": [
+      689.1,
+      306.3
+     ]
+    },
+    {
+     "archivo": "dormilon-ojo-1.webp",
+     "encuadre": [
+      754.5,
+      289,
+      75,
+      28
+     ],
+     "centro": [
+      791.8,
+      302.7
+     ]
+    }
+   ]
+  },
+  "besito": {
+   "b03": "b03-besito",
+   "rostro": {
+    "archivo": "besito-rostro.webp",
+    "encuadre": [
+     635.5,
+     243,
+     211.5,
+     181
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "besito-ojo-0.webp",
+     "encuadre": [
+      642.5,
+      318,
+      96,
+      35.5
+     ],
+     "centro": [
+      685.2,
+      333.3
+     ]
+    },
+    {
+     "archivo": "besito-ojo-1.webp",
+     "encuadre": [
+      763.5,
+      296,
+      78.5,
+      37
+     ],
+     "centro": [
+      805.9,
+      314.7
+     ]
+    }
+   ]
+  },
+  "guino": {
+   "b03": "b03-guino",
+   "rostro": {
+    "archivo": "guino-rostro.webp",
+    "encuadre": [
+     635.5,
+     248,
+     211.5,
+     175.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "guino-ojo-0.webp",
+     "encuadre": [
+      646,
+      293,
+      92,
+      85
+     ],
+     "centro": [
+      694.7,
+      334.2
+     ]
+    },
+    {
+     "archivo": "guino-ojo-1.webp",
+     "encuadre": [
+      763,
+      296,
+      78.5,
+      37
+     ],
+     "centro": [
+      805.5,
+      314.6
+     ]
+    }
+   ]
+  },
+  "orgulloso": {
+   "b03": "b03-orgulloso",
+   "rostro": {
+    "archivo": "orgulloso-rostro.webp",
+    "encuadre": [
+     636.5,
+     234.5,
+     211.5,
+     189.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "orgulloso-ojo-0.webp",
+     "encuadre": [
+      639.5,
+      306.5,
+      98,
+      72.5
+     ],
+     "centro": [
+      693,
+      343.7
+     ]
+    },
+    {
+     "archivo": "orgulloso-ojo-1.webp",
+     "encuadre": [
+      761.5,
+      286,
+      72.5,
+      69
+     ],
+     "centro": [
+      797.5,
+      324.1
+     ]
+    }
+   ]
+  },
+  "confundido": {
+   "b03": "b03-confundido",
+   "rostro": {
+    "archivo": "confundido-rostro.webp",
+    "encuadre": [
+     635,
+     237,
+     213,
+     186.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "confundido-ojo-0.webp",
+     "encuadre": [
+      643.5,
+      268.5,
+      93,
+      113.5
+     ],
+     "centro": [
+      691.3,
+      327.6
+     ]
+    },
+    {
+     "archivo": "confundido-ojo-1.webp",
+     "encuadre": [
+      760,
+      284.5,
+      70.5,
+      71
+     ],
+     "centro": [
+      794.7,
+      318.8
+     ]
+    }
+   ]
+  },
+  "triste": {
+   "b03": "b03-triste",
+   "rostro": {
+    "archivo": "triste-rostro.webp",
+    "encuadre": [
+     635,
+     239.5,
+     213,
+     183.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "triste-ojo-0.webp",
+     "encuadre": [
+      643.5,
+      297.5,
+      94,
+      84
+     ],
+     "centro": [
+      693.2,
+      338.4
+     ]
+    },
+    {
+     "archivo": "triste-ojo-1.webp",
+     "encuadre": [
+      760,
+      284,
+      70,
+      71.5
+     ],
+     "centro": [
+      794.5,
+      318.9
+     ]
+    }
+   ]
+  },
+  "enojadito": {
+   "b03": "b03-enojadito",
+   "rostro": {
+    "archivo": "enojadito-rostro.webp",
+    "encuadre": [
+     636,
+     268,
+     210.5,
+     154.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "enojadito-ojo-0.webp",
+     "encuadre": [
+      643.5,
+      265,
+      94,
+      118
+     ],
+     "centro": [
+      692.9,
+      326.1
+     ]
+    },
+    {
+     "archivo": "enojadito-ojo-1.webp",
+     "encuadre": [
+      748.5,
+      249.5,
+      81.5,
+      105
+     ],
+     "centro": [
+      790.4,
+      303.8
+     ]
+    }
+   ]
+  },
+  "asustado": {
+   "b03": "b03-asustado",
+   "rostro": {
+    "archivo": "asustado-rostro.webp",
+    "encuadre": [
+     637,
+     238,
+     209.5,
+     188
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "asustado-ojo-0.webp",
+     "encuadre": [
+      645.5,
+      296.5,
+      95.5,
+      89
+     ],
+     "centro": [
+      696,
+      339.7
+     ]
+    },
+    {
+     "archivo": "asustado-ojo-1.webp",
+     "encuadre": [
+      757.5,
+      282,
+      76,
+      83
+     ],
+     "centro": [
+      795.1,
+      322.2
+     ]
+    }
+   ]
+  },
+  "concentrado": {
+   "b03": "b03-concentrado",
+   "rostro": {
+    "archivo": "concentrado-rostro.webp",
+    "encuadre": [
+     637.5,
+     258,
+     208.5,
+     169.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "concentrado-ojo-0.webp",
+     "encuadre": [
+      645.5,
+      304.5,
+      95,
+      81.5
+     ],
+     "centro": [
+      695.8,
+      346.5
+     ]
+    },
+    {
+     "archivo": "concentrado-ojo-1.webp",
+     "encuadre": [
+      760,
+      287.5,
+      76,
+      77.5
+     ],
+     "centro": [
+      798.7,
+      329.8
+     ]
+    }
+   ]
+  }
+ }
+}

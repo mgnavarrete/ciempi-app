@@ -1,0 +1,176 @@
+{
+ "nota": "Copia para el juego (scripts/criaturas/copiar-recursos.mjs): solo lo que usa src/ciempi/v2/criaturas/. Original en docs/rediseno-ciempi/laboratorio-transformaciones/recursos/.",
+ "especie": "camaleon",
+ "version": "rostro-v2",
+ "porDefecto": "b03-alegre",
+ "expresiones": {
+  "alegre": {
+   "b03": "b03-alegre",
+   "rostro": {
+    "archivo": "alegre-rostro.webp",
+    "encuadre": [
+     627.5,
+     242.5,
+     217.5,
+     191
+    ]
+   }
+  },
+  "carcajada": {
+   "b03": "b03-carcajada",
+   "rostro": {
+    "archivo": "carcajada-rostro.webp",
+    "encuadre": [
+     622,
+     245,
+     225.5,
+     200
+    ]
+   }
+  },
+  "curioso": {
+   "b03": "b03-curioso",
+   "rostro": {
+    "archivo": "curioso-rostro.webp",
+    "encuadre": [
+     627,
+     224,
+     219.5,
+     204.5
+    ]
+   }
+  },
+  "pensativo": {
+   "b03": "b03-pensativo",
+   "rostro": {
+    "archivo": "pensativo-rostro.webp",
+    "encuadre": [
+     628.5,
+     234,
+     219.5,
+     194
+    ]
+   }
+  },
+  "sorprendido": {
+   "b03": "b03-sorprendido",
+   "rostro": {
+    "archivo": "sorprendido-rostro.webp",
+    "encuadre": [
+     625,
+     227,
+     221,
+     207.5
+    ]
+   }
+  },
+  "dormilon": {
+   "b03": "b03-dormilon",
+   "rostro": {
+    "archivo": "dormilon-rostro.webp",
+    "encuadre": [
+     623,
+     232,
+     223,
+     202.5
+    ]
+   }
+  },
+  "besito": {
+   "b03": "b03-besito",
+   "rostro": {
+    "archivo": "besito-rostro.webp",
+    "encuadre": [
+     623,
+     229,
+     230,
+     205.5
+    ]
+   }
+  },
+  "guino": {
+   "b03": "b03-guino",
+   "rostro": {
+    "archivo": "guino-rostro.webp",
+    "encuadre": [
+     630,
+     231.5,
+     217.5,
+     203
+    ]
+   }
+  },
+  "orgulloso": {
+   "b03": "b03-orgulloso",
+   "rostro": {
+    "archivo": "orgulloso-rostro.webp",
+    "encuadre": [
+     630.5,
+     236.5,
+     216,
+     194
+    ]
+   }
+  },
+  "confundido": {
+   "b03": "b03-confundido",
+   "rostro": {
+    "archivo": "confundido-rostro.webp",
+    "encuadre": [
+     629.5,
+     232.5,
+     213.5,
+     197.5
+    ]
+   }
+  },
+  "triste": {
+   "b03": "b03-triste",
+   "rostro": {
+    "archivo": "triste-rostro.webp",
+    "encuadre": [
+     627,
+     237,
+     222.5,
+     193
+    ]
+   }
+  },
+  "enojadito": {
+   "b03": "b03-enojadito",
+   "rostro": {
+    "archivo": "enojadito-rostro.webp",
+    "encuadre": [
+     625,
+     242,
+     224.5,
+     188.5
+    ]
+   }
+  },
+  "asustado": {
+   "b03": "b03-asustado",
+   "rostro": {
+    "archivo": "asustado-rostro.webp",
+    "encuadre": [
+     628,
+     232.5,
+     218.5,
+     200.5
+    ]
+   }
+  },
+  "concentrado": {
+   "b03": "b03-concentrado",
+   "rostro": {
+    "archivo": "concentrado-rostro.webp",
+    "encuadre": [
+     628,
+     244.5,
+     217.5,
+     186
+    ]
+   }
+  }
+ }
+}

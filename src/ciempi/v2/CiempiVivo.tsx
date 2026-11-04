@@ -66,9 +66,9 @@ export function CiempiVivo({ escena, segmentos, base = 'A01', evento = null, tra
   ultimosSegmentos.current = segmentos
   const dibujosRef = useRef(dibujos)
   dibujosRef.current = dibujos
-  // Posiciones con la forma de la escena (especies) o las de Ciempi.
+  // Posiciones con la forma de la escena (criaturas) o las de Ciempi.
   const posicionesDeEscena = useRef(posiciones as (n: number) => { role: number; x: number; y: number }[])
-  posicionesDeEscena.current = 'nMax' in escena ? (escena as EscenaVivaCreciente).posiciones : posiciones
+  posicionesDeEscena.current = 'nMax' in escena ? (escena as EscenaVivaCreciente).posiciones : escena.posiciones ?? posiciones
 
   // La escena cambia con el vestuario (o, sin escena creciente, con cada palabra): se rearma el rig.
   useLayoutEffect(() => {
