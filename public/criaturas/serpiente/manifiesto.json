@@ -1,0 +1,164 @@
+{
+ "nota": "Copia para el juego (scripts/criaturas/copiar-recursos.mjs): solo lo que usa src/ciempi/v2/criaturas/. Original en docs/rediseno-ciempi/laboratorio-transformaciones/recursos/.",
+ "especie": "serpiente",
+ "version": "v1",
+ "estado": "aprobado para el juego (AD-022)",
+ "unidades": "viewBox de la base (0 0 1000 650)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia",
+ "piezas": [
+  {
+   "id": "seg-a",
+   "rol": 1,
+   "archivo": "seg-a.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    343
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86,
+    -85.77,
+    172,
+    171.54
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-b",
+   "rol": 2,
+   "archivo": "seg-b.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    345
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86,
+    -86.23,
+    172,
+    172.46
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-c",
+   "rol": 3,
+   "archivo": "seg-c.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    344
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86,
+    -86,
+    172,
+    172
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-d",
+   "rol": 5,
+   "archivo": "seg-d.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    344
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86,
+    -86,
+    172,
+    172
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "frente",
+   "rol": 4,
+   "archivo": "frente.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    388,
+    382
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -97,
+    -95.43,
+    194,
+    190.86
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "cola",
+   "rol": 0,
+   "archivo": "cola.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    442,
+    407
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -134.45,
+    -117.15,
+    221.05,
+    203.45
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-cola.png",
+   "fuenteSha256": "8025cf5717d4db46",
+   "notas": "Bola medida por su contorno derecho e inferior; la cola sale arriba a la izquierda."
+  },
+  {
+   "id": "cabeza-piel-v2",
+   "rol": "cabeza",
+   "archivo": "cabeza-piel-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    528,
+    535
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    605.79,
+    206.24,
+    264.1,
+    267.66
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/pieza-serpiente-cabeza-lisa.png",
+   "fuenteSha256": "465ee8a01a51a1a9",
+   "notas": "Piel de cabeza sin rostro (IA), registrada por el contorno del disco; se recorta al círculo #face bajo ojos, cejas, rubor y boca B03."
+  }
+ ],
+ "origenes": {
+  "segmentos/cola": "centro de la bola; el grupo del segmento se traslada a (x, y) de pose.ts",
+  "pierna/pie": "punto de apoyo del pie (grupo translate de cada pata); pie dentro del giro rotate(g -10 -32)",
+  "cabeza-piel/casco": "coordenadas absolutas de la base (cabeza 736,340 r130)",
+  "lengua": "centro del borde superior; el compositor lo lleva a la boca de cada expresión",
+  "torretas": "centro del hueco; el compositor lo lleva al centro de cada ojo B03"
+ }
+}

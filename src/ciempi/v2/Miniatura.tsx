@@ -31,8 +31,12 @@ const ENCUADRE_POR_CATEGORIA: Partial<Record<CategoriaCiempi, string>> = {
 export function MiniaturaCiempi({ apariencia, categoria, className = '' }: { apariencia: AparienciaCiempi; categoria: CategoriaCiempi; className?: string }) {
   const art = useEscena(apariencia, 5)
   if (!art) return <div className={`${className} animate-pulse rounded-xl bg-crema`} aria-hidden />
+  const encuadre = ENCUADRE_POR_CATEGORIA[categoria] ?? 'completo'
+  // Las criaturas (con `posiciones` propias) tienen la cola más larga: el encuadre completo se abre hasta su borde.
+  const izquierda = Math.min(30, art.left)
+  const viewBox = encuadre === 'completo' && art.posiciones ? `${izquierda} 10 ${980 - izquierda} 610` : ENCUADRES[encuadre]
   return (
-    <svg viewBox={ENCUADRES[ENCUADRE_POR_CATEGORIA[categoria] ?? 'completo']} className={className} aria-hidden>
+    <svg viewBox={viewBox} className={className} aria-hidden>
       <g dangerouslySetInnerHTML={{ __html: art.html }} />
     </svg>
   )
