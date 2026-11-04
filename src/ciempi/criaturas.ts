@@ -9,6 +9,10 @@
  * - `paquete:<id>`: todas las variantes no base de la especie, con 20 % de descuento.
  *
  * El render (src/ciempi/v2/criaturas/) puede importar este archivo.
+ *
+ * Precios calculados con la economía 2.4.1; revisar cuando cambie el modelo
+ * económico (E2). La Cuncuna es solo educativa: sin `especie:cuncuna` (que se
+ * gana leyendo) ninguna compra suelta, combinada ni paquete la entrega.
  */
 
 export type EspecieId = 'dragon' | 'cuncuna' | 'serpiente' | 'camaleon'

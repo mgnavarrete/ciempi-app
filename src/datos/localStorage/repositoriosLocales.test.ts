@@ -222,3 +222,65 @@ describe('premios sin conexión (mismo cálculo que el servidor)', () => {
     expect(await repos.premios.reclamar(pedido('op-quitado', { tipo: 'avance', hasta: 1, conPremio: true }))).toMatchObject({ estado: 'descartado' })
   })
 })
+
+describe('criaturas sin conexión (2.5)', () => {
+  const CUNCUNA = 'especie:cuncuna'
+  /** Lee entero un cuento de Ciempi (un solo pedido de premio por todo). */
+  const leerEntero = async (repos: Awaited<ReturnType<typeof preparado>>['repos'], perfilId: string, textoId: string, op: string) => {
+    const a = (await repos.asignaciones.listarPorPerfil(perfilId)).find((x) => x.textoId === textoId)!
+    const total = (await repos.textos.obtener(textoId))!.frases.length
+    return repos.premios.reclamar({ tipo: 'avance', hasta: total, conPremio: true, operationId: op, perfilId, asignacionId: a.id, esperadas: 0 })
+  }
+
+  it('compras y equipar funcionan igual que en el servidor (variante sin especie, paquete parcial, Cuncuna)', async () => {
+    const { repos, perfil } = await preparado()
+    await repos.perfiles.sumarMonedas(perfil.id, 400)
+    // Variante sin especie: cobra las dos (total mostrado 104); con un precio visto menor, no cobra.
+    await expect(repos.perfiles.comprar(perfil.id, 'variante:dragon-fuego', 103)).rejects.toThrow(/ahora cuesta 104/)
+    expect(await repos.perfiles.comprar(perfil.id, 'variante:dragon-fuego', 104)).toEqual({ monedas: 296, inventario: ['especie:dragon', 'variante:dragon-fuego'] })
+    // Paquete parcial: no vuelve a cobrar Fuego (5 × 24 = 120 → 96).
+    expect((await repos.perfiles.comprar(perfil.id, 'paquete:dragon', 96)).monedas).toBe(200)
+    // Cuncuna: ni suelta ni en paquete sin haberla ganado.
+    await expect(repos.perfiles.comprar(perfil.id, 'variante:cuncuna-dorada')).rejects.toThrow('Gana la Cuncuna leyendo')
+    await expect(repos.perfiles.comprar(perfil.id, 'paquete:cuncuna')).rejects.toThrow('Gana la Cuncuna leyendo')
+    // Equipar: la propia sí; una ajena no.
+    const puesto = await repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, criatura: 'variante:dragon-hielo' })
+    expect(puesto.ciempi.criatura).toBe('variante:dragon-hielo')
+    await expect(repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, criatura: 'variante:serpiente-hoja' })).rejects.toThrow(/comprarlo/)
+    expect((await repos.perfiles.obtener(perfil.id))!.ciempi.criatura).toBe('variante:dragon-hielo')
+  })
+
+  it('la Cuncuna se gana con 6 de los 8 cuentos de nivel 0: queda por celebrar, en el inventario, y se compran sus variantes', async () => {
+    const { repos, perfil } = await preparado()
+    const n0 = CUENTOS.filter((c) => c.nivel === 0)
+    expect(n0).toHaveLength(8)
+    for (const [i, c] of n0.slice(0, 5).entries()) await leerEntero(repos, perfil.id, c.id, `op-n0-${i}`)
+    expect(await repos.desbloqueos!.listar(perfil.id)).toEqual([])
+    expect((await repos.perfiles.obtener(perfil.id))!.inventario).not.toContain(CUNCUNA)
+    await leerEntero(repos, perfil.id, n0[5].id, 'op-n0-5')
+    const [d] = await repos.desbloqueos!.listar(perfil.id)
+    expect(d).toMatchObject({ item: CUNCUNA, motivo: 'nivel0', estado: 'por_celebrar' })
+    const conCuncuna = (await repos.perfiles.obtener(perfil.id))!
+    expect(conCuncuna.inventario.filter((i) => i === CUNCUNA)).toHaveLength(1)
+    // Se pone la Clásica y compra una variante.
+    expect((await repos.perfiles.actualizarCiempi(perfil.id, { ...conCuncuna.ciempi, criatura: 'variante:cuncuna-clasica' })).ciempi.criatura).toBe('variante:cuncuna-clasica')
+    await repos.perfiles.sumarMonedas(perfil.id, 20 - conCuncuna.monedas)
+    expect(await repos.perfiles.comprar(perfil.id, 'variante:cuncuna-dorada', 20)).toEqual({ monedas: 0, inventario: [CUNCUNA, 'variante:cuncuna-dorada'] })
+    // Celebrada una vez, no vuelve a aparecer «por celebrar».
+    await repos.desbloqueos!.celebrar(perfil.id, CUNCUNA)
+    expect(await repos.desbloqueos!.listar(perfil.id)).toMatchObject([{ estado: 'celebrado' }])
+    await expect(repos.desbloqueos!.celebrar(perfil.id, 'otra-cosa')).rejects.toThrow()
+  })
+
+  it('un perfil guardado antes de 2.5 (sin criatura) sigue igual y es Ciempi', async () => {
+    const { almacen, perfil } = await preparado()
+    const clave = 'ciempi:v1:perfiles'
+    const guardados = JSON.parse(almacen.getItem(clave)!)
+    delete guardados[0].ciempi.criatura
+    guardados[0].inventario = ['comida-frutilla']
+    almacen.setItem(clave, JSON.stringify(guardados))
+    const p = (await crearRepositoriosLocales(almacen).perfiles.obtener(perfil.id))!
+    expect(p.ciempi.criatura).toBeNull()
+    expect(p.inventario).toEqual(['comida-frutilla'])
+  })
+})

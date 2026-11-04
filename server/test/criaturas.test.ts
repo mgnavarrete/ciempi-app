@@ -126,6 +126,31 @@ describe.skipIf(!HAY_BASE)('criaturas en la tienda', async () => {
     expect(await compras(n.id)).toEqual([])
   })
 
+  it('nunca cobra más de lo mostrado: precioVisto es el total combinado (especie + variante)', async () => {
+    const n = await nino(200)
+    // La app mostró 103 (uno menos que Dragón 80 + Dragón de Fuego 24): no se cobra.
+    const r = await comprar(n, 'variante:dragon-fuego', 103)
+    expect(r.status).toBe(400)
+    expect(r.body.error).toMatch(/ahora cuesta 104/)
+    expect((await fila(n.id)).monedas).toBe(200)
+    // Con el total exacto, cobra exactamente eso.
+    expect((await comprar(n, 'variante:dragon-fuego', 104)).body.monedas).toBe(96)
+    // Mostrar de más tampoco cobra de más: cobra el precio real.
+    expect((await comprar(n, 'variante:dragon-hielo', 999)).body.monedas).toBe(72)
+  })
+
+  it('paquete parcial: el precio mostrado (precioDe) es igual al cobrado', async () => {
+    const { buscarItem, precioDe } = await import('../../src/ciempi/catalogo.ts')
+    const n = await nino(300)
+    await comprar(n, 'variante:camaleon-tropical')
+    const mostrado = precioDe(buscarItem('paquete:camaleon')!, (await fila(n.id)).inventario)
+    expect(mostrado).toBe(Math.ceil(72 * 0.8))
+    const antes = (await fila(n.id)).monedas
+    expect((await comprar(n, 'paquete:camaleon', mostrado)).body.monedas).toBe(antes - mostrado)
+    expect((await comprar(n, 'paquete:camaleon', mostrado - 1)).status).toBe(200) // ya lo tiene: no cobra
+    expect((await fila(n.id)).monedas).toBe(antes - mostrado)
+  })
+
   it('paquete parcial: 80 % de lo que falta, sin cobrar lo que ya tiene', async () => {
     const n = await nino(300)
     await comprar(n, 'variante:serpiente-noche') // 60 + 24
@@ -153,16 +178,20 @@ describe.skipIf(!HAY_BASE)('criaturas en la tienda', async () => {
   })
 
   it('Cuncuna desbloqueada (013): se pone la Clásica y compra una variante', async () => {
-    const n = await nino(50)
+    const n = await nino(200)
     expect((await regalarCuncuna(n)).status).toBe(200)
     expect((await fila(n.id)).inventario).toEqual([CUNCUNA])
     const puesta = await poner(n, { ...APARIENCIA_INICIAL, criatura: 'variante:cuncuna-clasica' })
     expect(puesta.status).toBe(200)
     expect(puesta.body.ciempi.criatura).toBe('variante:cuncuna-clasica')
     const r = await comprar(n, 'variante:cuncuna-lavanda', 20)
-    expect(r.body).toMatchObject({ monedas: 30 })
+    expect(r.body).toMatchObject({ monedas: 180 })
     expect(await compras(n.id)).toEqual([['variante:cuncuna-lavanda', 20]])
     expect((await poner(n, { ...APARIENCIA_INICIAL, criatura: 'variante:cuncuna-lavanda' })).body.ciempi.criatura).toBe('variante:cuncuna-lavanda')
+    // Con la especie, también el paquete: 80 % de las 5 que faltan (100 → 80).
+    const p = await comprar(n, 'paquete:cuncuna', 80)
+    expect(p.body.monedas).toBe(100)
+    expect(p.body.inventario.filter((i: string) => i.startsWith('variante:cuncuna'))).toHaveLength(6)
   })
 
   it('PUT con una variante ajena → 403; con una inventada → 400; null vuelve a Ciempi', async () => {

@@ -1,4 +1,5 @@
-import { PARTES, comprarItem, loTiene, normalizarApariencia } from '../../ciempi/catalogo'
+import { comprarItem, normalizarApariencia, puedePonerse } from '../../ciempi/catalogo'
+import { CUNCUNA, motivoCuncuna } from '../desbloqueoCuncuna'
 import { PRECIOS_MOCHILAS_2_1, PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
 import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
@@ -20,6 +21,7 @@ import {
 } from '../../dominio/tipos'
 import type {
   Autenticacion,
+  Desbloqueo,
   PedidoPremio,
   RepositorioAsignaciones,
   RepositorioPerfiles,
@@ -84,6 +86,8 @@ class Tabla<T extends { id: Id }> {
 type PremiosDeLibro = EstadoPremios & { id: Id }
 /** Pedidos de premio ya atendidos (id = operationId): repetir uno no paga otra vez. */
 type PremioAtendido = { id: Id; otorgadas: number }
+/** Lo desbloqueado (id = «perfil|item»), como la tabla `desbloqueos` del servidor. */
+type DesbloqueoLocal = Desbloqueo & { id: Id; perfilId: Id }
 
 interface Tablas {
   cuentas: Tabla<Cuenta>
@@ -93,6 +97,7 @@ interface Tablas {
   sesiones: Tabla<SesionLectura>
   premios: Tabla<PremiosDeLibro>
   premiosAtendidos: Tabla<PremioAtendido>
+  desbloqueos: Tabla<DesbloqueoLocal>
 }
 
 /**
@@ -308,6 +313,7 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     sesiones: new Tabla<SesionLectura>(almacen, 'sesiones'),
     premios: new Tabla<PremiosDeLibro>(almacen, 'premios'),
     premiosAtendidos: new Tabla<PremioAtendido>(almacen, 'premios-atendidos'),
+    desbloqueos: new Tabla<DesbloqueoLocal>(almacen, 'desbloqueos'),
   }
   migrar(almacen, tablas)
   const { cuentas, perfiles, textos, asignaciones, sesiones } = tablas
@@ -321,6 +327,24 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       id: a.id,
       ...combinarEstados({ pagadoHasta: a.leidoHasta ?? 0, hitosHasta: a.premioHasta ?? 0, relecturaDia: a.relecturaPremiadaEn ?? null }),
     }
+
+  /**
+   * ¿Ya se ganó la Cuncuna? (ver src/datos/desbloqueoCuncuna.ts). Si recién
+   * cumple, queda anotada «por celebrar» y entra al inventario. Idempotente.
+   */
+  const revisarCuncuna = (perfilId: Id) => {
+    const perfil = perfiles.obtener(perfilId)
+    if (!perfil || tablas.desbloqueos.obtener(`${perfilId}|${CUNCUNA}`)) return
+    const cuentos = asignaciones
+      .todos()
+      .filter((a) => a.perfilId === perfilId)
+      .map((a) => ({ textoId: a.textoId, total: textos.obtener(a.textoId)?.frases.length ?? 0, pagado: tablas.premios.obtener(a.id)?.pagadoHasta ?? 0 }))
+    const motivo = motivoCuncuna(cuentos)
+    if (!motivo) return
+    tablas.desbloqueos.guardar({ id: `${perfilId}|${CUNCUNA}`, perfilId, item: CUNCUNA, motivo, estado: 'por_celebrar', otorgadoEn: ahora(), celebradoEn: null })
+    const inventario = perfil.inventario ?? []
+    if (!inventario.includes(CUNCUNA)) perfiles.guardar({ ...perfil, inventario: [...inventario, CUNCUNA] })
+  }
 
   /** Sin login: una única cuenta local que se crea sola. */
   const cuentaLocal = (): Cuenta =>
@@ -406,9 +430,8 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
       if (!perfil) throw new Error(`Perfil ${id} no existe`)
       const { inventario } = completarPerfil(perfil)
       const ciempi = normalizarApariencia(apariencia)
-      for (const c of PARTES) {
-        if (!loTiene(inventario, ciempi[c])) throw new Error('Primero hay que comprarlo')
-      }
+      // Como el servidor: todas las partes y la criatura tienen que ser suyas.
+      if (!puedePonerse(ciempi, inventario)) throw new Error('Primero hay que comprarlo')
       return completarPerfil(perfiles.guardar({ ...perfil, ciempi }))
     },
     async comprar(id, itemId, precioVisto) {
@@ -527,6 +550,8 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
         })
         const monedas = perfil.monedas + calculo.monedas
         perfiles.guardar({ ...perfil, monedas })
+        // Como el servidor: después de cada premio se revisa si ya ganó la Cuncuna.
+        revisarCuncuna(perfil.id)
         r = { estado: 'otorgado', otorgadas: calculo.monedas, monedas }
       }
       oyentesPremios.forEach((fn) => fn(pedido, r))
@@ -549,5 +574,19 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
     asignaciones: repoAsignaciones,
     sesiones: repoSesiones,
     premios: repoPremios,
+    desbloqueos: {
+      async listar(perfilId) {
+        revisarCuncuna(perfilId)
+        return tablas.desbloqueos
+          .todos()
+          .filter((d) => d.perfilId === perfilId)
+          .map(({ id: _id, perfilId: _p, ...d }) => d)
+      },
+      async celebrar(perfilId, item) {
+        const d = tablas.desbloqueos.obtener(`${perfilId}|${item}`)
+        if (!d) throw new Error('Eso no está desbloqueado')
+        tablas.desbloqueos.guardar({ ...d, estado: 'celebrado', celebradoEn: d.celebradoEn ?? ahora() })
+      },
+    },
   }
 }
