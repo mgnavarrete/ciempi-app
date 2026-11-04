@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-c4a-mejillas-pompon",
+  "archivo": "propuesta-c4a-mejillas-pompon.png",
+  "prompt": "propuesta-c4a-mejillas-pompon-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0d8d-7883-b9c1-56ce663fc5aa/exec-f132a624-2eb1-48ee-b64f-c460d8e2926d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:48.695Z",
+  "segundos": 97
+}

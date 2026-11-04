@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-c4b-cejas-plumosas",
+  "archivo": "propuesta-c4b-cejas-plumosas.png",
+  "prompt": "propuesta-c4b-cejas-plumosas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0df3-7ce3-b90f-0676287caf79/exec-c40f6472-c70b-4c9c-afda-e9fd0bcdc0eb.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:49.924Z",
+  "segundos": 98
+}

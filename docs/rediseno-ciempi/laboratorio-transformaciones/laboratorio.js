@@ -6,6 +6,7 @@ import { Reproductor } from '../../../src/ciempi/v2/animacion/motor.js'
 import { aApariencia, ESPECIES } from './especies.js'
 import { etiquetar } from './gen/compatibilidad.js'
 import { env, INICIAL, escenaDe, dibujar, nuevoRig, mostrarError } from './nucleo.js'
+import { montarSelectorRostro } from './rostros-v4.js'
 
 const $ = (s) => document.querySelector(s)
 const PARTE_DE = { paleta: 'paleta', expresion: 'gesto', ojos: 'ojos', cabeza: 'cabeza', cara: 'cara', pelo: 'pelo', detalle: 'detalle', cuello: 'cuello', espalda: 'espalda', pies: 'pies', textura: 'textura' }
@@ -20,6 +21,7 @@ if (params.has('n')) estado.n = Math.max(0, Math.min(40, +params.get('n') || 0))
 if (params.has('comparar')) estado.comparar = params.get('comparar')
 if (params.has('sel')) try { Object.assign(estado.sel, JSON.parse(params.get('sel'))) } catch { /* selección inválida: se ignora */ }
 if (params.get('fondo') === 'oscuro') document.body.dataset.fondo = 'oscuro'
+if (!params.has('sin-interfaz')) montarSelectorRostro({ estado, inicial: INICIAL, actualizar: () => actualizar() })
 
 let rigs = []
 const reproductor = new Reproductor((pose, t) => {

@@ -1,0 +1,13 @@
+{
+  "id": "hoja-4",
+  "archivo": "hoja-4.png",
+  "prompt": "hoja-4-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/ia/propuesta-d4d-perfil-hocico.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a437-6407-7393-a122-63813e1f0d31/exec-7dfa83be-1836-4ba6-8924-cd8c33394a90.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:42:03.135Z",
+  "segundos": 67
+}

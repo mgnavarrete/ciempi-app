@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-c4c-ocelos",
+  "archivo": "propuesta-c4c-ocelos.png",
+  "prompt": "propuesta-c4c-ocelos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/cuncuna-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T02-cuncuna-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0db0-7ad0-b6ff-bb68b15c9a6d/exec-784ead52-ff53-4c88-9e31-d09dfd3097f6.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:16.894Z",
+  "segundos": 65
+}
