@@ -24,7 +24,7 @@ let contador = 0
 
 /** Escena (pose.ts) de una criatura con una selección y una longitud, más lo que pide el rig. */
 export async function escenaDe(especieId, sel, n) {
-  await prepararCriatura(env, especieId, sel.paleta || 'clasica')
+  await prepararCriatura(env, especieId, sel.paleta || 'clasica', sel)
   const clave = especieId + JSON.stringify(sel)
   if (!composiciones.has(clave)) { if (composiciones.size > 80) composiciones.clear(); composiciones.set(clave, componerCriatura(env, especieId, sel)) }
   const c = composiciones.get(clave)

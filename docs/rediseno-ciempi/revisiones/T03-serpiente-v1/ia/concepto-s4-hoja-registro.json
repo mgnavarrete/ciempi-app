@@ -1,0 +1,14 @@
+{
+  "id": "concepto-s4-hoja",
+  "archivo": "concepto-s4-hoja.png",
+  "prompt": "concepto-s4-hoja-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b73e-7f51-b0ef-5897a3df42dc/exec-cbebcdb5-1557-43a5-bced-e2a08cd549f0.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:32:54.319Z",
+  "segundos": 88
+}

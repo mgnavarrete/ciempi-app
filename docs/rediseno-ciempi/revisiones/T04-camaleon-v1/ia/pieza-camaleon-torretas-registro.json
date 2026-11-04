@@ -1,0 +1,13 @@
+{
+  "id": "pieza-camaleon-torretas",
+  "archivo": "pieza-camaleon-torretas.png",
+  "prompt": "pieza-camaleon-torretas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b3f9-77a2-acae-228211acf426/exec-99f401fb-71ce-4ffc-b5bb-b6b39681d2bf.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:38:50.661Z",
+  "segundos": 51
+}

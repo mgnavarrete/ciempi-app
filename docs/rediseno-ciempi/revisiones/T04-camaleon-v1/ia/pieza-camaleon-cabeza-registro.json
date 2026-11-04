@@ -1,0 +1,14 @@
+{
+  "id": "pieza-camaleon-cabeza",
+  "archivo": "pieza-camaleon-cabeza.png",
+  "prompt": "pieza-camaleon-cabeza-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b3f7-7852-b63c-2c09f1e61cae/exec-e928fa09-8912-4e5e-89a1-aa96e806ae40.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:39:02.664Z",
+  "segundos": 63
+}

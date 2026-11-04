@@ -1,0 +1,14 @@
+{
+  "id": "concepto-k2-tropical",
+  "archivo": "concepto-k2-tropical.png",
+  "prompt": "concepto-k2-tropical-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b72d-7412-b3fe-be13c111c09f/exec-831fad5f-8cf1-41d8-a89b-7bae92adda2d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:33:52.721Z",
+  "segundos": 147
+}

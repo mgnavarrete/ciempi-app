@@ -1,0 +1,185 @@
+{
+ "especie": "serpiente",
+ "version": "v1",
+ "estado": "laboratorio — pendiente de aprobación del usuario",
+ "unidades": "viewBox de la base (0 0 1000 650)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia",
+ "bytesTotales": 149652,
+ "piezas": [
+  {
+   "id": "seg-a",
+   "rol": 1,
+   "archivo": "seg-a.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    343
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -85.77,
+    172.0,
+    171.54
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-b",
+   "rol": 2,
+   "archivo": "seg-b.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    345
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -86.23,
+    172.0,
+    172.46
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-c",
+   "rol": 3,
+   "archivo": "seg-c.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    344
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -86.0,
+    172.0,
+    172.0
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "seg-d",
+   "rol": 5,
+   "archivo": "seg-d.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    344,
+    344
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -86.0,
+    -86.0,
+    172.0,
+    172.0
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "frente",
+   "rol": 4,
+   "archivo": "frente.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    388,
+    382
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -97.0,
+    -95.43,
+    194.0,
+    190.86
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-segmentos.png",
+   "fuenteSha256": "fe6dea5a3a6c27ad",
+   "notas": "Origen = centro de la bola (caja del alfa); ancho de bola normalizado."
+  },
+  {
+   "id": "cola",
+   "rol": 0,
+   "archivo": "cola.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    442,
+    407
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -134.45,
+    -117.15,
+    221.05,
+    203.45
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-cola.png",
+   "fuenteSha256": "8025cf5717d4db46",
+   "notas": "Bola medida por su contorno derecho e inferior; la cola sale arriba a la izquierda."
+  },
+  {
+   "id": "cabeza-piel",
+   "rol": "cabeza",
+   "archivo": "cabeza-piel.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    523,
+    533
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    608.19,
+    207.45,
+    261.65,
+    266.39
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-cabeza.png",
+   "fuenteSha256": "83daef14118ef2a5",
+   "notas": "Piel de cabeza sin rostro (IA), registrada por el contorno del disco; se recorta al círculo #face bajo ojos, cejas, rubor y boca B03."
+  },
+  {
+   "id": "lengua",
+   "rol": "lengua",
+   "archivo": "lengua.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    38,
+    74
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    -9.5,
+    0.0,
+    19.0,
+    36.8
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-lengua.png",
+   "fuenteSha256": "127543bf88ec2194",
+   "notas": "Mitad inferior de la lengua IA (corte al 42%). Origen = centro del borde superior; se mete detrás de la boca B03 (primer hijo de #mouth)."
+  }
+ ],
+ "origenes": {
+  "segmentos/cola": "centro de la bola; el grupo del segmento se traslada a (x, y) de pose.ts",
+  "pierna/pie": "punto de apoyo del pie (grupo translate de cada pata); pie dentro del giro rotate(g -10 -32)",
+  "cabeza-piel/casco": "coordenadas absolutas de la base (cabeza 736,340 r130)",
+  "lengua": "centro del borde superior; el compositor lo lleva a la boca de cada expresión",
+  "torretas": "centro del hueco; el compositor lo lleva al centro de cada ojo B03"
+ }
+}

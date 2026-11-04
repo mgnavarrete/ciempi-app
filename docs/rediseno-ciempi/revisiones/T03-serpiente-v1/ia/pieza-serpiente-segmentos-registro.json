@@ -1,0 +1,13 @@
+{
+  "id": "pieza-serpiente-segmentos",
+  "archivo": "pieza-serpiente-segmentos.png",
+  "prompt": "pieza-serpiente-segmentos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/concepto-s2-caramelo.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a438-6972-7b53-8cbb-15f7d6638bcc/exec-1c8b422f-f273-43bd-b1e8-a7933c1e8775.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:43:02.804Z",
+  "segundos": 60
+}

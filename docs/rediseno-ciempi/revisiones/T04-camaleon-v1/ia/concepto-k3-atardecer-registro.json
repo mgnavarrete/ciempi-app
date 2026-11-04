@@ -1,0 +1,14 @@
+{
+  "id": "concepto-k3-atardecer",
+  "archivo": "concepto-k3-atardecer.png",
+  "prompt": "concepto-k3-atardecer-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b736-7753-9c35-a3c54ba9fb8c/exec-6d18309e-b68d-46c2-bfd0-d2869825381b.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:33:01.535Z",
+  "segundos": 95
+}

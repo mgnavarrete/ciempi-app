@@ -69,6 +69,14 @@ export function etiquetar(parte, id, especie = "ciempi") {
 		visible: false,
 		motivo: "Pieza exclusiva en una parte que no le corresponde."
 	};
+	const parteOculta = e.partesOcultas?.[parte];
+	if (parteOculta && !esNinguno(parte, id)) return {
+		parte,
+		id,
+		tipo,
+		visible: false,
+		motivo: parteOculta
+	};
 	const oculta = e.ocultas.find((o) => o.id === id);
 	if (oculta) return {
 		parte,

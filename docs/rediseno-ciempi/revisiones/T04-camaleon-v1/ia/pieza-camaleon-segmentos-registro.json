@@ -1,0 +1,13 @@
+{
+  "id": "pieza-camaleon-segmentos",
+  "archivo": "pieza-camaleon-segmentos.png",
+  "prompt": "pieza-camaleon-segmentos-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a434-b3e9-7b52-b8f3-dbb68b10af45/exec-79a15801-3728-46ed-8c9d-d0daa0d4e677.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:39:04.176Z",
+  "segundos": 65
+}
