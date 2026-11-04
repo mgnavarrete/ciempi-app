@@ -1,0 +1,14 @@
+{
+  "id": "propuesta-d4c-mejillas-escamas",
+  "archivo": "propuesta-d4c-mejillas-escamas.png",
+  "prompt": "propuesta-d4c-mejillas-escamas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cabeza-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/dragon-cuerpo-v1.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v4-rostro/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a433-0da4-7e93-89bd-3da9f12b9cd5/exec-cfa38434-0ba1-4809-bd2e-849e3f082d99.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:37:17.254Z",
+  "segundos": 66
+}
