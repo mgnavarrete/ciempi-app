@@ -7,11 +7,14 @@
  * Todo está disponible para todos: no hay cosas "de niño" o "de niña".
  */
 import { CONJUNTOS, FAMILIAS, PIEZAS, VARIANTES } from './tienda.generada.ts'
+import { DESCUENTO_PAQUETE, ESPECIES, VARIANTES_CRIATURAS, especieDeItem, variantesDePaquete, varianteDeItem } from './criaturas.ts'
 
 export { CONJUNTOS, FAMILIAS, VARIANTES }
 
 export type CategoriaCiempi =
   | 'paleta' | 'ojos' | 'gesto' | 'cabeza' | 'pelo' | 'detalle' | 'cara' | 'cuello' | 'espalda' | 'pies' | 'textura' | 'fondo' | 'comida' | 'conjunto'
+  /** Criaturas (2.5): fuera de PARTES; se ponen con `apariencia.criatura`. */
+  | 'especie' | 'variante' | 'paquete'
 
 /** Las partes de Ciempi que se pueden cambiar (una cosa puesta por parte). */
 export const PARTES = ['paleta', 'ojos', 'gesto', 'cabeza', 'pelo', 'detalle', 'cara', 'cuello', 'espalda', 'pies', 'textura', 'fondo', 'comida'] as const
@@ -53,9 +56,25 @@ export const buscarItem = (id: string): ItemCiempi | undefined => CATALOGO.find(
 /** La familia de una pieza (colores casi iguales que se compran una vez), o solo ella. */
 export const familiaDe = (id: string) => FAMILIAS.find((f) => f.includes(id)) ?? [id]
 
-/** Lo gratis siempre está disponible; lo demás, si se compró (él o alguien de su familia). */
-export const loTiene = (inventario: string[], id: string) =>
-  (buscarItem(id)?.precio ?? 1) === 0 || familiaDe(id).some((x) => inventario.includes(x))
+const esCriatura = (c: CategoriaCiempi | undefined) => c === 'especie' || c === 'variante' || c === 'paquete'
+
+/**
+ * Lo gratis siempre está disponible; lo demás, si se compró (él o alguien de su familia).
+ * Criaturas: la variante base viene con la especie (y nunca se guarda); un paquete,
+ * si ya tiene la especie y todas sus variantes. La Cuncuna cuesta 0 pero no es gratis:
+ * solo se tiene si se ganó.
+ */
+export function loTiene(inventario: string[], id: string): boolean {
+  const item = buscarItem(id)
+  if (esCriatura(item?.categoria)) {
+    const e = especieDeItem(id)
+    if (!e) return false
+    if (item!.categoria === 'especie') return inventario.includes(e.item)
+    if (item!.categoria === 'paquete') return inventario.includes(e.item) && variantesDePaquete(e.id).every((v) => inventario.includes(v))
+    return varianteDeItem(id)!.base ? inventario.includes(e.item) : inventario.includes(id)
+  }
+  return (item?.precio ?? 1) === 0 || familiaDe(id).some((x) => inventario.includes(x))
+}
 
 /** Lo que costarían sueltas las piezas de un conjunto que todavía no tiene. */
 const sueltas = (conjuntoId: string, inventario: string[]) =>
@@ -63,15 +82,45 @@ const sueltas = (conjuntoId: string, inventario: string[]) =>
     .filter((p) => !loTiene(inventario, p))
     .reduce((s, p) => s + (buscarItem(p)?.precio ?? 0), 0)
 
-/** Lo que cuesta ahora: un conjunto descuenta las piezas que ya tiene. */
-export function precioDe(item: ItemCiempi, inventario: string[]): number {
-  if (item.categoria !== 'conjunto') return item.precio
-  return Math.ceil(sueltas(item.id, inventario) * DESCUENTO_CONJUNTO)
+/** Lo que costarían sueltas las variantes de un paquete que todavía no tiene (sin la especie). */
+const variantesSueltas = (paqueteId: string, inventario: string[]) => {
+  const e = especieDeItem(paqueteId)
+  return e ? variantesDePaquete(e.id).filter((v) => !inventario.includes(v)).length * e.precioVariante : 0
 }
 
-/** Cuánto ahorra comprando el conjunto en vez de sus piezas sueltas. */
-export const ahorroDe = (item: ItemCiempi, inventario: string[]) =>
-  item.categoria === 'conjunto' ? sueltas(item.id, inventario) - precioDe(item, inventario) : 0
+/** La especie a precio completo, si todavía no la tiene. */
+const especieQueFalta = (itemId: string, inventario: string[]) => {
+  const e = especieDeItem(itemId)
+  return e && !inventario.includes(e.item) ? e.precio : 0
+}
+
+/**
+ * Lo que cuesta ahora: un conjunto descuenta las piezas que ya tiene. Una
+ * variante sin su especie suma la especie (se compran juntas); un paquete
+ * cobra el 80 % de las variantes que faltan, más la especie si falta.
+ */
+export function precioDe(item: ItemCiempi, inventario: string[]): number {
+  if (item.categoria === 'conjunto') return Math.ceil(sueltas(item.id, inventario) * DESCUENTO_CONJUNTO)
+  if (item.categoria === 'variante') {
+    const base = varianteDeItem(item.id)?.base
+    return (base ? 0 : item.precio) + especieQueFalta(item.id, inventario)
+  }
+  if (item.categoria === 'paquete') return Math.ceil(variantesSueltas(item.id, inventario) * DESCUENTO_PAQUETE) + especieQueFalta(item.id, inventario)
+  return item.precio
+}
+
+/** Cuánto ahorra comprando el conjunto (o el paquete) en vez de cada cosa suelta. */
+export function ahorroDe(item: ItemCiempi, inventario: string[]): number {
+  if (item.categoria === 'conjunto') return sueltas(item.id, inventario) - precioDe(item, inventario)
+  if (item.categoria === 'paquete') return variantesSueltas(item.id, inventario) + especieQueFalta(item.id, inventario) - precioDe(item, inventario)
+  return 0
+}
+
+/** Lo que solo se gana (la Cuncuna): sin la especie no se puede comprar ni ella ni sus variantes. */
+export const soloDesbloqueo = (itemId: string, inventario: string[] = []) => {
+  const e = especieDeItem(itemId)
+  return !!e?.soloDesbloqueo && !inventario.includes(e.item)
+}
 
 export const piezasDe = (conjuntoId: string) => CONJUNTOS.find((c) => c.id === conjuntoId)?.piezas ?? []
 
@@ -79,8 +128,12 @@ export const CATALOGO: ItemCiempi[] = [
   ...PIEZAS,
   ...FONDOS_Y_COMIDA,
   ...CONJUNTOS.map((c) => ({ id: c.id, nombre: c.nombre, categoria: 'conjunto' as const, precio: 0 })),
+  // Criaturas: el precio de una variante es solo el suyo (la base, 0); precioDe suma la especie si falta.
+  ...ESPECIES.map((e) => ({ id: e.item, nombre: e.nombre, categoria: 'especie' as const, precio: e.precio })),
+  ...VARIANTES_CRIATURAS.map((v) => ({ id: v.item, nombre: v.nombre, categoria: 'variante' as const, precio: v.base ? 0 : especieDeItem(v.item)!.precioVariante })),
+  ...ESPECIES.map((e) => ({ id: e.paquete, nombre: e.nombrePaquete, categoria: 'paquete' as const, precio: 0 })),
 ]
-for (const c of CATALOGO) if (c.categoria === 'conjunto') c.precio = precioDe(c, [])
+for (const c of CATALOGO) if (c.categoria === 'conjunto' || c.categoria === 'paquete') c.precio = precioDe(c, [])
 
 /**
  * Compra (la misma regla en el servidor y sin conexión): descuenta las monedas
@@ -98,9 +151,11 @@ export function comprarItem(
   const item = buscarItem(itemId)
   if (!item) throw new Error('Eso no está en la tienda')
   if (loTiene(inventario, item.id)) return { monedas, inventario, precio: 0, lineas: [] }
+  if (soloDesbloqueo(item.id, inventario)) throw new Error('Gana la Cuncuna leyendo')
   const precio = precioDe(item, inventario)
   if (precioVisto !== undefined && precio > precioVisto) throw new Error(`El precio cambió: ahora cuesta ${precio} monedas`)
   if (monedas < precio) throw new Error(`Te faltan ${precio - monedas} monedas`)
+  if (esCriatura(item.categoria)) return comprarCriatura(inventario, monedas, item, precio)
   const piezas = piezasDe(item.id).filter((id) => !loTiene(inventario, id))
   const nuevos = [...familiaDe(item.id), ...piezas].filter((id) => !inventario.includes(id))
   let lineas = [{ id: item.id, precio }]
@@ -109,6 +164,35 @@ export function comprarItem(
     lineas = [{ id: item.id, precio: 0 }, ...piezas.map((id) => ({ id, precio: Math.floor((precio * (buscarItem(id)?.precio ?? 0)) / total) }))]
     // Lo que sobra del redondeo va a la primera pieza: las líneas suman exactamente lo cobrado.
     lineas[1].precio += precio - lineas.reduce((s, l) => s + l.precio, 0)
+  }
+  return { monedas: monedas - precio, inventario: [...inventario, ...nuevos], precio, lineas }
+}
+
+/**
+ * Compra de una criatura (ya validada): agrega la especie si falta (a precio
+ * completo, en su propia línea) y la variante o las variantes del paquete que
+ * falten, repartiendo lo demás entre ellas. La base nunca entra al inventario.
+ */
+function comprarCriatura(inventario: string[], monedas: number, item: ItemCiempi, precio: number) {
+  const e = especieDeItem(item.id)!
+  const lineas: { id: string; precio: number }[] = []
+  const nuevos: string[] = []
+  const especie = especieQueFalta(item.id, inventario)
+  if (!inventario.includes(e.item)) {
+    nuevos.push(e.item)
+    lineas.push({ id: e.item, precio: especie })
+  }
+  const resto = precio - especie
+  if (item.categoria === 'variante' && !varianteDeItem(item.id)!.base) {
+    nuevos.push(item.id)
+    lineas.push({ id: item.id, precio: resto })
+  } else if (item.categoria === 'paquete') {
+    const faltan = variantesDePaquete(e.id).filter((v) => !inventario.includes(v))
+    const parte = faltan.map((v) => ({ id: v, precio: Math.floor(resto / faltan.length) }))
+    if (parte.length) parte[0].precio += resto - parte.reduce((s, l) => s + l.precio, 0)
+    lineas.unshift({ id: item.id, precio: 0 })
+    lineas.push(...parte)
+    nuevos.push(...faltan)
   }
   return { monedas: monedas - precio, inventario: [...inventario, ...nuevos], precio, lineas }
 }
@@ -142,6 +226,8 @@ export interface AparienciaCiempi extends Record<ParteCiempi, string> {
   variantes: VariantesCiempi
   /** Ya vio la presentación de Ciempi (la primera vez que entra). */
   presentado: boolean
+  /** La criatura puesta (`variante:<id>`; la especie se deduce de ella). null = Ciempi. */
+  criatura: string | null
 }
 
 export const APARIENCIA_INICIAL: AparienciaCiempi = {
@@ -163,6 +249,7 @@ export const APARIENCIA_INICIAL: AparienciaCiempi = {
   comida: 'comida-manzana',
   variantes: {},
   presentado: false,
+  criatura: null,
 }
 
 /** El diseño sin la categoría: «cabeza:b06-ia-mago» → «b06-ia-mago». */
@@ -179,6 +266,10 @@ export const SIN_ESTAMPADO = 'textura:liso'
  * estampado (que lo taparía); al cambiar una pieza vuelve a su color original.
  */
 export function ponerItem(a: AparienciaCiempi, item: ItemCiempi): AparienciaCiempi {
+  // Criaturas: una variante (o la especie, con su base) cambia solo la criatura; un paquete no se «pone».
+  if (item.categoria === 'variante') return { ...a, criatura: item.id }
+  if (item.categoria === 'especie') return { ...a, criatura: `variante:${especieDeItem(item.id)!.base}` }
+  if (item.categoria === 'paquete') return a
   if (item.categoria === 'conjunto') {
     // Un conjunto es un look completo: parte del Ciempi inicial (conserva nombre, fondo y comida).
     const conjunto = CONJUNTOS.find((c) => c.id === item.id)
@@ -201,12 +292,27 @@ export function ponerItem(a: AparienciaCiempi, item: ItemCiempi): AparienciaCiem
   return nueva
 }
 
-/** ¿Ya tiene puesto esto? (un conjunto: todas sus piezas). */
-export const lleva = (a: AparienciaCiempi, item: ItemCiempi) =>
-  item.categoria === 'conjunto' ? (CONJUNTOS.find((c) => c.id === item.id)?.pone ?? []).every((id) => PARTES.some((p) => a[p] === id)) : a[item.categoria as ParteCiempi] === item.id
+/** Vuelve a ser Ciempi (sin criatura); el resto de lo puesto se conserva. */
+export const sinCriatura = (a: AparienciaCiempi): AparienciaCiempi => ({ ...a, criatura: null })
+
+/** ¿Ya tiene puesto esto? (un conjunto: todas sus piezas; una especie: cualquiera de sus variantes). */
+export function lleva(a: AparienciaCiempi, item: ItemCiempi): boolean {
+  if (item.categoria === 'variante') return a.criatura === item.id
+  if (item.categoria === 'especie') return !!a.criatura && especieDeItem(a.criatura)?.item === item.id
+  if (item.categoria === 'paquete') return false
+  if (item.categoria === 'conjunto') return (CONJUNTOS.find((c) => c.id === item.id)?.pone ?? []).every((id) => PARTES.some((p) => a[p] === id))
+  return a[item.categoria as ParteCiempi] === item.id
+}
 
 /** Las partes de la apariencia que todavía no son suyas. */
 export const sinComprar = (a: AparienciaCiempi, inventario: string[]) => PARTES.filter((p) => !loTiene(inventario, a[p]))
+
+/** ¿Puede ponerse esta apariencia? (todas sus partes y su criatura son suyas). */
+export const puedePonerse = (a: AparienciaCiempi, inventario: string[]) =>
+  PARTES.every((p) => loTiene(inventario, a[p])) && (a.criatura === null || loTiene(inventario, a.criatura))
+
+/** ¿Es un id de criatura válido para `apariencia.criatura`? (`variante:<id>` existente). */
+export const esCriaturaValida = (id: unknown): id is string => typeof id === 'string' && buscarItem(id)?.categoria === 'variante'
 
 /**
  * Completa una apariencia guardada (o vacía) con los valores iniciales. Lo que
@@ -224,5 +330,7 @@ export function normalizarApariencia(guardada: Partial<AparienciaCiempi> | null 
   a.nombre = (typeof g.nombre === 'string' ? g.nombre : '').trim().slice(0, 20) || APARIENCIA_INICIAL.nombre
   a.genero = g.genero === 'nino' || g.genero === 'nina' ? g.genero : null
   a.presentado = g.presentado === true
+  // Lo que no es una variante existente (o falta, como en lo guardado antes de 2.5) es Ciempi.
+  a.criatura = esCriaturaValida(g.criatura) ? g.criatura : null
   return a
 }
