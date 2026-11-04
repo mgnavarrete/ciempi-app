@@ -14,11 +14,11 @@ import medidas from './recursos/accesorios-v4/medidas.json' with { type: 'json' 
 const bolsa = (k, extra) => ({ archivo: medidas[k].archivo, px: medidas[k].px, base: medidas[k].baseInferior, ...extra })
 
 export const V4_MOCHILAS = {
-  'b09-aventura': bolsa('aventura', { ancho: 162, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#b9772f', luz: '#e9b46c' }, hebilla: '#d9a441' }),
-  'b09-draco': bolsa('draco', { ancho: 162, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#2a9d8f', luz: '#86dccb' }, hebilla: '#f2c23a' }),
-  'b09-mago': bolsa('mago', { ancho: 170, giro: -20, apoyo: 0.86, correas: [-0.08], correa: { color: '#2b2a72', luz: '#6a6ad0', ancho: 13 }, hebilla: '#f2c23a' }),
-  'b09-raton': bolsa('raton', { ancho: 154, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#4fae9e', luz: '#a6e3d4' }, hebilla: '#e9a35a' }),
-  'b09-robot': bolsa('robot', { ancho: 162, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#3b4270', luz: '#7480b8' }, hebilla: '#f2c23a' }),
+  'b09-aventura': bolsa('aventura', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#b9772f', luz: '#e9b46c' }, hebilla: '#d9a441' }),
+  'b09-draco': bolsa('draco', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#2a9d8f', luz: '#86dccb' }, hebilla: '#f2c23a' }),
+  'b09-mago': bolsa('mago', { ancho: 184, giro: -20, apoyo: 0.86, correas: [-0.08], correa: { color: '#2b2a72', luz: '#6a6ad0', ancho: 13 }, hebilla: '#f2c23a' }),
+  'b09-raton': bolsa('raton', { ancho: 168, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#4fae9e', luz: '#a6e3d4' }, hebilla: '#e9a35a' }),
+  'b09-robot': bolsa('robot', { ancho: 176, giro: -24, apoyo: 0.84, correas: [-0.34, 0.26], correa: { color: '#3b4270', luz: '#7480b8' }, hebilla: '#f2c23a' }),
 }
 
 export const V4_CALZADO = {
