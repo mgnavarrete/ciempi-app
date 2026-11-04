@@ -60,7 +60,12 @@ async function dar(c: pg.PoolClient | pg.Pool, perfilId: string, item: string, m
  * transacción `c`) y devuelve el item; si no, null. Se llama después de cada
  * premio de un cuento de Ciempi y al consultar los desbloqueos.
  */
+/** Regalo de la Cuncuna al cumplir la regla de lectura (apagado desde 2.5.2). */
+export const CUNCUNA_POR_LECTURA = false
+
 export async function revisarCuncuna(c: pg.PoolClient | pg.Pool, perfilId: string): Promise<string | null> {
+  // 2.5.2: la Cuncuna se compra con monedas; leyendo ya no se regala (lo ya otorgado se conserva).
+  if (!CUNCUNA_POR_LECTURA) return null
   const ya = await c.query('select 1 from desbloqueos where perfil_id = $1 and item = $2', [perfilId, CUNCUNA])
   if (ya.rowCount) return null
   const R = REGLA_CUNCUNA

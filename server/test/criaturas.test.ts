@@ -166,15 +166,16 @@ describe.skipIf(!HAY_BASE)('criaturas en la tienda', async () => {
     expect((await comprar(n, 'paquete:serpiente')).body.monedas).toBe(r.body.monedas)
   })
 
-  it('Cuncuna sin desbloqueo: ni la especie, ni sus variantes, ni el paquete se compran', async () => {
-    const n = await nino(500)
-    for (const item of ['variante:cuncuna-dorada', CUNCUNA, 'paquete:cuncuna', 'variante:cuncuna-clasica']) {
-      const r = await comprar(n, item)
-      expect(r.status, item).toBe(400)
-      expect(r.body.error).toBe('Gana la Cuncuna leyendo')
-    }
-    expect((await fila(n.id)).monedas).toBe(500)
+  it('2.5.2: la Cuncuna se compra con monedas (40), sin cobrar dos veces; sin comprarla no se pone', async () => {
+    const n = await nino(100)
     expect((await poner(n, { ...APARIENCIA_INICIAL, criatura: 'variante:cuncuna-clasica' })).status).toBe(403)
+    expect((await comprar(n, CUNCUNA, 39)).status).toBe(400)
+    const r = await comprar(n, CUNCUNA, 40)
+    expect(r.status).toBe(200)
+    expect(r.body.monedas).toBe(60)
+    expect((await comprar(n, CUNCUNA, 40)).body.monedas).toBe(60)
+    expect((await fila(n.id)).inventario).toEqual([CUNCUNA])
+    expect((await poner(n, { ...APARIENCIA_INICIAL, criatura: 'variante:cuncuna-clasica' })).status).toBe(200)
   })
 
   it('Cuncuna desbloqueada (013): se pone la Clásica y compra una variante', async () => {

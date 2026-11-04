@@ -45,8 +45,10 @@ describe('tienda de Ciempi', () => {
     expect(item('pies:b10-lluvia').precio).toBe(12)
     expect(item('cuello:bufanda-calco32').precio).toBe(30)
     expect(item('cabeza:b07-ia-robot').precio).toBe(32)
-    // Las mochilas salieron de la tienda (y de los conjuntos).
-    expect(CATALOGO.some((i) => i.id.startsWith('espalda:b09'))).toBe(false)
+    // 2.5.2: las mochilas vuelven a la tienda (a su precio de 2.1); los conjuntos siguen sin mochila.
+    expect(CATALOGO.filter((i) => i.id.startsWith('espalda:b09')).map((i) => [i.id, i.precio])).toEqual([
+      ['espalda:b09-robot', 25], ['espalda:b09-aventura', 20], ['espalda:b09-draco', 20], ['espalda:b09-mago', 20], ['espalda:b09-raton', 20],
+    ])
     expect(CONJUNTOS.every((c) => c.pone.every((id) => !id.startsWith('espalda:b09')))).toBe(true)
   })
 

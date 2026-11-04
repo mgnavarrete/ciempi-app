@@ -569,6 +569,8 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
 
   // ── Cuncuna ───────────────────────────────────────────────────────────
 
+  // 2.5.2: la Cuncuna se compra con monedas; leer ya no la regala (CUNCUNA_POR_LECTURA = false).
+  // Las pruebas de la regla de lectura quedan omitidas; las de migración y regalo del adulto siguen.
   describe('Cuncuna', () => {
     const asignacionesDe = async (n: { id: string; token: string }) =>
       (await pedirCon(appE2, 'GET', `/api/perfiles/${n.id}/asignaciones`, n.token)).body as { id: string; textoId: string; nivel: number }[]
@@ -590,7 +592,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect(ORIGINALES_N0).toHaveLength(8)
     })
 
-    it('6 de los 8 cuentos de nivel 0: se desbloquea una vez, queda «por celebrar» y luego «celebrado» (también con 2.4.1)', async () => {
+    it.skip('6 de los 8 cuentos de nivel 0: se desbloquea una vez, queda «por celebrar» y luego «celebrado» (también con 2.4.1)', async () => {
       const n = await nino()
       const n0 = (await asignacionesDe(n)).filter((a) => ORIGINALES_N0.includes(a.textoId))
       expect(n0).toHaveLength(8)
@@ -609,7 +611,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect((await pedirCon(appE2, 'POST', `/api/perfiles/${n.id}/desbloqueos/otra-cosa/celebrado`, n.token)).status).toBe(404)
     })
 
-    it('quien empieza en otro nivel: 6 cuentos de Ciempi distintos de cualquier nivel', async () => {
+    it.skip('quien empieza en otro nivel: 6 cuentos de Ciempi distintos de cualquier nivel', async () => {
       const n = await nino()
       const otros = (await asignacionesDe(n)).filter((a) => !ORIGINALES_N0.includes(a.textoId))
       for (const a of otros.slice(0, 5)) await terminar(appE2, n, a)
@@ -622,7 +624,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect(await desbloqueos(n)).toMatchObject([{ motivo: 'cuentos' }])
     })
 
-    it('si un adulto quitó cuentos de nivel 0: todos los que tenga, con un mínimo de 4', async () => {
+    it.skip('si un adulto quitó cuentos de nivel 0: todos los que tenga, con un mínimo de 4', async () => {
       const n = await nino()
       const n0 = (await asignacionesDe(n)).filter((a) => ORIGINALES_N0.includes(a.textoId))
       for (const a of n0.slice(4)) expect((await pedirCon(appE2, 'DELETE', `/api/asignaciones/${a.id}`, P)).status).toBe(200)
@@ -632,7 +634,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect(await desbloqueos(n)).toMatchObject([{ motivo: 'nivel0' }])
     })
 
-    it('lector muy lento: 60 min activos en nivel 0 y 30 frases distintas; solo tiempo no basta', async () => {
+    it.skip('lector muy lento: 60 min activos en nivel 0 y 30 frases distintas; solo tiempo no basta', async () => {
       const n = await nino()
       const n0 = (await asignacionesDe(n)).filter((a) => ORIGINALES_N0.includes(a.textoId))
       const cuentos = await Promise.all(

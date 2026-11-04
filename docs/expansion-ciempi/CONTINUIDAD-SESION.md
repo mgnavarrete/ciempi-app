@@ -903,3 +903,13 @@ Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuent
   - Problemas encontrados y corregidos:
     1. La compilación de la web importaba código del servidor (faltaba `@types/pg`).
     2. La API y la CLI de `grabar-cuentos` migraron al mismo tiempo: 012 falló una vez y se aplicó al reiniciar. Ahora las migraciones toman un candado (`4f321d2`, en `main`, sin desplegar; no es urgente).
+
+## 13. CIEMPI 2.5.2 (4-nov-2026)
+- **Tienda:**
+  - Criaturas es la primera sección (después Cabeza, Cuerpo, Su mundo y Conjuntos).
+  - Las tarjetas de gorros, peinados, lentes, detalles, bufandas, capas, mochilas y calzado muestran solo el accesorio (`src/ciempi/v2/MiniaturaAccesorio.tsx`).
+- **Cuncuna:** se compra con 40 monedas; leer ya no la regala (`CUNCUNA_POR_LECTURA = false`). Las ya otorgadas se conservan.
+- **Mochilas B09:** vuelven a la tienda a su precio de 2.1 (robot 25, demás 20), con la construcción v4.2 (`src/ciempi/v2/arte/mochilas-v4.js`). Los conjuntos no cambian.
+- **Inicio:** Ciempi ~18 % más grande y sus frutas (la comida elegida) con un vaivén suave.
+- **Economía:** sin cambios; sigue la 2.4.1 (E2 implementado, apagado con la bandera `ECONOMIA`). Activarlo requiere la aprobación de la usuaria y que los niños tengan la APK ≥ 2.5.
+- **Capturas:** `docs/expansion-v5/tienda/2.5.2/`.

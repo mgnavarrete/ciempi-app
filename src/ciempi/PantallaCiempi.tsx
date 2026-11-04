@@ -1,3 +1,4 @@
+import { CATEGORIAS_SOLO_ACCESORIO, MiniaturaAccesorio } from './v2/MiniaturaAccesorio'
 import { useEffect, useRef, useState } from 'react'
 import { sonarCelebracion } from '../audio/sonidos'
 import { useRepositorios } from '../datos/DatosProvider'
@@ -39,12 +40,12 @@ interface Props {
 
 /** La tienda ordenada como se viste a Ciempi: cabeza, cuerpo, su mundo y, al final, conjuntos completos. */
 const SECCIONES: { id: string; nombre: string; emoji: string; categorias: CategoriaCiempi[] }[] = [
+  // Criaturas (2.5; primera desde 2.5.2): su propia vista (pestañas por especie), no categorías de PARTES.
+  { id: 'criaturas', nombre: 'Criaturas', emoji: '🐉', categorias: [] },
   { id: 'cabeza', nombre: 'Cabeza', emoji: '🎩', categorias: ['cabeza', 'pelo', 'cara', 'gesto', 'ojos', 'detalle'] },
   { id: 'cuerpo', nombre: 'Cuerpo', emoji: '🐛', categorias: ['paleta', 'textura', 'cuello', 'espalda', 'pies'] },
   { id: 'mundo', nombre: 'Su mundo', emoji: '🏞️', categorias: ['fondo', 'comida'] },
   { id: 'conjuntos', nombre: 'Conjuntos', emoji: '🦸', categorias: ['conjunto'] },
-  // Criaturas (2.5): su propia vista (pestañas por especie), no categorías de PARTES.
-  { id: 'criaturas', nombre: 'Criaturas', emoji: '🐉', categorias: [] },
 ]
 
 /** Una tarjeta de la tienda: una pieza o uno de sus colores (todos vienen con la pieza). */
@@ -496,5 +497,7 @@ function Miniatura({ tarjeta, base }: { tarjeta: Tarjeta; base: AparienciaCiempi
         <Comida comida={item.id} x={0} y={0} tamano={12} />
       </svg>
     )
+  if (CATEGORIAS_SOLO_ACCESORIO.has(item.categoria))
+    return <MiniaturaAccesorio item={item} apariencia={conColor(base, tarjeta)} color={tarjeta.color?.id} className={caja} />
   return <MiniaturaCiempi apariencia={conColor(base, tarjeta)} categoria={item.categoria} className={caja} />
 }

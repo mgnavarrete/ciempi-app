@@ -1,5 +1,5 @@
 import { comprarItem, normalizarApariencia, puedePonerse } from '../../ciempi/catalogo'
-import { CUNCUNA, motivoCuncuna } from '../desbloqueoCuncuna'
+import { CUNCUNA, CUNCUNA_POR_LECTURA, motivoCuncuna } from '../desbloqueoCuncuna'
 import { PRECIOS_MOCHILAS_2_1, PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
 import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
@@ -230,7 +230,11 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
       perfiles.todos().forEach((p) => {
         const inventario = p.inventario ?? []
         const devolver = inventario.reduce((s, id) => s + (PRECIOS_MOCHILAS_2_1[id] ?? 0), 0)
-        if (devolver) perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !(id in PRECIOS_MOCHILAS_2_1)), ciempi: normalizarApariencia(p.ciempi) })
+        if (devolver) {
+          // La mochila devuelta deja de estar puesta (desde 2.5.2 las mochilas vuelven a existir en la tienda).
+          const ciempi = normalizarApariencia(p.ciempi)
+          perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !(id in PRECIOS_MOCHILAS_2_1)), ciempi: ciempi.espalda in PRECIOS_MOCHILAS_2_1 ? { ...ciempi, espalda: 'espalda:espalda-nada' } : ciempi })
+        }
       }),
   },
 ]
@@ -333,6 +337,8 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
    * cumple, queda anotada «por celebrar» y entra al inventario. Idempotente.
    */
   const revisarCuncuna = (perfilId: Id) => {
+    // 2.5.2: la Cuncuna se compra con monedas (igual que el servidor); lo ya ganado se conserva.
+    if (!CUNCUNA_POR_LECTURA) return
     const perfil = perfiles.obtener(perfilId)
     if (!perfil || tablas.desbloqueos.obtener(`${perfilId}|${CUNCUNA}`)) return
     const cuentos = asignaciones

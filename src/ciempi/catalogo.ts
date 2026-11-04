@@ -206,7 +206,7 @@ export const CATEGORIAS: { id: CategoriaCiempi; nombre: string; emoji: string }[
   { id: 'pelo', nombre: 'Peinados', emoji: '💇' },
   { id: 'cara', nombre: 'Lentes', emoji: '👓' },
   { id: 'cuello', nombre: 'Bufandas', emoji: '🧣' },
-  { id: 'espalda', nombre: 'Capas', emoji: '🎒' },
+  { id: 'espalda', nombre: 'Capas y mochilas', emoji: '🎒' },
   { id: 'pies', nombre: 'Calzado', emoji: '👟' },
   { id: 'textura', nombre: 'Estampados', emoji: '✨' },
   { id: 'detalle', nombre: 'Detalles', emoji: '⚡' },

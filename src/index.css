@@ -211,6 +211,16 @@ body {
   50% { transform: translateY(-10px); }
 }
 
+/* Frutas de la portada (2.5.2): un vaivén suave, cada una a su tiempo. */
+.fruta-portada {
+  animation: fruta-vaiven 2.8s ease-in-out infinite;
+  transform-box: view-box;
+}
+@keyframes fruta-vaiven {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2.5px) rotate(-5deg); }
+}
+
 /* ── Pista ───────────────────────────────────────────────────────────── */
 
 .pista {

@@ -11,8 +11,8 @@
  * El render (src/ciempi/v2/criaturas/) puede importar este archivo.
  *
  * Precios calculados con la economía 2.4.1; revisar cuando cambie el modelo
- * económico (E2). La Cuncuna es solo educativa: sin `especie:cuncuna` (que se
- * gana leyendo) ninguna compra suelta, combinada ni paquete la entrega.
+ * económico (E2). 2.5.2: la Cuncuna se compra con monedas como las demás (40, la
+ * especie más barata, pensando en el nivel 0); quien ya la ganó leyendo la conserva.
  */
 
 export type EspecieId = 'dragon' | 'cuncuna' | 'serpiente' | 'camaleon'
@@ -61,7 +61,7 @@ const especie = (
 
 /** En el orden de las pestañas de la tienda. */
 export const ESPECIES: EspecieCriatura[] = [
-  especie('cuncuna', 'Cuncuna', '🐛', 0, 'cuncuna-clasica', 20, 'Todas las Cuncunas', true),
+  especie('cuncuna', 'Cuncuna', '🐛', 40, 'cuncuna-clasica', 20, 'Todas las Cuncunas'),
   especie('serpiente', 'Serpiente', '🐍', 60, 'serpiente-caramelo', 24, 'Todas las Serpientes'),
   especie('camaleon', 'Camaleón', '🦎', 70, 'camaleon-lima', 24, 'Todos los Camaleones'),
   especie('dragon', 'Dragón', '🐉', 80, 'dragon-clasico', 24, 'Todos los Dragones'),

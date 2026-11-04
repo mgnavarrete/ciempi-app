@@ -240,9 +240,8 @@ describe('criaturas sin conexión (2.5)', () => {
     expect(await repos.perfiles.comprar(perfil.id, 'variante:dragon-fuego', 104)).toEqual({ monedas: 296, inventario: ['especie:dragon', 'variante:dragon-fuego'] })
     // Paquete parcial: no vuelve a cobrar Fuego (5 × 24 = 120 → 96).
     expect((await repos.perfiles.comprar(perfil.id, 'paquete:dragon', 96)).monedas).toBe(200)
-    // Cuncuna: ni suelta ni en paquete sin haberla ganado.
-    await expect(repos.perfiles.comprar(perfil.id, 'variante:cuncuna-dorada')).rejects.toThrow('Gana la Cuncuna leyendo')
-    await expect(repos.perfiles.comprar(perfil.id, 'paquete:cuncuna')).rejects.toThrow('Gana la Cuncuna leyendo')
+    // Cuncuna (2.5.2): se compra con monedas como las demás especies.
+    expect((await repos.perfiles.comprar(perfil.id, 'especie:cuncuna', 40)).monedas).toBe(160)
     // Equipar: la propia sí; una ajena no.
     const puesto = await repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, criatura: 'variante:dragon-hielo' })
     expect(puesto.ciempi.criatura).toBe('variante:dragon-hielo')
@@ -250,7 +249,8 @@ describe('criaturas sin conexión (2.5)', () => {
     expect((await repos.perfiles.obtener(perfil.id))!.ciempi.criatura).toBe('variante:dragon-hielo')
   })
 
-  it('la Cuncuna se gana con 6 de los 8 cuentos de nivel 0: queda por celebrar, en el inventario, y se compran sus variantes', async () => {
+  // 2.5.2: leer ya no regala la Cuncuna (se compra con monedas).
+  it.skip('la Cuncuna se gana con 6 de los 8 cuentos de nivel 0: queda por celebrar, en el inventario, y se compran sus variantes', async () => {
     const { repos, perfil } = await preparado()
     const n0 = CUENTOS.filter((c) => c.nivel === 0)
     expect(n0).toHaveLength(8)

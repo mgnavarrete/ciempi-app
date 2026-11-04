@@ -62,9 +62,11 @@ const precio = (id) => {
   if (!(id in PRECIOS)) throw Error(`Falta el precio de ${id}`)
   return PRECIOS[id]
 }
-// Las mochilas se ven pegadas encima del cuerpo (sin correas ni volumen): fuera
-// de la tienda hasta tener un diseño que se vea puesto.
+// Mochilas (2.5.2): vuelven a la tienda con la construcción v4.2 (en el flanco del segmento,
+// con correas y sombra; ver src/ciempi/v2/arte/mochilas-v4.js), a su precio de 2.1. Los conjuntos
+// siguen sin mochila, como desde 2.2.
 const MOCHILAS = new Set(c.bags.map((b) => b.id))
+const PRECIO_MOCHILA = { 'b09-robot': 25, 'b09-aventura': 20, 'b09-draco': 20, 'b09-mago': 20, 'b09-raton': 20 }
 
 // Las cinco paletas base, gratis; las de personajes, 12.
 for (const p of paletas) agregar('paleta', p.id, p.nombre, p.collection || p.collections ? 12 : 0)
@@ -82,6 +84,7 @@ agregar('cuello', 'cuello-nada', 'Sin bufanda', 0)
 agregar('cuello', c.scarf.id, 'Bufanda acolchada', precio(c.scarf.id))
 agregar('espalda', 'espalda-nada', 'Sin capa', 0)
 for (const k of c.capes) agregar('espalda', k.id, k.nombre, precio(k.id))
+for (const b of c.bags) agregar('espalda', b.id, b.nombre, PRECIO_MOCHILA[b.id])
 agregar('pies', 'pies-zapatillas', 'Zapatillas', 0)
 for (const f of c.footwear) agregar('pies', f.id, f.nombre, precio(f.id))
 agregar('textura', 'liso', 'Sin estampado', 0)

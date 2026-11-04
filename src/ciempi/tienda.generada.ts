@@ -507,6 +507,36 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 24
  },
  {
+  "id": "espalda:b09-robot",
+  "nombre": "Propulsor Lumen",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-aventura",
+  "nombre": "Mochila Cartógrafo",
+  "categoria": "espalda",
+  "precio": 20
+ },
+ {
+  "id": "espalda:b09-draco",
+  "nombre": "Mochila Draco",
+  "categoria": "espalda",
+  "precio": 20
+ },
+ {
+  "id": "espalda:b09-mago",
+  "nombre": "Bolso Luna",
+  "categoria": "espalda",
+  "precio": 20
+ },
+ {
+  "id": "espalda:b09-raton",
+  "nombre": "Bolso Ratón Atlas",
+  "categoria": "espalda",
+  "precio": 20
+ },
+ {
   "id": "pies:pies-zapatillas",
   "nombre": "Zapatillas",
   "categoria": "pies",

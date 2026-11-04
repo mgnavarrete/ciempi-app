@@ -116,13 +116,11 @@ describe('criaturas: catálogo', () => {
     expect(s.inventario).not.toContain('paquete:dragon')
   })
 
-  it('Cuncuna: solo se gana leyendo; con ella, sus variantes se compran', () => {
-    expect(soloDesbloqueo('variante:cuncuna-dorada')).toBe(true)
-    expect(soloDesbloqueo('variante:cuncuna-dorada', [CUNCUNA])).toBe(false)
-    expect(soloDesbloqueo('variante:dragon-fuego')).toBe(false)
-    expect(() => comprarItem([], 999, 'variante:cuncuna-dorada')).toThrow('Gana la Cuncuna leyendo')
-    expect(() => comprarItem([], 999, CUNCUNA)).toThrow('Gana la Cuncuna leyendo')
-    expect(() => comprarItem([], 999, 'paquete:cuncuna')).toThrow('Gana la Cuncuna leyendo')
+  it('2.5.2: la Cuncuna se compra con monedas (40); quien ya la tiene no la vuelve a pagar', () => {
+    expect(soloDesbloqueo('variante:cuncuna-dorada')).toBe(false)
+    expect(comprarItem([], 40, CUNCUNA)).toMatchObject({ precio: 40, monedas: 0, inventario: [CUNCUNA] })
+    expect(comprarItem([], 60, 'variante:cuncuna-dorada')).toMatchObject({ precio: 60, monedas: 0, inventario: [CUNCUNA, 'variante:cuncuna-dorada'] })
+    expect(comprarItem([CUNCUNA], 5, CUNCUNA)).toMatchObject({ precio: 0, monedas: 5 })
     expect(comprarItem([CUNCUNA], 20, 'variante:cuncuna-dorada')).toMatchObject({ precio: 20, monedas: 0 })
   })
 

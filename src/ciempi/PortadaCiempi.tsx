@@ -3,7 +3,7 @@ import { voz } from '../audio/voz'
 import type { PerfilNino } from '../dominio/tipos'
 import { CiempiPersonaje } from './CiempiPersonaje'
 import type { EventoCiempi } from './v2/CiempiVivo'
-import { FondoTema } from './dibujos'
+import { Comida, FondoTema } from './dibujos'
 import { useVozDeCiempi } from './vozDeCiempi'
 
 interface Props {
@@ -46,7 +46,7 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
     ciempi.genero === 'nina' ? `Soy ${ciempi.nombre}, tu amiga lectora.` : ciempi.genero === 'nino' ? `Soy ${ciempi.nombre}, tu amigo lector.` : `Soy ${ciempi.nombre}.`
 
   return (
-    <section className="relative mb-5 h-64 overflow-hidden rounded-3xl shadow-sm apaisado:h-44" aria-label={`${ciempi.nombre}, tu Ciempi`}>
+    <section className="relative mb-5 h-72 overflow-hidden rounded-3xl shadow-sm apaisado:h-52" aria-label={`${ciempi.nombre}, tu Ciempi`}>
       <FondoTema fondo={ciempi.fondo} />
       <p className="absolute left-3 top-3 z-10 max-w-[calc(100%-12rem)] rounded-2xl rounded-bl-sm bg-white/95 px-3 py-2 text-sm leading-snug shadow-sm">
         <span className="font-bold">¡Hola, {perfil.apodo}!</span> {presentacion}
@@ -56,6 +56,18 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
           🎨 Personalizar
         </button>
       )}
+      {/* Sus frutas (la comida que eligió en la tienda), en el pasto delante de Ciempi. */}
+      <svg viewBox="0 0 120 40" className="pointer-events-none absolute bottom-1 right-[3%] z-0 w-[34%] max-w-[170px] apaisado:right-[7%] apaisado:w-[19%]" aria-hidden>
+        {[
+          [22, 26, 11, 0],
+          [56, 29, 13, 0.6],
+          [90, 25, 10, 1.2],
+        ].map(([x, y, t, d], i) => (
+          <g key={i} className={tranquilo ? undefined : 'fruta-portada'} style={{ animationDelay: `${d}s`, transformOrigin: `${x}px ${y + t}px` }}>
+            <Comida comida={ciempi.comida} x={x} y={y} tamano={t} />
+          </g>
+        ))}
+      </svg>
       {/* Tocar a Ciempi: saluda. Queda debajo de los botones (z-0) para no taparlos. */}
       <button
         onClick={() => {
@@ -64,7 +76,7 @@ export function PortadaCiempi({ perfil, alPersonalizar }: Props) {
           if (!tranquilo) hacer(SALUDAR)
         }}
         aria-label={`Saludar a ${ciempi.nombre}`}
-        className="absolute inset-x-0 bottom-2 z-0 mx-auto block w-[min(80%,380px)] apaisado:w-[min(44%,320px)]"
+        className="absolute inset-x-0 bottom-1 z-0 mx-auto block w-[min(94%,450px)] apaisado:w-[min(52%,380px)]"
       >
         <CiempiPersonaje apariencia={ciempi} ancho="100%" animado={!tranquilo} accion={accion} />
       </button>

@@ -42,3 +42,6 @@ export function motivoCuncuna(cuentos: CuentoLeido[]): Desbloqueo['motivo'] | nu
   if (terminados >= R.cuentosMinimos) return 'cuentos'
   return null
 }
+
+/** 2.5.2: la Cuncuna se compra con monedas; leyendo ya no se regala (igual que server/src/desbloqueos.ts). */
+export const CUNCUNA_POR_LECTURA = false
