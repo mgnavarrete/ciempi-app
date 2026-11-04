@@ -24,7 +24,7 @@ export interface EspecieCriatura {
   /** Nombre en la tienda («Dragón»). */
   nombre: string
   emoji: string
-  /** Lo que cuesta la especie (incluye su variante base). 0 en la Cuncuna: se gana leyendo. */
+  /** Lo que cuesta la especie (incluye su variante base). */
   precio: number
   /** No se vende: solo se gana (la Cuncuna, desbloqueo V3 013). */
   soloDesbloqueo: boolean

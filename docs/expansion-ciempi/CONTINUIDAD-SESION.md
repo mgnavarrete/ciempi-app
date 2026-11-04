@@ -913,3 +913,9 @@ Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuent
 - **Inicio:** Ciempi ~18 % más grande y sus frutas (la comida elegida) con un vaivén suave.
 - **Economía:** sin cambios; sigue la 2.4.1 (E2 implementado, apagado con la bandera `ECONOMIA`). Activarlo requiere la aprobación de la usuaria y que los niños tengan la APK ≥ 2.5.
 - **Capturas:** `docs/expansion-v5/tienda/2.5.2/`.
+
+## 14. CIEMPI 2.5.3 (4-nov-2026): E2 activado por la usuaria
+- **Aprobación:** la usuaria aprobó activar E2. Para hacerlo en el servidor se agrega `ECONOMIA=e2` en `/var/www/ciempi-app/server/.env` y se reinicia `ciempi-api`. En la APK sin cuenta, `VITE_ECONOMIA=e2` (`.env.apk`).
+- **Saldos:** no se tocan. Lo ya pagado con 2.4.1 se paga como relectura.
+- **Cuncuna:** se quitaron los textos «Lee 6 cuentos…» y «Leíste muchos cuentos»; ahora solo se compra con 40 monedas.
+- **Pendiente:** revisar los precios con datos reales de E2.

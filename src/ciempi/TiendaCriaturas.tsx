@@ -88,14 +88,6 @@ export function TiendaCriaturas(props: Props) {
         ))}
       </div>
 
-      {bloqueada && (
-        <p className="flex items-center gap-2 rounded-2xl bg-amarillo/40 px-3 py-2 font-bold">
-          <span className="text-2xl" aria-hidden>
-            🔒
-          </span>
-          Lee 6 cuentos de nivel 0 y la Cuncuna será tuya.
-        </p>
-      )}
 
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 apaisado:grid-cols-3 apaisado:gap-2">
         {variantesDe(especie).map((v) => {
@@ -163,7 +155,6 @@ export function TiendaCriaturas(props: Props) {
               )}
             </p>
           )}
-          {elegida && soloDesbloqueo(elegida, inventario) && <p className="text-sm font-bold">🔒 Lee 6 cuentos de nivel 0 para ganar la Cuncuna.</p>}
           <div className="flex flex-wrap items-center gap-2">
             {recien && recien === elegida && suya && !yaPuesta ? (
               <BotonPrincipal onClick={() => props.alUsar(elegida)} disabled={ocupado} className="px-5 py-2 text-base">

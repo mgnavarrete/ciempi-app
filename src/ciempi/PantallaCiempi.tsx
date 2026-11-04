@@ -426,7 +426,7 @@ export function PantallaCiempi({ perfil, alCambiarPerfil, alVolver }: Props) {
             </p>
             <p className="text-2xl font-bold">¡Ganaste la Cuncuna!</p>
             <MiniaturaCriatura varianteId="variante:cuncuna-clasica" especie={ESPECIES.find((e) => e.id === 'cuncuna')!} className="h-36 w-full" />
-            <p className="text-lg">Leíste muchos cuentos. Ahora {perfil.ciempi.nombre} puede ser una Cuncuna.</p>
+            <p className="text-lg">Ahora {perfil.ciempi.nombre} puede ser una Cuncuna.</p>
             <BotonPrincipal onClick={() => void ponermelaCuncuna()} className="w-full">
               ¡Ponérmela!
             </BotonPrincipal>
