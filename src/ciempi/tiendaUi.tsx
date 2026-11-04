@@ -41,3 +41,20 @@ export function Vacio({ fondo, enTienda, alIrALaTienda, children }: { fondo: str
     </div>
   )
 }
+
+/** Al final del ropero: una puerta a la tienda. */
+export function MasEnLaTienda({ alIrALaTienda }: { alIrALaTienda: () => void }) {
+  return (
+    <li>
+      <button
+        onClick={alIrALaTienda}
+        className="flex h-full min-h-32 w-full flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-naranjo/60 bg-white/60 p-2 text-center text-sm font-bold leading-tight text-naranjo active:scale-95 apaisado:min-h-24"
+      >
+        <span className="text-3xl apaisado:text-2xl" aria-hidden>
+          🛍️
+        </span>
+        Más en la tienda
+      </button>
+    </li>
+  )
+}

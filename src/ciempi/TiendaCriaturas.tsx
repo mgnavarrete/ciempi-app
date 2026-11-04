@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BotonPrincipal, BotonSecundario } from '../ui/comunes'
-import { Precio, SelloNuevo, Vacio } from './tiendaUi'
+import { MasEnLaTienda, Precio, SelloNuevo, Vacio } from './tiendaUi'
 import { ahorroDe, buscarItem, loTiene, precioDe, soloDesbloqueo, type AparienciaCiempi } from './catalogo'
 import { ESPECIES, especieDeItem, variantesDe, variantesDePaquete, miniaturaDe, type EspecieCriatura, type EspecieId } from './criaturas'
 
@@ -157,6 +157,7 @@ export function TiendaCriaturas(props: Props) {
             </li>
           )
         })}
+        {!enTienda && <MasEnLaTienda alIrALaTienda={props.alIrATienda} />}
       </ul>
       )}
 

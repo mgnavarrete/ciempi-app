@@ -29,7 +29,7 @@ import { Comida, FondoTema } from './dibujos'
 import { MiniaturaCiempi } from './v2/Miniatura'
 import { ESPECIES, especieDeItem, type EspecieId } from './criaturas'
 import { MiniaturaCriatura, TiendaCriaturas } from './TiendaCriaturas'
-import { Precio, SelloNuevo, Vacio, esNuevo } from './tiendaUi'
+import { MasEnLaTienda, Precio, SelloNuevo, Vacio, esNuevo } from './tiendaUi'
 
 const CUNCUNA = 'especie:cuncuna'
 
@@ -469,6 +469,7 @@ export function PantallaCiempi({ perfil, modo, alCambiarModo, alCambiarPerfil, a
                 </li>
               )
             })}
+            {!enTienda && <MasEnLaTienda alIrALaTienda={irALaTienda} />}
           </ul>
           )}
           <MensajeError error={error} />
