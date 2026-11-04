@@ -897,3 +897,9 @@ Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuent
 - **Catálogo intacto:** la usuaria canceló la idea de retirar las máscaras Robot y Gatita. No se elimina, oculta ni deshabilita ningún producto.
 - **Economía sin cambios:** rige la 2.4.1 y E2 está apagado. Los precios de las criaturas no cambian.
 - **SIGUIENTE TAREA:** revisión profunda de la economía de monedas y precios, después del despliegue.
+- **Despliegue (4-nov-2026):**
+  - Producción quedó en **2.5.1** (`2dc35b4`), con las migraciones 012–015 aplicadas.
+  - Respaldo previo: `/var/backups/ciempi/ciempi-2026-11-04-1423.dump`, más el que hizo `actualizar.sh` en el segundo intento.
+  - Problemas encontrados y corregidos:
+    1. La compilación de la web importaba código del servidor (faltaba `@types/pg`).
+    2. La API y la CLI de `grabar-cuentos` migraron al mismo tiempo: 012 falló una vez y se aplicó al reiniciar. Ahora las migraciones toman un candado (`4f321d2`, en `main`, sin desplegar; no es urgente).
