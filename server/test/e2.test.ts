@@ -313,7 +313,8 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
       expect(rows[0].detalle.segundosPagados).toBeLessThan(2 * esperado(us[0].texto, 0))
     })
 
-    it('integración PIN + E2: un texto pendiente no paga, no gasta reloj ni marca avance; al aprobarse paga desde 0', async () => {
+    // 2.5.1: ya no hay textos pendientes al agregarlos; la regla de pago de un pendiente se conserva por compatibilidad.
+    it.skip('integración PIN + E2: un texto pendiente no paga, no gasta reloj ni marca avance; al aprobarse paga desde 0', async () => {
       const n = await nino()
       const frs = Array.from({ length: 6 }, (_, i) => `La niña ${['lee', 'canta', 'pinta', 'salta', 'come', 'ríe'][i]} en el patio.`)
       const id = randomUUID()
@@ -343,10 +344,8 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
         const id = randomUUID()
         await pedirCon(appE2, 'PUT', `/api/textos/${id}`, n.token, { titulo: 'Tito', textoOriginal: frs.join(' '), frases: frs, capitulos: [], origen: 'pegado' })
         const a = (await pedirCon(appE2, 'POST', `/api/perfiles/${n.id}/asignaciones`, n.token, { textoId: id })).body
-        // Con el PIN de textos (integración), lo que sube el niño queda pendiente: aquí se simula que el adulto
-        // lo aprobó (el flujo de PIN se prueba en api.test.ts).
-        expect(a.autorizacion).toBe('pendiente')
-        await pool.query(`update asignaciones set autorizacion = 'autorizada', autorizada_en = now() where id = $1`, [a.id])
+        // 2.5.1: lo que sube el niño queda autorizado de inmediato (sin aprobación del adulto).
+        expect(a.autorizacion).toBe('autorizada')
         return { textoId: id, asignacionId: a.id as string, nivel: a.nivel as number }
       }
       const primero = await subir(contenido)

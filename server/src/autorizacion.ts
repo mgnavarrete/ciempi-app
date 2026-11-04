@@ -101,14 +101,13 @@ export async function revisarPin(c: pg.PoolClient, perfilId: string, usuarioId: 
  * cuento de Ciempi ni lo subió uno de sus adultos. Lo decide el servidor:
  * lo que diga la app no cuenta.
  */
-export async function autorizacionAlAgregar(c: pg.Pool | pg.PoolClient, datos: { perfilId: string; textoId: string; esAdulto: boolean }): Promise<Autorizacion> {
-  if (datos.esAdulto) return 'autorizada'
-  const { rows } = await c.query(
-    `select t.origen = 'ciempi' or exists (select 1 from miembros_nino m where m.perfil_id = $2 and m.cuenta_id = t.subido_por) as del_adulto
-       from textos t where t.id = $1`,
-    [datos.textoId, datos.perfilId],
-  )
-  return rows[0]?.del_adulto ? 'autorizada' : 'pendiente'
+/**
+ * 2.5.1: los textos que agrega el niño ya no esperan la aprobación del adulto
+ * (decisión de la usuaria). Toda asignación nueva queda autorizada; las columnas
+ * y las rutas del PIN se conservan sin uso.
+ */
+export async function autorizacionAlAgregar(_c: pg.Pool | pg.PoolClient, _datos: { perfilId: string; textoId: string; esAdulto: boolean }): Promise<Autorizacion> {
+  return 'autorizada'
 }
 
 /** Las columnas de autorización para el insert de una asignación nueva. */
@@ -123,11 +122,8 @@ export async function columnasAlAgregar(c: pg.Pool | pg.PoolClient, u: UsuarioSe
  * pendiente (si no, bastaría con autorizar un texto corto y después
  * reemplazarlo por uno largo). Cambiar solo el título no cuenta.
  */
-export async function pendienteSiCambiaContenido(c: pg.PoolClient, u: UsuarioSesion, textoId: string) {
-  if (u.tipo !== 'nino') return
-  await c.query(`update asignaciones set autorizacion = 'pendiente', autorizada_por = null, autorizada_en = null where texto_id = $1 and autorizacion = 'autorizada'`, [
-    textoId,
-  ])
+export async function pendienteSiCambiaContenido(_c: pg.PoolClient, _u: UsuarioSesion, _textoId: string) {
+  // 2.5.1: sin aprobación de textos, cambiar el contenido ya no lo deja pendiente.
 }
 
 /**

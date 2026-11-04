@@ -15,8 +15,7 @@ import {
   normalizarApariencia,
   ponerItem,
   precioDe,
-  ahorroDe,
-} from './catalogo'
+  ahorroDe, visibleEnTienda } from './catalogo'
 import { esCompraAntigua } from './tiendaAntigua'
 
 const item = (id: string) => buscarItem(id)!
@@ -60,13 +59,29 @@ describe('tienda de Ciempi', () => {
   })
 
   it('comprar un conjunto agrega el pack y sus piezas, y reparte lo cobrado entre ellas', () => {
-    const r = comprarItem([], 200, 'conjunto:b12-set-robot')
-    expect(r.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot']))
-    expect(r.monedas).toBe(200 - 71)
-    expect(r.lineas.reduce((s, l) => s + l.precio, 0)).toBe(71)
-    expect(r.lineas.map((l) => l.id)).toEqual(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot'])
+    // Dragón: máscara 26 + estampado 28 + botas 12 = 66 → 53.
+    const r = comprarItem([], 200, 'conjunto:b12-set-draco')
+    expect(r.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-draco', 'cabeza:b06-ia-dragon', 'textura:b11-draco', 'pies:b10-lluvia']))
+    expect(r.monedas).toBe(200 - 53)
+    expect(r.lineas.reduce((s, l) => s + l.precio, 0)).toBe(53)
+    expect(r.lineas.map((l) => l.id)).toEqual(['conjunto:b12-set-draco', 'cabeza:b06-ia-dragon', 'textura:b11-draco', 'pies:b10-lluvia'])
     expect(() => comprarItem([], 3, 'cabeza:b06-ia-corona')).toThrow('Te faltan 22 monedas')
     expect(() => comprarItem([], 99, 'forma-estrella')).toThrow('Eso no está en la tienda')
+  })
+
+  it('2.5.1: Robot, Gatita y el conjunto Robot ya no se venden, pero quien los tiene los conserva y se los pone', () => {
+    for (const id of ['cabeza:b07-ia-robot', 'cabeza:b07-ia-gatita', 'conjunto:b12-set-robot']) {
+      expect(() => comprarItem([], 500, id)).toThrow('Eso ya no está a la venta')
+      expect(visibleEnTienda(id, [])).toBe(false)
+      expect(visibleEnTienda(id, [id])).toBe(true)
+      expect(comprarItem([id], 10, id)).toMatchObject({ monedas: 10, lineas: [] })
+    }
+    // Lo demás del conjunto Robot sigue a la venta suelto; las otras máscaras, también.
+    expect(comprarItem([], 100, 'textura:b11-robot').inventario).toContain('textura:b11-robot')
+    expect(comprarItem([], 100, 'pies:b10-robot').inventario).toContain('pies:b10-robot')
+    expect(comprarItem([], 100, 'cabeza:b07-ia-espiritu').inventario).toContain('cabeza:b07-ia-espiritu')
+    expect(visibleEnTienda('cabeza:b07-ia-espiritu', [])).toBe(true)
+    expect(normalizarApariencia({ cabeza: 'cabeza:b07-ia-gatita' }).cabeza).toBe('cabeza:b07-ia-gatita')
   })
 
   it('no cobra más de lo que mostró la tienda', () => {

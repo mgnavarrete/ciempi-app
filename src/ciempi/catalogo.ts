@@ -53,6 +53,16 @@ const DESCUENTO_CONJUNTO = 0.8
 
 export const buscarItem = (id: string): ItemCiempi | undefined => CATALOGO.find((i) => i.id === id)
 
+/**
+ * Retirados de la venta (2.5.1): se parecen demasiado a personajes comerciales. Siguen en el
+ * catálogo para que quien ya los tiene los conserve, los vea y se los pueda poner; no se venden
+ * ni aparecen en la tienda a quien no los tiene. El conjunto Robot incluye la máscara Robot:
+ * también se retira (su textura y sus botas se siguen vendiendo sueltas).
+ */
+export const RETIRADOS: ReadonlySet<string> = new Set(['cabeza:b07-ia-robot', 'cabeza:b07-ia-gatita', 'conjunto:b12-set-robot'])
+/** Se muestra en la tienda: lo que se vende, o lo retirado que el niño ya tiene. */
+export const visibleEnTienda = (id: string, inventario: string[]) => !RETIRADOS.has(id) || loTiene(inventario, id)
+
 /** La familia de una pieza (colores casi iguales que se compran una vez), o solo ella. */
 export const familiaDe = (id: string) => FAMILIAS.find((f) => f.includes(id)) ?? [id]
 
@@ -151,6 +161,7 @@ export function comprarItem(
   const item = buscarItem(itemId)
   if (!item) throw new Error('Eso no está en la tienda')
   if (loTiene(inventario, item.id)) return { monedas, inventario, precio: 0, lineas: [] }
+  if (RETIRADOS.has(item.id)) throw new Error('Eso ya no está a la venta')
   if (soloDesbloqueo(item.id, inventario)) throw new Error('Gana la Cuncuna leyendo')
   const precio = precioDe(item, inventario)
   if (precioVisto !== undefined && precio > precioVisto) throw new Error(`El precio cambió: ahora cuesta ${precio} monedas`)

@@ -80,16 +80,14 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('POST', `/api/perfiles/${perfilId}/clave`, N, { clave: 'nueva123' })).status).toBe(403)
   })
 
-  it('el niño sube su guía, la agrega a su biblioteca (pendiente), la terapeuta la autoriza con su PIN y guarda progreso', async () => {
+  it('el niño sube su guía, la agrega a su biblioteca y la puede leer de inmediato (2.5.1: sin aprobación del adulto) y guarda progreso', async () => {
     guia = randomUUID()
     const t = await pedir('PUT', `/api/textos/${guia}`, N, { titulo: 'Guía de lenguaje', textoOriginal: 'x', frases: ['Hola.', 'Chao.'], capitulos: [], origen: 'pdf' })
     expect(t.status).toBe(200)
     const a = await pedir('POST', `/api/perfiles/${perfilId}/asignaciones`, N, { textoId: guia })
     expect(a.status).toBe(200)
-    expect(a.body.autorizacion).toBe('pendiente')
+    expect(a.body.autorizacion).toBe('autorizada')
     asigGuia = a.body.id
-    expect((await pedir('PUT', '/api/mi-pin', T, { pin: '2580', clave: 'clave-segura' })).status).toBe(200)
-    expect((await pedir('POST', `/api/asignaciones/${asigGuia}/autorizar`, N, { pin: '2580' })).body.autorizacion).toBe('autorizada')
     const p = await pedir('PUT', `/api/asignaciones/${asigGuia}/progreso`, N, { fraseActual: 1, fraseMaxima: 1, estado: 'en_curso' })
     expect(p.body).toMatchObject({ fraseActual: 1, fraseMaxima: 1 })
     const s = await pedir('PUT', `/api/sesiones-lectura/${randomUUID()}`, N, { perfilId, modo: 'coro', frasesCompletadas: 1 })
@@ -154,17 +152,23 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
   })
 
   it('tienda: un conjunto se compra como pack (20 % menos), trae sus piezas y no cobra más de lo mostrado', async () => {
-    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 96, motivo: 'Para probar los conjuntos' })
+    await pedir('POST', `/api/perfiles/${perfilId}/monedas`, T, { cantidad: 78, motivo: 'Para probar los conjuntos' })
     // Si la app mostró un precio menor (por ejemplo, una versión antigua), no se cobra.
-    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 60 })).body.error).toMatch(/ahora cuesta 71/)
-    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-robot', precioVisto: 71 })
-    // Máscara 32 + armadura 32 + botas 24 = 88 → 71.
-    expect(r.body.monedas).toBe(100 - 71)
-    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-robot', 'cabeza:b07-ia-robot', 'textura:b11-robot', 'pies:b10-robot']))
+    expect((await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-draco', precioVisto: 40 })).body.error).toMatch(/ahora cuesta 53/)
+    const r = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId: 'conjunto:b12-set-draco', precioVisto: 53 })
+    // Máscara 26 + estampado 28 + botas 12 = 66 → 53.
+    expect(r.body.monedas).toBe(82 - 53)
+    expect(r.body.inventario).toEqual(expect.arrayContaining(['conjunto:b12-set-draco', 'cabeza:b06-ia-dragon', 'textura:b11-draco', 'pies:b10-lluvia']))
     const puesto = await pedir('PUT', `/api/perfiles/${perfilId}/ciempi`, N, {
-      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b07-ia-robot', textura: 'textura:b11-robot', pies: 'pies:b10-robot' },
+      apariencia: { nombre: 'Rayito', cabeza: 'cabeza:b06-ia-dragon', textura: 'textura:b11-draco', pies: 'pies:b10-lluvia' },
     })
-    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b07-ia-robot', pies: 'pies:b10-robot' })
+    expect(puesto.body.ciempi).toMatchObject({ cabeza: 'cabeza:b06-ia-dragon', pies: 'pies:b10-lluvia' })
+    // 2.5.1: las máscaras retiradas no se venden (el saldo no cambia).
+    for (const itemId of ['cabeza:b07-ia-robot', 'cabeza:b07-ia-gatita', 'conjunto:b12-set-robot']) {
+      const x = await pedir('POST', `/api/perfiles/${perfilId}/comprar`, N, { itemId })
+      expect(x.status).toBe(400)
+      expect(x.body.error).toMatch(/ya no está a la venta/)
+    }
   })
 
   it('la terapeuta cambia la clave del niño: la vieja deja de servir y se cierran sus sesiones', async () => {
@@ -662,7 +666,8 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     })
   })
   // ── Textos propios: el niño los agrega, un adulto los autoriza con su PIN ──
-  describe('textos propios con PIN del adulto', () => {
+  // 2.5.1: la aprobación de textos con PIN se retiró (decisión de la usuaria); se conserva la suite como referencia.
+  describe.skip('textos propios con PIN del adulto (retirado en 2.5.1)', () => {
     let ahora = Date.now()
     let appPin: Awaited<ReturnType<typeof crearApp>>
     const pedirP = async (metodo: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, token?: string, payload?: object): Promise<Respuesta> => {
