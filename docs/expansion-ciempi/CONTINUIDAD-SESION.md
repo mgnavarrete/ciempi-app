@@ -849,3 +849,41 @@ lo verificado, lo inferido y lo pendiente; decisiones que necesita la usuaria. A
 - **Catálogo experimental:** 23 variantes en `laboratorio-transformaciones/variantes.js` (`?variante=<id>`), en la rama `expansion-v4-arte`, commit `c347eb7`. Láminas, `catalogo-variantes.md` y `PENDIENTES.md` en `docs/rediseno-ciempi/revisiones/V5-variantes/`.
 - **Siguiente:** que la usuaria elija qué variantes pasan a la tienda (gratis, compra o desbloqueo). No hay productos, precios ni inventario reales.
 - **AD-021 (4-nov):** el Dragón aprobado usa el rostro **v4 (iteración 1)**, no el v4b; está aplicado al diseño base y a sus 6 variantes (commit `bb4e684`).
+
+## 11. CIEMPI 2.5.0: criaturas en el juego (4-nov-2026)
+
+- **Rama:** `release-2.5-criaturas`, commit `012470c`, en el worktree `.claude/worktrees/release-2.5`. Está publicada en GitHub (`origin/release-2.5-criaturas`). Contiene V3 + V4 + la tienda de criaturas y el render en el juego.
+- **APK:** `release/CIEMPI-2.5.0.apk` (33,1 MB), también en el `release/` del repo principal. Apunta a `https://ciempi.minttu.cl`.
+- **Precios** (calculados con la economía 2.4.1; hay que revisarlos cuando cambie el modelo económico):
+  - Dragón 80, Camaleón 70, Serpiente 60;
+  - Cuncuna gratis al leer 6 de los 8 cuentos de N0;
+  - variantes a 24 (las de Cuncuna a 20);
+  - paquetes con un 20 % de descuento sobre lo que falte.
+- **Compras:** confirmación con el desglose especie + variante = total; el servidor rechaza cobrar más que `precioVisto`.
+- **WebP:** el tinte horneado ocupa 11 MiB (524 WebP con alfa). Los PNG originales están en `c8e3ea9`.
+- **Pruebas:**
+  - tsc OK;
+  - vitest 318/318;
+  - servidor 93/93 (criaturas 14/14 hoy);
+  - componentes reales 24/24 (4 especies, 23 variantes, N de 0 a 40, zapatilla en la cola);
+  - capturas de Ciempi 108/108 y paridad con el laboratorio 138/138 (antes de WebP).
+- **Migración verificada** sobre una copia 2.4.1 de prueba (`ciempi_test_migra241`): 012–014 tardan menos de 70 ms; saldos, inventarios, apariencias y compras quedan iguales; todos los textos existentes quedan autorizados.
+
+### Para desplegar el servidor (requiere autorización explícita de la usuaria)
+El servidor aplica 012–014 al arrancar: libro de premios, desbloqueo de la Cuncuna y PIN de textos. E2 sigue apagado.
+1. `pg_dump -Fc ciempi > ciempi-antes-2.5.dump` (respaldo).
+2. Restaurar el respaldo en una base de prueba en el servidor y arrancar 2.5.0 contra ella para comprobar que migra (o repetir el script de verificación).
+3. `cd /var/www/ciempi-app && git fetch && git checkout release-2.5-criaturas` (o fusionar a `main`).
+4. `npm ci && npm run build && npm --prefix server ci --omit=dev`.
+5. `sudo systemctl restart ciempi-api` y `curl 127.0.0.1:3200/api/salud`.
+
+Hasta desplegar, la APK 2.5.0 funciona en **modo local** (sin cuenta). Con cuenta, las compras de criaturas fallan contra el servidor 2.4.1.
+
+**Vuelta atrás:** volver a 2.4.1 y restaurar el respaldo.
+
+### Pendiente
+- Despliegue autorizado.
+- Prueba en un teléfono real (no había ningún Android conectado).
+- Revisar los precios si se activa E2.
+- PIN de textos (014): el texto que sube el niño queda pendiente hasta que el adulto lo aprueba; confirmar antes de desplegar.
+- Máscaras robot y gatita: parecido con personajes protegidos.
