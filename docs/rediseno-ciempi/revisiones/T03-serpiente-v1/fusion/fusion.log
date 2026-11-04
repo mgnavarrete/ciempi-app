@@ -1,0 +1,366 @@
+serpiente base n=0 t=-1 0 
+serpiente base n=0 t=0.37 0 
+serpiente base n=1 t=-1 0 
+serpiente base n=1 t=0.37 0 
+serpiente base n=2 t=-1 0 
+serpiente base n=2 t=0.37 0 
+serpiente base n=3 t=-1 0 
+serpiente base n=3 t=0.37 0 
+serpiente base n=4 t=-1 0 
+serpiente base n=4 t=0.37 0 
+serpiente base n=5 t=-1 0 
+serpiente base n=5 t=0.37 0 
+serpiente base n=6 t=-1 0 
+serpiente base n=6 t=0.37 0 
+serpiente base n=12 t=-1 0 
+serpiente base n=12 t=0.37 0 
+serpiente base n=40 t=-1 0 
+serpiente base n=40 t=0.37 0 
+serpiente tipico n=0 t=-1 0 
+serpiente tipico n=0 t=0.37 0 
+serpiente tipico n=1 t=-1 0 
+serpiente tipico n=1 t=0.37 0 
+serpiente tipico n=2 t=-1 0 
+serpiente tipico n=2 t=0.37 0 
+serpiente tipico n=3 t=-1 0 
+serpiente tipico n=3 t=0.37 0 
+serpiente tipico n=4 t=-1 0 
+serpiente tipico n=4 t=0.37 0 
+serpiente tipico n=5 t=-1 0 
+serpiente tipico n=5 t=0.37 0 
+serpiente tipico n=6 t=-1 0 
+serpiente tipico n=6 t=0.37 0 
+serpiente tipico n=12 t=-1 0 
+serpiente tipico n=12 t=0.37 0 
+serpiente tipico n=40 t=-1 0 
+serpiente tipico n=40 t=0.37 0 
+serpiente mochila n=0 t=-1 0 
+serpiente mochila n=0 t=0.37 0 
+serpiente mochila n=1 t=-1 0 
+serpiente mochila n=1 t=0.37 0 
+serpiente mochila n=2 t=-1 0 
+serpiente mochila n=2 t=0.37 0 
+serpiente mochila n=3 t=-1 0 
+serpiente mochila n=3 t=0.37 0 
+serpiente mochila n=4 t=-1 0 
+serpiente mochila n=4 t=0.37 0 
+serpiente mochila n=5 t=-1 0 
+serpiente mochila n=5 t=0.37 0 
+serpiente mochila n=6 t=-1 0 
+serpiente mochila n=6 t=0.37 0 
+serpiente mochila n=12 t=-1 0 
+serpiente mochila n=12 t=0.37 0 
+serpiente mochila n=40 t=-1 0 
+serpiente mochila n=40 t=0.37 0 
+serpiente robot n=0 t=-1 0 
+serpiente robot n=0 t=0.37 0 
+serpiente robot n=1 t=-1 0 
+serpiente robot n=1 t=0.37 0 
+serpiente robot n=2 t=-1 0 
+serpiente robot n=2 t=0.37 0 
+serpiente robot n=3 t=-1 0 
+serpiente robot n=3 t=0.37 0 
+serpiente robot n=4 t=-1 0 
+serpiente robot n=4 t=0.37 0 
+serpiente robot n=5 t=-1 0 
+serpiente robot n=5 t=0.37 0 
+serpiente robot n=6 t=-1 0 
+serpiente robot n=6 t=0.37 0 
+serpiente robot n=12 t=-1 0 
+serpiente robot n=12 t=0.37 0 
+serpiente robot n=40 t=-1 0 
+serpiente robot n=40 t=0.37 0 
+serpiente sinLengua n=0 t=-1 0 
+serpiente sinLengua n=0 t=0.37 0 
+serpiente sinLengua n=1 t=-1 0 
+serpiente sinLengua n=1 t=0.37 0 
+serpiente sinLengua n=2 t=-1 0 
+serpiente sinLengua n=2 t=0.37 0 
+serpiente sinLengua n=3 t=-1 0 
+serpiente sinLengua n=3 t=0.37 0 
+serpiente sinLengua n=4 t=-1 0 
+serpiente sinLengua n=4 t=0.37 0 
+serpiente sinLengua n=5 t=-1 0 
+serpiente sinLengua n=5 t=0.37 0 
+serpiente sinLengua n=6 t=-1 0 
+serpiente sinLengua n=6 t=0.37 0 
+serpiente sinLengua n=12 t=-1 0 
+serpiente sinLengua n=12 t=0.37 0 
+serpiente sinLengua n=40 t=-1 0 
+serpiente sinLengua n=40 t=0.37 0 
+camaleon base n=0 t=-1 0 
+camaleon base n=0 t=0.37 0 
+camaleon base n=1 t=-1 0 
+camaleon base n=1 t=0.37 0 
+camaleon base n=2 t=-1 0 
+camaleon base n=2 t=0.37 0 
+camaleon base n=3 t=-1 0 
+camaleon base n=3 t=0.37 0 
+camaleon base n=4 t=-1 0 
+camaleon base n=4 t=0.37 0 
+camaleon base n=5 t=-1 0 
+camaleon base n=5 t=0.37 0 
+camaleon base n=6 t=-1 0 
+camaleon base n=6 t=0.37 0 
+camaleon base n=12 t=-1 0 
+camaleon base n=12 t=0.37 0 
+camaleon base n=40 t=-1 0 
+camaleon base n=40 t=0.37 0 
+camaleon tipico n=0 t=-1 0 
+camaleon tipico n=0 t=0.37 0 
+camaleon tipico n=1 t=-1 0 
+camaleon tipico n=1 t=0.37 0 
+camaleon tipico n=2 t=-1 0 
+camaleon tipico n=2 t=0.37 0 
+camaleon tipico n=3 t=-1 0 
+camaleon tipico n=3 t=0.37 0 
+camaleon tipico n=4 t=-1 0 
+camaleon tipico n=4 t=0.37 0 
+camaleon tipico n=5 t=-1 0 
+camaleon tipico n=5 t=0.37 0 
+camaleon tipico n=6 t=-1 0 
+camaleon tipico n=6 t=0.37 0 
+camaleon tipico n=12 t=-1 0 
+camaleon tipico n=12 t=0.37 0 
+camaleon tipico n=40 t=-1 0 
+camaleon tipico n=40 t=0.37 0 
+camaleon mochila n=0 t=-1 0 
+camaleon mochila n=0 t=0.37 0 
+camaleon mochila n=1 t=-1 0 
+camaleon mochila n=1 t=0.37 0 
+camaleon mochila n=2 t=-1 0 
+camaleon mochila n=2 t=0.37 0 
+camaleon mochila n=3 t=-1 0 
+camaleon mochila n=3 t=0.37 0 
+camaleon mochila n=4 t=-1 0 
+camaleon mochila n=4 t=0.37 0 
+camaleon mochila n=5 t=-1 0 
+camaleon mochila n=5 t=0.37 0 
+camaleon mochila n=6 t=-1 0 
+camaleon mochila n=6 t=0.37 0 
+camaleon mochila n=12 t=-1 0 
+camaleon mochila n=12 t=0.37 0 
+camaleon mochila n=40 t=-1 0 
+camaleon mochila n=40 t=0.37 0 
+camaleon robot n=0 t=-1 0 
+camaleon robot n=0 t=0.37 0 
+camaleon robot n=1 t=-1 0 
+camaleon robot n=1 t=0.37 0 
+camaleon robot n=2 t=-1 0 
+camaleon robot n=2 t=0.37 0 
+camaleon robot n=3 t=-1 0 
+camaleon robot n=3 t=0.37 0 
+camaleon robot n=4 t=-1 0 
+camaleon robot n=4 t=0.37 0 
+camaleon robot n=5 t=-1 0 
+camaleon robot n=5 t=0.37 0 
+camaleon robot n=6 t=-1 0 
+camaleon robot n=6 t=0.37 0 
+camaleon robot n=12 t=-1 0 
+camaleon robot n=12 t=0.37 0 
+camaleon robot n=40 t=-1 0 
+camaleon robot n=40 t=0.37 0 
+camaleon camuflaje n=0 t=-1 0 
+camaleon camuflaje n=0 t=0.37 0 
+camaleon camuflaje n=1 t=-1 0 
+camaleon camuflaje n=1 t=0.37 0 
+camaleon camuflaje n=2 t=-1 0 
+camaleon camuflaje n=2 t=0.37 0 
+camaleon camuflaje n=3 t=-1 0 
+camaleon camuflaje n=3 t=0.37 0 
+camaleon camuflaje n=4 t=-1 0 
+camaleon camuflaje n=4 t=0.37 0 
+camaleon camuflaje n=5 t=-1 0 
+camaleon camuflaje n=5 t=0.37 0 
+camaleon camuflaje n=6 t=-1 0 
+camaleon camuflaje n=6 t=0.37 0 
+camaleon camuflaje n=12 t=-1 0 
+camaleon camuflaje n=12 t=0.37 0 
+camaleon camuflaje n=40 t=-1 0 
+camaleon camuflaje n=40 t=0.37 0 
+ciempi base n=0 t=-1 0 
+ciempi base n=0 t=0.37 0 
+ciempi base n=1 t=-1 0 
+ciempi base n=1 t=0.37 0 
+ciempi base n=2 t=-1 0 
+ciempi base n=2 t=0.37 0 
+ciempi base n=3 t=-1 0 
+ciempi base n=3 t=0.37 0 
+ciempi base n=4 t=-1 0 
+ciempi base n=4 t=0.37 0 
+ciempi base n=5 t=-1 0 
+ciempi base n=5 t=0.37 0 
+ciempi base n=6 t=-1 0 
+ciempi base n=6 t=0.37 0 
+ciempi base n=12 t=-1 0 
+ciempi base n=12 t=0.37 0 
+ciempi base n=40 t=-1 0 
+ciempi base n=40 t=0.37 0 
+ciempi tipico n=0 t=-1 0 
+ciempi tipico n=0 t=0.37 0 
+ciempi tipico n=1 t=-1 0 
+ciempi tipico n=1 t=0.37 0 
+ciempi tipico n=2 t=-1 0 
+ciempi tipico n=2 t=0.37 0 
+ciempi tipico n=3 t=-1 0 
+ciempi tipico n=3 t=0.37 0 
+ciempi tipico n=4 t=-1 0 
+ciempi tipico n=4 t=0.37 0 
+ciempi tipico n=5 t=-1 0 
+ciempi tipico n=5 t=0.37 0 
+ciempi tipico n=6 t=-1 0 
+ciempi tipico n=6 t=0.37 0 
+ciempi tipico n=12 t=-1 0 
+ciempi tipico n=12 t=0.37 0 
+ciempi tipico n=40 t=-1 0 
+ciempi tipico n=40 t=0.37 0 
+ciempi mochila n=0 t=-1 0 
+ciempi mochila n=0 t=0.37 0 
+ciempi mochila n=1 t=-1 0 
+ciempi mochila n=1 t=0.37 0 
+ciempi mochila n=2 t=-1 0 
+ciempi mochila n=2 t=0.37 0 
+ciempi mochila n=3 t=-1 0 
+ciempi mochila n=3 t=0.37 0 
+ciempi mochila n=4 t=-1 0 
+ciempi mochila n=4 t=0.37 0 
+ciempi mochila n=5 t=-1 0 
+ciempi mochila n=5 t=0.37 0 
+ciempi mochila n=6 t=-1 0 
+ciempi mochila n=6 t=0.37 0 
+ciempi mochila n=12 t=-1 0 
+ciempi mochila n=12 t=0.37 0 
+ciempi mochila n=40 t=-1 0 
+ciempi mochila n=40 t=0.37 0 
+ciempi robot n=0 t=-1 0 
+ciempi robot n=0 t=0.37 0 
+ciempi robot n=1 t=-1 0 
+ciempi robot n=1 t=0.37 0 
+ciempi robot n=2 t=-1 0 
+ciempi robot n=2 t=0.37 0 
+ciempi robot n=3 t=-1 0 
+ciempi robot n=3 t=0.37 0 
+ciempi robot n=4 t=-1 0 
+ciempi robot n=4 t=0.37 0 
+ciempi robot n=5 t=-1 0 
+ciempi robot n=5 t=0.37 0 
+ciempi robot n=6 t=-1 0 
+ciempi robot n=6 t=0.37 0 
+ciempi robot n=12 t=-1 0 
+ciempi robot n=12 t=0.37 0 
+ciempi robot n=40 t=-1 0 
+ciempi robot n=40 t=0.37 0 
+tapan la boca (catálogo): [ 'b07-ia-robot', 'b07-ia-espiritu', 'b12-araluz' ] 
+cabezas: [
+  'b06-ia-jockey',   'b06-ia-dragon',
+  'b06-ia-mago',     'b06-ia-aventura',
+  'b06-ia-pirata',   'b06-ia-corona',
+  'b07-ia-robot',    'b07-ia-gatita',
+  'b07-ia-espiritu', 'b07-ia-dragon',
+  'b07-ia-buho',     'b12-araluz',
+  'b12-raton'
+]
+bocas {"especie":"ciempi","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"ciempi","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"ciempi","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"serpiente","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"serpiente","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":3,"minHijos":3,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"cabeza-nada","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-jockey","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-mago","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-aventura","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-pirata","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b06-ia-corona","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-robot","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-robot","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-gatita","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-espiritu","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-espiritu","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-dragon","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b07-ia-buho","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b12-araluz","tapa":true,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":[],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":false,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b12-araluz","tapa":false,"forzarConBoca":true,"cuadros":41,"maxBocas":1,"maxHijos":0,"minHijos":0,"expresiones":["b03-carcajada"],"bocaVisibleInicial":false,"boca":"carcajada"}
+bocas {"especie":"camaleon","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-sorprendido"],"bocaVisibleInicial":true,"boca":"sorprendido"}
+bocas {"especie":"camaleon","cabeza":"b12-raton","tapa":false,"forzarConBoca":false,"cuadros":41,"maxBocas":1,"maxHijos":2,"minHijos":2,"expresiones":["b03-carcajada"],"bocaVisibleInicial":true,"boca":"carcajada"}
+crecer: 252/252 idénticos 
+errores consola: 0 []
