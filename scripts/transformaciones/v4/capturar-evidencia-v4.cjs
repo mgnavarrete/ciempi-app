@@ -9,12 +9,14 @@ const { chromium } = require('playwright')
 const raiz = path.resolve(__dirname, '..', '..', '..')
 const URL_BASE = process.env.LAB_URL || 'http://127.0.0.1:8803/docs/rediseno-ciempi/laboratorio-transformaciones/'
 const CHROME = process.env.CHROME || '/home/menta/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome'
-const DESTINO = { serpiente: 'T03-serpiente-v1', camaleon: 'T04-camaleon-v1' }
+// ITER=v1 reproduce las láminas de la iteración 1 (en T0x-*-v1); por omisión v2 (en T0x-*-v2). No se sobrescriben entre sí.
+const ITER = process.env.ITER === 'v1' ? 'v1' : 'v2'
+const DESTINO = { serpiente: `T03-serpiente-${ITER}`, camaleon: `T04-camaleon-${ITER}` }
 const filtro = process.argv.slice(2)
 const trabajos = []
 for (const especie of ['serpiente', 'camaleon']) {
   for (const fondo of ['claro', 'oscuro']) for (const tipo of ['crecimiento', 'expresiones', 'accesorios', 'comparacion']) trabajos.push({ especie, tipo, fondo })
-  for (const tipo of ['conjuntos', 'comer', 'animacion']) trabajos.push({ especie, tipo, fondo: 'claro' })
+  for (const tipo of ['conjuntos', 'comer', 'animacion', ...(ITER === 'v2' ? ['iteracion'] : [])]) trabajos.push({ especie, tipo, fondo: 'claro' })
 }
 trabajos.push({ especie: 'camaleon', tipo: 'camuflaje', fondo: 'claro' }, { especie: 'camaleon', tipo: 'camuflaje', fondo: 'oscuro' })
 
@@ -25,7 +27,7 @@ trabajos.push({ especie: 'camaleon', tipo: 'camuflaje', fondo: 'claro' }, { espe
     const pagina = await navegador.newPage({ viewport: { width: 1400, height: 900 }, deviceScaleFactor: 1 })
     pagina.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errores.push(`${t.tipo}/${t.especie}: ${m.text()}`) })
     pagina.on('pageerror', (e) => errores.push(`${t.tipo}/${t.especie}: ${e.message}`))
-    await pagina.goto(`${URL_BASE}laminas-v4.html?tipo=${t.tipo}&especie=${t.especie}&fondo=${t.fondo}`)
+    await pagina.goto(`${URL_BASE}laminas-v4.html?tipo=${t.tipo}&especie=${t.especie}&fondo=${t.fondo}&iter=${ITER}`)
     await pagina.waitForSelector('body[data-cargado]', { timeout: 180000 })
     if ((await pagina.getAttribute('body', 'data-cargado')) !== '1') errores.push(`${t.tipo}/${t.especie}: la lámina no terminó`)
     await pagina.waitForTimeout(500)

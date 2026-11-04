@@ -1,0 +1,904 @@
+{
+ "especie": "serpiente",
+ "version": "rostro-v2",
+ "estado": "laboratorio — iteración 2, pendiente de aprobación del usuario",
+ "unidades": "viewBox de la base (0 0 1000 650); coordenadas absolutas de la cabeza (736,340 r130)",
+ "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia",
+ "capas": {
+  "rostro": "#mouth (cejas, boca, lengüita, marcas)",
+  "ojos": "#eyes, eye-i (parpadea) o eyelids"
+ },
+ "parpadea": true,
+ "porDefecto": "b03-alegre",
+ "expresiones": {
+  "alegre": {
+   "registro": {
+    "centroPx": [
+     324.0,
+     319.6
+    ],
+    "radioInteriorPx": 245.3,
+    "claveNaranja": [
+     253,
+     149,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "alegre-rostro.webp",
+    "encuadre": [
+     621.5,
+     236.5,
+     231.0,
+     200.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "alegre-ojo-0.webp",
+     "encuadre": [
+      647.0,
+      275.5,
+      76.0,
+      95.0
+     ],
+     "centro": [
+      684.8,
+      322.2
+     ]
+    },
+    {
+     "archivo": "alegre-ojo-1.webp",
+     "encuadre": [
+      769.0,
+      263.0,
+      55.5,
+      79.5
+     ],
+     "centro": [
+      796.3,
+      301.9
+     ]
+    }
+   ],
+   "fuente": "hoja-1",
+   "b03": "b03-alegre"
+  },
+  "carcajada": {
+   "registro": {
+    "centroPx": [
+     930.2,
+     319.8
+    ],
+    "radioInteriorPx": 245.1,
+    "claveNaranja": [
+     253,
+     149,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "carcajada-rostro.webp",
+    "encuadre": [
+     621.5,
+     236.5,
+     230.5,
+     207.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "carcajada-ojo-0.webp",
+     "encuadre": [
+      653.0,
+      296.0,
+      68.5,
+      28.5
+     ],
+     "centro": [
+      685.4,
+      307.9
+     ]
+    },
+    {
+     "archivo": "carcajada-ojo-1.webp",
+     "encuadre": [
+      767.5,
+      288.5,
+      64.0,
+      29.0
+     ],
+     "centro": [
+      798.6,
+      299.4
+     ]
+    }
+   ],
+   "fuente": "hoja-1",
+   "b03": "b03-carcajada"
+  },
+  "curioso": {
+   "registro": {
+    "centroPx": [
+     326.6,
+     931.9
+    ],
+    "radioInteriorPx": 249.6,
+    "claveNaranja": [
+     254,
+     149,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "curioso-rostro.webp",
+    "encuadre": [
+     622.0,
+     236.0,
+     227.5,
+     189.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "curioso-ojo-0.webp",
+     "encuadre": [
+      648.0,
+      281.0,
+      78.5,
+      93.0
+     ],
+     "centro": [
+      687.5,
+      327.0
+     ]
+    },
+    {
+     "archivo": "curioso-ojo-1.webp",
+     "encuadre": [
+      769.0,
+      265.0,
+      57.0,
+      76.5
+     ],
+     "centro": [
+      797.2,
+      302.5
+     ]
+    }
+   ],
+   "fuente": "hoja-1",
+   "b03": "b03-curioso"
+  },
+  "pensativo": {
+   "registro": {
+    "centroPx": [
+     932.0,
+     932.3
+    ],
+    "radioInteriorPx": 249.3,
+    "claveNaranja": [
+     253,
+     149,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "pensativo-rostro.webp",
+    "encuadre": [
+     624.0,
+     236.0,
+     228.0,
+     178.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "pensativo-ojo-0.webp",
+     "encuadre": [
+      651.0,
+      282.0,
+      75.0,
+      89.5
+     ],
+     "centro": [
+      688.9,
+      325.8
+     ]
+    },
+    {
+     "archivo": "pensativo-ojo-1.webp",
+     "encuadre": [
+      766.5,
+      264.5,
+      59.5,
+      76.5
+     ],
+     "centro": [
+      796.5,
+      302.5
+     ]
+    }
+   ],
+   "fuente": "hoja-1",
+   "b03": "b03-pensativo"
+  },
+  "sorprendido": {
+   "registro": {
+    "centroPx": [
+     323.6,
+     315.8
+    ],
+    "radioInteriorPx": 247.9,
+    "claveNaranja": [
+     253,
+     145,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "sorprendido-rostro.webp",
+    "encuadre": [
+     625.0,
+     233.0,
+     226.0,
+     214.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "sorprendido-ojo-0.webp",
+     "encuadre": [
+      647.0,
+      276.5,
+      80.5,
+      99.5
+     ],
+     "centro": [
+      687.6,
+      325.3
+     ]
+    },
+    {
+     "archivo": "sorprendido-ojo-1.webp",
+     "encuadre": [
+      768.0,
+      262.0,
+      61.5,
+      90.5
+     ],
+     "centro": [
+      798.3,
+      307.1
+     ]
+    }
+   ],
+   "fuente": "hoja-2",
+   "b03": "b03-sorprendido"
+  },
+  "dormilon": {
+   "registro": {
+    "centroPx": [
+     927.1,
+     315.8
+    ],
+    "radioInteriorPx": 248.3,
+    "claveNaranja": [
+     253,
+     145,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "dormilon-rostro.webp",
+    "encuadre": [
+     625.0,
+     233.5,
+     226.5,
+     187.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "dormilon-ojo-0.webp",
+     "encuadre": [
+      647.0,
+      309.5,
+      77.5,
+      65.5
+     ],
+     "centro": [
+      688.0,
+      340.1
+     ]
+    },
+    {
+     "archivo": "dormilon-ojo-1.webp",
+     "encuadre": [
+      764.0,
+      297.5,
+      67.0,
+      55.0
+     ],
+     "centro": [
+      799.4,
+      323.3
+     ]
+    }
+   ],
+   "fuente": "hoja-2",
+   "b03": "b03-dormilon"
+  },
+  "besito": {
+   "registro": {
+    "centroPx": [
+     329.7,
+     932.4
+    ],
+    "radioInteriorPx": 252.1,
+    "claveNaranja": [
+     253,
+     145,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "besito-rostro.webp",
+    "encuadre": [
+     623.5,
+     235.0,
+     224.5,
+     197.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "besito-ojo-0.webp",
+     "encuadre": [
+      652.5,
+      308.5,
+      68.0,
+      26.0
+     ],
+     "centro": [
+      685.7,
+      319.3
+     ]
+    },
+    {
+     "archivo": "besito-ojo-1.webp",
+     "encuadre": [
+      760.0,
+      300.0,
+      67.5,
+      26.5
+     ],
+     "centro": [
+      792.6,
+      310.6
+     ]
+    }
+   ],
+   "fuente": "hoja-2",
+   "b03": "b03-besito"
+  },
+  "guino": {
+   "registro": {
+    "centroPx": [
+     929.8,
+     932.8
+    ],
+    "radioInteriorPx": 250.9,
+    "claveNaranja": [
+     253,
+     145,
+     42
+    ]
+   },
+   "rostro": {
+    "archivo": "guino-rostro.webp",
+    "encuadre": [
+     625.0,
+     233.5,
+     226.0,
+     196.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "guino-ojo-0.webp",
+     "encuadre": [
+      644.0,
+      275.5,
+      79.5,
+      96.5
+     ],
+     "centro": [
+      684.3,
+      322.8
+     ]
+    },
+    {
+     "archivo": "guino-ojo-1.webp",
+     "encuadre": [
+      762.0,
+      300.0,
+      67.5,
+      28.0
+     ],
+     "centro": [
+      794.5,
+      311.1
+     ]
+    }
+   ],
+   "fuente": "hoja-2",
+   "b03": "b03-guino"
+  },
+  "orgulloso": {
+   "registro": {
+    "centroPx": [
+     314.6,
+     312.7
+    ],
+    "radioInteriorPx": 259.1,
+    "claveNaranja": [
+     253,
+     145,
+     39
+    ]
+   },
+   "rostro": {
+    "archivo": "orgulloso-rostro.webp",
+    "encuadre": [
+     622.0,
+     236.0,
+     229.0,
+     192.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "orgulloso-ojo-0.webp",
+     "encuadre": [
+      647.0,
+      300.5,
+      76.5,
+      72.5
+     ],
+     "centro": [
+      686.7,
+      334.9
+     ]
+    },
+    {
+     "archivo": "orgulloso-ojo-1.webp",
+     "encuadre": [
+      764.0,
+      286.0,
+      64.0,
+      65.5
+     ],
+     "centro": [
+      797.7,
+      317.2
+     ]
+    }
+   ],
+   "fuente": "hoja-3",
+   "b03": "b03-orgulloso"
+  },
+  "confundido": {
+   "registro": {
+    "centroPx": [
+     941.6,
+     312.8
+    ],
+    "radioInteriorPx": 259.2,
+    "claveNaranja": [
+     253,
+     145,
+     39
+    ]
+   },
+   "rostro": {
+    "archivo": "confundido-rostro.webp",
+    "encuadre": [
+     622.0,
+     236.0,
+     229.5,
+     184.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "confundido-ojo-0.webp",
+     "encuadre": [
+      649.5,
+      285.5,
+      73.5,
+      90.0
+     ],
+     "centro": [
+      686.5,
+      330.0
+     ]
+    },
+    {
+     "archivo": "confundido-ojo-1.webp",
+     "encuadre": [
+      765.0,
+      268.0,
+      57.5,
+      83.0
+     ],
+     "centro": [
+      793.0,
+      309.0
+     ]
+    }
+   ],
+   "fuente": "hoja-3",
+   "b03": "b03-confundido"
+  },
+  "triste": {
+   "registro": {
+    "centroPx": [
+     313.5,
+     939.6
+    ],
+    "radioInteriorPx": 258.6,
+    "claveNaranja": [
+     253,
+     145,
+     40
+    ]
+   },
+   "rostro": {
+    "archivo": "triste-rostro.webp",
+    "encuadre": [
+     622.0,
+     236.0,
+     230.0,
+     184.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "triste-ojo-0.webp",
+     "encuadre": [
+      647.5,
+      285.5,
+      76.0,
+      91.5
+     ],
+     "centro": [
+      686.3,
+      330.4
+     ]
+    },
+    {
+     "archivo": "triste-ojo-1.webp",
+     "encuadre": [
+      767.5,
+      274.5,
+      61.5,
+      85.0
+     ],
+     "centro": [
+      797.5,
+      316.6
+     ]
+    }
+   ],
+   "fuente": "hoja-3",
+   "b03": "b03-triste"
+  },
+  "enojadito": {
+   "registro": {
+    "centroPx": [
+     940.7,
+     939.6
+    ],
+    "radioInteriorPx": 258.6,
+    "claveNaranja": [
+     253,
+     145,
+     39
+    ]
+   },
+   "rostro": {
+    "archivo": "enojadito-rostro.webp",
+    "encuadre": [
+     622.0,
+     236.0,
+     229.5,
+     181.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "enojadito-ojo-0.webp",
+     "encuadre": [
+      648.5,
+      294.5,
+      74.0,
+      81.5
+     ],
+     "centro": [
+      685.4,
+      334.2
+     ]
+    },
+    {
+     "archivo": "enojadito-ojo-1.webp",
+     "encuadre": [
+      766.5,
+      281.0,
+      62.0,
+      78.0
+     ],
+     "centro": [
+      798.1,
+      320.1
+     ]
+    }
+   ],
+   "fuente": "hoja-3",
+   "b03": "b03-enojadito"
+  },
+  "asustado": {
+   "registro": {
+    "centroPx": [
+     344.2,
+     320.2
+    ],
+    "radioInteriorPx": 251.7,
+    "claveNaranja": [
+     254,
+     142,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "asustado-rostro.webp",
+    "encuadre": [
+     621.0,
+     237.0,
+     229.5,
+     198.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "asustado-ojo-0.webp",
+     "encuadre": [
+      646.5,
+      276.0,
+      78.5,
+      101.0
+     ],
+     "centro": [
+      686.0,
+      325.9
+     ]
+    },
+    {
+     "archivo": "asustado-ojo-1.webp",
+     "encuadre": [
+      764.5,
+      262.0,
+      58.5,
+      89.0
+     ],
+     "centro": [
+      793.6,
+      306.2
+     ]
+    }
+   ],
+   "fuente": "hoja-4",
+   "b03": "b03-asustado"
+  },
+  "concentrado": {
+   "registro": {
+    "centroPx": [
+     918.6,
+     320.1
+    ],
+    "radioInteriorPx": 251.6,
+    "claveNaranja": [
+     254,
+     143,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "concentrado-rostro.webp",
+    "encuadre": [
+     621.0,
+     236.5,
+     229.0,
+     177.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "concentrado-ojo-0.webp",
+     "encuadre": [
+      648.0,
+      292.0,
+      77.5,
+      85.5
+     ],
+     "centro": [
+      686.2,
+      332.8
+     ]
+    },
+    {
+     "archivo": "concentrado-ojo-1.webp",
+     "encuadre": [
+      764.5,
+      276.5,
+      58.5,
+      74.5
+     ],
+     "centro": [
+      794.9,
+      312.6
+     ]
+    }
+   ],
+   "fuente": "hoja-4",
+   "b03": "b03-concentrado"
+  },
+  "alegre-sinlengua": {
+   "registro": {
+    "centroPx": [
+     344.0,
+     920.9
+    ],
+    "radioInteriorPx": 251.5,
+    "claveNaranja": [
+     254,
+     142,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "alegre-sinlengua-rostro.webp",
+    "encuadre": [
+     621.0,
+     236.5,
+     230.5,
+     215.5
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "alegre-sinlengua-ojo-0.webp",
+     "encuadre": [
+      648.0,
+      277.5,
+      77.0,
+      100.0
+     ],
+     "centro": [
+      686.7,
+      326.7
+     ]
+    },
+    {
+     "archivo": "alegre-sinlengua-ojo-1.webp",
+     "encuadre": [
+      764.5,
+      263.5,
+      58.0,
+      87.0
+     ],
+     "centro": [
+      793.2,
+      306.4
+     ]
+    }
+   ],
+   "fuente": "hoja-4"
+  },
+  "carcajada-sinlengua": {
+   "registro": {
+    "centroPx": [
+     919.0,
+     921.1
+    ],
+    "radioInteriorPx": 251.6,
+    "claveNaranja": [
+     254,
+     142,
+     41
+    ]
+   },
+   "rostro": {
+    "archivo": "carcajada-sinlengua-rostro.webp",
+    "encuadre": [
+     621.0,
+     236.5,
+     229.5,
+     219.0
+    ]
+   },
+   "ojos": [
+    {
+     "archivo": "carcajada-sinlengua-ojo-0.webp",
+     "encuadre": [
+      648.0,
+      305.0,
+      71.0,
+      31.0
+     ],
+     "centro": [
+      682.8,
+      317.3
+     ]
+    },
+    {
+     "archivo": "carcajada-sinlengua-ojo-1.webp",
+     "encuadre": [
+      763.0,
+      287.0,
+      64.5,
+      35.0
+     ],
+     "centro": [
+      793.8,
+      300.3
+     ]
+    }
+   ],
+   "fuente": "hoja-4"
+  }
+ },
+ "fuentes": {
+  "hoja-1": {
+   "archivo": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/hoja-1.png",
+   "sha256": "63afdae011b22ac7",
+   "expresiones": [
+    "alegre",
+    "carcajada",
+    "curioso",
+    "pensativo"
+   ]
+  },
+  "hoja-2": {
+   "archivo": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/hoja-2.png",
+   "sha256": "3097c72e22bc4094",
+   "expresiones": [
+    "sorprendido",
+    "dormilon",
+    "besito",
+    "guino"
+   ]
+  },
+  "hoja-3": {
+   "archivo": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/hoja-3.png",
+   "sha256": "2935531b24026f3b",
+   "expresiones": [
+    "orgulloso",
+    "confundido",
+    "triste",
+    "enojadito"
+   ]
+  },
+  "hoja-4": {
+   "archivo": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/hoja-4.png",
+   "sha256": "d16ee6702fa15ef6",
+   "expresiones": [
+    "asustado",
+    "concentrado",
+    "alegre-sinlengua",
+    "carcajada-sinlengua"
+   ]
+  }
+ },
+ "bytesTotales": 481266
+}
