@@ -2,7 +2,14 @@
 // carga el vestuario del juego, compone criaturas y dibuja escenas/rigs.
 import { load, defaults } from '../../../src/ciempi/v2/arte/cargar.js'
 import { crearRig } from '../../../src/ciempi/v2/animacion/rig.js'
-import { corregirRutas, prepararCriatura, componerCriatura, escenaCriatura, ESPECIES } from './especies.js'
+import { corregirRutas, prepararCriatura, componerCriatura as componerBase, escenaCriatura, ESPECIES } from './especies.js'
+import { ACTIVO as ACCESORIOS_V4, aplicarAccesoriosV4 } from './accesorios-v4.js'
+
+/** Con `?accesorios=v4`, mochilas y calzado con la construcción v4 (accesorios-v4.js); si no, el vestuario del juego tal cual. */
+function componerCriatura(env, especieId, sel) {
+  const c = componerBase(env, especieId, sel)
+  return ACCESORIOS_V4 ? { ...c, svg: aplicarAccesoriosV4(c.svg, c.seleccion) } : c
+}
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
