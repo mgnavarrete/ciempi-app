@@ -34,7 +34,7 @@ interface Props {
   apariencia: AparienciaCiempi
   /** Solo se dibuja la comida del final (niveles 2 y 3): las palabras igual cuentan. */
   soloUltima?: boolean
-  /** Después de la última comida, la moneda que gana al terminar la frase. */
+  /** La frase paga: la última comida se reemplaza por la moneda que se gana al terminarla. */
   moneda?: boolean
   /** 'recomponer': la escena se recompone con cada unidad (camino anterior, para comparar). */
   crecimiento?: 'revelar' | 'recomponer'
@@ -93,13 +93,21 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
   // La comida de cada palabra que falta, en su lugar del camino.
   const tamanoManzana = Math.min(14, Math.max(10, r * 0.85))
   // Memorizada: al mover el dedo (cada cuadro) no se vuelven a dibujar las comidas.
+  // Si la frase paga, la última comida es la moneda (en su lugar y de su tamaño, sin la fruta).
+  const ultima = pista.manzanas.length - 1
   const comidas = useMemo(
     () =>
       pista.manzanas
         .map((x, i) => ({ i, x: x * ancho }))
-        .filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === pista.manzanas.length - 1))
-        .map(({ i, x }) => <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />),
-    [pista.manzanas, ancho, palabrasLeidas, soloUltima, apariencia.comida, tamanoManzana],
+        .filter(({ i }) => i >= palabrasLeidas && (!soloUltima || i === ultima))
+        .map(({ i, x }) =>
+          moneda && i === ultima ? (
+            <MonedaEnPista key={`m${i}`} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} tranquilo={tranquilo} />
+          ) : (
+            <Comida key={`m${i}`} comida={apariencia.comida} x={x} y={CENTRO_Y + 2} tamano={tamanoManzana} />
+          ),
+        ),
+    [pista.manzanas, ancho, palabrasLeidas, soloUltima, ultima, moneda, tranquilo, apariencia.comida, tamanoManzana],
   )
 
   // E08 Comer: cuenta solo las frutas que se veían (con `soloUltima`, la última).
@@ -133,14 +141,6 @@ export function Ciempi({ pista, palabrasLeidas, progreso, fase, tranquilo, apari
               <Comida comida={apariencia.comida} x={0} y={0} tamano={tamanoManzana / escalaNueva} />
             </g>
           </defs>
-        )}
-        {/* La meta de la frase: una moneda después de la última manzana (se la gana al llegar). */}
-        {moneda && fase !== 'completada' && (
-          <g className={tranquilo ? '' : 'moneda-meta'} transform={`translate(${Math.min(ancho - tamanoManzana, (pista.manzanas.at(-1) ?? 1) * ancho + tamanoManzana * 2.1)} ${CENTRO_Y - tamanoManzana * 1.4})`}>
-            <circle r={tamanoManzana * 0.95} fill="#ffd137" stroke="#243e5b" strokeWidth={1.8} />
-            <circle r={tamanoManzana * 0.58} fill="none" stroke="#f0b32b" strokeWidth={1.6} />
-            <path d={`M${-tamanoManzana * 0.45} ${-tamanoManzana * 0.35} q${tamanoManzana * 0.2} ${-tamanoManzana * 0.3} ${tamanoManzana * 0.5} ${-tamanoManzana * 0.3}`} fill="none" stroke="#fff6c4" strokeWidth={1.6} strokeLinecap="round" />
-          </g>
         )}
 
         {!nuevo && Array.from({ length: palabrasLeidas }, (_, i) => (
@@ -187,4 +187,20 @@ function useCaminando(progreso: number) {
     return () => clearTimeout(t)
   }, [progreso])
   return caminando
+}
+
+/**
+ * La moneda que se gana al terminar la frase, en lugar de la última comida y
+ * de su mismo tamaño visual (las imágenes de comida miden 2,7 × `tamano` con
+ * su margen; la fruta se ve de unos 2,3 × `tamano`).
+ */
+function MonedaEnPista({ x, y, tamano, tranquilo }: { x: number; y: number; tamano: number; tranquilo?: boolean }) {
+  const r = tamano * 1.15
+  return (
+    <g data-moneda-meta className={tranquilo ? '' : 'moneda-meta'} transform={`translate(${x} ${y})`}>
+      <circle r={r} fill="#ffd137" stroke="#243e5b" strokeWidth={1.8} />
+      <circle r={r * 0.62} fill="none" stroke="#f0b32b" strokeWidth={1.6} />
+      <path d={`M${-r * 0.45} ${-r * 0.35} q${r * 0.2} ${-r * 0.3} ${r * 0.5} ${-r * 0.3}`} fill="none" stroke="#fff6c4" strokeWidth={1.6} strokeLinecap="round" />
+    </g>
+  )
 }

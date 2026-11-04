@@ -372,10 +372,23 @@ export function PantallaLectura(props: Props) {
   // Lo ganado en esta lectura, para la pantalla final (se corrige con lo que responde el servidor).
   const cuentaLectura = useRef(crearCuentaDeLectura())
   const [monedasLectura, setMonedasLectura] = useState(0)
+  const tranquiloRef = useRef(tranquilo)
+  tranquiloRef.current = tranquilo
   useEffect(
     () =>
       repos.premios.alResolver((p, r) => {
-        if (cuentaLectura.current.resolver(p.operationId, r.estado === 'otorgado' ? r.otorgadas : 0)) setMonedasLectura(cuentaLectura.current.total())
+        const otorgadas = r.estado === 'otorgado' ? r.otorgadas : 0
+        if (!cuentaLectura.current.resolver(p.operationId, otorgadas)) return
+        setMonedasLectura(cuentaLectura.current.total())
+        // Lo que el servidor paga de más sobre lo que ya se mostró (con E2, todo: la app no
+        // lo sabe de antemano) sube hacia el contador y suena, como la moneda de 2.4.1.
+        const nuevas = otorgadas - p.esperadas
+        if (nuevas > 0) {
+          const n = Date.now()
+          setMonedaGanada({ monedas: nuevas, n })
+          window.setTimeout(() => setMonedaGanada((m) => (m?.n === n ? null : m)), 1600)
+          if (!tranquiloRef.current) sonarMoneda()
+        }
       }),
     [repos],
   )
@@ -466,7 +479,9 @@ export function PantallaLectura(props: Props) {
         }
       }
       // Siempre se avisa el avance (aunque esta frase no pague): así el servidor no la paga después.
-      pedirPremio({ tipo: 'avance', hasta: fin, conPremio: aBuenRitmo }, ganadas)
+      // Va con lo que usa E2 (`segundosActivos` lo agrega pedirPremio; los tropiezos, al terminar):
+      // si el servidor ya paga con E2 y la app todavía no lo sabe, paga bien desde la primera frase.
+      pedirPremio({ tipo: 'avance', hasta: fin, conPremio: aBuenRitmo, ...(terminaLibro ? { tropiezos: tropiezos.current } : {}) }, ganadas)
     }
     // Terminar otra vez un libro ya premiado (leído entero, a buen ritmo): premio menor, una vez al día.
     if (e2) {
@@ -800,8 +815,11 @@ export function PantallaLectura(props: Props) {
   }
 
   const porcentaje = porcentajeLeido(fraseDeUnidad(vista, indice, totalFrases), totalFrases)
-  // Al final del camino, la moneda que gana esta frase si es la primera vez que la lee (niveles 0 a 3).
+  // En lugar de la última comida, la moneda que gana esta frase si es la primera vez que la lee (niveles 0 a 3).
+  // Con E2 no se anticipa: lo pagado depende del tiempo activo y lo decide el servidor (la moneda
+  // sube y suena cuando responde); dibujarla con las reglas 2.4.1 prometería monedas que no llegan.
   const monedaAlFinal =
+    !e2 &&
     !sinMonedas && monedasDeUnidad(nivel, indice + 1, total) > 0 && tramo.current.desde <= leidoHasta.current && fraseDeUnidad(vista, indice + 1, totalFrases) > leidoHasta.current
 
   return (
