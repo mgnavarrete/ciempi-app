@@ -843,3 +843,8 @@ lo verificado, lo inferido y lo pendiente; decisiones que necesita la usuaria. A
   1. Aprobación de la usuaria pieza por pieza.
   2. Ajustes menores según el informe §4.
   3. Si se aprueba, llevar las piezas al compositor del juego detrás de una opción.
+
+### 10.1 Variantes V5 (4-nov-2026)
+- **AD-020:** la usuaria aprobó Dragón y Cuncuna V4, con el rostro v4b, como diseño base. Se conservan todas las Serpientes, con la zapatilla en la cola. Los Camaleones usan los ojos k3.
+- **Catálogo experimental:** 23 variantes en `laboratorio-transformaciones/variantes.js` (`?variante=<id>`), en la rama `expansion-v4-arte`, commit `c347eb7`. Láminas, `catalogo-variantes.md` y `PENDIENTES.md` en `docs/rediseno-ciempi/revisiones/V5-variantes/`.
+- **Siguiente:** que la usuaria elija qué variantes pasan a la tienda (gratis, compra o desbloqueo). No hay productos, precios ni inventario reales.
