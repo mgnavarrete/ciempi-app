@@ -1,0 +1,14 @@
+Use case: food icons for a children's reading game (ages 4-8). Reference image 1 is the game's mascot Ciempi (original logo illustration) and reference image 3 is the approved current Ciempi illustration; reference image 2 is an APPROVED accessory from the same game. Match EXACTLY their illustration language: flat 2D children's cartoon, thick navy blue #243e5b outlines of a single consistent weight around every object and its main inner shapes, rounded friendly chunky shapes, cheerful saturated colours, soft cartoon volume with a light highlight from the upper left and soft shading to the lower right, small glossy white highlight spots like the mascot's body segments. No gradients that look photographic, no texture noise, no tiny details.
+Create ONE square sprite sheet: a 5 columns x 2 rows grid of TEN separate food icons, each centred in its own equal cell, with wide empty space between cells (no object touches or overlaps another or the edges). Order, left to right, top row then bottom row:
+1. a red apple with a short brown stem and one mint-green leaf;
+2. a red strawberry with cream seeds and a mint-green leafy crown;
+3. a single yellow banana, gently curved, with small brown tips;
+4. a slice of watermelon (half-moon wedge, curved side down): green rind, thin cream band, red flesh, a few navy seeds;
+5. a round chocolate chip cookie;
+6. a round beach ball / play ball with simple colour panels (coral red, sunny yellow, teal, white) — plain, NO logo, no text, no brand;
+7. a round donut with pink icing that drips a little and colourful sprinkles, hole in the centre;
+8. a cupcake: teal paper cup with vertical pleats, swirl of pink frosting, a red cherry on top;
+9. a triangular pizza slice pointing down, golden crust on top, yellow cheese, round pepperoni;
+10. an ice cream cone with two scoops (pink and mint) and a waffle cone.
+All ten in the SAME front view, the SAME visual scale (each fills about the same area of its cell, roughly 70% of the cell), the same outline weight and the same lighting, so they read as one family. Each must be adorable and instantly readable as a tiny 24-40 pixel icon: bold simple silhouette, few large shapes, high contrast against the outline. Food objects only: NO faces, NO eyes, NO characters, no hands.
+No text, no numbers, no labels, no grid lines, no frames, no ground shadow, no drop shadow. Background: genuine transparent background (real alpha); if transparency is impossible, a perfectly flat uniform pure white background. High resolution.

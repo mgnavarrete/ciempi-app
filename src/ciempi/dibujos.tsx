@@ -563,8 +563,26 @@ function Volumen({ id, d, claro, medio, oscuro, brillo = true }: { id: string; d
   )
 }
 
+/** Comidas con ilustración nueva (WebP con alfa en public/ciempi-v2/comida/<id>.webp, v6). */
+const COMIDAS_IMAGEN = new Set([
+  'comida-manzana', 'comida-frutilla', 'comida-platano', 'comida-sandia', 'comida-galleta',
+  'comida-pelota', 'comida-dona', 'comida-cupcake', 'comida-pizza', 'comida-helado',
+])
+
+/** Lado de la imagen respecto de `tamano`: iguala el tamaño visual del dibujo SVG anterior. */
+const LADO_IMAGEN_COMIDA = 2.7
+
 /** Una comida centrada en (x, y); `tamano` es su radio aproximado. */
 export function Comida({ comida, x, y, tamano }: { comida: string; x: number; y: number; tamano: number }) {
+  if (COMIDAS_IMAGEN.has(comida)) {
+    const lado = tamano * LADO_IMAGEN_COMIDA
+    return <image href={`/ciempi-v2/comida/${comida}.webp`} x={x - lado / 2} y={y - lado / 2} width={lado} height={lado} preserveAspectRatio="xMidYMid meet" />
+  }
+  return <ComidaSvg comida={comida} x={x} y={y} tamano={tamano} />
+}
+
+/** El dibujo SVG anterior: respaldo para comidas sin imagen. */
+function ComidaSvg({ comida, x, y, tamano }: { comida: string; x: number; y: number; tamano: number }) {
   const id = useId().replace(/[^\w-]/g, '')
   const linea = { stroke: TINTA, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const }
   const dibujo = (() => {

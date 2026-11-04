@@ -1,0 +1,14 @@
+{
+  "id": "hoja-v1",
+  "archivo": "hoja-v1.png",
+  "prompt": "hoja-v1-prompt.txt",
+  "referencias": [
+    "docs/expansion-v6/frutas/ia/referencias/ref1-ciempi.png",
+    "docs/expansion-v6/frutas/ia/referencias/ref2-mochila-aventura.png",
+    "docs/expansion-v6/frutas/ia/referencias/ref3-ciempi-v2.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a7e8-c092-75c2-b953-d6a63ffa958d/exec-5f3705f7-73fd-449e-b108-fe45234b035c.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T18:55:54.765Z",
+  "segundos": 144
+}
