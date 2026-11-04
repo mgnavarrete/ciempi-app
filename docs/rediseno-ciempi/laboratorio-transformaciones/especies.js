@@ -24,6 +24,8 @@ import { paletas } from '../../../src/ciempi/v2/arte/lib/armario-ciempi.mjs'
 import { escena } from './gen/pose.js'
 import { especie as buscarEspecie, ESPECIES } from './gen/especie.js'
 import { resolver, NINGUNO } from './gen/compatibilidad.js'
+// V4 (T03 Serpiente, T04 Camaleón): su base y sus retoques viven en criaturas-v4.js.
+import { CRIATURAS_V4, baseCriaturaV4, clavePaleta, posprocesarV4 } from './criaturas-v4.js'
 
 const NS = 'http://www.w3.org/2000/svg'
 const RECURSOS = new URL('./recursos/', import.meta.url)
@@ -173,6 +175,11 @@ export async function baseEspecie(env, especieId, paletaId = 'clasica') {
   if (especieId === 'ciempi') return env.base
   const clave = especieId + '|' + paletaId
   if (bases.has(clave)) return bases.get(clave)
+  if (CRIATURAS_V4[especieId]) {
+    const r = await baseCriaturaV4(env, especieId, paletaId, buscarEspecie(especieId).forma)
+    bases.set(clave, r)
+    return r
+  }
   const m = await cargarManifiesto(especieId)
   const url = async (p) => tenir(new URL(`${especieId}/${p.archivo}`, RECURSOS).href, especieId, paletaId)
   const forma = buscarEspecie(especieId).forma
@@ -254,8 +261,8 @@ export function aApariencia(sel) {
 const diseno = (id) => String(id).slice(String(id).indexOf(':') + 1)
 
 /** Carga y tiñe (una vez) la base de la especie para esa paleta; luego `componerCriatura` es síncrono. */
-export async function prepararCriatura(env, especieId, paletaId = 'clasica') {
-  if (especieId !== 'ciempi') await baseEspecie(env, especieId, paletaId)
+export async function prepararCriatura(env, especieId, paletaId = 'clasica', sel = null) {
+  if (especieId !== 'ciempi') await baseEspecie(env, especieId, sel ? clavePaleta(env, especieId, sel) : paletaId)
 }
 
 /**
@@ -268,7 +275,7 @@ export function componerCriatura(env, especieId, sel) {
   for (const [parte, id] of Object.entries(res.visibles)) efectiva[PARTE_A_CLAVE[parte]] = diseno(id)
   const alasPuestas = efectiva.espalda === 'dragon-alas'
   if (especieId === 'ciempi') return { svg: renderCiempi(env, efectiva), resolucion: res, seleccion: efectiva }
-  const base = bases.get(especieId + '|' + (efectiva.paleta || 'clasica'))
+  const base = bases.get(especieId + '|' + clavePaleta(env, especieId, efectiva))
   if (!base || base instanceof Promise) throw Error('Base de especie sin preparar: usar prepararCriatura() antes')
   const svg = renderCiempi({ ...env, base: base.svg }, alasPuestas ? { ...efectiva, espalda: 'espalda-nada' } : efectiva)
   const doc = parse(svg)
@@ -298,6 +305,7 @@ export function componerCriatura(env, especieId, sel) {
     const body = doc.getElementById('body')
     body.parentNode.insertBefore(g, body.nextSibling)
   }
+  posprocesarV4(doc, especieId, efectiva, res, base)
   doc.querySelector('desc').textContent += ` Especie: ${buscarEspecie(especieId).nombre} (laboratorio, pendiente de aprobación).`
   return { svg: new XMLSerializer().serializeToString(doc), resolucion: res, seleccion: efectiva }
 }

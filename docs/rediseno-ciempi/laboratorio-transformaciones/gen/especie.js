@@ -92,6 +92,104 @@ const formaModular = (y, sep, yCola, sepCola, margenCola, ciclo = [
 	siempreClonar: true,
 	margenCola
 });
+/**
+* T03 Serpiente (LABORATORIO V4): sin patas. Los segmentos A–D descansan en el
+* suelo (y = 486) y el frente es un cuello que sube hacia la cabeza (y = 446).
+* Las patas del maestro existen pero están vacías (el rig y la escena siguen
+* contando seis apoyos); todos los roles usan la pata vacía de A (`pieDeRol`).
+*/
+export const FORMA_SERPIENTE = {
+	ciclo: [
+		1,
+		2,
+		3,
+		5
+	],
+	cola: 0,
+	frente: 4,
+	xFrente: 558,
+	y: {
+		0: 490,
+		1: 486,
+		2: 486,
+		3: 486,
+		4: 446,
+		5: 486
+	},
+	separacion: {
+		0: 104,
+		1: 94,
+		2: 94,
+		3: 94,
+		5: 94
+	},
+	xMaestro: {
+		0: 187,
+		1: 289,
+		2: 390,
+		3: 477,
+		4: 558,
+		5: 289
+	},
+	pieDeRol: {
+		0: 1,
+		1: 1,
+		2: 1,
+		3: 1,
+		4: 1,
+		5: 1
+	},
+	siempreClonar: true,
+	margenCola: 190
+};
+/**
+* T04 Camaleón (LABORATORIO V4, prototipo): misma disposición que las especies
+* modulares, con más margen para la cola enroscada en espiral.
+*/
+export const FORMA_CAMALEON = {
+	ciclo: [
+		1,
+		2,
+		3,
+		5
+	],
+	cola: 0,
+	frente: 4,
+	xFrente: 558,
+	y: {
+		0: 400,
+		1: 402,
+		2: 402,
+		3: 402,
+		4: 402,
+		5: 402
+	},
+	separacion: {
+		0: 104,
+		1: 92,
+		2: 92,
+		3: 92,
+		5: 92
+	},
+	xMaestro: {
+		0: 187,
+		1: 289,
+		2: 390,
+		3: 477,
+		4: 558,
+		5: 289
+	},
+	pieDeRol: {
+		0: 0,
+		1: 1,
+		2: 2,
+		3: 3,
+		4: 4,
+		5: 1
+	},
+	siempreClonar: true,
+	margenCola: 215
+};
 /** Máscaras que cubren toda la cabeza (fullFace en el catálogo): tapan rasgos propios de la cabeza. */
 export const MASCARAS_COMPLETAS = [
 	"cabeza:b07-ia-robot",
@@ -165,6 +263,62 @@ export const ESPECIES = {
 			motivo: "Un peinado reemplaza al penacho en la coronilla."
 		}],
 		manifiesto: "docs/rediseno-ciempi/laboratorio-transformaciones/recursos/cuncuna/manifiesto.json"
+	},
+	serpiente: {
+		id: "serpiente",
+		item: "especie:serpiente",
+		nombre: "Ciempi Serpiente",
+		estado: "laboratorio — pendiente de aprobación",
+		forma: FORMA_SERPIENTE,
+		adaptables: {
+			espalda: { como: "Capas y mochilas se anclan al cuello; la mochila baja con el segmento delantero, que en la serpiente apoya más abajo." },
+			paleta: ADAPTABLES_COMUNES.paleta,
+			textura: ADAPTABLES_COMUNES.textura
+		},
+		exclusivos: [],
+		ocultas: [],
+		partesOcultas: { pies: "La serpiente no tiene patas: el calzado se guarda puesto y vuelve a verse al cambiar a una criatura con patas." },
+		rasgosOcultosCon: [{
+			parte: "cabeza",
+			ids: MASCARAS_COMPLETAS,
+			rasgos: ["lengua"],
+			motivo: "La máscara completa cubre la cara: la lengüita no se dibuja encima del disfraz."
+		}],
+		manifiesto: "docs/rediseno-ciempi/laboratorio-transformaciones/recursos/serpiente/manifiesto.json"
+	},
+	camaleon: {
+		id: "camaleon",
+		item: "especie:camaleon",
+		nombre: "Ciempi Camaleón",
+		estado: "laboratorio — pendiente de aprobación",
+		forma: FORMA_CAMALEON,
+		adaptables: {
+			...ADAPTABLES_COMUNES,
+			paleta: { como: "Camuflaje: con la paleta clásica el cuerpo toma los colores del conjunto puesto; una paleta elegida a mano manda sobre el conjunto." }
+		},
+		exclusivos: [],
+		ocultas: [],
+		rasgosOcultosCon: [
+			{
+				parte: "cabeza",
+				ids: "*",
+				rasgos: ["casco"],
+				motivo: "El casco del camaleón ocupa la coronilla: bajo gorros y máscaras se guarda."
+			},
+			{
+				parte: "pelo",
+				ids: "*",
+				rasgos: ["casco"],
+				motivo: "Un peinado reemplaza al casco en la coronilla."
+			},
+			{
+				parte: "cabeza",
+				ids: MASCARAS_COMPLETAS,
+				rasgos: ["torretas"],
+				motivo: "La máscara completa cubre los ojos: las torretas no asoman sobre el disfraz."
+			}
+		],
+		manifiesto: "docs/rediseno-ciempi/laboratorio-transformaciones/recursos/camaleon/manifiesto.json"
 	}
 };
 export const especie = (id) => ESPECIES[id] ?? ESPECIES.ciempi;

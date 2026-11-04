@@ -235,7 +235,7 @@ export const ESPECIES: Record<EspecieId, Especie> = {
       pies: 'La serpiente no tiene patas: el calzado se guarda puesto y vuelve a verse al cambiar a una criatura con patas.',
     },
     rasgosOcultosCon: [
-      { parte: 'cabeza', ids: MASCARAS_COMPLETAS, rasgos: ['lengua', 'narinas'], motivo: 'La máscara completa cubre la cara: la lengüita y las narinas no se dibujan encima del disfraz.' },
+      { parte: 'cabeza', ids: MASCARAS_COMPLETAS, rasgos: ['lengua'], motivo: 'La máscara completa cubre la cara: la lengüita no se dibuja encima del disfraz.' },
     ],
     manifiesto: 'docs/rediseno-ciempi/laboratorio-transformaciones/recursos/serpiente/manifiesto.json',
   },

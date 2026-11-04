@@ -89,8 +89,8 @@ describe('compatibilidad V4', () => {
     expect(tipoDe('cabeza', 'cabeza:b06-ia-mago', 'serpiente')).toBe('universal')
   })
 
-  it('serpiente: lengüita y narinas se guardan solo bajo máscaras completas', () => {
-    for (const m of MASCARAS_COMPLETAS) expect(resolver({ ...NINGUNO, cabeza: m }, 'serpiente').rasgosOcultos).toEqual(['lengua', 'narinas'])
+  it('serpiente: la lengüita se guarda solo bajo máscaras completas', () => {
+    for (const m of MASCARAS_COMPLETAS) expect(resolver({ ...NINGUNO, cabeza: m }, 'serpiente').rasgosOcultos).toEqual(['lengua'])
     expect(resolver({ ...NINGUNO, cabeza: 'cabeza:b06-ia-mago' }, 'serpiente').rasgosOcultos).toEqual([])
     expect(resolver({ ...NINGUNO }, 'serpiente').rasgosOcultos).toEqual([])
   })
