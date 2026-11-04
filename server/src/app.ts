@@ -1,7 +1,7 @@
 import { randomInt } from 'node:crypto'
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify'
 import type pg from 'pg'
-import { PARTES, buscarItem, comprarItem, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
+import { PARTES, buscarItem, comprarItem, esCriaturaValida, loTiene, normalizarApariencia } from '../../src/ciempi/catalogo.ts'
 import {
   MIN_CLAVE_ADULTO,
   MIN_CLAVE_NINO,
@@ -428,17 +428,25 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
     return { monedas: await enTransaccion((c) => anotarLegado(c, { perfilId: id, usuarioId: yo(req).id, cantidad })) }
   })
 
-  /** Cómo se ve su Ciempi: solo puede ponerse lo gratis o lo comprado. */
+  /**
+   * Cómo se ve su Ciempi: solo puede ponerse lo gratis o lo comprado. La
+   * criatura (2.5) también: `criatura` null es Ciempi; si el cuerpo no trae la
+   * clave (una APK anterior a 2.5), se conserva la guardada.
+   */
   app.put('/api/perfiles/:id/ciempi', conUsuario, async (req) => {
     const id = param(req, 'id')
     await exigirVerNino(yo(req), id)
     const pedido = objeto(cuerpo(req).apariencia, 'apariencia')
     if (typeof pedido.nombre === 'string' && pedido.nombre.trim().length > 20) throw new Problema('El nombre de Ciempi puede tener hasta 20 letras')
+    const traeCriatura = Object.prototype.hasOwnProperty.call(pedido, 'criatura')
+    if (traeCriatura && pedido.criatura !== null && !esCriaturaValida(pedido.criatura)) throw new Problema('Esa criatura no existe')
     const apariencia = normalizarApariencia(pedido)
-    const { rows } = await pool.query('select inventario from perfiles_ninos where id = $1', [id])
+    const { rows } = await pool.query('select inventario, ciempi from perfiles_ninos where id = $1', [id])
+    if (!traeCriatura) apariencia.criatura = normalizarApariencia(rows[0].ciempi).criatura
     for (const parte of PARTES) {
       if (!loTiene(rows[0].inventario, apariencia[parte])) throw new Problema('Primero hay que comprarlo', 403)
     }
+    if (traeCriatura && apariencia.criatura !== null && !loTiene(rows[0].inventario, apariencia.criatura)) throw new Problema('Primero hay que comprarlo', 403)
     await pool.query('update perfiles_ninos set ciempi = $1 where id = $2', [apariencia, id])
     return perfilPorId(id)
   })

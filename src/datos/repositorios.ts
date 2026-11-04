@@ -164,6 +164,23 @@ export interface RepositorioAutorizaciones {
   definirPin(pin: string, clave: string): Promise<void>
 }
 
+/** Algo que se gana (por ahora, la Cuncuna). Igual que server/src/desbloqueos.ts. */
+export interface Desbloqueo {
+  item: string
+  motivo: 'nivel0' | 'cuentos' | 'lector_lento' | 'regalo'
+  /** `por_celebrar`: la app todavía no mostró la celebración especial. */
+  estado: 'por_celebrar' | 'celebrado'
+  otorgadoEn: string
+  celebradoEn: string | null
+}
+
+export interface RepositorioDesbloqueos {
+  /** Lo desbloqueado del niño. Revisa antes si ya cumple (retroactivo) y, si recién cumple, lo da. */
+  listar(perfilId: Id): Promise<Desbloqueo[]>
+  /** La app ya mostró la celebración: no se vuelve a mostrar. */
+  celebrar(perfilId: Id, item: string): Promise<void>
+}
+
 export interface Repositorios {
   /** true con el servidor: hay login, invitaciones y sincronización entre dispositivos. */
   enLinea: boolean
@@ -174,4 +191,6 @@ export interface Repositorios {
   sesiones: RepositorioSesiones
   premios: RepositorioPremios
   autorizaciones?: RepositorioAutorizaciones
+  /** Desbloqueos por leer (la Cuncuna). Opcional: sin él, la tienda no celebra. */
+  desbloqueos?: RepositorioDesbloqueos
 }

@@ -10,7 +10,7 @@ import {
   type Texto,
 } from '../../dominio/tipos'
 import { crearColaPremios, type PedidoEnCola, type RespuestaEnvio } from '../colaPremios'
-import type { PendienteDeAutorizar, Repositorios } from '../repositorios'
+import type { Desbloqueo, PendienteDeAutorizar, Repositorios } from '../repositorios'
 import type { ModeloEconomia } from '../../lectura/monedas'
 import { modeloDeCompilacion } from '../economia'
 
@@ -286,6 +286,12 @@ export function crearRepositoriosApi(base: string): Repositorios {
       },
     },
 
+    desbloqueos: {
+      listar: (perfilId) => pedir<Desbloqueo[]>('GET', `/api/perfiles/${perfilId}/desbloqueos`),
+      async celebrar(perfilId, item) {
+        await pedir('POST', `/api/perfiles/${perfilId}/desbloqueos/${encodeURIComponent(item)}/celebrado`)
+      },
+    },
     autorizaciones: {
       pendientes: () => pedir<PendienteDeAutorizar[]>('GET', '/api/autorizaciones'),
       autorizar: (asignacionId, pin, nivel) => pedir<Asignacion>('POST', `/api/asignaciones/${asignacionId}/autorizar`, { pin, ...(nivel === undefined ? {} : { nivel }) }),
