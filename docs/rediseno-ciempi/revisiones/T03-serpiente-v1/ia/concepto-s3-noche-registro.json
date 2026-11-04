@@ -1,0 +1,14 @@
+{
+  "id": "concepto-s3-noche",
+  "archivo": "concepto-s3-noche.png",
+  "prompt": "concepto-s3-noche-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b72f-7cf3-a47c-04ccde997b59/exec-4d3d609e-9ecb-4b5b-ba45-4ecf6cdde70d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:32:57.002Z",
+  "segundos": 91
+}

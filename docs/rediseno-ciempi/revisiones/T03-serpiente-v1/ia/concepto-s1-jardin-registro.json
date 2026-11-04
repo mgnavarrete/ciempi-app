@@ -1,0 +1,14 @@
+{
+  "id": "concepto-s1-jardin",
+  "archivo": "concepto-s1-jardin.png",
+  "prompt": "concepto-s1-jardin-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b746-7a92-ba31-1ebc833ef9de/exec-43e378d0-ace6-4da6-9cac-fda0c7367354.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:32:43.416Z",
+  "segundos": 77
+}

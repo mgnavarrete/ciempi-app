@@ -63,6 +63,8 @@ export function etiquetar(parte: Parte, id: string, especie: Especie | EspecieId
   const ex = exclusivoDe(id)
   if (ex && ex.especie !== e.id) return { parte, id, tipo, visible: false, motivo: `Exclusivo de ${buscarEspecie(ex.especie).nombre}: se guarda y se verá al volver a esa especie.` }
   if (ex && ex.parte !== parte) return { parte, id, tipo, visible: false, motivo: 'Pieza exclusiva en una parte que no le corresponde.' }
+  const parteOculta = e.partesOcultas?.[parte]
+  if (parteOculta && !esNinguno(parte, id)) return { parte, id, tipo, visible: false, motivo: parteOculta }
   const oculta = e.ocultas.find((o) => o.id === id)
   if (oculta) return { parte, id, tipo, visible: false, motivo: oculta.motivo }
   if (tipo === 'adaptable' && !esNinguno(parte, id)) return { parte, id, tipo, visible: true, motivo: e.adaptables[parte]?.como }

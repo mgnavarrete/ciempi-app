@@ -1,0 +1,14 @@
+{
+  "id": "concepto-k1-arcoiris",
+  "archivo": "concepto-k1-arcoiris.png",
+  "prompt": "concepto-k1-arcoiris-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/ciempi-ilustracion-v2-presentacion.png",
+    "docs/rediseno-ciempi/revisiones/T00-referencias/ciempi-sin-gorro.png",
+    "docs/rediseno-ciempi/revisiones/T01-dragon-v1/ia/concepto-d2-bebe.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a42e-b72d-7963-b164-7859cbf6bdf4/exec-99ae012f-1fb2-4e39-bc3e-da0bc16c36d0.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T01:32:56.845Z",
+  "segundos": 91
+}
