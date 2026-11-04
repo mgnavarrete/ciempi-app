@@ -78,25 +78,25 @@ def cola(especie, ia, cfg, piezas, control):
     control.append(('cola', im, cx, cy))
 
 
-def patas(especie, ia, cfg, piezas, control):
-    f = os.path.join(ia, f'pieza-{especie}-pata.png')
+def patas(especie, ia, cfg, piezas, control, f=None, sufijo=''):
+    f = f or os.path.join(ia, f'pieza-{especie}-pata.png')
     pata, pie = pp.partir_columnas(pp.limpiar(pp.cargar(f)))
     esc = cfg['pata_ancho'] / pata.width
     alto_u = pata.height * esc
-    p = pp.pieza(especie, 'pierna', pata, 0, 0, esc, 'pierna', f, 'Origen = pie; la pierna baja hasta y=-15 (dentro del pie).')
+    p = pp.pieza(especie, 'pierna' + sufijo, pata, 0, 0, esc, 'pierna', f, 'Origen = pie; la pierna baja hasta y=-15 (dentro del pie).')
     p['encuadre'] = [round(-8 - cfg['pata_ancho'] / 2, 2), round(-15 - alto_u, 2), round(cfg['pata_ancho'], 2), round(alto_u, 2)]
     piezas.append(p)
-    control.append(('pierna', pata, pata.width * 0.55, pata.height))
+    control.append(('pierna' + sufijo, pata, pata.width * 0.55, pata.height))
     esc = cfg['pie_ancho'] / pie.width
-    p = pp.pieza(especie, 'pie', pie, 0, 0, esc, 'pie', f, 'Encuadre igual al calzado B10: suela en y=+22, talón en x=-44.')
+    p = pp.pieza(especie, 'pie' + sufijo, pie, 0, 0, esc, 'pie', f, 'Encuadre igual al calzado B10: suela en y=+22, talón en x=-44.')
     p['encuadre'] = [-44, round(22 - pie.height * esc, 2), round(cfg['pie_ancho'], 2), round(pie.height * esc, 2)]
     piezas.append(p)
-    control.append(('pie', pie, 0, pie.height))
+    control.append(('pie' + sufijo, pie, 0, pie.height))
 
 
-def cabeza(especie, ia, cfg, piezas, control):
+def cabeza(especie, ia, cfg, piezas, control, f=None, sufijo=''):
     """Piel de la cabeza (dentro del disco) y, si hay, lo que sobresale (casco)."""
-    f = os.path.join(ia, f'pieza-{especie}-cabeza.png')
+    f = f or os.path.join(ia, f'pieza-{especie}-cabeza.png')
     im = recortar(pp.limpiar(pp.cargar(f)))
     cx, cy, r = disco_por_contorno(im)
     a = np.array(im)
@@ -111,13 +111,13 @@ def cabeza(especie, ia, cfg, piezas, control):
     piel = Image.fromarray(piel)
     caja = piel.getbbox()
     piel = piel.crop(caja)
-    p = pp.pieza(especie, 'cabeza-piel', piel, cx - caja[0], cy - caja[1], esc, 'cabeza', f,
+    p = pp.pieza(especie, 'cabeza-piel' + sufijo, piel, cx - caja[0], cy - caja[1], esc, 'cabeza', f,
                  'Piel de cabeza sin rostro (IA), registrada por el contorno del disco; se recorta al círculo #face bajo ojos, cejas, rubor y boca B03.')
     p['encuadre'][0] += 736
     p['encuadre'][1] += 340
     piezas.append(p)
-    control.append(('cabeza-piel', piel, cx - caja[0], cy - caja[1]))
-    if cfg.get('casco'):
+    control.append(('cabeza-piel' + sufijo, piel, cx - caja[0], cy - caja[1]))
+    if cfg.get('casco') and not sufijo:
         cas = a.copy()
         # Lo que queda fuera del disco (con un margen para no arrastrar el contorno del disco).
         cas[..., 3] = np.where(dist > r - 2, cas[..., 3], 0)
@@ -187,6 +187,16 @@ def procesar(especie, rev, cfg):
     if cfg.get('torreta_exterior'):
         torretas(especie, ia, cfg, piezas, control)
     pp.lamina(os.path.join(REV, rev, 'piezas'), control)
+    # Iteración 2 (T0x-*-v2): piezas nuevas con sufijo -v2; las v1 se conservan sin cambios.
+    v2 = cfg.get('v2')
+    if v2:
+        ia2 = os.path.join(REV, v2['rev'], 'ia')
+        control2 = []
+        if v2.get('cabeza'):
+            cabeza(especie, ia2, cfg, piezas, control2, os.path.join(ia2, v2['cabeza']), '-v2')
+        if v2.get('pata'):
+            patas(especie, ia2, dict(cfg, pata_ancho=v2['pata_ancho'], pie_ancho=v2['pie_ancho']), piezas, control2, os.path.join(ia2, v2['pata']), '-v2')
+        pp.lamina(os.path.join(REV, v2['rev'], 'piezas'), control2)
     total = sum(os.path.getsize(os.path.join(SALIDA, especie, x['archivo'])) for x in piezas)
     manifiesto = {
         'especie': especie, 'version': 'v1', 'estado': 'laboratorio — pendiente de aprobación del usuario',
@@ -207,9 +217,11 @@ def procesar(especie, rev, cfg):
 
 
 CONFIG = {
-    'serpiente': dict(rev='T03-serpiente-v1', ancho=172, frente=194, cola=172, lengua_ancho=19, lengua_corte=0.42),
+    'serpiente': dict(rev='T03-serpiente-v1', ancho=172, frente=194, cola=172, lengua_ancho=19, lengua_corte=0.42,
+                      v2=dict(rev='T03-serpiente-v2', cabeza='pieza-serpiente-cabeza-lisa.png')),
     'camaleon': dict(rev='T04-camaleon-v1', ancho=170, frente=192, cola=170, patas=True, pata_ancho=40, pie_ancho=90,
-                     casco=True, torreta_exterior=(54, 46)),
+                     casco=True, torreta_exterior=(54, 46),
+                     v2=dict(rev='T04-camaleon-v2', pata='pieza-camaleon-pata.png', pata_ancho=50, pie_ancho=104)),
 }
 
 if __name__ == '__main__':

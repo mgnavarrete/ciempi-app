@@ -1,0 +1,13 @@
+{
+  "id": "propuesta-k2b-crestas",
+  "archivo": "propuesta-k2b-crestas.png",
+  "prompt": "propuesta-k2b-crestas-prompt.txt",
+  "referencias": [
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v1/ia/concepto-k1-arcoiris.png",
+    "docs/rediseno-ciempi/revisiones/T04-camaleon-v2/referencias/expresiones-ciempi.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1a463-6474-7620-8a1e-cd62c813a8cf/exec-a2533c86-8a17-4987-acd0-b07154ee1e29.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-04T02:30:03.675Z",
+  "segundos": 64
+}

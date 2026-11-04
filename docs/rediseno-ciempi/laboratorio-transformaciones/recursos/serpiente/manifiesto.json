@@ -4,7 +4,7 @@
  "estado": "laboratorio — pendiente de aprobación del usuario",
  "unidades": "viewBox de la base (0 0 1000 650)",
  "formato": "raster WebP con alfa, 2 px por unidad, calidad 90; maestros IA en docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia",
- "bytesTotales": 149652,
+ "bytesTotales": 177880,
  "piezas": [
   {
    "id": "seg-a",
@@ -173,6 +173,27 @@
    "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v1/ia/pieza-serpiente-lengua.png",
    "fuenteSha256": "127543bf88ec2194",
    "notas": "Mitad inferior de la lengua IA (corte al 42%). Origen = centro del borde superior; se mete detrás de la boca B03 (primer hijo de #mouth)."
+  },
+  {
+   "id": "cabeza-piel-v2",
+   "rol": "cabeza",
+   "archivo": "cabeza-piel-v2.webp",
+   "tipo": "raster-ia",
+   "formato": "webp",
+   "px": [
+    528,
+    535
+   ],
+   "pxPorUnidad": 2,
+   "encuadre": [
+    605.79,
+    206.24,
+    264.1,
+    267.66
+   ],
+   "fuente": "docs/rediseno-ciempi/revisiones/T03-serpiente-v2/ia/pieza-serpiente-cabeza-lisa.png",
+   "fuenteSha256": "465ee8a01a51a1a9",
+   "notas": "Piel de cabeza sin rostro (IA), registrada por el contorno del disco; se recorta al círculo #face bajo ojos, cejas, rubor y boca B03."
   }
  ],
  "origenes": {
