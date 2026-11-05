@@ -25,7 +25,7 @@ export function GrillaBailes(props: {
 }) {
   const animar = props.tranquilo ? '' : 'transition active:scale-95'
   return (
-    <ul className={`grid grid-cols-3 gap-2.5 rounded-3xl p-2.5 ${props.fondo} apaisado:min-h-0 apaisado:flex-1 apaisado:content-start apaisado:gap-2 apaisado:overflow-y-auto apaisado:p-2 apaisado:pb-24`}>
+    <ul className={`grid shrink-0 grid-cols-3 content-start gap-2.5 rounded-3xl p-2.5 ${props.fondo} apaisado:gap-2 apaisado:p-2 @xl:grid-cols-4`}>
       {props.bailes.map((b) => {
         const celebra = props.celebracion === b.id
         const alcanza = props.monedas >= b.precio
@@ -46,7 +46,7 @@ export function GrillaBailes(props: {
                 onClick={() => props.alCelebrar(b)}
                 disabled={props.ocupado}
                 aria-pressed={celebra}
-                className={`mt-auto rounded-full px-2 py-1 text-xs font-bold leading-tight shadow-sm ${celebra ? 'bg-amarillo text-tinta' : 'bg-arena text-petroleo'} ${animar}`}
+                className={`mt-auto min-h-11 rounded-full px-2 py-1 text-xs font-bold leading-tight shadow-sm ${celebra ? 'bg-amarillo text-tinta' : 'bg-arena text-petroleo'} ${animar}`}
               >
                 {celebra ? '⭐ Celebra' : '⭐ Para celebrar'}
               </button>

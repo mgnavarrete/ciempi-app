@@ -6,6 +6,15 @@
 @custom-variant apaisado (@media (orientation: landscape) and (max-height: 540px));
 /* Celular en vertical: la lectura se recomienda en horizontal. */
 @custom-variant vertical-angosto (@media (orientation: portrait) and (max-width: 600px));
+/* Celular en horizontal y tablet (en cualquier orientación): la tienda va en dos columnas. */
+@custom-variant dos-columnas {
+  @media (orientation: landscape) {
+    @slot;
+  }
+  @media (min-width: 768px) {
+    @slot;
+  }
+}
 
 /* Paleta tomada del logo de Ciempi. */
 @theme {

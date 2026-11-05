@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, type ReactNode, type RefObject, type UIEvent } from 'react'
 import { BotonPrincipal, BotonSecundario } from '../ui/comunes'
-import { MasEnLaTienda, Precio, SelloNuevo, Vacio } from './tiendaUi'
+import { BarraCompra, MasEnLaTienda, PestanasDeslizables, Precio, SelloNuevo, Vacio, clasePestana } from './tiendaUi'
 import { ahorroDe, buscarItem, loTiene, precioDe, soloDesbloqueo, type AparienciaCiempi } from './catalogo'
 import { ESPECIES, especieDeItem, variantesDe, variantesDePaquete, miniaturaDe, type EspecieCriatura, type EspecieId } from './criaturas'
 
@@ -33,6 +33,11 @@ interface Props {
   alVolverALoMio: () => void
   especie: EspecieId
   alCambiarEspecie: (e: EspecieId) => void
+  /** La lista con desplazamiento propio (la pantalla la vuelve arriba y achica a Ciempi al bajar). */
+  lista?: RefObject<HTMLDivElement | null>
+  alDesplazar?: (e: UIEvent<HTMLElement>) => void
+  /** Mensaje de error de la pantalla, al final de la lista. */
+  error?: ReactNode
 }
 
 /** Lo que cuesta, por partes: la especie (si falta) y la variante o el paquete. */
@@ -80,15 +85,15 @@ export function TiendaCriaturas(props: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="-mx-5 flex shrink-0 gap-2 overflow-x-auto px-5 pb-1 apaisado:mx-0 apaisado:px-0" role="tablist" aria-label="Criaturas">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
+      <PestanasDeslizables etiqueta="Criaturas" elegida={especie ?? ''}>
         {/* En el ropero, volver a ser Ciempi (sin criatura). */}
         {!enTienda && (
           <button
             aria-pressed={puesta.criatura === null}
             onClick={() => props.alUsar(null)}
             disabled={ocupado}
-            className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:py-1.5 apaisado:text-sm ${animar} ${puesta.criatura === null ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
+            className={`flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:text-sm ${animar} ${puesta.criatura === null ? 'bg-petroleo text-white' : 'bg-white text-tinta shadow-sm'}`}
           >
             <img src="/ciempi.svg" alt="" className="h-6 w-6 rounded-full bg-white p-0.5" /> Ciempi {puesta.criatura === null && '✓'}
           </button>
@@ -99,14 +104,15 @@ export function TiendaCriaturas(props: Props) {
             role="tab"
             aria-selected={especie === x.id}
             onClick={() => props.alCambiarEspecie(x.id)}
-            className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 font-bold apaisado:px-3 apaisado:py-1.5 apaisado:text-sm ${especie === x.id ? 'bg-naranjo text-white' : 'bg-white text-tinta'}`}
+            className={clasePestana(especie === x.id)}
           >
             <span aria-hidden>{x.emoji}</span> {x.nombre}
             {soloDesbloqueo(x.item, inventario) && <span aria-label="bloqueada">🔒</span>}
           </button>
         ))}
-      </div>
+      </PestanasDeslizables>
 
+      <div ref={props.lista} onScroll={props.alDesplazar} className="-mx-1 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain px-1 pb-1 pt-0.5">
       {!e && (
         <Vacio fondo="bg-verde-claro" enTienda={enTienda} alIrALaTienda={props.alIrATienda}>
           {enTienda ? '¡Ya tienes todo aquí! 🎉' : 'Todavía no tienes criaturas.'}
@@ -119,7 +125,7 @@ export function TiendaCriaturas(props: Props) {
       )}
 
       {e && variantes.length > 0 && (
-      <ul className="grid grid-cols-3 gap-2.5 rounded-3xl bg-verde-claro p-2.5 apaisado:gap-2 apaisado:p-2">
+      <ul className="grid shrink-0 grid-cols-3 content-start gap-2.5 rounded-3xl bg-verde-claro p-2.5 apaisado:gap-2 apaisado:p-2 @xl:grid-cols-4">
         {variantes.map((v) => {
           const item = buscarItem(v.item)!
           const esSuya = loTiene(inventario, v.item)
@@ -136,7 +142,7 @@ export function TiendaCriaturas(props: Props) {
                 }}
                 disabled={!enTienda && ocupado}
                 aria-pressed={probada}
-                className={`relative flex h-full w-full flex-col items-center gap-1 rounded-2xl bg-white p-1.5 pb-2 shadow-md ${animar} ${probada ? 'ring-4 ring-petroleo' : ''}`}
+                className={`relative flex h-full min-h-11 w-full flex-col items-center gap-1 rounded-2xl bg-white p-1.5 pb-2 shadow-md ${animar} ${probada ? 'ring-4 ring-petroleo' : ''}`}
               >
                 {enTienda && !bloqueada && <SelloNuevo />}
                 <MiniaturaCriatura varianteId={v.item} especie={e} bloqueada={bloqueada} className="h-24 w-full apaisado:h-[4.5rem]" />
@@ -163,7 +169,7 @@ export function TiendaCriaturas(props: Props) {
 
       {/* El paquete: todos los colores de la especie, con su ahorro (solo en la tienda). */}
       {enTienda && e && paquete && !bloqueada && !tienePaquete && (
-        <div className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm">
+        <div className="flex shrink-0 items-center gap-3 rounded-2xl bg-white p-3 shadow-sm">
           <span className="text-3xl" aria-hidden>
             📦
           </span>
@@ -179,18 +185,21 @@ export function TiendaCriaturas(props: Props) {
             )}
           </div>
           {!tienePaquete && (
-            <BotonSecundario onClick={() => setConfirmar(e.paquete)} disabled={ocupado || monedas < precioDe(paquete, inventario)} className="shrink-0 px-3 py-1.5 text-sm">
+            <BotonSecundario onClick={() => setConfirmar(e.paquete)} disabled={ocupado || monedas < precioDe(paquete, inventario)} className="min-h-11 shrink-0 px-3 py-1.5 text-sm">
               🪙 {precioDe(paquete, inventario)}
             </BotonSecundario>
           )}
         </div>
       )}
 
-      {/* Lo que se puede hacer con la que se está probando. */}
+      {props.error}
+      </div>
+
+      {/* Lo que se puede hacer con la que se está probando (debajo de la lista: no tapa nada). */}
       {enTienda && (!yaPuesta || (elegidaEsDeEsta && !suya)) && (
-        <div className="fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-3xl flex-col gap-2 border-t border-[#e2d6bf] bg-crema/95 px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur apaisado:max-w-4xl apaisado:py-2">
+        <BarraCompra>
           {elegida && !suya && !soloDesbloqueo(elegida, inventario) && (
-            <p className="text-sm">
+            <p className="text-sm leading-snug">
               {desglose(elegida, inventario).texto}
               {monedas < precioDe(buscarItem(elegida)!, inventario) && (
                 <>
@@ -200,13 +209,13 @@ export function TiendaCriaturas(props: Props) {
               )}
             </p>
           )}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {recien && recien === elegida && suya && !yaPuesta ? (
-              <BotonPrincipal onClick={() => props.alUsar(elegida)} disabled={ocupado} className="px-5 py-2 text-base">
+              <BotonPrincipal onClick={() => props.alUsar(elegida)} disabled={ocupado} className="min-h-11 px-5 py-2 text-base">
                 ¡Usar ahora!
               </BotonPrincipal>
             ) : suya && !yaPuesta ? (
-              <BotonPrincipal onClick={() => props.alUsar(elegida)} disabled={ocupado} className="px-5 py-2 text-base">
+              <BotonPrincipal onClick={() => props.alUsar(elegida)} disabled={ocupado} className="min-h-11 px-5 py-2 text-base">
                 Usar
               </BotonPrincipal>
             ) : (
@@ -216,24 +225,25 @@ export function TiendaCriaturas(props: Props) {
                 <BotonPrincipal
                   onClick={() => setConfirmar(elegida)}
                   disabled={ocupado || monedas < precioDe(buscarItem(elegida)!, inventario)}
-                  className="px-5 py-2 text-base"
+                  className="min-h-11 px-5 py-2 text-base"
                 >
                   Comprar 🪙 {precioDe(buscarItem(elegida)!, inventario)}
                 </BotonPrincipal>
               )
             )}
             {elegida === null && !yaPuesta && (
-              <BotonPrincipal onClick={() => props.alUsar(null)} disabled={ocupado} className="px-5 py-2 text-base">
+              <BotonPrincipal onClick={() => props.alUsar(null)} disabled={ocupado} className="min-h-11 px-5 py-2 text-base">
                 Usar Ciempi
               </BotonPrincipal>
             )}
             {!yaPuesta && (
-              <button onClick={props.alVolverALoMio} className="ml-auto shrink-0 font-bold text-petroleo underline underline-offset-4">
-                ↺ Volver a lo mío
+              <button onClick={props.alVolverALoMio} className="order-first mr-auto min-h-11 shrink-0 text-sm font-bold text-petroleo underline underline-offset-4">
+                ↺ <span className="@md:hidden">Lo mío</span>
+                <span className="hidden @md:inline">Volver a lo mío</span>
               </button>
             )}
           </div>
-        </div>
+        </BarraCompra>
       )}
 
       {confirmar && (
