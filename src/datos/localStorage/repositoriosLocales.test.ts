@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CUENTOS } from '../../contenido/cuentos'
+import { CUENTOS, CUENTOS_DE_TU_CIEMPI } from '../../contenido/cuentos'
 import { crearTexto, prepararCuentaNueva } from '../inicio'
 import { hoy } from '../../lectura/monedas'
 import { crearRepositoriosLocales } from './repositoriosLocales'
@@ -34,6 +34,19 @@ describe('repositorios en localStorage', () => {
     const texto = await otraVez.textos.obtener(CUENTOS.find((c) => c.titulo === 'Canción de Don Ciempiés')!.id)
     expect(texto).toMatchObject({ subidoPor: null, origen: 'ciempi', parrafos: [0, 4, 8, 12] })
     expect(texto?.capitulos).toEqual([{ titulo: texto?.titulo, desdeFrase: 0 }])
+  })
+
+  it('sin cuenta, los 25 cuentos con su Ciempi llegan a la biblioteca de los niños que ya existían', async () => {
+    const { almacen, perfil } = await preparado()
+    // Como una instalación de 2.7: sin esos cuentos ni la migración que los trae.
+    const nuevos = new Set(CUENTOS_DE_TU_CIEMPI.map((c) => c.id))
+    const asignaciones = JSON.parse(almacen.getItem('ciempi:v1:asignaciones')!) as { textoId: string }[]
+    almacen.setItem('ciempi:v1:asignaciones', JSON.stringify(asignaciones.filter((x) => !nuevos.has(x.textoId))))
+    const migraciones = JSON.parse(almacen.getItem('ciempi:v1:migraciones')!) as string[]
+    almacen.setItem('ciempi:v1:migraciones', JSON.stringify(migraciones.filter((m) => m !== '2026-11-cuentos-con-tu-ciempi')))
+    const biblioteca = await crearRepositoriosLocales(almacen).asignaciones.listarPorPerfil(perfil.id)
+    expect(biblioteca).toHaveLength(CUENTOS.length)
+    for (const c of CUENTOS_DE_TU_CIEMPI) expect(biblioteca.find((x) => x.textoId === c.id)?.nivel).toBe(c.nivel)
   })
 
   it('persiste monedas y ajustes del perfil', async () => {
@@ -214,6 +227,25 @@ describe('premios sin conexión (mismo cálculo que el servidor)', () => {
     expect(await otraVez.premios.reclamar(pedido('op-viejo-2', { tipo: 'avance', hasta: 2, conPremio: true }))).toMatchObject({ otorgadas: 0 })
     expect(await otraVez.premios.reclamar(pedido('op-viejo-3', { tipo: 'avance', hasta: 3, conPremio: true }))).toMatchObject({ otorgadas: 1, monedas: 1 })
     expect((await otraVez.perfiles.obtener(perfil.id))?.monedas).toBe(1)
+  })
+
+  it('cuento con su Ciempi: se guarda la plantilla y cambiarle el nombre no vuelve a pagar', async () => {
+    const { repos, perfil } = await preparado()
+    const cuento = CUENTOS_DE_TU_CIEMPI.find((c) => c.nivel === 1)!
+    const a = (await repos.asignaciones.listarPorPerfil(perfil.id)).find((x) => x.textoId === cuento.id)!
+    const texto = (await repos.textos.obtener(cuento.id))!
+    expect(texto.titulo).toContain('{ciempi}')
+    expect(texto.portada).toMatch(/^ciempi:fondo-/)
+    const leer = (op: string) => repos.premios.reclamar({ tipo: 'avance', hasta: texto.frases.length, conPremio: true, operationId: op, perfilId: perfil.id, asignacionId: a.id, esperadas: 0 })
+    const primera = await leer('op-nombre-1')
+    expect(primera).toMatchObject({ estado: 'otorgado' })
+    const monedas = (primera as { monedas: number }).monedas
+    expect(monedas).toBeGreaterThan(0)
+    // Le pone otro nombre (y otro género): el cuento cambia en pantalla, pero es el mismo texto.
+    await repos.perfiles.actualizarCiempi(perfil.id, { ...perfil.ciempi, nombre: 'Margarita', genero: 'nina' })
+    expect((await repos.textos.obtener(cuento.id))!.frases).toEqual(texto.frases)
+    expect(await leer('op-nombre-2')).toMatchObject({ otorgadas: 0, monedas })
+    expect((await repos.perfiles.obtener(perfil.id))?.monedas).toBe(monedas)
   })
 
   it('un libro que ya no está: descartado', async () => {

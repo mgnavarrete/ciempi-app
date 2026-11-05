@@ -1,7 +1,7 @@
 import { comprarItem, normalizarApariencia, puedePonerse } from '../../ciempi/catalogo'
 import { CUNCUNA, CUNCUNA_POR_LECTURA, motivoCuncuna } from '../desbloqueoCuncuna'
 import { PRECIOS_MOCHILAS_2_1, PRECIOS_TIENDA_ANTIGUA, esCompraAntigua } from '../../ciempi/tiendaAntigua'
-import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, portadaCuento } from '../../contenido/cuentos'
+import { AUTOR_CUENTOS, CUENTOS, CUENTOS_DE_PERSONAJES, CUENTOS_DE_TU_CIEMPI, portadaCuento } from '../../contenido/cuentos'
 import { dividirConParrafos } from '../../lenguaje/frases'
 import { hoy } from '../../lectura/monedas'
 import { calcularPremio, combinarEstados, type EstadoPremios } from '../../lectura/premios'
@@ -236,6 +236,11 @@ const MIGRACIONES: { id: string; aplicar: (t: Tablas) => void }[] = [
           perfiles.guardar({ ...p, monedas: p.monedas + devolver, inventario: inventario.filter((id) => !(id in PRECIOS_MOCHILAS_2_1)), ciempi: ciempi.espalda in PRECIOS_MOCHILAS_2_1 ? { ...ciempi, espalda: 'espalda:espalda-nada' } : ciempi })
         }
       }),
+  },
+  {
+    // CIEMPI 2.8: llegan los 25 cuentos con su Ciempi de protagonista (con el nombre que le puso).
+    id: '2026-11-cuentos-con-tu-ciempi',
+    aplicar: (tablas) => tablas.perfiles.todos().forEach((p) => darCuentos(tablas, p.id, p.creadoPor, CUENTOS_DE_TU_CIEMPI)),
   },
 ]
 

@@ -16,14 +16,15 @@ export interface MedidasTexto {
 
 const terminaOracion = (frase: string) => /[.!?…]["»”’)]*$/.test(frase.trim())
 
-export function medirTexto(frases: string[]): MedidasTexto {
+/** `enteras`: palabras que se leen como una unidad (el nombre de su Ciempi): cuentan como una sílaba. */
+export function medirTexto(frases: string[], enteras?: ReadonlySet<string>): MedidasTexto {
   let palabras = 0
   let silabas = 0
   let largas = 0
   let deTres = 0
   let oraciones = 0
   frases.forEach((f, i) => {
-    for (const p of silabearFrase(f)) {
+    for (const p of silabearFrase(f, enteras)) {
       palabras++
       silabas += p.silabas.length
       if (p.silabas.length >= 4) largas++
@@ -47,8 +48,8 @@ export function medirTexto(frases: string[]): MedidasTexto {
  * textos medianos → 3; textos largos con oraciones largas → 4. El adulto
  * siempre puede elegir otro.
  */
-export function nivelSugerido(frases: string[], parrafos?: number[]): NivelLectura {
-  const { palabras, palabrasPorOracion: oracion, silabasPorPalabra: silabas, deTresOMas } = medirTexto(frases)
+export function nivelSugerido(frases: string[], parrafos?: number[], enteras?: ReadonlySet<string>): NivelLectura {
+  const { palabras, palabrasPorOracion: oracion, silabasPorPalabra: silabas, deTresOMas } = medirTexto(frases, enteras)
   const conParrafos = (parrafos?.length ?? 0) > 1
   if (oracion <= 5 && silabas < 1.6 && deTresOMas === 0) return 0
   if (oracion <= 6 && silabas < 2.2) return 1

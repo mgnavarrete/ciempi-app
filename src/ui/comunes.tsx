@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import type { AparienciaCiempi } from '../ciempi/catalogo'
+import { PortadaConCiempi, esPortadaConCiempi } from '../biblioteca/PortadaConCiempi'
 
 /** Íconos de trazo (24×24) para los controles de adultos. */
 const TRAZOS = {
@@ -106,8 +108,12 @@ export function BarraProgreso({ valor, className = '' }: { valor: number; classN
   )
 }
 
-/** Portada del libro, o una tapa de color con la inicial si no tiene. */
-export function Portada({ titulo, portada, className = '' }: { titulo: string; portada: string | null; className?: string }) {
+/**
+ * Portada del libro, o una tapa de color con la inicial si no tiene. Un cuento
+ * con su Ciempi de protagonista muestra su Ciempi (`apariencia`) tal como lo tiene vestido.
+ */
+export function Portada({ titulo, portada, apariencia, className = '' }: { titulo: string; portada: string | null; apariencia?: AparienciaCiempi | null; className?: string }) {
+  if (esPortadaConCiempi(portada)) return <PortadaConCiempi portada={portada} apariencia={apariencia} className={className} />
   if (portada) return <img src={portada} alt="" className={`rounded-xl bg-white object-cover shadow-sm ${className}`} />
   const colores = ['#3a9fb1', '#ef9129', '#8eb743', '#ea6444', '#efc31d']
   const color = colores[[...titulo].reduce((n, c) => n + c.charCodeAt(0), 0) % colores.length]

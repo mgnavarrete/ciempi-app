@@ -1,4 +1,4 @@
-import { CUENTOS } from '../contenido/cuentos'
+import { CUENTOS, CUENTOS_ORIGINALES } from '../contenido/cuentos'
 import type { Desbloqueo } from './repositorios'
 
 /**
@@ -20,7 +20,8 @@ import type { Desbloqueo } from './repositorios'
  * - No hay regalo de un adulto (necesita cuenta en línea).
  */
 export const CUNCUNA = 'especie:cuncuna'
-export const ORIGINALES_N0 = CUENTOS.filter((c) => c.nivel === 0).map((c) => c.id)
+/** Los 8 de siempre (los cuentos con su Ciempi de nivel 0 no cambian la regla, igual que en el servidor). */
+export const ORIGINALES_N0 = CUENTOS_ORIGINALES.filter((c) => c.nivel === 0).map((c) => c.id)
 export const REGLA_CUNCUNA_LOCAL = { cuentosMinimos: 6, minimoSiQuitaron: 4 }
 
 /** Un cuento de Ciempi en la biblioteca del niño: cuántas frases tiene y hasta cuál está pagado. */
