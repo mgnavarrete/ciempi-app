@@ -3,6 +3,7 @@ import type {AparienciaCiempi} from '../catalogo'
 import {load} from './arte/cargar.js'
 import {renderCiempi} from './arte/componer.js'
 import {conMochila} from './arte/mochilas-v4.js'
+import {conZapatos} from './arte/zapatos-v4.js'
 import {aSeleccion,type Entorno} from './seleccion'
 import {tapaBoca} from './animacion/boca'
 import {escena,escenaCreciente,posiciones,type Escena,type EscenaCreciente} from './pose'
@@ -42,13 +43,15 @@ export function useCriatura(criatura:string|null):string|null{
  previa.current=usar
  return usar
 }
+/** Accesorios v4.2 sobre la composición: calzado B10 (pierna dentro del zapato) y mochila B09. Sin ellos, el mismo SVG. */
+const conAccesoriosV4=(svg:string,s:Parameters<typeof conMochila>[1]&Parameters<typeof conZapatos>[1])=>conMochila(conZapatos(svg,s),s)
 interface Composicion{svg:string|null;rostro:(exp:string)=>string;forma:FormaCuerpo|undefined;key:string}
 /** El SVG del conjunto y sus expresiones: Ciempi (`renderCiempi`, el camino de siempre) o la criatura. */
 function useComposicion(env:Entorno|null,a:AparienciaCiempi):Composicion{
  const s=aSeleccion(a),usar=useCriatura(criaturaPuesta(a));const key=usar?JSON.stringify(s)+'|'+usar:JSON.stringify(s)
- const svg=useMemo(()=>{try{return env?conMochila(usar?componerCriatura(s,usar):renderCiempi(env,s),s):null}catch(e){console.error("Composición Ciempi:",e);return null}},[env,key]) // composición solo cuando cambia selección
+ const svg=useMemo(()=>{try{return env?conAccesoriosV4(usar?componerCriatura(s,usar):renderCiempi(env,s),s):null}catch(e){console.error("Composición Ciempi:",e);return null}},[env,key]) // composición solo cuando cambia selección
  // El mismo conjunto con otra expresión, para que la animación cambie el gesto (se compone una vez por expresión).
- const rostro=useMemo(()=>{const cache=new Map<string,string>();return (exp:string)=>{if(!cache.has(exp))cache.set(exp,conMochila(usar?componerCriatura({...s,expresion:exp},usar):renderCiempi(env!,{...s,expresion:exp}),s));return cache.get(exp)!}},[env,key])
+ const rostro=useMemo(()=>{const cache=new Map<string,string>();return (exp:string)=>{if(!cache.has(exp))cache.set(exp,conAccesoriosV4(usar?componerCriatura({...s,expresion:exp},usar):renderCiempi(env!,{...s,expresion:exp}),s));return cache.get(exp)!}},[env,key])
  return {svg,rostro,forma:usar?formaDe(usar):undefined,key}
 }
 export function useEscena(a:AparienciaCiempi,n:number):EscenaViva|null{

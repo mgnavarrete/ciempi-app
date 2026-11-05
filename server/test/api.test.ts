@@ -198,6 +198,29 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('GET', '/api/perfiles')).status).toBe(401)
   })
 
+  it('favoritos: el niño marca y desmarca la estrella, persiste; otro niño o un extraño reciben 403', async () => {
+    const url = `/api/asignaciones/${asigT}/favorito`
+    const favoritoDe = async (token: string) =>
+      (await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, token)).body.find((a: { id: string }) => a.id === asigT).favorito
+    expect(await favoritoDe(N)).toBe(false)
+    const antes = (await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, N)).body.find((a: { id: string }) => a.id === asigT).actualizadaEn
+    expect((await pedir('PUT', url, N, { favorito: true })).body).toMatchObject({ id: asigT, favorito: true })
+    // Persiste (lo ve también la terapeuta, desde otro dispositivo) y no cuenta como avance.
+    expect(await favoritoDe(T)).toBe(true)
+    expect((await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, N)).body.find((a: { id: string }) => a.id === asigT).actualizadaEn).toBe(antes)
+    expect((await pedir('PUT', url, N, { favorito: 'si' })).status).toBe(400)
+    expect((await pedir('PUT', url, N, { favorito: false })).body.favorito).toBe(false)
+    expect(await favoritoDe(N)).toBe(false)
+
+    // Otro niño (de la misma terapeuta) no marca libros ajenos.
+    expect((await pedir('POST', '/api/perfiles', T, { apodo: 'Ana', icono: '🐼', usuario: 'ana-fav', clave: 'ana123' })).status).toBe(200)
+    const ajeno = (await pedir('POST', '/api/entrar-nino', undefined, { usuario: 'ana-fav', clave: 'ana123' })).body.token
+    expect((await pedir('PUT', url, ajeno, { favorito: true })).status).toBe(403)
+    expect((await pedir('PUT', url, X, { favorito: true })).status).toBe(403)
+    expect((await pedir('PUT', url, undefined, { favorito: true })).status).toBe(401)
+    expect(await favoritoDe(N)).toBe(false)
+  })
+
   it('recuperar contraseña: el enlace sirve una sola vez y cierra las sesiones viejas', async () => {
     expect((await pedir('POST', '/api/recuperar', undefined, { correo: 'nadie@test.cl' })).status).toBe(200)
     const { crearRecuperacion } = await import('../src/auth.ts')

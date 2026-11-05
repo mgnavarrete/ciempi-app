@@ -63,6 +63,25 @@ describe('repositorios en localStorage', () => {
     expect(releyendo).toMatchObject({ fraseActual: 0, fraseMaxima: 3, completadaEn: terminada.completadaEn })
   })
 
+  it('marca y desmarca un libro como favorito, solo para ese niño, y persiste', async () => {
+    const { almacen, repos, cuenta, perfil } = await preparado()
+    const otro = await repos.perfiles.crear({ apodo: 'Otra', icono: '🐼' })
+    const libro = await repos.textos.guardar(crearTexto(cuenta.id, { titulo: 'Libro', textoOriginal: 'Uno. Dos.', origen: 'pegado' }))
+    const a = await repos.asignaciones.asignar(perfil.id, libro.id)
+    const b = await repos.asignaciones.asignar(otro.id, libro.id)
+    expect(a.favorito).toBeFalsy()
+
+    await repos.asignaciones.marcarFavorito(a.id, true)
+    const releer = async (perfilId: string, id: string) =>
+      (await crearRepositoriosLocales(almacen).asignaciones.listarPorPerfil(perfilId)).find((x) => x.id === id)
+    expect(await releer(perfil.id, a.id)).toMatchObject({ favorito: true, actualizadaEn: a.actualizadaEn })
+    expect((await releer(otro.id, b.id))?.favorito).toBeFalsy()
+
+    await repos.asignaciones.marcarFavorito(a.id, false)
+    expect((await releer(perfil.id, a.id))?.favorito).toBe(false)
+    await expect(repos.asignaciones.marcarFavorito('no-existe', true)).rejects.toThrow()
+  })
+
   it('eliminar un texto lo saca de las bibliotecas', async () => {
     const { repos, cuenta, perfil } = await preparado()
     const libro = await repos.textos.guardar(crearTexto(cuenta.id, { titulo: 'Libro', textoOriginal: 'Uno. Dos.', origen: 'pegado' }))

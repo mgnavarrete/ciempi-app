@@ -509,6 +509,12 @@ export function crearRepositoriosLocales(almacen: AlmacenClaveValor = window.loc
         completadaEn: estado === 'completada' ? (a.completadaEn ?? fecha) : a.completadaEn,
       })
     },
+    async marcarFavorito(id, favorito) {
+      const a = asignaciones.obtener(id)
+      if (!a) throw new Error(`Asignación ${id} no existe`)
+      // No cambia actualizadaEn: eso es el avance de lectura.
+      asignaciones.guardar({ ...a, favorito })
+    },
     async quitar(id) {
       asignaciones.eliminar(id)
     },

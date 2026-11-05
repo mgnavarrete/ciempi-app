@@ -147,7 +147,9 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
   const esPata = (g) => [...g.children].some((c) => c.localName === 'g' && /rotate\(/.test(c.getAttribute('transform') || ''))
   const patas = [...(patasG?.children || [])].map((h) => [h, esPata(h) ? h : [...h.querySelectorAll('g')].find(esPata)]).filter(([, g]) => g).map(([h, g]) => {
     const giro = [...g.children].find((c) => c.localName === 'g' && /rotate\(/.test(c.getAttribute('transform') || ''))
-    return { g, envoltura: h, base: leerTraslado(g.getAttribute('transform')), giro, giroBase: leerGiro(giro?.getAttribute('transform')) }
+    // Calzado v4 (arte/zapatos-v4.js): la copia de la pierna dentro de la boca deshace el giro del pie.
+    const contragiro = giro?.querySelector('[data-contragiro]') ?? null
+    return { g, envoltura: h, base: leerTraslado(g.getAttribute('transform')), giro, giroBase: leerGiro(giro?.getAttribute('transform')), contragiro }
   })
 
   // ── Segmentos del cuerpo, de la cola a la cabeza (las superficies B11 van dentro y los acompañan).
@@ -307,6 +309,7 @@ export function crearRig(fuente, info = {}, obtenerRostro = null, opciones = {})
         const [hx, hy] = PIVOTES.cadera
         pata.g.setAttribute('transform', `translate(${r2(pata.base[0] + q.x)} ${r2(pata.base[1] + q.y)}) rotate(${r2(q.rot)} ${hx} ${hy})`)
         if (pata.giro) pata.giro.setAttribute('transform', `rotate(${r2(pata.giroBase + q.pie)} ${PIVOTES.tobillo.join(' ')})`)
+        if (pata.contragiro) pata.contragiro.setAttribute('transform', `rotate(${r2(-(pata.giroBase + q.pie))} ${PIVOTES.tobillo.join(' ')})`)
       })
 
       const c = p.cabeza

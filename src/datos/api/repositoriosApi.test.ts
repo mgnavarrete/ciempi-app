@@ -159,3 +159,40 @@ describe('premios con el servidor', () => {
     expect(recibidos[0].cuerpo).toEqual({ cantidad: 5, motivo: 'Premio por ordenar' })
   })
 })
+
+describe('favoritos con el servidor', () => {
+  const lista = [{ id: 'libro-1', nivel: 1, favorito: false }, { id: 'libro-2', nivel: 2, favorito: true }]
+
+  it('marca en el servidor; sin conexión queda guardado, se muestra igual y se envía al volver', async () => {
+    let enLinea = true
+    responder = (r) => {
+      if (!enLinea) return 'sin-red'
+      if (r.metodo === 'GET') return { status: 200, body: lista }
+      return { status: 200, body: { id: 'libro-1', favorito: r.cuerpo?.favorito } }
+    }
+    const repos = crearRepositoriosApi('https://servidor')
+    await repos.asignaciones.marcarFavorito('libro-1', true)
+    expect(recibidos.at(-1)).toMatchObject({ metodo: 'PUT', ruta: 'https://servidor/api/asignaciones/libro-1/favorito', cuerpo: { favorito: true } })
+    expect(almacen.datos.has('ciempi:favoritos-pendientes')).toBe(false)
+
+    enLinea = false
+    await repos.asignaciones.marcarFavorito('libro-2', false)
+    expect(JSON.parse(almacen.getItem('ciempi:favoritos-pendientes')!)).toEqual({ 'libro-2': false })
+
+    // Otra apertura de la app (con conexión): lo pendiente se ve y se envía.
+    enLinea = true
+    recibidos = []
+    const otra = crearRepositoriosApi('https://servidor')
+    const l = await otra.asignaciones.listarPorPerfil('nino-1')
+    expect(l.find((a) => a.id === 'libro-2')?.favorito).toBe(false)
+    await vi.waitFor(() => expect(almacen.datos.has('ciempi:favoritos-pendientes')).toBe(false))
+    expect(recibidos.filter((r) => r.metodo === 'PUT')).toEqual([{ metodo: 'PUT', ruta: 'https://servidor/api/asignaciones/libro-2/favorito', cuerpo: { favorito: false } }])
+  })
+
+  it('si el servidor lo rechaza (403), no queda pendiente y avisa', async () => {
+    responder = () => ({ status: 403, body: { error: 'No tienes acceso a este niño' } })
+    const repos = crearRepositoriosApi('https://servidor')
+    await expect(repos.asignaciones.marcarFavorito('libro-1', true)).rejects.toThrow(/acceso/)
+    expect(almacen.datos.has('ciempi:favoritos-pendientes')).toBe(false)
+  })
+})
