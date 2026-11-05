@@ -49,8 +49,8 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
   const [compartiendo, setCompartiendo] = useState<Texto | null>(null)
   // Un libro que agregó el niño y un adulto aprueba con su PIN (aquí mismo, en su dispositivo).
   const [aprobando, setAprobando] = useState<LibroEnBiblioteca | null>(null)
-  // Ver todos los libros o solo los de un nivel.
-  const [filtro, setFiltro] = useState<NivelLectura | 'todos'>('todos')
+  // Ver todos los libros, solo los de un nivel o solo los favoritos.
+  const [filtro, setFiltro] = useState<NivelLectura | 'todos' | 'favoritos'>('todos')
 
   const cargar = useCallback(async () => {
     const asignaciones = await repos.asignaciones.listarPorPerfil(perfil.id)
@@ -89,6 +89,21 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
     else await repos.asignaciones.quitar(libro.asignacion.id)
     setLibros(await cargar())
   }
+
+  // La estrella cambia al instante; sin conexión queda guardada y se envía después.
+  const alternarFavorito = async (libro: LibroEnBiblioteca) => {
+    const favorito = !libro.asignacion.favorito
+    const id = libro.asignacion.id
+    const poner = (valor: boolean) =>
+      setLibros((l) => l?.map((x) => (x.asignacion.id === id ? { ...x, asignacion: { ...x.asignacion, favorito: valor } } : x)) ?? l)
+    poner(favorito)
+    try {
+      await repos.asignaciones.marcarFavorito(id, favorito)
+    } catch {
+      poner(!favorito) // Rechazado (por ejemplo, ya no está en su biblioteca).
+    }
+  }
+  const pasaFiltro = (l: LibroEnBiblioteca, f: typeof filtro) => f === 'todos' || (f === 'favoritos' ? !!l.asignacion.favorito : l.asignacion.nivel === f)
 
   const puedeQuitar = (l: LibroEnBiblioteca) => modo === 'admin' || l.texto.subidoPor === usuarioId
 
@@ -140,8 +155,8 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
 
         {libros && libros.length > 0 && (
           <div role="group" aria-label="Ver por nivel" className="-mx-1 mb-4 flex flex-wrap gap-2">
-            {(['todos', ...NIVELES.map((n) => n.nivel)] as const).map((f) => {
-              const cuantos = f === 'todos' ? libros.length : libros.filter((l) => l.asignacion.nivel === f).length
+            {(['todos', ...NIVELES.map((n) => n.nivel), 'favoritos'] as const).map((f) => {
+              const cuantos = libros.filter((l) => pasaFiltro(l, f)).length
               const elegido = filtro === f
               return (
                 <button
@@ -151,7 +166,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                   disabled={cuantos === 0 && !elegido}
                   className={`rounded-full px-4 py-1.5 font-bold shadow-sm transition active:scale-95 disabled:opacity-40 ${elegido ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
                 >
-                  {f === 'todos' ? 'Todos' : `Nivel ${f}`}
+                  {f === 'todos' ? 'Todos' : f === 'favoritos' ? '⭐ Favoritos' : `Nivel ${f}`}
                   <span className={`ml-1.5 text-sm font-normal ${elegido ? 'text-white/80' : 'text-tinta-suave'}`}>{cuantos}</span>
                 </button>
               )
@@ -161,7 +176,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
 
         {/* Todas las tarjetas del mismo ancho y alto (la fila más alta manda), para que se vea ordenado. */}
         <ul className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 apaisado:grid-cols-2">
-          {libros?.filter((l) => filtro === 'todos' || l.asignacion.nivel === filtro).map((libro) => {
+          {libros?.filter((l) => pasaFiltro(l, filtro)).map((libro) => {
             const resumen = resumirProgreso(libro.asignacion, libro.texto)
             // Niveles 0 y 1: cuentos cortos, sin porcentaje; solo si ya lo terminó.
             const conAvance = !resumen.terminado && (libro.asignacion.nivel >= 2 || resumen.capitulo !== null)
@@ -219,11 +234,22 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     </button>
                   </div>
                 )}
+                <button
+                  onClick={() => void alternarFavorito(libro)}
+                  aria-pressed={!!libro.asignacion.favorito}
+                  aria-label={libro.asignacion.favorito ? `Quitar ${libro.texto.titulo} de favoritos` : `Marcar ${libro.texto.titulo} como favorito`}
+                  title={libro.asignacion.favorito ? 'Favorito' : 'Marcar como favorito'}
+                  className="absolute right-2 top-2 grid h-10 w-10 place-items-center rounded-full text-2xl transition active:scale-90"
+                >
+                  <span aria-hidden className={libro.asignacion.favorito ? '' : 'opacity-30 grayscale'}>
+                    ⭐
+                  </span>
+                </button>
                 {puedeQuitar(libro) && (
                   <button
                     onClick={() => void quitar(libro)}
                     aria-label={`Quitar ${libro.texto.titulo}`}
-                    className="absolute right-3 top-3 rounded-full p-2 text-tinta-suave hover:text-coral"
+                    className="absolute right-3 top-14 rounded-full p-2 text-tinta-suave hover:text-coral"
                   >
                     <Icono nombre="basura" className="h-5 w-5" />
                   </button>

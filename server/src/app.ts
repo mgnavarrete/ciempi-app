@@ -123,6 +123,8 @@ const aAsignacion = (f: Fila) => ({
   // Texto propio del niño que un adulto todavía no autoriza con su PIN (se lee, pero no paga).
   autorizacion: f.autorizacion ?? 'autorizada',
   autorizadaEn: f.autorizada_en ?? null,
+  // Libro favorito del niño (la estrella de su biblioteca).
+  favorito: f.favorito === true,
   asignadaEn: f.asignada_en,
   actualizadaEn: f.actualizada_en,
   completadaEn: f.completada_en ?? null,
@@ -645,6 +647,17 @@ export async function crearApp(opciones: { ahora?: () => number; economia?: Mode
       nivelValido(cuerpo(req).nivel),
       param(req, 'id'),
     ])
+    return aAsignacion(rows[0])
+  })
+
+  // Favorito: el niño (o un adulto suyo) marca o desmarca la estrella de un libro de su biblioteca.
+  // No cambia `actualizada_en` (eso es el avance de lectura).
+  app.put('/api/asignaciones/:id/favorito', conUsuario, async (req) => {
+    const a = await asignacionPorId(param(req, 'id'))
+    await exigirVerNino(yo(req), a.perfil_id)
+    const favorito = cuerpo(req).favorito
+    if (typeof favorito !== 'boolean') throw new Problema('favorito debe ser verdadero o falso')
+    const { rows } = await pool.query('update asignaciones set favorito = $1 where id = $2 returning *', [favorito, param(req, 'id')])
     return aAsignacion(rows[0])
   })
 

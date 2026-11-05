@@ -223,6 +223,8 @@ export interface Asignacion {
    */
   autorizacion?: Autorizacion
   autorizadaEn?: FechaISO | null
+  /** El niño lo marcó con la estrella (filtro «Favoritos»). Sin dato: no. */
+  favorito?: boolean
   asignadaEn: FechaISO
   actualizadaEn: FechaISO
   completadaEn: FechaISO | null

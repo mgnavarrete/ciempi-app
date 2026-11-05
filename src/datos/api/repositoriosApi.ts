@@ -165,11 +165,75 @@ export function crearRepositoriosApi(base: string): Repositorios {
     }
   })()
   const premios = crearColaPremios({ enviar: enviarPremio, almacen })
+
+  /**
+   * Favoritos sin conexión: la estrella se guarda aquí ({asignación: favorito})
+   * hasta que el servidor la confirma; mientras, la biblioteca la muestra igual.
+   * Se reenvía al volver la conexión o a la app (gana lo último que marcó).
+   */
+  const CLAVE_FAVORITOS = 'ciempi:favoritos-pendientes'
+  let favoritosEnMemoria: Record<string, boolean> = (() => {
+    try {
+      const v = JSON.parse(almacen?.getItem(CLAVE_FAVORITOS) ?? '{}')
+      return v && typeof v === 'object' && !Array.isArray(v) ? v : {}
+    } catch {
+      return {}
+    }
+  })()
+  const favoritosPendientes = (): Record<string, boolean> => ({ ...favoritosEnMemoria })
+  const guardarFavoritosPendientes = (m: Record<string, boolean>) => {
+    favoritosEnMemoria = m
+    try {
+      if (Object.keys(m).length) almacen?.setItem(CLAVE_FAVORITOS, JSON.stringify(m))
+      else almacen?.removeItem(CLAVE_FAVORITOS)
+    } catch {
+      /* sin almacenamiento: dura mientras la app esté abierta */
+    }
+  }
+  /** Quita el pendiente si sigue siendo el mismo valor (no pisa lo que marcó después). */
+  const resolverFavorito = (id: string, favorito: boolean) => {
+    const m = favoritosPendientes()
+    if (m[id] === favorito) {
+      delete m[id]
+      guardarFavoritosPendientes(m)
+    }
+  }
+  async function enviarFavorito(id: string, favorito: boolean): Promise<'ok' | 'reintentar' | { error: string }> {
+    let r: Awaited<ReturnType<typeof pedirCrudo>>
+    try {
+      r = await pedirCrudo('PUT', `/api/asignaciones/${id}/favorito`, { favorito })
+    } catch {
+      return 'reintentar'
+    }
+    if (r.ok) return 'ok'
+    if (r.status === 401 || r.status === 408 || r.status === 429 || r.status >= 500) return 'reintentar'
+    return { error: (r.datos as { error?: string } | null)?.error ?? 'No se pudo marcar el favorito.' }
+  }
+  let reenviandoFavoritos = false
+  async function reintentarFavoritos() {
+    if (reenviandoFavoritos) return
+    reenviandoFavoritos = true
+    try {
+      for (const [id, favorito] of Object.entries(favoritosPendientes())) {
+        // Rechazado (403, 404: ya no está en su biblioteca): se descarta.
+        if ((await enviarFavorito(id, favorito)) !== 'reintentar') resolverFavorito(id, favorito)
+      }
+    } finally {
+      reenviandoFavoritos = false
+    }
+  }
+
   // Lo que quedó sin enviar sale al volver la conexión o al volver a la app.
   if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
-    window.addEventListener('online', () => void premios.reintentar())
+    window.addEventListener('online', () => {
+      void premios.reintentar()
+      void reintentarFavoritos()
+    })
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') void premios.reintentar()
+      if (document.visibilityState === 'visible') {
+        void premios.reintentar()
+        void reintentarFavoritos()
+      }
     })
   }
 
@@ -275,12 +339,24 @@ export function crearRepositoriosApi(base: string): Repositorios {
 
     asignaciones: {
       // Un servidor anterior a los niveles no manda `nivel`: es el 1.
-      listarPorPerfil: (perfilId) =>
-        pedir<Asignacion[]>('GET', `/api/perfiles/${perfilId}/asignaciones`).then((l) => l.map((a) => ({ ...a, nivel: a.nivel ?? 1 }))),
+      // Los favoritos que este dispositivo todavía no envía se muestran igual.
+      async listarPorPerfil(perfilId) {
+        const l = await pedir<Asignacion[]>('GET', `/api/perfiles/${perfilId}/asignaciones`)
+        const pendientes = favoritosPendientes()
+        if (Object.keys(pendientes).length) void reintentarFavoritos()
+        return l.map((a) => ({ ...a, nivel: a.nivel ?? 1, favorito: pendientes[a.id] ?? a.favorito ?? false }))
+      },
       asignar: (perfilId, textoId, nivel = 1) => pedir<Asignacion>('POST', `/api/perfiles/${perfilId}/asignaciones`, { textoId, nivel }),
       cambiarNivel: (id, nivel) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/nivel`, { nivel }),
       // `premiosPorRegistro`: esta app pide sus premios aparte (el servidor no los deduce del progreso).
       guardarProgreso: (id, progreso) => pedir<Asignacion>('PUT', `/api/asignaciones/${id}/progreso`, { ...progreso, premiosPorRegistro: true }),
+      async marcarFavorito(id, favorito) {
+        guardarFavoritosPendientes({ ...favoritosPendientes(), [id]: favorito })
+        const r = await enviarFavorito(id, favorito)
+        if (r === 'reintentar') return
+        resolverFavorito(id, favorito)
+        if (r !== 'ok') throw new Error(r.error)
+      },
       async quitar(id) {
         await pedir('DELETE', `/api/asignaciones/${id}`)
       },

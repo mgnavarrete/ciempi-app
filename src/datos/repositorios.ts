@@ -91,6 +91,11 @@ export interface RepositorioAsignaciones {
   /** Solo un adulto del niño: en qué nivel lee ese libro. */
   cambiarNivel(id: Id, nivel: NivelLectura): Promise<Asignacion>
   guardarProgreso(id: Id, progreso: ProgresoAsignacion): Promise<Asignacion>
+  /**
+   * Marca o desmarca el libro como favorito del niño. Con servidor, sin
+   * conexión queda guardado en el dispositivo y se envía al volver la conexión.
+   */
+  marcarFavorito(id: Id, favorito: boolean): Promise<void>
   quitar(id: Id): Promise<void>
 }
 
