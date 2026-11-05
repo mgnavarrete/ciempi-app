@@ -6,6 +6,7 @@ import { DialogoPin } from '../adultos/DialogoPin'
 import { AvisoVoz } from '../audio/AvisoVoz'
 import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
+import { conNombreDeCiempi } from '../contenido/nombreCiempi'
 import type { Asignacion, Id, NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
 import { NIVELES, datosNivel } from '../lenguaje/unidades'
 import { BarraProgreso, BotonIcono, Encabezado, Icono, Monedas, Portada } from '../ui/comunes'
@@ -55,7 +56,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
   const cargar = useCallback(async () => {
     const asignaciones = await repos.asignaciones.listarPorPerfil(perfil.id)
     const conTexto = await Promise.all(
-      asignaciones.filter((a) => a.estado !== 'archivada').map(async (asignacion) => ({ asignacion, texto: await repos.textos.obtener(asignacion.textoId) })),
+      asignaciones.filter((a) => a.estado !== 'archivada').map(async (asignacion) => ({ asignacion, texto: conNombreDeCiempi(await repos.textos.obtener(asignacion.textoId), perfil.ciempi) })),
     )
     // Primero lo que todavía no termina (de los niveles más fáciles a los más difíciles) y al final lo terminado.
     return conTexto
@@ -65,7 +66,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
           Number(resumirProgreso(a.asignacion, a.texto).terminado) - Number(resumirProgreso(b.asignacion, b.texto).terminado) ||
           (a.asignacion.nivel ?? 1) - (b.asignacion.nivel ?? 1),
       )
-  }, [repos, perfil.id])
+  }, [repos, perfil.id, perfil.ciempi])
 
   // Libros que se están agregando para este niño: aparecen arriba y, al quedar listos, en la lista.
   const { cargas, descartar } = useCargasDeLibros()
@@ -187,7 +188,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                   className="flex w-full flex-1 items-stretch gap-4 rounded-3xl bg-white p-3 text-left shadow-sm transition active:scale-[0.98]"
                 >
                   <span className="relative shrink-0">
-                    <Portada titulo={libro.texto.titulo} portada={libro.texto.portada} className="h-32 w-24" />
+                    <Portada titulo={libro.texto.titulo} portada={libro.texto.portada} apariencia={perfil.ciempi} className="h-32 w-24" />
                     {resumen.terminado && (
                       <span
                         title="¡Lo terminaste!"

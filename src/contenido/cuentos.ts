@@ -16,14 +16,29 @@ export interface Cuento {
   nivel: NivelLectura
   titulo: string
   texto: string
+  /**
+   * Cuentos con su Ciempi de protagonista: el fondo de la portada (uno de los
+   * fondos de la tienda) y un emoji del tema, `fondo-playa:🏖️`. La portada es
+   * su Ciempi tal como lo tiene vestido (ver biblioteca/PortadaConCiempi.tsx).
+   */
+  escena?: string
 }
 
 const id = (n: number) => `c1e0a000-0000-4000-8000-${String(n).padStart(12, '0')}`
 
 export const AUTOR_CUENTOS = 'Cuentos de Ciempi'
 
-/** Portada del cuento (generadas con scripts/portadas.mjs, en public/portadas). */
-export const portadaCuento = (id: string) => `/portadas/cuento-${id.slice(-2)}.svg`
+/** Prefijo de la portada de un cuento con su Ciempi: `ciempi:<fondo>:<emoji>`. */
+export const PORTADA_CON_CIEMPI = 'ciempi:'
+
+/**
+ * Portada del cuento: las de siempre, generadas con scripts/portadas.mjs (en
+ * public/portadas); la de un cuento con su Ciempi, `ciempi:<fondo>:<emoji>`.
+ */
+export const portadaCuento = (id: string) => {
+  const escena = CUENTOS_DE_TU_CIEMPI.find((c) => c.id === id)?.escena
+  return escena ? PORTADA_CON_CIEMPI + escena : `/portadas/cuento-${id.slice(-2)}.svg`
+}
 
 const CUENTOS_DE_CIEMPI: Cuento[] = [
   // ── Nivel 0: sílabas ────────────────────────────────────────────────────
@@ -661,4 +676,397 @@ Después de seis meses, las lechugas estaban grandes y verdes. Barbie volvió a 
   },
 ]
 
-export const CUENTOS: Cuento[] = [...CUENTOS_DE_CIEMPI, ...CUENTOS_DE_PERSONAJES]
+// ── Cuentos con su Ciempi de protagonista ─────────────────────────────────
+// Originales, sin personajes ni marcas. El protagonista es el Ciempi del niño:
+// `{ciempi}` es el nombre que le puso, `{amigo}` dice «amigo» o «amiga» y
+// `{o}` es la terminación «o» o «a», según su género (ver
+// contenido/nombreCiempi.ts). El texto se guarda con las marcas y el nombre
+// se pone al mostrar y al leer. En el nivel 0 el nombre aparece pocas veces y
+// no se separa en sílabas: se lee de corrido y la voz lo dice entero.
+// No hay cuentos nuevos para el nivel 4.
+export const CUENTOS_DE_TU_CIEMPI: Cuento[] = [
+  // Nivel 0: sílabas
+  {
+    id: id(41),
+    nivel: 0,
+    titulo: '{ciempi} juega a la pelota',
+    escena: 'fondo-jardin:⚽',
+    texto: `{ciempi} tiene una bola.
+La bola es roja.
+Papá le da con el pie.
+¡Pum! La bola va lejos.
+{ciempi} corre y corre.
+Le pega con un pie.
+¡Gol!
+Papá y {ciempi} se ríen.`,
+  },
+  {
+    id: id(42),
+    nivel: 0,
+    titulo: '{ciempi} pinta un dibujo',
+    escena: 'fondo-dulces:🎨',
+    texto: `{ciempi} toma un pincel.
+Moja el pincel en el tarro.
+Pinta un sol muy rojo.
+Pinta una casa.
+Pinta un pato en el lago.
+¡Ay! Cae una gota.
+La gota es una nube.
+Mamá mira y se ríe.
+¡Qué lindo, {ciempi}!`,
+  },
+  {
+    id: id(43),
+    nivel: 0,
+    titulo: '{ciempi} y el día de lluvia',
+    escena: 'fondo-nubes:☔',
+    texto: `Cae la lluvia.
+{ciempi} mira el cielo.
+Se pone las botas.
+Salta en un charco.
+¡Plaf! El agua sube.
+Una rana salta también.
+Sale el sol.
+El sol seca el agua.
+{ciempi} se ríe.`,
+  },
+  {
+    id: id(44),
+    nivel: 0,
+    titulo: '{ciempi} va de compras',
+    escena: 'fondo-ciudad:🛒',
+    texto: `{ciempi} va a la tienda con mamá.
+Lleva una bolsa.
+Mamá pide pan.
+{ciempi} pide una pera.
+La pera es dulce.
+Ve unas uvas.
+¡Qué ricas!
+La bolsa pesa mucho.
+La lleva con sus pies.`,
+  },
+  {
+    id: id(45),
+    nivel: 0,
+    titulo: 'El cumpleaños de {ciempi}',
+    escena: 'fondo-dulces:🎂',
+    texto: `Hoy es la fiesta de {ciempi}.
+Llega su tía.
+Llega su primo.
+Hay una torta.
+La torta tiene velas.
+Todos cantan.
+{ciempi} sopla fuerte.
+Su tía le da un beso.
+¡Qué linda fiesta!`,
+  },
+  {
+    id: id(46),
+    nivel: 0,
+    titulo: '{ciempi} en la nieve',
+    escena: 'fondo-nieve:⛄',
+    texto: `Cae nieve.
+Todo se ve blanco.
+{ciempi} se pone un gorro.
+Se pone cien botas.
+Sube la loma.
+Baja la loma. ¡Zas!
+Hace un mono de nieve.
+¡Qué frío!
+{ciempi} toma leche tibia.`,
+  },
+
+  // Nivel 1: palabra
+  {
+    id: id(47),
+    nivel: 1,
+    titulo: '{ciempi} aprende a nadar',
+    escena: 'fondo-mar:🏊',
+    texto: `Hoy {ciempi} va a la piscina.
+El agua está fría.
+{ciempi} tiene un poco de miedo.
+El profesor le pasa una tabla.
+{ciempi} patalea con sus cien pies.
+¡Plaf, plaf, plaf!
+Sopla burbujas en el agua.
+Después suelta la tabla.
+¡{ciempi} ya sabe nadar!
+El profesor aplaude.
+Mañana quiere volver.`,
+  },
+  {
+    id: id(48),
+    nivel: 1,
+    titulo: '{ciempi} baila en la fiesta',
+    escena: 'fondo-nubes:💃',
+    texto: `Hay una fiesta en la plaza.
+Suena la música.
+Todos bailan en ronda.
+{ciempi} mira desde un rincón.
+Tiene vergüenza de bailar.
+Una niña le da la mano.
+¡Ven a bailar!
+{ciempi} mueve un pie, y otro pie.
+¡Cien pies bailando!
+Todos aplauden.
+{ciempi} baila hasta la noche.`,
+  },
+  {
+    id: id(49),
+    nivel: 1,
+    titulo: 'El huerto de {ciempi}',
+    escena: 'fondo-jardin:🥕',
+    texto: `{ciempi} tiene un huerto.
+Hace hoyos en la tierra.
+Pone semillas en cada hoyo.
+Las riega con agua.
+Pasan muchos días.
+Sale una hoja verde.
+Después salen muchas más.
+¡Crecen zanahorias y lechugas!
+{ciempi} saca una zanahoria.
+La lava y se la come.
+¡Qué rica está!`,
+  },
+  {
+    id: id(50),
+    nivel: 1,
+    titulo: '{ciempi} va al zoológico',
+    escena: 'fondo-selva:🦒',
+    texto: `{ciempi} va al zoológico.
+Primero ve un león.
+El león tiene mucho pelo.
+Después ve una jirafa.
+¡Qué cuello tan largo!
+Un mono le hace caras.
+{ciempi} se ríe mucho.
+El elefante toma agua.
+¡Splash! Moja a {ciempi}.
+{ciempi} se seca al sol.
+¡Qué día tan divertido!`,
+  },
+  {
+    id: id(51),
+    nivel: 1,
+    titulo: '{ciempi} aprende a cocinar',
+    escena: 'fondo-dulces:🍪',
+    texto: `Hoy {ciempi} cocina con el abuelo.
+Van a hacer galletas.
+Ponen harina en un bol.
+Echan leche, huevos y azúcar.
+{ciempi} revuelve con una cuchara.
+¡Ups! Vuela la harina.
+El abuelo se ríe.
+Hacen galletas con forma de estrella.
+Las meten al horno.
+¡Qué rico olor!
+Comparten las galletas con la familia.`,
+  },
+  {
+    id: id(52),
+    nivel: 1,
+    titulo: '{ciempi} va a la feria',
+    escena: 'fondo-ciudad:🍓',
+    texto: `Es domingo y hay feria.
+{ciempi} va con su papá.
+Hay frutas de muchos colores.
+Una señora grita: ¡Frutillas, frutillas!
+{ciempi} prueba una frutilla.
+¡Está muy dulce!
+Papá compra paltas y choclos.
+{ciempi} empuja el carro.
+El carro está muy lleno.
+En casa hacen una ensalada.
+¡Qué rica la feria!`,
+  },
+
+  // Nivel 2: oración
+  {
+    id: id(53),
+    nivel: 2,
+    titulo: '{ciempi} juega un partido de básquetbol',
+    escena: 'fondo-ciudad:🏀',
+    texto: `El sábado, {ciempi} jugó su primer partido de básquetbol en el gimnasio.
+Con cien pies, le costaba correr sin enredarse con la pelota.
+En el primer tiempo, su equipo iba perdiendo por seis puntos.
+La entrenadora le pidió que respirara hondo y jugara tranquil{o}.
+En el segundo tiempo, sus compañeros le pasaron la pelota muchas veces.
+{ciempi} saltó con todos sus pies a la vez y lanzó al aro.
+¡La pelota entró justo cuando sonó la bocina!
+El partido terminó empatado y todos celebraron con jugo y fruta.
+{ciempi} aprendió que jugar en equipo es lo más entretenido.`,
+  },
+  {
+    id: id(54),
+    nivel: 2,
+    titulo: '{ciempi} sale de campamento',
+    escena: 'fondo-bosque:⛺',
+    texto: `En las vacaciones, {ciempi} salió de campamento con su familia al sur.
+Armaron la carpa entre los árboles, cerca de un río muy limpio.
+{ciempi} juntó ramitas secas para encender una fogata pequeña.
+En la noche, todos comieron sopa caliente y cantaron canciones.
+De pronto se escuchó un ruido extraño detrás de los arbustos.
+{ciempi} tomó la linterna y alumbró con mucho cuidado.
+¡Era un zorrito curioso que miraba la fogata!
+El zorrito se quedó un rato y después volvió tranquilo al bosque.
+Esa noche, {ciempi} durmió feliz, escuchando el agua del río.`,
+  },
+  {
+    id: id(55),
+    nivel: 2,
+    titulo: '{ciempi} va a la playa',
+    escena: 'fondo-playa:🏖️',
+    texto: `Un día de verano, {ciempi} fue a la playa con sus primos.
+Llevaron un quitasol, toallas, baldes y un montón de sándwiches.
+{ciempi} se puso bloqueador en cada uno de sus cien pies.
+¡Se demoró tanto que sus primos ya estaban en el agua!
+De repente, una ola traviesa se llevó la chala de su prima Antonia.
+{ciempi} corrió por la orilla con sus cien pies, más rápido que nunca.
+La encontró enredada en un montón de algas, junto a un cangrejo.
+Antonia le dio las gracias y le regaló su conchita más bonita.
+Al atardecer, comieron helado mirando cómo se escondía el sol.`,
+  },
+  {
+    id: id(56),
+    nivel: 2,
+    titulo: '{ciempi} visita al doctor',
+    escena: 'fondo-jardin:🩺',
+    texto: `Una mañana, {ciempi} despertó con tos y un poquito de fiebre.
+Su mamá le dijo que irían al consultorio a ver a la doctora.
+{ciempi} tenía miedo, porque pensaba que le iban a poner una inyección.
+La doctora le sonrió y le mostró el aparato para escuchar el corazón.
+{ciempi} escuchó su propio corazón: ¡pum, pum, pum!
+Después, la doctora le miró la garganta con una linterna pequeña.
+Le explicó que era un resfrío y que necesitaba descansar y tomar agua.
+No hubo inyección, solo un jarabe de frutilla y muchos abrazos.
+A los tres días, {ciempi} ya estaba jugando otra vez en el patio.`,
+  },
+  {
+    id: id(57),
+    nivel: 2,
+    titulo: '{ciempi} va al circo',
+    escena: 'fondo-castillo:🎪',
+    texto: `El domingo, {ciempi} fue al circo con sus abuelos.
+La carpa era enorme, con rayas rojas y amarillas y muchas luces.
+Primero salieron los malabaristas, lanzando pelotas y aros por el aire.
+Después, un payaso con zapatos gigantes se tropezó y todos se rieron.
+El payaso preguntó si alguien quería ayudarlo en el escenario.
+{ciempi} levantó un pie, luego otro, ¡y al final levantó los cien!
+Subió al escenario y juntos hicieron malabares con muchos sombreros.
+El público aplaudió tan fuerte que la carpa parecía temblar.
+Esa noche, {ciempi} soñó con un circo lleno de estrellas.`,
+  },
+  {
+    id: id(58),
+    nivel: 2,
+    titulo: '{ciempi} bajo el mar',
+    escena: 'fondo-arrecife:🐠',
+    texto: `{ciempi} se puso unas antiparras para mirar bajo el mar.
+Con un tubo para respirar, se sumergió despacio entre las olas.
+Abajo, el agua era tan clara que se veía el fondo de arena.
+Un grupo de peces de colores nadaba alrededor de unas rocas.
+Una estrella de mar descansaba quieta sobre una piedra.
+De pronto, {ciempi} vio una tortuga con una bolsa enredada en la aleta.
+Con mucho cuidado, le quitó la bolsa y la tortuga se fue nadando.
+{ciempi} guardó la bolsa para botarla en el basurero de la playa.
+Desde ese día, cada vez que va al mar, recoge la basura que encuentra.`,
+  },
+
+  // Nivel 3: párrafo
+  {
+    id: id(59),
+    nivel: 3,
+    titulo: '{ciempi}, piloto de carreras',
+    escena: 'fondo-ciudad:🏎️',
+    texto: `La gran carrera de autitos del barrio era el sábado, y {ciempi} pasó toda la semana preparando su auto. Lo construyó con una caja de cartón, cuatro tapas de frascos y mucha pintura azul. En el costado le pintó un número cien, uno por cada pie.
+
+El día de la carrera, la calle estaba llena de vecinos con banderas. Había autos rojos, verdes y uno plateado que brillaba como un espejo. {ciempi} se puso el casco y esperó la señal con todos sus pies listos.
+
+Cuando bajó la bandera, {ciempi} salió a toda velocidad por la bajada. A mitad de camino, vio que el auto plateado había perdido una rueda. Sin pensarlo dos veces, frenó con veinte pies y se bajó para ayudar a su dueña.
+
+Entre los dos arreglaron la rueda con un trozo de cinta y terminaron la carrera juntos, muertos de la risa. No llegaron primeros, pero los vecinos les dieron un premio especial al compañerismo. Esa tarde, {ciempi} colgó su medalla junto a la ventana.`,
+  },
+  {
+    id: id(60),
+    nivel: 3,
+    titulo: '{ciempi} visita el museo',
+    escena: 'fondo-castillo:🦖',
+    texto: `El curso de {ciempi} fue de paseo al museo de ciencias de la ciudad. En la entrada los recibió un guía de lentes grandes. Les pidió que caminaran despacio, que no tocaran las vitrinas y que miraran con atención.
+
+En la primera sala había piedras que brillaban como estrellas y conchas de animales que vivieron hace millones de años. En la segunda había mariposas de todos los colores. {ciempi} se quedó mirando un insecto con muchas patas, parecido a su bisabuelo.
+
+Pero lo mejor estaba en la sala grande: el esqueleto de un dinosaurio tan alto que llegaba al techo. {ciempi} se puso a contar sus huesos y, sin darse cuenta, se quedó atrás. Cuando levantó la vista, su curso ya no estaba.
+
+En vez de asustarse, recordó lo que había dicho el guía: si alguien se pierde, debe esperar junto a la puerta principal. Allí l{o} encontró la profesora al poco rato, todavía contando huesos. Todos se rieron, y {ciempi} prometió volver con su familia para terminar la cuenta.`,
+  },
+  {
+    id: id(61),
+    nivel: 3,
+    titulo: '{ciempi} y los bomberos',
+    escena: 'fondo-ciudad:🚒',
+    texto: `Una mañana, la compañía de bomberos del barrio abrió sus puertas para que los niños la visitaran. {ciempi} llegó temprano, con un casco rojo de plástico. Los bomberos le mostraron el carro, las mangueras enrolladas y una escalera que subía hasta el cielo.
+
+Una bombera le contó que en Chile los bomberos son voluntarios: trabajan en otras cosas y, cuando suena la sirena, corren a ayudar sin cobrar nada. {ciempi} abrió los ojos muy grandes. Le pareció lo más valiente del mundo.
+
+De repente, sonó la alarma. Un gatito se había subido a lo más alto de un árbol de la plaza y no se atrevía a bajar. Los bomberos subieron al carro y {ciempi} los acompañó, sentad{o} atrás con el cinturón bien puesto.
+
+En la plaza, la escalera no cabía entre las ramas. Entonces {ciempi} tuvo una idea: con sus cien pies podía trepar por el tronco sin resbalar. Subió despacito, le habló con cariño al gatito y bajó con él en la espalda. Los bomberos l{o} nombraron ayudante de honor.`,
+  },
+  {
+    id: id(62),
+    nivel: 3,
+    titulo: '{ciempi} viaja en tren',
+    escena: 'fondo-bosque:🚂',
+    texto: `Para las vacaciones de invierno, {ciempi} viajó en tren con su abuela hasta el sur. Nunca se había subido a un tren, así que la noche anterior casi no pudo dormir. Preparó una mochila con un libro, una libreta para dibujar y un paquete de galletas.
+
+El tren salió de la estación con un pitazo largo. Al principio pasaban casas y calles, pero pronto aparecieron campos verdes, vacas y volcanes con nieve. {ciempi} pegó la cara a la ventana y dibujó todo lo que veía.
+
+A mitad del viaje, el tren se detuvo en medio del campo. Un árbol se había caído sobre la vía. Algunos pasajeros se pusieron impacientes, pero {ciempi} sacó sus galletas y las repartió en el vagón. Pronto todos conversaban como si fueran vecinos.
+
+Cuando por fin llegaron, la abuela le preguntó qué le había gustado más. {ciempi} pensó un rato y le mostró su libreta: había dibujado a cada pasajero con una galleta en la mano. Lo mejor del viaje, le dijo, habían sido las personas.`,
+  },
+  {
+    id: id(63),
+    nivel: 3,
+    titulo: '{ciempi} en la biblioteca',
+    escena: 'fondo-castillo:📚',
+    texto: `Todos los jueves, {ciempi} va a la biblioteca del barrio con su papá. Le encanta el olor de los libros y el silencio de las salas. La bibliotecaria, que se llama Carmen, siempre le guarda un cuento nuevo en un estante bajito.
+
+Un jueves, la señora Carmen estaba preocupada. Los niños más chicos ya no querían venir, porque decían que leer era aburrido. {ciempi} pensó en cómo ayudar y tuvo una idea: podía leer cuentos en voz alta, haciendo una voz distinta para cada personaje.
+
+El sábado siguiente, se sentó en una alfombra de colores con un libro sobre un dragón que tenía hipo. Al principio solo llegaron tres niños, pero sus risas se escucharon por toda la biblioteca. Al rato, la alfombra estaba llena y nadie quería que el cuento terminara.
+
+Desde entonces, los sábados hay hora del cuento en la biblioteca del barrio. Los niños llegan temprano para conseguir un buen lugar. Y {ciempi}, que antes solo escuchaba, ahora también lee, con sus cien pies moviéndose de emoción.`,
+  },
+  {
+    id: id(64),
+    nivel: 3,
+    titulo: '{ciempi} viaja a la luna',
+    escena: 'fondo-espacio:🚀',
+    texto: `Una noche de luna llena, {ciempi} miraba el cielo desde el patio y se preguntó cómo sería caminar allá arriba. Al día siguiente, junto a su vecina Josefa, construyó un cohete con cajas, tubos de cartón y una olla vieja que hizo de casco.
+
+Contaron hacia atrás desde diez y, cuando llegaron a cero, cerraron los ojos muy fuerte. Al abrirlos, todo estaba en silencio y la Tierra se veía pequeña y azul por la ventana. ¡Estaban en la luna! El suelo era gris y lleno de cráteres.
+
+{ciempi} dio un salto y se quedó flotando un buen rato, porque allá todo pesa menos. Josefa se rió tanto que se le empañó el casco. Juntos dejaron cien huellas en el polvo, una por cada pie, y plantaron una bandera hecha con un calcetín.
+
+Cuando empezaron a tener hambre, decidieron volver a casa. Abrieron los ojos y estaban otra vez en el patio, junto a las cajas. Nunca supieron si fue un sueño, pero {ciempi} encontró polvo gris en uno de sus zapatos.`,
+  },
+  {
+    id: id(65),
+    nivel: 3,
+    titulo: '{ciempi} salva el día',
+    escena: 'fondo-nubes:⭐',
+    texto: `Era el día de la feria de ciencias del colegio y todos estaban muy ocupados. El curso de {ciempi} había preparado un volcán de greda que echaba espuma roja. Lo habían pintado entre todos y era el orgullo de la sala.
+
+Justo antes de la presentación, alguien chocó la mesa sin querer y el volcán cayó al suelo. Se partió en tres pedazos y la espuma se desparramó por todas partes. Los compañeros de {ciempi} se quedaron callados, y algunos empezaron a llorar.
+
+{ciempi} respiró hondo y les dijo que todavía tenían tiempo para arreglarlo. Organizó a todo el curso: unos buscaron cinta y otros limpiaron el piso. Mientras tanto, {ciempi} sostuvo las piezas con sus cien pies y el resto las pegaba con cuidado.
+
+Cuando llegó el jurado, el volcán tenía parches por todos lados, pero funcionó mejor que nunca. La profesora contó lo que había pasado y el curso ganó un premio al trabajo en equipo. Esa tarde, todos firmaron el volcán, y le pidieron a {ciempi} que firmara primero.`,
+  },
+]
+
+/** Los cuentos de siempre (los 8 originales de nivel 0 deciden la Cuncuna: ver datos/desbloqueoCuncuna.ts). */
+export const CUENTOS_ORIGINALES: Cuento[] = [...CUENTOS_DE_CIEMPI, ...CUENTOS_DE_PERSONAJES]
+
+export const CUENTOS: Cuento[] = [...CUENTOS_ORIGINALES, ...CUENTOS_DE_TU_CIEMPI]

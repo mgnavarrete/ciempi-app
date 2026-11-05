@@ -147,11 +147,23 @@ export function separarSilabas(palabra: string): string[] {
 export interface PalabraSilabeada {
   texto: string
   silabas: string[]
+  /** Se lee entera, sin separar (el nombre de su Ciempi en el nivel 0): la voz la dice como palabra. */
+  entera?: true
 }
 
-export function silabearFrase(frase: string): PalabraSilabeada[] {
+/**
+ * Las palabras de la frase con sus sílabas. `enteras`: palabras (en
+ * minúsculas, sin signos) que no se separan, como el nombre que el niño le
+ * puso a su Ciempi (ver contenido/nombreCiempi.ts): quedan como una sola
+ * «sílaba» con la palabra completa.
+ */
+export function silabearFrase(frase: string, enteras?: ReadonlySet<string>): PalabraSilabeada[] {
   return frase
     .split(/\s+/)
     .filter(Boolean)
-    .map((texto) => ({ texto, silabas: separarSilabas(texto) }))
+    .map((texto) =>
+      enteras?.size && enteras.has(texto.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').toLowerCase())
+        ? { texto, silabas: [texto], entera: true as const }
+        : { texto, silabas: separarSilabas(texto) },
+    )
 }

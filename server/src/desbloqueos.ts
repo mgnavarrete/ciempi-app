@@ -1,5 +1,5 @@
 import type pg from 'pg'
-import { CUENTOS } from '../../src/contenido/cuentos.ts'
+import { CUENTOS_ORIGINALES } from '../../src/contenido/cuentos.ts'
 
 /**
  * Desbloqueo de la Cuncuna (especie `especie:cuncuna`, el id de
@@ -13,7 +13,7 @@ import { CUENTOS } from '../../src/contenido/cuentos.ts'
 export const CUNCUNA = 'especie:cuncuna'
 
 /** Los 8 cuentos originales de nivel 0 (los mismos que fija la migración 013). */
-export const ORIGINALES_N0 = CUENTOS.filter((c) => c.nivel === 0).map((c) => c.id)
+export const ORIGINALES_N0 = CUENTOS_ORIGINALES.filter((c) => c.nivel === 0).map((c) => c.id)
 
 export const REGLA_CUNCUNA = {
   /** 6 de los 8 originales de N0, o 6 cuentos de Ciempi distintos de cualquier nivel. */

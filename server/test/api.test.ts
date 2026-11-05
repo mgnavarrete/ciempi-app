@@ -261,6 +261,12 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       // La segunda vez sale de la base, sin volver a generarla.
       expect((await voz('/api/voz?texto=despacio&voz=nina&velocidad=0.95', N)).statusCode).toBe(200)
       expect(pedidos).toHaveLength(1)
+      // Un cuento con su Ciempi: la frase con el nombre que le puso el niño no está grabada y se genera en el momento.
+      const { ponerNombre } = await import('../../src/contenido/nombreCiempi.ts')
+      const frase = ponerNombre('{ciempi} tiene una bola.', { nombre: 'Tito', genero: 'nino' })
+      expect((await voz(`/api/voz?texto=${encodeURIComponent(frase)}&voz=nino`, N)).statusCode).toBe(200)
+      expect(pedidos).toHaveLength(2)
+      expect(new URLSearchParams(pedidos[1].split('?')[1]).get('texto')).toBe('Tito tiene una bola.')
       expect((await voz(`/api/voz?texto=${'a'.repeat(301)}`, N)).statusCode).toBe(400)
     } finally {
       await new Promise((ok) => falso.close(ok))
@@ -425,6 +431,24 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
     expect((await pedir('GET', `/api/perfiles/${nuevo.body.id}/asignaciones`, T)).body).toHaveLength(CUENTOS.length - 1)
   })
 
+  it('los cuentos con su Ciempi llegan también a los niños que ya existían, al arrancar el servidor', async () => {
+    const { CUENTOS_DE_TU_CIEMPI } = await import('../../src/contenido/cuentos.ts')
+    const ids = CUENTOS_DE_TU_CIEMPI.map((c) => c.id)
+    // Como un servidor 2.7: esos cuentos todavía no existen.
+    await pool.query('delete from asignaciones where texto_id = any($1)', [ids])
+    await pool.query('delete from textos where id = any($1)', [ids])
+    const antes = (await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, T)).body as { textoId: string; nivel: number }[]
+    expect(antes.filter((a) => ids.includes(a.textoId))).toHaveLength(0)
+    await (await import('../src/cuentos.ts')).sembrarCuentos()
+    const despues = (await pedir('GET', `/api/perfiles/${perfilId}/asignaciones`, T)).body as { textoId: string; nivel: number }[]
+    for (const c of CUENTOS_DE_TU_CIEMPI) expect(despues.find((a) => a.textoId === c.id)?.nivel).toBe(c.nivel)
+    expect(despues).toHaveLength(antes.length + 25)
+    // El servidor guarda la plantilla (el nombre lo pone la app de cada niño) y la portada con su Ciempi.
+    const texto = (await pedir('GET', `/api/textos/${ids[0]}`, N)).body
+    expect(texto).toMatchObject({ origen: 'ciempi', titulo: '{ciempi} juega a la pelota', portada: 'ciempi:fondo-jardin:⚽' })
+    expect(texto.frases[0]).toBe('{ciempi} tiene una bola.')
+  })
+
   it('los párrafos de un texto se guardan si son válidos', async () => {
     const id = randomUUID()
     const frases = ['Uno.', 'Dos.', 'Tres.']
@@ -516,6 +540,29 @@ describe.skipIf(!HAY_BASE)('servidor de Ciempi', async () => {
       expect(aLaVez.filter((r) => r.body.estado === 'otorgado')).toHaveLength(1)
       expect(aLaVez.every((r) => r.body.otorgadas === 1)).toBe(true)
       expect(await saldo()).toBe(4)
+    })
+
+    it('cuento con su Ciempi: cambiarle el nombre no vuelve a pagar (se recuerda por el id del cuento)', async () => {
+      const { CUENTOS_DE_TU_CIEMPI } = await import('../../src/contenido/cuentos.ts')
+      const cuento = CUENTOS_DE_TU_CIEMPI.find((c) => c.nivel === 1)!
+      const total = (await pedirR('GET', `/api/textos/${cuento.id}`, K)).body.frases.length as number
+      const a = ((await pedirR('GET', `/api/perfiles/${ninoId}/asignaciones`, K)).body as { id: string; textoId: string; nivel: number }[]).find((x) => x.textoId === cuento.id)!
+      expect(a.nivel).toBe(1)
+      ahora += 10 * 60_000
+      const primera = await avance(a.id, total)
+      expect(primera.body.otorgadas).toBeGreaterThan(0)
+      const perfil = (await pedirR('GET', `/api/perfiles/${ninoId}`, K)).body
+      const renombrado = await pedirR('PUT', `/api/perfiles/${ninoId}/ciempi`, K, { apariencia: { ...perfil.ciempi, nombre: 'Margarita', genero: 'nina' } })
+      expect(renombrado.body.ciempi).toMatchObject({ nombre: 'Margarita', genero: 'nina' })
+      ahora += 10 * 60_000
+      const antes = await saldo()
+      expect((await avance(a.id, total)).body).toMatchObject({ otorgadas: 0, motivo: 'ya_pagado' })
+      // Ni quitándolo y volviéndolo a agregar con el nombre nuevo.
+      expect((await pedirR('DELETE', `/api/asignaciones/${a.id}`, P)).status).toBe(200)
+      const otra = await pedirR('POST', `/api/perfiles/${ninoId}/asignaciones`, P, { textoId: cuento.id, nivel: 1 })
+      ahora += 10 * 60_000
+      expect((await avance(otra.body.id, total)).body).toMatchObject({ otorgadas: 0, motivo: 'ya_pagado' })
+      expect(await saldo()).toBe(antes)
     })
 
     it('dos dispositivos del mismo niño: la misma frase se paga una vez; libros distintos, cada uno', async () => {

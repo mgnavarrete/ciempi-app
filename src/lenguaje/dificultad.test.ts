@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CUENTOS } from '../contenido/cuentos'
+import { CUENTOS_ORIGINALES as CUENTOS } from '../contenido/cuentos'
 import { nivelSugerido, medirTexto } from './dificultad'
 import { dividirConParrafos } from './frases'
 import { vistaPorNivel } from './unidades'
@@ -20,6 +20,7 @@ describe('nivelSugerido', () => {
   })
 })
 
+// Los cuentos con su Ciempi de protagonista (con el nombre que le puso) se prueban en contenido/cuentosConNombre.test.ts.
 describe('cuentos de Ciempi', () => {
   it('hay ocho por nivel (cuatro de Ciempi y cuatro con personajes), con ids únicos', () => {
     for (const n of [0, 1, 2, 3, 4]) expect(CUENTOS.filter((c) => c.nivel === n)).toHaveLength(8)

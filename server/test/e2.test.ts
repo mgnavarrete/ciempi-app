@@ -20,7 +20,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
   process.env.DATABASE_URL = url.toString()
   const { pool, migrar } = await import('../src/db.ts')
   const { crearApp } = await import('../src/app.ts')
-  const { CUENTOS } = await import('../../src/contenido/cuentos.ts')
+  const { CUENTOS_ORIGINALES } = await import('../../src/contenido/cuentos.ts')
   const { ORIGINALES_N0, CUNCUNA } = await import('../src/desbloqueos.ts')
   const { REGLAS_MONEDAS, REGLAS_MONEDAS_E2, contarSilabas, leerModeloEconomia, segundosEsperados } = await import('../../src/lectura/monedas.ts')
   const { vistaPorNivel, fraseDeUnidad } = await import('../../src/lenguaje/unidades.ts')
@@ -588,7 +588,7 @@ describe.skipIf(!HAY_BASE)('economía E2, bandera y Cuncuna', async () => {
     it('los 8 cuentos originales de nivel 0 de la migración son los de src/contenido/cuentos.ts', async () => {
       const sql = await migracion013()
       const enSql = [...sql.matchAll(/'(c1e0a000-[0-9a-f-]+)'/g)].map((m) => m[1])
-      expect(enSql.sort()).toEqual(CUENTOS.filter((c) => c.nivel === 0).map((c) => c.id).sort())
+      expect(enSql.sort()).toEqual(CUENTOS_ORIGINALES.filter((c) => c.nivel === 0).map((c) => c.id).sort())
       expect(ORIGINALES_N0).toHaveLength(8)
     })
 

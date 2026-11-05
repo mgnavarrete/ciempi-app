@@ -5,6 +5,7 @@ import { CiempiPersonaje } from '../ciempi/CiempiPersonaje'
 import { FondoTema } from '../ciempi/dibujos'
 import { MiniaturaCiempi } from '../ciempi/v2/Miniatura'
 import { CUENTOS } from '../contenido/cuentos'
+import { conNombreDeCiempi } from '../contenido/nombreCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, Cuenta, Id, InvitacionNino, NivelLectura, PerfilNino, SesionLectura, Texto } from '../dominio/tipos'
 import type { IdFuente } from '../fuentes/entradas'
@@ -64,7 +65,8 @@ export function PantallaAdultos({ cuenta, perfiles, alVolver, alSalir, alAgregar
     const ajenos = await Promise.all(
       [...new Set(a.map((x) => x.textoId))].filter((id) => !t.some((x) => x.id === id)).map((id) => repos.textos.obtener(id)),
     )
-    setTextos([...t, ...ajenos.filter((x): x is Texto => x !== null)])
+    // Los cuentos con su Ciempi de protagonista, con el nombre de fábrica (cada niño ve el suyo en su biblioteca).
+    setTextos([...t, ...ajenos.filter((x): x is Texto => x !== null)].map((x) => conNombreDeCiempi(x, null)!))
     setAsignaciones(a)
     setSesiones(s)
   }, [repos, perfiles])

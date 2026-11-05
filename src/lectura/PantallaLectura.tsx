@@ -6,6 +6,7 @@ import { voz } from '../audio/voz'
 import { bailePorId, type AparienciaCiempi } from '../ciempi/catalogo'
 import { CiempiPersonaje } from '../ciempi/CiempiPersonaje'
 import { useVozDeCiempi } from '../ciempi/vozDeCiempi'
+import { palabrasDelNombre, ponerNombre, tieneMarcas } from '../contenido/nombreCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { PedidoPremio, ProgresoAsignacion } from '../datos/repositorios'
 import { nuevoId } from '../dominio/ids'
@@ -140,9 +141,22 @@ export function PantallaLectura(props: Props) {
   const tranquilo = ajustes.modoTranquilo
   useVozDeCiempi(perfil.ciempi.genero)
 
+  // Un cuento con su Ciempi de protagonista: las unidades se arman con la plantilla (las mismas
+  // frases y el mismo avance para todos, aunque le cambie el nombre) y después se pone el nombre
+  // que le puso a su Ciempi. En el nivel 0 el nombre no se separa en sílabas (contenido/nombreCiempi.ts).
+  const conNombre = useMemo(() => tieneMarcas(texto.titulo) || texto.frases.some(tieneMarcas), [texto])
+  const { nombre: nombreCiempi, genero: generoCiempi } = perfil.ciempi
+  const enteras = useMemo(() => (conNombre ? palabrasDelNombre({ nombre: nombreCiempi, genero: generoCiempi }) : undefined), [conNombre, nombreCiempi, generoCiempi])
+  const titulo = ponerNombre(texto.titulo, perfil.ciempi)
+
   // Lo que se lee de una vez depende del nivel (frase, oración, párrafo, página).
   // El avance se guarda siempre en frases (las de los niveles 0 y 1): ver lenguaje/unidades.ts.
-  const vista = useMemo(() => vistaPorNivel(texto, nivel), [texto, nivel])
+  const vista = useMemo(() => {
+    const v = vistaPorNivel(texto, nivel)
+    if (!conNombre) return v
+    const ciempi = { nombre: nombreCiempi, genero: generoCiempi }
+    return { ...v, unidades: v.unidades.map((u) => ponerNombre(u, ciempi)), capitulos: v.capitulos.map((c) => ({ ...c, titulo: ponerNombre(c.titulo, ciempi) })) }
+  }, [texto, nivel, conNombre, nombreCiempi, generoCiempi])
   const { unidades, capitulos } = vista
   const total = unidades.length
   const totalFrases = texto.frases.length
@@ -176,10 +190,10 @@ export function PantallaLectura(props: Props) {
 
   // Niveles 3 y 4: el párrafo (o la página) en fragmentos con sentido, uno por manzana.
   const fragmentos = useMemo(
-    () => (porFragmentos ? dividirEnFragmentos(frase, { porOracion: nivel === 4 }).map((f) => silabearFrase(f)).filter((f) => f.length > 0) : []),
-    [porFragmentos, frase, nivel],
+    () => (porFragmentos ? dividirEnFragmentos(frase, { porOracion: nivel === 4 }).map((f) => silabearFrase(f, enteras)).filter((f) => f.length > 0) : []),
+    [porFragmentos, frase, nivel, enteras],
   )
-  const palabras = useMemo(() => (porFragmentos ? fragmentos.flat() : silabearFrase(frase)), [porFragmentos, fragmentos, frase])
+  const palabras = useMemo(() => (porFragmentos ? fragmentos.flat() : silabearFrase(frase, enteras)), [porFragmentos, fragmentos, frase, enteras])
   // En el nivel 0 cada sílaba es una manzana: de qué palabra es cada una.
   const silabas = useMemo(
     () => (porSilaba ? palabras.flatMap((p, i) => p.silabas.map((texto, s) => ({ palabra: i, texto, indice: s }))) : []),
@@ -237,12 +251,17 @@ export function PantallaLectura(props: Props) {
   const fraseQueViene = quitarGuiones(unidades[indice + 1] ?? '')
   useEffect(() => {
     if (modo === 'solo') return
-    if (porSilaba) voz.precargarSilabas(silabas.map((s) => silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas)))
-    else if (nivel === 1) voz.precargar([...palabras, ...silabearFrase(fraseQueViene)].map((p) => p.texto))
+    if (porSilaba) {
+      const sueltas = silabas.filter((s) => !palabras[s.palabra].entera)
+      voz.precargarSilabas(sueltas.map((s) => silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas)))
+      // El nombre de su Ciempi se dice entero, como palabra.
+      const nombres = palabras.filter((p) => p.entera).map((p) => p.texto)
+      if (nombres.length) voz.precargar(nombres)
+    } else if (nivel === 1) voz.precargar([...palabras, ...silabearFrase(fraseQueViene, enteras)].map((p) => p.texto))
     else if (oracion) voz.precargarFrases([frase, fraseQueViene])
     else if (pagina) voz.precargarFrases(trozos.textos)
     else voz.precargarFrases(fragmentos.map((f) => f.map((p) => p.texto).join(' ')))
-  }, [palabras, silabas, porSilaba, fraseQueViene, frase, fragmentos, trozos, modo, nivel, oracion, pagina])
+  }, [palabras, silabas, porSilaba, fraseQueViene, frase, fragmentos, trozos, modo, nivel, oracion, pagina, enteras])
 
   // Nivel 2 con la voz de Ciempi: dónde empieza cada palabra en lo que dice la voz (0..1, por letras),
   // para saber por dónde va la voz comparada con el dedo.
@@ -412,7 +431,7 @@ export function PantallaLectura(props: Props) {
     const sig = indice + 1
     if (sig >= total) {
       guardarProgreso(total, 'completada')
-      setPausa({ tipo: 'libro', titulo: texto.titulo, mensaje, siguiente: 0 })
+      setPausa({ tipo: 'libro', titulo, mensaje, siguiente: 0 })
       if (cuentaLectura.current.total() > 0 && !tranquilo) programar(sonarCelebracion, 200)
       return
     }
@@ -659,7 +678,9 @@ export function PantallaLectura(props: Props) {
           // Sílaba por sílaba: «La – u – va», reescrita para que la voz no la
           // deletree ni la lea en inglés (ver audio/pronunciacion.ts).
           const s = silabas[efecto.palabra]
-          if (s) voz.decirSilaba(silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas), ajustes.velocidadVoz)
+          // El nombre de su Ciempi no se separa: se dice entero.
+          if (s && palabras[s.palabra].entera) voz.decir(palabras[s.palabra].texto, ajustes.velocidadVoz)
+          else if (s) voz.decirSilaba(silabaParaLaVoz(s.texto, s.indice, palabras[s.palabra].texto, palabras[s.palabra].silabas), ajustes.velocidadVoz)
         } else if (oracion || pagina) {
           // La voz sigue al dedo por trozos (seguirConLaVoz), no por manzanas.
         } else if (porFragmentos) {
@@ -725,10 +746,10 @@ export function PantallaLectura(props: Props) {
       alVolver={alVolver}
       titulo={
         <span className="flex flex-col leading-tight">
-          <span className="truncate">{conCapitulos ? capitulo.titulo : texto.titulo}</span>
+          <span className="truncate">{conCapitulos ? capitulo.titulo : titulo}</span>
           {(conCapitulos || total > 1) && (
             <span className="truncate text-sm font-normal text-tinta-suave apaisado:text-xs">
-              {conCapitulos ? texto.titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
+              {conCapitulos ? titulo : `${nombreUnidad} ${indice + 1} de ${total}`}
             </span>
           )}
         </span>
@@ -769,7 +790,7 @@ export function PantallaLectura(props: Props) {
 
   const panelIndice = indiceAbierto && (
     <PanelIndice
-      texto={{ ...texto, frases: unidades, capitulos }}
+      texto={{ ...texto, titulo, frases: unidades, capitulos }}
       indice={indice}
       maxima={aUnidad(leidoHasta.current)}
       alSaltar={saltarA}
