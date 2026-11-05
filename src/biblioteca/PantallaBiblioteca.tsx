@@ -191,9 +191,9 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     {resumen.terminado && (
                       <span
                         title="¡Lo terminaste!"
-                        className="absolute -right-2 -top-2 grid h-9 w-9 place-items-center rounded-full bg-amarillo text-xl shadow-md ring-2 ring-white"
+                        className="absolute -right-2 -top-2 grid h-9 w-9 place-items-center rounded-full bg-verde-claro text-xl shadow-md ring-2 ring-white"
                       >
-                        ⭐
+                        🏅
                       </span>
                     )}
                   </span>
