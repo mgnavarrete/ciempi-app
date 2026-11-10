@@ -45,6 +45,16 @@ const PORTADAS = [
   [38, ['#ffe0c2', '#b8312f'], '🚀', ['🔧', '⚡']],
   [39, ['#ffe2c2', '#7a3e1d'], '🐉', ['🥚', '🧙']],
   [40, ['#1d1f4a', '#5a4fcf'], '👩‍🚀', ['🪐', '🥬']],
+  // Nivel Inicial: «Primeras palabras» 1 a 9 (contenido/inicial.ts)
+  [66, ['#fff1d6', '#ffc46b'], '👩', ['🐆', '🥔']],
+  [67, ['#e3f7d0', '#8fd17a'], '🐸', ['🍲', '🐻']],
+  [68, ['#d9f1ff', '#6fc0ec'], '🌊', ['🔍', '🍋']],
+  [69, ['#fff6c8', '#f2c94c'], '🦆', ['🏍️', '🩰']],
+  [70, ['#1f3b73', '#4a74c9'], '🌙', ['🐒', '🎵']],
+  [71, ['#ffe3cf', '#f5a06b'], '🏠', ['🥥', '🌮']],
+  [72, ['#ffe0ea', '#f27fa2'], '🌹', ['🦜', '🍐']],
+  [73, ['#e6f6dc', '#7cc46d'], '⚽', ['🍅', '🕊️']],
+  [74, ['#efe4ff', '#a98be8'], '📖', ['🌙', '🐒']],
 ]
 
 const svg = ([n, [arriba, abajo], principal, otros]) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">

@@ -14,6 +14,7 @@ import { sinAutorizar, type AjustesLectura, type Asignacion, type EstadoAsignaci
 import { dividirEnFragmentos, quitarGuiones, trocearOracion } from '../lenguaje/frases'
 import { capituloDeFrase } from '../lenguaje/libro'
 import { silabearFrase } from '../lenguaje/silabas'
+import { DIBUJOS_INICIAL, claveDibujo } from '../contenido/inicial'
 import { datosNivel, fraseDeUnidad, unidadDeFrase, vistaPorNivel, type NivelLectura } from '../lenguaje/unidades'
 import { BotonIcono, BotonPrincipal, Encabezado, Icono, Monedas } from '../ui/comunes'
 import { MODOS, MODO_POR_NIVEL, descripcionModo } from './modos'
@@ -28,6 +29,8 @@ import { TROZOS_DE_ATRASO, VELOCIDAD_MAXIMA, encolarTrozo, trozoEn, velocidadPar
 const MS_TROPIEZO = 1500
 /** Respiro breve al terminar una frase (la frase queda encendida) antes de pasar a la siguiente. */
 const MS_PASO_FRASE = 450
+/** Nivel Inicial: cuánto se ve el dibujo de la palabra antes de pasar a la siguiente. */
+const MS_DIBUJO_INICIAL = 1500
 /** Desde el nivel 2 la voz no se corta al llegar al final: se espera a que termine (hasta esto). */
 const MS_ESPERA_VOZ_LARGA = 20_000
 /** Niveles 2 y 4: cuánto tiene que volver atrás el dedo para que la voz se corte. */
@@ -125,9 +128,11 @@ export function PantallaLectura(props: Props) {
   const e2 = pagaPorEsfuerzo(repos.premios.economia?.() ?? 'actual')
   const { ajustes } = perfil
   // Cómo se lee en cada nivel (ver lenguaje/unidades.ts):
-  // 0 sílaba por sílaba · 1 palabra por palabra · 2 la oración, al ritmo del
+  // Inicial (-1) y 0 sílaba por sílaba · 1 palabra por palabra · 2 la oración, al ritmo del
   // dedo · 3 y 4 el párrafo o la página completa, una manzana por fragmento.
-  const porSilaba = nivel === 0
+  const porSilaba = nivel <= 0
+  // Inicial: palabras sueltas; al terminar cada una, Ciempi la dice entera y aparece su dibujo.
+  const inicial = nivel === -1
   const oracion = nivel === 2
   const porFragmentos = nivel === 3 || nivel === 4
   // Nivel 3: una frase por línea, una manzana por frase repartidas parejo, y la frase se lee entera.
@@ -283,6 +288,9 @@ export function PantallaLectura(props: Props) {
   const [aviso, setAviso] = useState<string | null>(null)
   // Un hito alcanzado: «¡Llegaste a la mitad! +5 🪙» por un momento.
   const [festejo, setFestejo] = useState<string | null>(null)
+  // Nivel Inicial: el dibujo de la palabra recién leída (después de leerla, para no adivinar por la imagen).
+  const [dibujo, setDibujo] = useState<{ emoji: string; texto: string; n: number } | null>(null)
+  useEffect(() => setDibujo(null), [indice])
   // La moneda de la frase recién leída, que sube hacia el contador.
   const [monedaGanada, setMonedaGanada] = useState<{ monedas: number; n: number } | null>(null)
 
@@ -522,13 +530,19 @@ export function PantallaLectura(props: Props) {
       silabasLeidas: (s?.silabasLeidas ?? 0) + (aBuenRitmo ? palabras.reduce((m, p) => m + p.silabas.length, 0) : 0),
     })
     if (ganadas && !tranquilo && !terminaLibro) programar(sonarMoneda, 120)
+    // Inicial: la palabra entera (en fila, después de su última sílaba) y su dibujo.
+    const dibujoDeEsta = inicial ? DIBUJOS_INICIAL.get(claveDibujo(frase)) : undefined
+    if (dibujoDeEsta) {
+      setDibujo({ emoji: dibujoDeEsta, texto: frase, n: Date.now() })
+      if (definicionModo.vozAlDeslizar) voz.decirFrase(frase, ajustes.velocidadVoz, true)
+    }
     // Se pasa a la siguiente recién cuando la voz terminó.
     const cambio = cambiosDeFrase.current
     programar(async () => {
       await voz.esperarSilencio(nivel >= 2 ? MS_ESPERA_VOZ_LARGA : 4000)
       if (cambio !== cambiosDeFrase.current) return
       siguienteFrase(mensajeFinal)
-    }, MS_PASO_FRASE)
+    }, dibujoDeEsta ? MS_DIBUJO_INICIAL : MS_PASO_FRASE)
   }
 
   // Una frase que quedó vacía (era solo una raya) se salta sola.
@@ -885,6 +899,14 @@ export function PantallaLectura(props: Props) {
         <p key={monedaGanada.n} aria-live="polite" className="moneda-sube pointer-events-none absolute right-6 top-14 z-30 rounded-full bg-amarillo px-3 py-1 text-xl font-bold text-tinta shadow-md">
           +{monedaGanada.monedas} 🪙
         </p>
+      )}
+      {dibujo && (
+        <div key={dibujo.n} role="status" aria-label={dibujo.texto} className="aparecer pointer-events-none absolute inset-0 z-30 grid place-items-center">
+          <div className="rounded-3xl bg-white/95 px-10 py-6 text-center shadow-xl">
+            <div className="text-8xl leading-none" aria-hidden="true">{dibujo.emoji}</div>
+            <div className="mt-3 text-4xl font-bold text-tinta">{dibujo.texto}</div>
+          </div>
+        </div>
       )}
       {festejo && (
         <p role="status" className="aparecer absolute inset-x-0 top-24 z-30 mx-auto w-fit rounded-full bg-naranjo px-5 py-2 text-xl font-bold text-white shadow-lg">

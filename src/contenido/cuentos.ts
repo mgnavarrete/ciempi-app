@@ -1,4 +1,5 @@
 import type { NivelLectura } from '../dominio/tipos.ts'
+import { CUADERNOS_INICIAL } from './inicial.ts'
 
 /**
  * Cuentos de Ciempi: vienen con la app y todo lector nuevo los encuentra en
@@ -1069,4 +1070,7 @@ Cuando llegó el jurado, el volcán tenía parches por todos lados, pero funcion
 /** Los cuentos de siempre (los 8 originales de nivel 0 deciden la Cuncuna: ver datos/desbloqueoCuncuna.ts). */
 export const CUENTOS_ORIGINALES: Cuento[] = [...CUENTOS_DE_CIEMPI, ...CUENTOS_DE_PERSONAJES]
 
-export const CUENTOS: Cuento[] = [...CUENTOS_ORIGINALES, ...CUENTOS_DE_TU_CIEMPI]
+/** Nivel Inicial: los nueve cuadernos de «Mis primeras palabras» (contenido/inicial.ts). */
+export { CUADERNOS_INICIAL }
+
+export const CUENTOS: Cuento[] = [...CUENTOS_ORIGINALES, ...CUENTOS_DE_TU_CIEMPI, ...CUADERNOS_INICIAL]

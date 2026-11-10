@@ -54,10 +54,11 @@ export interface ReglasMonedas {
 export const REGLAS_MONEDAS: ReglasMonedas = {
   version: '2.4.1',
   // En el nivel 3, hasta 4 por párrafo, que es largo.
-  porUnidad: { 0: 1, 1: 1, 2: 1, 3: 4, 4: 0 },
-  topePorLibro: { 0: 10, 1: 10, 2: Infinity, 3: 15, 4: 0 },
+  porUnidad: { [-1]: 1, 0: 1, 1: 1, 2: 1, 3: 4, 4: 0 },
+  topePorLibro: { [-1]: 10, 0: 10, 1: 10, 2: Infinity, 3: 15, 4: 0 },
   // En 0, 1 y 3 todo va por frase, con su tope.
   hitos: {
+    [-1]: [],
     0: [],
     1: [],
     2: [{ porcentaje: 100, monedas: 5 }],
@@ -69,7 +70,7 @@ export const REGLAS_MONEDAS: ReglasMonedas = {
       { porcentaje: 100, monedas: 15 },
     ],
   },
-  relectura: { 0: 1, 1: 1, 2: 1, 3: 2, 4: 3 },
+  relectura: { [-1]: 1, 0: 1, 1: 1, 2: 1, 3: 2, 4: 3 },
   minimoABuenRitmo: 0.8,
 }
 
@@ -169,7 +170,7 @@ export interface ReglasEsfuerzo {
 /** Las reglas pueden traer el modelo de esfuerzo (E2). */
 export type ReglasMonedasConEsfuerzo = ReglasMonedas
 
-const CERO: Record<NivelLectura, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
+const CERO: Record<NivelLectura, number> = { [-1]: 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
 
 /** Modelo E2 (economía v3, ECONOMIA-V3.md §6.3). Experimental: solo con ECONOMIA=e2. */
 export const REGLAS_MONEDAS_E2: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEsfuerzo } = {
@@ -178,13 +179,13 @@ export const REGLAS_MONEDAS_E2: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEsf
   // sin hitos por porcentaje y sin premio fijo de relectura.
   porUnidad: { ...CERO },
   topePorLibro: { ...CERO },
-  hitos: { 0: [], 1: [], 2: [], 3: [], 4: [] },
+  hitos: { [-1]: [], 0: [], 1: [], 2: [], 3: [], 4: [] },
   relectura: { ...CERO },
   // Solo para «Más despacito»; ya no decide el pago.
   minimoABuenRitmo: 0.8,
   esfuerzo: {
-    tasaPorMinuto: { primeraLectura: 2, relectura: { 0: 1.5, 1: 1.5, 2: 1, 3: 1, 4: 1 } },
-    silabasPorMinutoReferencia: { 0: 5, 1: 22, 2: 60, 3: 105, 4: 165 },
+    tasaPorMinuto: { primeraLectura: 2, relectura: { [-1]: 1.5, 0: 1.5, 1: 1.5, 2: 1, 3: 1, 4: 1 } },
+    silabasPorMinutoReferencia: { [-1]: 5, 0: 5, 1: 22, 2: 60, 3: 105, 4: 165 },
     segundosFijosPorUnidad: 3,
     topeSobreEsperado: 2,
     pausaActivaMaxSegundos: 10,
@@ -192,6 +193,7 @@ export const REGLAS_MONEDAS_E2: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEsf
     libroTerminado: { porMinuto: 1, maximo: 3, minutosEsperadosMinimos: 1, fraccionActivaMinima: 0.5 },
     relecturaConMejora: { monedas: 2, maxPorCuentoYDia: 1 },
     nuevas: {
+      [-1]: { cuenta: 'silabas', cada: 15, monedas: 2 },
       0: { cuenta: 'silabas', cada: 15, monedas: 2 },
       1: { cuenta: 'palabras', cada: 25, monedas: 2 },
     },
@@ -211,7 +213,7 @@ export const REGLAS_MONEDAS_E2R: ReglasMonedasConEsfuerzo & { esfuerzo: ReglasEs
   version: '3.0.0-e2r',
   esfuerzo: {
     ...REGLAS_MONEDAS_E2.esfuerzo,
-    tasaPorMinuto: { ...REGLAS_MONEDAS_E2.esfuerzo.tasaPorMinuto, relectura: { 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 } },
+    tasaPorMinuto: { ...REGLAS_MONEDAS_E2.esfuerzo.tasaPorMinuto, relectura: { [-1]: 1.5, 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 } },
   },
 }
 

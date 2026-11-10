@@ -55,8 +55,8 @@ describe('bandera de economía', () => {
   it('E2R (relectura 1,5/min en todos los niveles) existe pero está apagada: solo con ECONOMIA=e2r', () => {
     expect(leerModeloEconomia('e2r')).toBe('e2r')
     expect(pagaPorEsfuerzo('e2r') && pagaPorEsfuerzo('e2') && !pagaPorEsfuerzo('actual')).toBe(true)
-    expect(REGLAS_MONEDAS_E2.esfuerzo.tasaPorMinuto.relectura).toEqual({ 0: 1.5, 1: 1.5, 2: 1, 3: 1, 4: 1 })
-    expect(REGLAS_MONEDAS_E2R.esfuerzo.tasaPorMinuto.relectura).toEqual({ 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 })
+    expect(REGLAS_MONEDAS_E2.esfuerzo.tasaPorMinuto.relectura).toEqual({ [-1]: 1.5, 0: 1.5, 1: 1.5, 2: 1, 3: 1, 4: 1 })
+    expect(REGLAS_MONEDAS_E2R.esfuerzo.tasaPorMinuto.relectura).toEqual({ [-1]: 1.5, 0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5, 4: 1.5 })
     // Todo lo demás, igual que E2.
     expect({ ...REGLAS_MONEDAS_E2R.esfuerzo, tasaPorMinuto: null }).toEqual({ ...REGLAS_MONEDAS_E2.esfuerzo, tasaPorMinuto: null })
   })

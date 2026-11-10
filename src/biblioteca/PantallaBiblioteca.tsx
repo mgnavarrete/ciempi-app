@@ -8,7 +8,7 @@ import { PortadaCiempi } from '../ciempi/PortadaCiempi'
 import { useRepositorios } from '../datos/DatosProvider'
 import { conNombreDeCiempi } from '../contenido/nombreCiempi'
 import type { Asignacion, Id, NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
-import { NIVELES, datosNivel } from '../lenguaje/unidades'
+import { NIVELES, datosNivel, etiquetaNivel } from '../lenguaje/unidades'
 import { BarraProgreso, BotonIcono, Encabezado, Icono, Monedas, Portada } from '../ui/comunes'
 import { resumirProgreso } from './progreso'
 
@@ -167,7 +167,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                   disabled={cuantos === 0 && !elegido}
                   className={`rounded-full px-4 py-1.5 font-bold shadow-sm transition active:scale-95 disabled:opacity-40 ${elegido ? 'bg-petroleo text-white' : 'bg-white text-tinta'}`}
                 >
-                  {f === 'todos' ? 'Todos' : f === 'favoritos' ? '⭐ Favoritos' : `Nivel ${f}`}
+                  {f === 'todos' ? 'Todos' : f === 'favoritos' ? '⭐ Favoritos' : etiquetaNivel(f)}
                   <span className={`ml-1.5 text-sm font-normal ${elegido ? 'text-white/80' : 'text-tinta-suave'}`}>{cuantos}</span>
                 </button>
               )
@@ -203,7 +203,7 @@ export function PantallaBiblioteca({ perfil, usuarioId, modo, alLeer, alAjustes,
                     {libro.texto.autor && <span className="truncate text-sm text-tinta-suave">{libro.texto.autor}</span>}
                     <span className="mt-auto flex flex-wrap items-center gap-x-2 text-sm text-tinta-suave">
                       <span className="rounded-full bg-amarillo/40 px-2 font-bold text-tinta">
-                        Nivel {libro.asignacion.nivel} · {datosNivel(libro.asignacion.nivel).nombre}
+                        {libro.asignacion.nivel === -1 ? 'Inicial · Primeras palabras' : `Nivel ${libro.asignacion.nivel} · ${datosNivel(libro.asignacion.nivel).nombre}`}
                       </span>
                       {libro.asignacion.autorizacion === 'pendiente' && <span className="rounded-full bg-naranjo/20 px-2 font-bold text-tinta">⏳ Pendiente de aprobación</span>}
                       {libro.asignacion.autorizacion === 'rechazada' && <span className="rounded-full bg-crema px-2 font-bold text-tinta-suave">Sin monedas</span>}

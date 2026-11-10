@@ -183,7 +183,7 @@ export type EstadoAsignacion = 'pendiente' | 'en_curso' | 'completada' | 'archiv
  * Nivel de lectura de un libro para un niño: 0 sílabas, 1 palabra, 2 oración,
  * 3 párrafo, 4 libre. Ver lenguaje/unidades.ts.
  */
-export type NivelLectura = 0 | 1 | 2 | 3 | 4
+export type NivelLectura = -1 | 0 | 1 | 2 | 3 | 4
 
 export type Autorizacion = 'pendiente' | 'autorizada' | 'rechazada'
 

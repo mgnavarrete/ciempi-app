@@ -11,6 +11,7 @@ export type { NivelLectura }
 
 /** `unidad`: lo que se lee de una vez («Frase 3 de 40»). */
 export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; descripcion: string }[] = [
+  { nivel: -1, nombre: 'Inicial', unidad: 'Palabra', descripcion: 'Palabras sueltas de sílabas directas: una manzana por sílaba y un dibujo al terminar cada palabra.' },
   { nivel: 0, nombre: 'Sílabas', unidad: 'Frase', descripcion: 'Frases cortas separadas en sílabas, una manzana por sílaba.' },
   { nivel: 1, nombre: 'Palabra', unidad: 'Frase', descripcion: 'Frases cortas, una manzana por palabra.' },
   { nivel: 2, nombre: 'Oración', unidad: 'Oración', descripcion: 'La oración completa, al ritmo del dedo.' },
@@ -18,7 +19,12 @@ export const NIVELES: { nivel: NivelLectura; nombre: string; unidad: string; des
   { nivel: 4, nombre: 'Libre', unidad: 'Página', descripcion: 'Una página completa; Ciempi la lee oración por oración al ritmo del dedo.' },
 ]
 
-export const datosNivel = (nivel: NivelLectura) => NIVELES.find((n) => n.nivel === nivel) ?? NIVELES[1]
+export const datosNivel = (nivel: NivelLectura) => NIVELES.find((n) => n.nivel === nivel) ?? NIVELES.find((n) => n.nivel === 1)!
+
+/** Cómo se nombra un nivel: el Inicial (-1, antes del 0) por su nombre; los demás, «Nivel N». */
+export const etiquetaNivel = (nivel: NivelLectura) => (nivel === -1 ? 'Inicial' : `Nivel ${nivel}`)
+/** Lo que va en el círculo del nivel: un brote para el Inicial, el número para los demás. */
+export const marcaNivel = (nivel: NivelLectura) => (nivel === -1 ? '🌱' : String(nivel))
 
 /** Una oración larga se corta (en los mismos cortes de sus frases) para no pasar de esto: cabe en una línea. */
 export const MAX_PALABRAS_ORACION = 12

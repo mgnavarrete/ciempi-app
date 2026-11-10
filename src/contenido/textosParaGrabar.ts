@@ -31,7 +31,7 @@ export function textosParaGrabar(cuento: Cuento): { palabras: string[]; frases: 
     for (const p of silabearFrase(quitarGuiones(linea), enteras)) {
       // Tocar una palabra la dice, en cualquier nivel.
       palabras.add(palabraParaLaVoz(p.texto))
-      if (cuento.nivel === 0 && !p.entera) p.silabas.forEach((s, i) =>
+      if (cuento.nivel <= 0 && !p.entera) p.silabas.forEach((s, i) =>
           palabras.add(silabaParaMicrosoft(palabraParaLaVoz(silabaParaLaVoz(s, i, p.texto, p.silabas)))),
         )
     }

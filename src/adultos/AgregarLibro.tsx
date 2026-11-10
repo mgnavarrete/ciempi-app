@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Id, NivelLectura, PerfilNino } from '../dominio/tipos'
 import type { IdFuente } from '../fuentes/entradas'
-import { NIVELES } from '../lenguaje/unidades'
+import { NIVELES, marcaNivel } from '../lenguaje/unidades'
 import { BotonPrincipal } from '../ui/comunes'
 import { useCargasDeLibros, type CargaDeLibro } from './cargas'
 
@@ -114,7 +114,7 @@ export function AgregarLibro({
           </button>
           {NIVELES.map((n) => (
             <button key={n.nivel} onClick={() => setNivel(n.nivel)} aria-pressed={nivel === n.nivel} className={`rounded-full px-3 py-1.5 font-bold ${nivel === n.nivel ? 'bg-petroleo text-white' : 'bg-crema'}`}>
-              {n.nivel} · {n.nombre}
+              {marcaNivel(n.nivel)} · {n.nombre}
             </button>
           ))}
         </div>

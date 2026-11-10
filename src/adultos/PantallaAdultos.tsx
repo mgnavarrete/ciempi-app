@@ -12,7 +12,7 @@ import type { IdFuente } from '../fuentes/entradas'
 import { CambiarClave } from '../inicio/CambiarClave'
 import { NuevoPerfil } from '../inicio/PantallaPerfiles'
 import { nivelSugerido } from '../lenguaje/dificultad'
-import { NIVELES } from '../lenguaje/unidades'
+import { NIVELES, etiquetaNivel } from '../lenguaje/unidades'
 import { BarraProgreso, BotonPrincipal, BotonSecundario, Encabezado, Icono, MensajeError, Portada } from '../ui/comunes'
 import { AgregarLibro, TarjetaCarga } from './AgregarLibro'
 import { useCargasDeLibros } from './cargas'
@@ -432,7 +432,7 @@ function Libros(props: {
         {[
           ['todos', 'Todos'],
           ['mios', 'Subidos por mí'],
-          ...NIVELES.map((n) => [n.nivel, `Nivel ${n.nivel}`] as const),
+          ...NIVELES.map((n) => [n.nivel, etiquetaNivel(n.nivel)] as const),
         ].map(([id, nombre]) => (
           <button
             key={String(id)}

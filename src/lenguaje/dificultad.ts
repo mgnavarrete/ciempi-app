@@ -42,7 +42,8 @@ export function medirTexto(frases: string[], enteras?: ReadonlySet<string>): Med
 }
 
 /**
- * Nivel que se sugiere al asignar un libro: oraciones muy cortas y solo
+ * Nivel que se sugiere al asignar un libro: una lista de al menos cuatro palabras sueltas
+ * (una por frase, de hasta tres sílabas) → Inicial; oraciones muy cortas y solo
  * palabras de una o dos sílabas → nivel 0; oraciones cortas y palabras
  * simples → nivel 1; textos cortos sin párrafos → 2; párrafos, poemas o
  * textos medianos → 3; textos largos con oraciones largas → 4. El adulto
@@ -51,6 +52,7 @@ export function medirTexto(frases: string[], enteras?: ReadonlySet<string>): Med
 export function nivelSugerido(frases: string[], parrafos?: number[], enteras?: ReadonlySet<string>): NivelLectura {
   const { palabras, palabrasPorOracion: oracion, silabasPorPalabra: silabas, deTresOMas } = medirTexto(frases, enteras)
   const conParrafos = (parrafos?.length ?? 0) > 1
+  if (frases.length >= 4 && frases.every((f) => silabearFrase(f, enteras).length === 1) && silabearFrase(frases.join(' '), enteras).every((p) => p.silabas.length <= 3)) return -1
   if (oracion <= 5 && silabas < 1.6 && deTresOMas === 0) return 0
   if (oracion <= 6 && silabas < 2.2) return 1
   if (oracion <= 9 || (palabras <= 150 && !conParrafos)) return 2

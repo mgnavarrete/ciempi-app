@@ -31,7 +31,7 @@ describe('cuentos de Ciempi', () => {
     for (const c of CUENTOS) {
       const texto = { ...dividirConParrafos(c.texto), capitulos: [] }
       const { unidades } = vistaPorNivel(texto, c.nivel)
-      const maximo = { 0: 8, 1: 8, 2: 12, 3: 60, 4: 160 }[c.nivel]
+      const maximo = { [-1]: 3, 0: 8, 1: 8, 2: 12, 3: 60, 4: 160 }[c.nivel]
       for (const u of unidades) expect(u.split(/\s+/).length).toBeLessThanOrEqual(maximo)
     }
   })

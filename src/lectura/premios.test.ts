@@ -13,11 +13,12 @@ const pagar = (t: ReturnType<typeof texto>, nivel: NivelLectura, previo: EstadoP
   calcularPremio(t, nivel, previo, avance(hasta, conPremio), { hoy: HOY })
 
 describe('reglas de monedas', () => {
-  it('son las de 2.4.1 (esta tarea no cambia la economía)', () => {
+  it('son las de 2.4.1 (esta tarea no cambia la economía; el Inicial, -1, paga como el 0)', () => {
     expect(REGLAS_MONEDAS.version).toBe('2.4.1')
-    expect(MONEDAS_POR_UNIDAD).toEqual({ 0: 1, 1: 1, 2: 1, 3: 4, 4: 0 })
-    expect(TOPE_POR_LIBRO).toEqual({ 0: 10, 1: 10, 2: Infinity, 3: 15, 4: 0 })
+    expect(MONEDAS_POR_UNIDAD).toEqual({ [-1]: 1, 0: 1, 1: 1, 2: 1, 3: 4, 4: 0 })
+    expect(TOPE_POR_LIBRO).toEqual({ [-1]: 10, 0: 10, 1: 10, 2: Infinity, 3: 15, 4: 0 })
     expect(HITOS).toEqual({
+      [-1]: [],
       0: [],
       1: [],
       2: [{ porcentaje: 100, monedas: 5 }],

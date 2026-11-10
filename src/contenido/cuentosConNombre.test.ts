@@ -68,7 +68,7 @@ describe('cuentos con su Ciempi de protagonista', () => {
   it('en su nivel, cada unidad cabe en pantalla', () => {
     for (const c of CUENTOS_DE_TU_CIEMPI) {
       const { unidades } = vistaPorNivel({ ...dividirConParrafos(c.texto), capitulos: [] }, c.nivel)
-      const maximo = { 0: 8, 1: 8, 2: 12, 3: 60, 4: 160 }[c.nivel]
+      const maximo = { [-1]: 3, 0: 8, 1: 8, 2: 12, 3: 60, 4: 160 }[c.nivel]
       for (const u of unidades) expect(u.split(/\s+/).length).toBeLessThanOrEqual(maximo)
     }
   })

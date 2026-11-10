@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRepositorios } from '../datos/DatosProvider'
 import type { Asignacion, NivelLectura, PerfilNino, Texto } from '../dominio/tipos'
 import { nivelSugerido } from '../lenguaje/dificultad'
-import { NIVELES } from '../lenguaje/unidades'
+import { NIVELES, etiquetaNivel, marcaNivel } from '../lenguaje/unidades'
 import { MensajeError } from '../ui/comunes'
 
 interface Props {
@@ -34,7 +34,7 @@ export function LectoresDelLibro({ texto, perfiles, asignaciones, alCambiar }: P
               onClick={() => setEligiendo(p)}
               className={`rounded-full px-3 py-1 text-sm font-bold ${a ? 'bg-petroleo text-white' : 'bg-crema text-tinta-suave'}`}
             >
-              {p.icono} {p.apodo} {a ? `· Nivel ${a.nivel}` : '+'}
+              {p.icono} {p.apodo} {a ? `· ${etiquetaNivel(a.nivel)}` : '+'}
             </button>
           )
         })}
@@ -89,7 +89,7 @@ export function DialogoNivel(props: { texto: Texto; perfil: PerfilNino; asignaci
           <div>
             <h2 className="text-xl font-bold">«{texto.titulo}»</h2>
             <p className="text-sm text-tinta-suave">
-              {asignacion ? `${perfil.apodo} lo tiene en nivel ${asignacion.nivel}. Elige otro nivel o quítalo.` : `¿En qué nivel lo lee ${perfil.apodo}?`}
+              {asignacion ? `${perfil.apodo} lo tiene en ${asignacion.nivel === -1 ? 'el nivel Inicial' : `nivel ${asignacion.nivel}`}. Elige otro nivel o quítalo.` : `¿En qué nivel lo lee ${perfil.apodo}?`}
             </p>
           </div>
           <button onClick={alCerrar} className="rounded-full px-3 py-1 font-bold text-tinta-suave">
@@ -107,7 +107,7 @@ export function DialogoNivel(props: { texto: Texto; perfil: PerfilNino; asignaci
                   onClick={() => elegir(n.nivel)}
                   className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left ${actual ? 'bg-petroleo text-white' : 'bg-white'} disabled:cursor-default`}
                 >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amarillo font-bold text-tinta">{n.nivel}</span>
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amarillo font-bold text-tinta">{marcaNivel(n.nivel)}</span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-bold">{n.nombre}</span>
                     <span className={`block text-sm ${actual ? 'text-white/85' : 'text-tinta-suave'}`}>{n.descripcion}</span>
