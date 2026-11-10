@@ -3,7 +3,7 @@ import './lib/colecciones-personajes.mjs';
 import './lib/acabados-armario.mjs';
 export const defaults={cabeza:'cabeza-nada',cara:'cara-nada',pies:'pies-zapatillas',espalda:'espalda-nada',cuello:'cuello-nada',variante:'gryffindor',paleta:'clasica',textura:'liso',expresion:'alegre',ojos:'oscuro',boca:'sonrisa',seed:17,pelo:'pelo-nada',detalle:'detalle-nada',varianteLentes:'original',varianteCapa:'original'};
 let pending;
-export function load(){return pending??=fetch('/ciempi-v2/catalogo.json').then(r=>{if(!r.ok)throw Error('No se pudo cargar Ciempi');return r.json();}).then(env=>{
+export function load(){return pending??=fetch('/ciempi-v2/catalogo.json?v='+(typeof __VERSION_APP__!=='undefined'?__VERSION_APP__:''),{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('No se pudo cargar Ciempi');return r.json();}).then(env=>{
  for(const x of env.ajustes.paletas)paletas.find(p=>p.id===x.id).colors=x.colors;
  const p=env.scarf,d=new DOMParser().parseFromString(p.master,'image/svg+xml');const art=[...d.documentElement.children].filter(n=>n.localName==='g').map(n=>new XMLSerializer().serializeToString(n)).join('');const cut=p.adaptacion.corteY,t=p.adaptacion.transform;
  p.svg=`<defs><g id="master-art">${art}</g><clipPath id="master-back"><rect width="1200" height="${cut}"/></clipPath><clipPath id="master-front"><rect y="${cut}" width="1200" height="${780-cut}"/></clipPath></defs><g transform="${t}"><use href="#master-art" clip-path="url(#master-back)"/></g>`;
