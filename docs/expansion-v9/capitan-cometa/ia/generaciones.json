@@ -1,0 +1,66 @@
+[
+  {
+    "id": "cometa-antifaz",
+    "archivo": "cometa-antifaz.png",
+    "prompt": "prompts/cometa-antifaz-prompt.txt",
+    "referencias": [
+      "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
+      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-antifaz-dragon.png"
+    ],
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfd3-78d3-8c17-728196c875c9/exec-e1905804-a791-44b5-84f7-d2639d370dba.png",
+    "herramienta": "Codex CLI 0.166 exec + image_gen",
+    "fecha": "2026-11-10T18:30:58.396Z",
+    "segundos": 95
+  },
+  {
+    "id": "cometa-botas",
+    "archivo": "cometa-botas.png",
+    "prompt": "prompts/cometa-botas-prompt.txt",
+    "referencias": [
+      "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
+      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-bota-robot.png"
+    ],
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfcf-78c2-ac9d-312952a8e152/exec-5a978f37-6c5c-4649-acba-9174e823e043.png",
+    "herramienta": "Codex CLI 0.166 exec + image_gen",
+    "fecha": "2026-11-10T18:30:46.920Z",
+    "segundos": 84
+  },
+  {
+    "id": "cometa-escudo",
+    "archivo": "cometa-escudo.png",
+    "prompt": "prompts/cometa-escudo-prompt.txt",
+    "referencias": [
+      "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
+      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-propulsor-robot.png"
+    ],
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfd1-7881-af46-58a926b4500f/exec-080204bf-8343-4d8a-ae33-bfe6a4f5f531.png",
+    "herramienta": "Codex CLI 0.166 exec + image_gen",
+    "fecha": "2026-11-10T18:30:37.239Z",
+    "segundos": 74
+  },
+  {
+    "id": "cometa-escudo-sin-correas",
+    "archivo": "cometa-escudo-sin-correas.png",
+    "prompt": "prompts/cometa-escudo-sin-correas-prompt.txt",
+    "referencias": [
+      "docs/expansion-v9/capitan-cometa/ia/cometa-escudo.png"
+    ],
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6ba-b39e-7ca1-b18f-e49597b77e99/exec-750f1609-fc9c-4285-a56d-29856b612ba3.png",
+    "herramienta": "Codex CLI 0.166 exec + image_gen",
+    "fecha": "2026-11-10T18:32:31.528Z",
+    "segundos": 65
+  },
+  {
+    "id": "cometa-traje",
+    "archivo": "cometa-traje.png",
+    "prompt": "prompts/cometa-traje-prompt.txt",
+    "referencias": [
+      "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
+      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-atlas-robot.png"
+    ],
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cff3-7363-9cd5-8b5641414194/exec-391dba31-7746-4220-8e46-4beffa0c10e8.png",
+    "herramienta": "Codex CLI 0.166 exec + image_gen",
+    "fecha": "2026-11-10T18:30:28.152Z",
+    "segundos": 65
+  }
+]

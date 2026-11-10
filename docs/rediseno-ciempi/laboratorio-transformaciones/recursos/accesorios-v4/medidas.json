@@ -93,5 +93,24 @@
    1085,
    1117
   ]
+ },
+ "cometa": {
+  "archivo": "mochila-cometa.webp",
+  "px": [
+   768,
+   732
+  ],
+  "baseInferior": [
+   382,
+   725
+  ],
+  "fuente": "docs/expansion-v9/capitan-cometa/ia/cometa-escudo-sin-correas.png",
+  "fuenteSha256": "e7f05e5f0e8ccfd3",
+  "recorte": [
+   99,
+   109,
+   1105,
+   1068
+  ]
  }
 }

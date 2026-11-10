@@ -94,6 +94,7 @@ export const TAPAN_LA_CARA: readonly string[] = [
   'cabeza:b07-ia-buho',
   'cabeza:b12-araluz',
   'cabeza:b12-raton',
+  'cabeza:b07-ia-cometa',
 ]
 
 /**

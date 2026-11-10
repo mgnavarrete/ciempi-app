@@ -171,5 +171,21 @@
       "paleta": "bosque",
       "expresion": "b03-carcajada"
     }
+  },
+  {
+    "id": "b12-set-cometa",
+    "nombre": "Capitán Cometa",
+    "historia": "Un héroe original de azul petróleo y dorado: antifaz con visera y cometa, traje con franjas diagonales y botas doradas. El escudo hexagonal se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-cometa",
+      "textura": "b11-cometa",
+      "pies": "b10-cometa",
+      "espalda": "b09-cometa"
+    }
   }
 ]

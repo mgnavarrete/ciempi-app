@@ -100,6 +100,15 @@
       "visiblePixelsIdentical": true
     },
     {
+      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-cometa.png",
+      "sha256": "ec6dcd7fe96f29250e5646f2a3470ae99796e7f6e30907df125e2368a4d1c126",
+      "hue": null,
+      "target": "26152379bcda744d.webp",
+      "sourceBytes": 471910,
+      "bytes": 351962,
+      "visiblePixelsIdentical": true
+    },
+    {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
       "sha256": "6526655fd0f9e1ce98fae28b6bca981ad7dd7ca4ffaa319c4dca86ab9a130de4",
       "hue": null,
@@ -190,6 +199,15 @@
       "visiblePixelsIdentical": true
     },
     {
+      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/cometa.png",
+      "sha256": "a9d0f270de1870bf170abffcd0e77b6489009d8388a17386cf2519d76fce4609",
+      "hue": null,
+      "target": "896e9cd0636cfde4.webp",
+      "sourceBytes": 557341,
+      "bytes": 407716,
+      "visiblePixelsIdentical": true
+    },
+    {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/robot.png",
       "sha256": "c41f18a2a92e6b4dee5bd7d662f235c09946d2f1824553bcc2b6ffa15012259b",
       "hue": null,
@@ -232,6 +250,15 @@
       "target": "e648c370b4bda4ac.webp",
       "sourceBytes": 214858,
       "bytes": 135258,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/cometa.png",
+      "sha256": "fa47aac69eed3c5aef5bd2d30df58e8de5b248acb1efd14f505eaa47ce8ed157",
+      "hue": null,
+      "target": "e02eed7e321af92b.webp",
+      "sourceBytes": 218691,
+      "bytes": 159744,
       "visiblePixelsIdentical": true
     },
     {
@@ -280,6 +307,15 @@
       "visiblePixelsIdentical": true
     },
     {
+      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/cometa.png",
+      "sha256": "df91b2b8ef39fb73ad829afa544fe41dfc8160b996bc923bbe88ba609492f2ac",
+      "hue": null,
+      "target": "e863f2abf4f0ac75.webp",
+      "sourceBytes": 1738140,
+      "bytes": 1320470,
+      "visiblePixelsIdentical": true
+    },
+    {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/personajes/v1/araluz.png",
       "sha256": "8b7bcec7c3406bcbb5bbe924a26ba1563293f594b1c7c6dbb1cb930e31c4a457",
       "hue": null,
@@ -298,5 +334,5 @@
       "visiblePixelsIdentical": true
     }
   ],
-  "totalBytes": 16372186
+  "totalBytes": 18612078
 }

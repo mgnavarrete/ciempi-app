@@ -188,5 +188,43 @@
       4
     ],
     "coloresFijos": true
+  },
+  {
+    "id": "b11-cometa",
+    "nombre": "Traje Capitán Cometa",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/cometa.png",
+    "fuente": "../../expansion-v9/capitan-cometa/ia/cometa-traje.png",
+    "fuenteSha256": "8f1195d9cb26cbe780a68419597bcf6da387af3e795e7db84af6e0f0f803febd",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": "cometa",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "cometa"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
   }
 ]

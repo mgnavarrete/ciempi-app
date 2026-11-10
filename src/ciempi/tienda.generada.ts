@@ -303,6 +303,12 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 24
  },
  {
+  "id": "cabeza:b07-ia-cometa",
+  "nombre": "Antifaz cometa",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
   "id": "cabeza:b12-araluz",
   "nombre": "AraLuz",
   "categoria": "cabeza",
@@ -537,6 +543,12 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 20
  },
  {
+  "id": "espalda:b09-cometa",
+  "nombre": "Escudo cometa",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
   "id": "pies:pies-zapatillas",
   "nombre": "Zapatillas",
   "categoria": "pies",
@@ -573,6 +585,12 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 18
  },
  {
+  "id": "pies:b10-cometa",
+  "nombre": "Botas cometa",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
   "id": "textura:liso",
   "nombre": "Liso",
   "categoria": "textura",
@@ -607,6 +625,12 @@ export const PIEZAS: ItemCiempi[] = [
   "nombre": "Seda",
   "categoria": "textura",
   "precio": 28
+ },
+ {
+  "id": "textura:b11-cometa",
+  "nombre": "Traje cometa",
+  "categoria": "textura",
+  "precio": 32
  }
 ]
 
@@ -855,6 +879,21 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
   ],
   "piezas": [
    "pies:b10-lluvia"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-cometa",
+  "nombre": "Capitán Cometa",
+  "pone": [
+   "cabeza:b07-ia-cometa",
+   "textura:b11-cometa",
+   "pies:b10-cometa"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-cometa",
+   "textura:b11-cometa",
+   "pies:b10-cometa"
   ],
   "variantes": {}
  }

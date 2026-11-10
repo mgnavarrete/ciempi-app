@@ -165,5 +165,38 @@
     "x": -43,
     "suelo": 24,
     "alto": 70
+  },
+  {
+    "id": "b10-cometa",
+    "nombre": "Botas Capitán Cometa",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/cometa.png",
+    "fuente": "../../expansion-v9/capitan-cometa/ia/cometa-botas.png",
+    "fuenteSha256": "be0edd06daa3820836ca16918886c32da7aab9612512c0a9677fe95e8c2dd354",
+    "recorte": {
+      "left": 123,
+      "top": 95,
+      "width": 1134,
+      "height": 999
+    },
+    "dimensiones": [
+      512,
+      451
+    ],
+    "anterior": "pies-cometa",
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "cometa"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
   }
 ]

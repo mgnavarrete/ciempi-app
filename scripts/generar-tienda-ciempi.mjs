@@ -20,6 +20,7 @@ const NOMBRES = {
   'b06-ia-jockey': 'Jockey', 'b06-ia-dragon': 'Gorro dragón', 'b06-ia-mago': 'Gorro de mago', 'b06-ia-aventura': 'Explorador',
   'b06-ia-pirata': 'Pirata', 'b06-ia-corona': 'Corona', 'b07-ia-robot': 'Robot', 'b07-ia-gatita': 'Gatita', 'b07-ia-espiritu': 'Espíritu',
   'b07-ia-dragon': 'Antifaz dragón', 'b07-ia-buho': 'Búho', 'b12-araluz': 'AraLuz', 'b12-raton': 'Ratón',
+  'b07-ia-cometa': 'Antifaz cometa',
   // Peinados
   'b05-harry': 'Harry', 'b05-hermione': 'Rizos', 'b05-super': 'Copete', 'b05-barbie': 'Pelo largo', 'b05-flequillo': 'Flequillo',
   'b05-coletas': 'Coletas', 'b05-trenza': 'Trenza', 'b05-monos': 'Moños', 'b05-cresta': 'Cresta', 'b05-ondas': 'Ondas', 'b05-mechon': 'Mechón',
@@ -29,10 +30,12 @@ const NOMBRES = {
   // Bufanda, capas, calzado y estampados
   'bufanda-calco32': 'Bufanda', 'b08-ia-heroica': 'Capa de héroe', 'b08-ia-bosque': 'Capa de hojas',
   'b10-robot': 'Botas robot', 'b10-aventura': 'Botas explorador', 'b10-lluvia': 'Botas de lluvia', 'b10-mago': 'Zapatos de mago', 'b10-deportiva': 'Deportivas',
+  'b10-cometa': 'Botas cometa', 'b11-cometa': 'Traje cometa', 'b09-cometa': 'Escudo cometa',
   liso: 'Liso', 'b11-robot': 'Armadura', 'b11-draco': 'Escamas', 'b11-mago': 'Estrellas', 'b11-pirata': 'Marinero', 'b11-araluz': 'Seda',
   // Conjuntos
   'b12-set-robot': 'Robot', 'b12-set-draco': 'Dragón', 'b12-set-cartografo': 'Explorador', 'b12-set-pirata': 'Pirata', 'b12-set-luna': 'Mago',
   'b12-set-noctilio': 'Espíritu', 'b12-set-araluz': 'AraLuz', 'b12-set-raton': 'Ratón', 'b12-set-reino': 'Realeza', 'b12-set-lluvia': 'Charcos',
+  'b12-set-cometa': 'Capitán Cometa',
 }
 const NOMBRES_COLORES = {
   bronce: 'Bronce', barbie: 'Rosa', original: 'Roja', luna: 'Azul', aurora: 'Morada', oceano: 'Turquesa', 'oceano-coral': 'Coral', 'lavanda-magica': 'Lavanda',
@@ -45,6 +48,8 @@ const PRECIOS = {
   // Gorros y máscaras
   'b06-ia-jockey': 0, 'b06-ia-dragon': 26, 'b06-ia-mago': 20, 'b06-ia-aventura': 22, 'b06-ia-pirata': 18, 'b06-ia-corona': 25,
   'b07-ia-robot': 32, 'b07-ia-gatita': 24, 'b07-ia-espiritu': 28, 'b07-ia-dragon': 28, 'b07-ia-buho': 24, 'b12-araluz': 30, 'b12-raton': 24,
+  // Capitán Cometa (2.8.2): como las piezas Robot.
+  'b07-ia-cometa': 32,
   // Peinados
   'b05-harry': 14, 'b05-hermione': 18, 'b05-super': 14, 'b05-barbie': 18, 'b05-flequillo': 12, 'b05-coletas': 16,
   'b05-trenza': 18, 'b05-monos': 16, 'b05-cresta': 14, 'b05-ondas': 18, 'b05-mechon': 12,
@@ -57,6 +62,7 @@ const PRECIOS = {
   // Calzado y estampados
   'b10-robot': 24, 'b10-aventura': 18, 'b10-lluvia': 12, 'b10-mago': 22, 'b10-deportiva': 18,
   'b11-robot': 32, 'b11-draco': 28, 'b11-mago': 26, 'b11-pirata': 24, 'b11-araluz': 28,
+  'b10-cometa': 24, 'b11-cometa': 32,
 }
 const precio = (id) => {
   if (!(id in PRECIOS)) throw Error(`Falta el precio de ${id}`)
@@ -66,7 +72,7 @@ const precio = (id) => {
 // con correas y sombra; ver src/ciempi/v2/arte/mochilas-v4.js), a su precio de 2.1. Los conjuntos
 // siguen sin mochila, como desde 2.2.
 const MOCHILAS = new Set(c.bags.map((b) => b.id))
-const PRECIO_MOCHILA = { 'b09-robot': 25, 'b09-aventura': 20, 'b09-draco': 20, 'b09-mago': 20, 'b09-raton': 20 }
+const PRECIO_MOCHILA = { 'b09-robot': 25, 'b09-aventura': 20, 'b09-draco': 20, 'b09-mago': 20, 'b09-raton': 20, 'b09-cometa': 25 }
 
 // Las cinco paletas base, gratis; las de personajes, 12.
 for (const p of paletas) agregar('paleta', p.id, p.nombre, p.collection || p.collections ? 12 : 0)

@@ -48,7 +48,13 @@ describe('tienda de Ciempi', () => {
     // 2.5.2: las mochilas vuelven a la tienda (a su precio de 2.1); los conjuntos siguen sin mochila.
     expect(CATALOGO.filter((i) => i.id.startsWith('espalda:b09')).map((i) => [i.id, i.precio])).toEqual([
       ['espalda:b09-robot', 25], ['espalda:b09-aventura', 20], ['espalda:b09-draco', 20], ['espalda:b09-mago', 20], ['espalda:b09-raton', 20],
+      // 2.8.2: escudo de Capitán Cometa, al precio del propulsor Robot.
+      ['espalda:b09-cometa', 25],
     ])
+    // 2.8.2: Capitán Cometa, con los precios del Robot (32 + 32 + 24 = 88 → 71) y sin el escudo.
+    expect([item('cabeza:b07-ia-cometa').precio, item('textura:b11-cometa').precio, item('pies:b10-cometa').precio]).toEqual([32, 32, 24])
+    expect(CONJUNTOS.find((c) => c.id === 'conjunto:b12-set-cometa')?.pone).toEqual(['cabeza:b07-ia-cometa', 'textura:b11-cometa', 'pies:b10-cometa'])
+    expect(precioDe(item('conjunto:b12-set-cometa'), [])).toBe(71)
     expect(CONJUNTOS.every((c) => c.pone.every((id) => !id.startsWith('espalda:b09')))).toBe(true)
   })
 

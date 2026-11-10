@@ -18,6 +18,7 @@ const MOCHILA_V4: Record<string, string> = {
   'b09-mago': 'mochila-mago.webp',
   'b09-raton': 'mochila-raton.webp',
   'b09-robot': 'mochila-robot.webp',
+  'b09-cometa': 'mochila-cometa.webp',
 }
 const SIN = new Set(['cabeza-nada', 'pelo-nada', 'cara-nada', 'detalle-nada', 'cuello-nada', 'espalda-nada', 'pies-zapatillas'])
 
