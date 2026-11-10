@@ -1,0 +1,13 @@
+{
+  "id": "sombra-cabeza",
+  "archivo": "sombra-cabeza.png",
+  "prompt": "sombra-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-efc5-7fd0-a9b4-079f3bde2b88/exec-afabe7d1-34f0-43dd-b2c9-aa9c680da113.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:55:47.503Z",
+  "segundos": 65
+}

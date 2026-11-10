@@ -94,5 +94,200 @@
       650,
       440
     ]
+  },
+  {
+    "id": "b08-ia-ilusionista",
+    "nombre": "Capa de Ilusiones",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-ilusionista.png",
+    "fuente": "../../expansion-v10/heroes/ia/ilusionista-espalda.png",
+    "fuenteSha256": "a2521c8ddb6fd52d5d2f39c5db4cabf2c53a7f0dcf727884ddfa47534590fbc1",
+    "dimensionesMaestro": [
+      1828,
+      860
+    ],
+    "encuadre": [
+      184.83,
+      253.71,
+      523.18,
+      246.14
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "ilusionista"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
+  },
+  {
+    "id": "b08-ia-solar",
+    "nombre": "Capa Solar",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-solar.png",
+    "fuente": "../../expansion-v10/heroes/ia/solar-espalda.png",
+    "fuenteSha256": "e11d9d9cddf26dd98a1fc7d9576a96f95486b5f72c6c005bcccfea9b1b9600e9",
+    "dimensionesMaestro": [
+      1774,
+      887
+    ],
+    "encuadre": [
+      182.56,
+      236.65,
+      533.37,
+      266.69
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "solar"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
+  },
+  {
+    "id": "b08-ia-nocturno",
+    "nombre": "Capa Nocturna",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-nocturno.png",
+    "fuente": "../../expansion-v10/heroes/ia/nocturno-espalda.png",
+    "fuenteSha256": "63f31fcff171ab1f82486be3e3ccc7551b1fbc33b12e77088047bbb32202ee5a",
+    "dimensionesMaestro": [
+      1774,
+      887
+    ],
+    "encuadre": [
+      189.72,
+      240.97,
+      520.85,
+      260.42
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "nocturno"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
+  },
+  {
+    "id": "b08-ia-trueno",
+    "nombre": "Capa Trueno",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-trueno.png",
+    "fuente": "../../expansion-v10/heroes/ia/trueno-espalda.png",
+    "fuenteSha256": "41ccf02d61ec9bb8d6c52d4a754c20bde82211ae529fdf782faa9a1e98e8d3a2",
+    "dimensionesMaestro": [
+      1774,
+      887
+    ],
+    "encuadre": [
+      181.72,
+      234.84,
+      540.52,
+      270.26
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "trueno"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
+  },
+  {
+    "id": "b08-ia-mistico",
+    "nombre": "Capa Mística",
+    "batch": "B08",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/capas/v2/capa-mistico.png",
+    "fuente": "../../expansion-v10/heroes/ia/mistico-espalda.png",
+    "fuenteSha256": "755fdde09e119e91cfd6ec621efe64717a23ea1feb3b9f2eab7bb4268e4001c3",
+    "dimensionesMaestro": [
+      1774,
+      887
+    ],
+    "encuadre": [
+      186.74,
+      239.73,
+      522.69,
+      261.34
+    ],
+    "splitY": null,
+    "rotation": 12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "mistico"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      650,
+      440
+    ]
   }
 ]

@@ -1,0 +1,13 @@
+{
+  "id": "relampago-botas",
+  "archivo": "relampago-botas.png",
+  "prompt": "relampago-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-17e3-7830-badc-5e397683f8e1/exec-fa41d61c-17e6-4c85-9ded-bf5d563c8a31.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:39:27.725Z",
+  "segundos": 53
+}

@@ -1,0 +1,13 @@
+{
+  "id": "ilusionista-cabeza",
+  "archivo": "ilusionista-cabeza.png",
+  "prompt": "ilusionista-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-gorro-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c703-d816-7932-b10e-395c182248f3/exec-5516ead2-2483-4177-b2de-066beb724a02.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:52:33.416Z",
+  "segundos": 73
+}

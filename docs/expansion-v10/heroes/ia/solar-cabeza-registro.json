@@ -1,0 +1,13 @@
+{
+  "id": "solar-cabeza",
+  "archivo": "solar-cabeza.png",
+  "prompt": "solar-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c718-e291-74e3-8191-b6122c69d878/exec-ef9399ef-0caa-42c3-a83e-5b6843b61a8b.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:15:29.807Z",
+  "segundos": 71
+}

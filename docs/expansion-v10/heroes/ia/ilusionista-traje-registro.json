@@ -1,0 +1,13 @@
+{
+  "id": "ilusionista-traje",
+  "archivo": "ilusionista-traje.png",
+  "prompt": "ilusionista-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c704-bbc0-7262-b606-8da8cbe1d7b8/exec-33af4790-36c8-466a-8a3e-13c1ac2fde0f.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:53:11.862Z",
+  "segundos": 53
+}

@@ -1,0 +1,13 @@
+{
+  "id": "garra-botas",
+  "archivo": "garra-botas.png",
+  "prompt": "garra-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c708-3dd3-7de3-9cd1-be233a4c386f/exec-059354b6-addc-4c4f-987b-633d28df8537.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:57:33.812Z",
+  "segundos": 85
+}

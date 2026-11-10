@@ -1,0 +1,13 @@
+{
+  "id": "aracnido-traje",
+  "archivo": "aracnido-traje.png",
+  "prompt": "aracnido-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c70a-a37b-7c10-9dd8-9fa83e810a30/exec-3c9ca29d-1737-412d-8802-fb8f3d6f06cb.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:00:06.429Z",
+  "segundos": 81
+}

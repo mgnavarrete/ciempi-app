@@ -36,6 +36,30 @@ const NOMBRES = {
   'b12-set-robot': 'Robot', 'b12-set-draco': 'Dragón', 'b12-set-cartografo': 'Explorador', 'b12-set-pirata': 'Pirata', 'b12-set-luna': 'Mago',
   'b12-set-noctilio': 'Espíritu', 'b12-set-araluz': 'AraLuz', 'b12-set-raton': 'Ratón', 'b12-set-reino': 'Realeza', 'b12-set-lluvia': 'Charcos',
   'b12-set-cometa': 'Capitán Ciempi',
+  // Héroes de Ciempi (2.9.0): diez conjuntos de superhéroe propios.
+  'b06-ia-coloso': 'Máscara Coloso', 'b11-coloso': 'Traje Coloso', 'b10-coloso': 'Botas Coloso', 'b09-coloso': 'Mochila de Fuerza', 'b12-set-coloso': 'Ciempi Coloso',
+  'b07-ia-aracnido': 'Máscara Arácnida', 'b11-aracnido': 'Traje Arácnido', 'b10-aracnido': 'Botas Arácnidas', 'b09-aracnido': 'Mochila Telaraña', 'b12-set-aracnido': 'Ciempi Arácnido',
+  'b06-ia-ilusionista': 'Corona Ilusionista', 'b11-ilusionista': 'Traje Ilusionista', 'b10-ilusionista': 'Botas Ilusionista', 'b08-ia-ilusionista': 'Capa de Ilusiones', 'b12-set-ilusionista': 'Ciempi Ilusionista',
+  'b07-ia-solar': 'Antifaz Solar', 'b11-solar': 'Traje Solar', 'b10-solar': 'Botas Solares', 'b08-ia-solar': 'Capa Solar', 'b12-set-solar': 'Ciempi Solar',
+  'b07-ia-nocturno': 'Máscara Nocturna', 'b11-nocturno': 'Traje Nocturno', 'b10-nocturno': 'Botas Nocturnas', 'b08-ia-nocturno': 'Capa Nocturna', 'b12-set-nocturno': 'Ciempi Nocturno',
+  'b06-ia-bromista': 'Gorro Bromista', 'b11-bromista': 'Traje Bromista', 'b10-bromista': 'Botas Bromistas', 'b09-bromista': 'Mochila Sorpresa', 'b12-set-bromista': 'Ciempi Bromista',
+  'b07-ia-esmeralda': 'Antifaz Esmeralda', 'b11-esmeralda': 'Traje Esmeralda', 'b10-esmeralda': 'Botas Esmeralda', 'b09-esmeralda': 'Mochila de Energía', 'b12-set-esmeralda': 'Ciempi Esmeralda',
+  'b07-ia-sombra': 'Máscara Sombra', 'b11-sombra': 'Traje Araña Sombra', 'b10-sombra': 'Botas Sombra', 'b09-sombra': 'Mochila Sombra', 'b12-set-sombra': 'Ciempi Araña Sombra',
+  'b07-ia-travieso': 'Máscara Traviesa', 'b11-travieso': 'Traje Travieso', 'b10-travieso': 'Botas Traviesas', 'b09-travieso': 'Mochila Aventurera', 'b12-set-travieso': 'Ciempi Travieso',
+  'b07-ia-garra': 'Máscara Garra', 'b11-garra': 'Traje Garra Salvaje', 'b10-garra': 'Botas Garra', 'b09-garra': 'Mochila Garra', 'b12-set-garra': 'Ciempi Garra Salvaje',
+  // Héroes de Ciempi, segunda serie (2.9.0).
+  'b07-ia-trueno': 'Casco Trueno', 'b11-trueno': 'Traje Trueno', 'b10-trueno': 'Botas Trueno', 'b08-ia-trueno': 'Capa Trueno', 'b12-set-trueno': 'Ciempi Trueno',
+  'b07-ia-relampago': 'Máscara Relámpago', 'b11-relampago': 'Traje Relámpago', 'b10-relampago': 'Botas Relámpago', 'b09-relampago': 'Mochila de Velocidad', 'b12-set-relampago': 'Ciempi Relámpago',
+  'b07-ia-pantera': 'Máscara Pantera', 'b11-pantera': 'Traje Pantera', 'b10-pantera': 'Botas Pantera', 'b08-ia-pantera': 'Capa Pantera', 'b12-set-pantera': 'Ciempi Pantera',
+  'b06-ia-mistico': 'Diadema Mística', 'b11-mistico': 'Traje Místico', 'b10-mistico': 'Botas Místicas', 'b08-ia-mistico': 'Capa Mística', 'b12-set-mistico': 'Ciempi Místico',
+  'b06-ia-marino': 'Corona Marina', 'b11-marino': 'Traje Marino', 'b10-marino': 'Botas Marinas', 'b09-marino': 'Mochila Oceánica', 'b12-set-marino': 'Ciempi Marino',
+  'b06-ia-kpopvioleta': 'Peinado Violeta', 'b11-kpopvioleta': 'Traje Violeta', 'b10-kpopvioleta': 'Botas Violeta', 'b09-kpopvioleta': 'Mochila Guardiana Violeta', 'b12-set-kpopvioleta': 'Ciempi Guerrera K-pop Violeta',
+  'b06-ia-kpoprosa': 'Peinado Rosa', 'b11-kpoprosa': 'Traje Rosa', 'b10-kpoprosa': 'Botas Rosa', 'b09-kpoprosa': 'Mochila Estelar Rosa', 'b12-set-kpoprosa': 'Ciempi Guerrera K-pop Rosa',
+  'b06-ia-kpopazul': 'Peinado Azul', 'b11-kpopazul': 'Traje Azul', 'b10-kpopazul': 'Botas Azules', 'b09-kpopazul': 'Mochila Musical Azul', 'b12-set-kpopazul': 'Ciempi Guerrera K-pop Azul',
+  'b07-ia-unicornio': 'Cabeza Unicornio', 'b11-unicornio': 'Traje Unicornio', 'b10-unicornio': 'Botas Unicornio', 'b08-ia-unicornio': 'Cola Arcoíris', 'b12-set-unicornio': 'Ciempi Unicornio',
+  'b06-ia-hada': 'Corona de Hada', 'b11-hada': 'Traje Hada', 'b10-hada': 'Botas Hada', 'b08-ia-hada': 'Alas Mágicas', 'b12-set-hada': 'Ciempi Hada Mágica',
+  'b07-ia-sombrio': 'Cabeza Sombra', 'b11-sombrio': 'Traje Sombra', 'b10-sombrio': 'Botas de Sombra', 'b09-sombrio': 'Mochila de Sombras', 'b12-set-sombrio': 'Ciempi Sombra',
+  'b06-ia-hielo': 'Corona de Hielo', 'b11-hielo': 'Traje de Hielo', 'b10-hielo': 'Botas de Cristal', 'b08-ia-hielo': 'Capa Invernal', 'b12-set-hielo': 'Ciempi Princesa de Hielo'
 }
 const NOMBRES_COLORES = {
   bronce: 'Bronce', barbie: 'Rosa', original: 'Roja', luna: 'Azul', aurora: 'Morada', oceano: 'Turquesa', 'oceano-coral': 'Coral', 'lavanda-magica': 'Lavanda',
@@ -63,6 +87,30 @@ const PRECIOS = {
   'b10-robot': 24, 'b10-aventura': 18, 'b10-lluvia': 12, 'b10-mago': 22, 'b10-deportiva': 18,
   'b11-robot': 32, 'b11-draco': 28, 'b11-mago': 26, 'b11-pirata': 24, 'b11-araluz': 28,
   'b10-cometa': 24, 'b11-cometa': 32,
+  // Héroes de Ciempi (2.9.0): como el Capitán Ciempi; las capas, como la Capa de héroe.
+  'b06-ia-coloso': 32, 'b11-coloso': 32, 'b10-coloso': 24,
+  'b07-ia-aracnido': 32, 'b11-aracnido': 32, 'b10-aracnido': 24,
+  'b06-ia-ilusionista': 32, 'b11-ilusionista': 32, 'b10-ilusionista': 24, 'b08-ia-ilusionista': 28,
+  'b07-ia-solar': 32, 'b11-solar': 32, 'b10-solar': 24, 'b08-ia-solar': 28,
+  'b07-ia-nocturno': 32, 'b11-nocturno': 32, 'b10-nocturno': 24, 'b08-ia-nocturno': 28,
+  'b06-ia-bromista': 32, 'b11-bromista': 32, 'b10-bromista': 24,
+  'b07-ia-esmeralda': 32, 'b11-esmeralda': 32, 'b10-esmeralda': 24,
+  'b07-ia-sombra': 32, 'b11-sombra': 32, 'b10-sombra': 24,
+  'b07-ia-travieso': 32, 'b11-travieso': 32, 'b10-travieso': 24,
+  'b07-ia-garra': 32, 'b11-garra': 32, 'b10-garra': 24,
+  // Héroes de Ciempi, segunda serie (2.9.0).
+  'b07-ia-trueno': 32, 'b11-trueno': 32, 'b10-trueno': 24, 'b08-ia-trueno': 28,
+  'b07-ia-relampago': 32, 'b11-relampago': 32, 'b10-relampago': 24,
+  'b07-ia-pantera': 32, 'b11-pantera': 32, 'b10-pantera': 24, 'b08-ia-pantera': 28,
+  'b06-ia-mistico': 32, 'b11-mistico': 32, 'b10-mistico': 24, 'b08-ia-mistico': 28,
+  'b06-ia-marino': 32, 'b11-marino': 32, 'b10-marino': 24,
+  'b06-ia-kpopvioleta': 32, 'b11-kpopvioleta': 32, 'b10-kpopvioleta': 24,
+  'b06-ia-kpoprosa': 32, 'b11-kpoprosa': 32, 'b10-kpoprosa': 24,
+  'b06-ia-kpopazul': 32, 'b11-kpopazul': 32, 'b10-kpopazul': 24,
+  'b07-ia-unicornio': 32, 'b11-unicornio': 32, 'b10-unicornio': 24, 'b08-ia-unicornio': 28,
+  'b06-ia-hada': 32, 'b11-hada': 32, 'b10-hada': 24, 'b08-ia-hada': 28,
+  'b07-ia-sombrio': 32, 'b11-sombrio': 32, 'b10-sombrio': 24,
+  'b06-ia-hielo': 32, 'b11-hielo': 32, 'b10-hielo': 24, 'b08-ia-hielo': 28
 }
 const precio = (id) => {
   if (!(id in PRECIOS)) throw Error(`Falta el precio de ${id}`)
@@ -72,7 +120,10 @@ const precio = (id) => {
 // con correas y sombra; ver src/ciempi/v2/arte/mochilas-v4.js), a su precio de 2.1. Los conjuntos
 // siguen sin mochila, como desde 2.2.
 const MOCHILAS = new Set(c.bags.map((b) => b.id))
-const PRECIO_MOCHILA = { 'b09-robot': 25, 'b09-aventura': 20, 'b09-draco': 20, 'b09-mago': 20, 'b09-raton': 20, 'b09-cometa': 25 }
+const PRECIO_MOCHILA = { 'b09-robot': 25, 'b09-aventura': 20, 'b09-draco': 20, 'b09-mago': 20, 'b09-raton': 20, 'b09-cometa': 25,
+  // Héroes de Ciempi (2.9.0), como el escudo del Capitán Ciempi.
+  'b09-coloso': 25, 'b09-aracnido': 25, 'b09-bromista': 25, 'b09-esmeralda': 25, 'b09-sombra': 25, 'b09-travieso': 25, 'b09-garra': 25,
+  'b09-relampago': 25, 'b09-marino': 25, 'b09-kpopvioleta': 25, 'b09-kpoprosa': 25, 'b09-kpopazul': 25, 'b09-sombrio': 25 }
 
 // Las cinco paletas base, gratis; las de personajes, 12.
 for (const p of paletas) agregar('paleta', p.id, p.nombre, p.collection || p.collections ? 12 : 0)

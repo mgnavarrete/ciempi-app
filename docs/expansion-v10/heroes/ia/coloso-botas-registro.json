@@ -1,0 +1,13 @@
+{
+  "id": "coloso-botas",
+  "archivo": "coloso-botas.png",
+  "prompt": "coloso-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c703-d765-74e0-9ccf-7cb7bb1b1e8e/exec-febd07d8-618c-4dd5-8396-dac0a487094c.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:52:42.302Z",
+  "segundos": 82
+}

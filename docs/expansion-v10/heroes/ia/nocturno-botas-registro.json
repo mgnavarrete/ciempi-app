@@ -1,0 +1,13 @@
+{
+  "id": "nocturno-botas",
+  "archivo": "nocturno-botas.png",
+  "prompt": "nocturno-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-c037-7623-8faf-64a46cce6b57/exec-babdf070-cbfa-450c-a9f5-521283d0593f.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:42.860Z",
+  "segundos": 78
+}

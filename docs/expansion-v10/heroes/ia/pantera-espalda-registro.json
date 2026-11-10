@@ -1,0 +1,13 @@
+{
+  "id": "pantera-espalda",
+  "archivo": "pantera-espalda.png",
+  "prompt": "pantera-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-2c37-7d52-9e3c-8945f423294e/exec-5e44f0ee-081b-495d-a6ce-300d59253e80.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:54.222Z",
+  "segundos": 69
+}

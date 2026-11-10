@@ -1,0 +1,13 @@
+{
+  "id": "bromista-cabeza",
+  "archivo": "bromista-cabeza.png",
+  "prompt": "bromista-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-gorro-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-e822-7df3-a690-868c23c4c47b/exec-a4eb4951-6ec1-452e-8dc4-39a0b6717214.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:44.352Z",
+  "segundos": 69
+}

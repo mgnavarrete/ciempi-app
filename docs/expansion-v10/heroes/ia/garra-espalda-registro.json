@@ -1,0 +1,13 @@
+{
+  "id": "garra-espalda",
+  "archivo": "garra-espalda.png",
+  "prompt": "garra-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c708-58fe-7700-95a3-4878be080312/exec-ebddfca9-261f-40fc-b608-911d33c0f952.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:57:52.356Z",
+  "segundos": 97
+}

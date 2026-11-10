@@ -1,0 +1,13 @@
+{
+  "id": "aracnido-cabeza",
+  "archivo": "aracnido-cabeza.png",
+  "prompt": "aracnido-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c70a-a37d-7670-9d0c-e5043b3038e4/exec-0668615b-c3f9-4089-a3dd-80f262c59dbf.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:59:47.798Z",
+  "segundos": 62
+}

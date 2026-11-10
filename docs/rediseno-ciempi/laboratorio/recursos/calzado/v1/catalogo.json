@@ -198,5 +198,447 @@
     "ancho": 88,
     "x": -43,
     "suelo": 24
+  },
+  {
+    "id": "b10-coloso",
+    "nombre": "Botas Coloso",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/coloso.png",
+    "fuente": "../../expansion-v10/heroes/ia/coloso-botas.png",
+    "fuenteSha256": "8e018d4612334f3ffce5b741f4abeebff933eafab236957a360196266c21ff09",
+    "recorte": {
+      "left": 94,
+      "top": 67,
+      "width": 1252,
+      "height": 998
+    },
+    "dimensiones": [
+      512,
+      408
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "coloso"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-aracnido",
+    "nombre": "Botas Arácnidas",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/aracnido.png",
+    "fuente": "../../expansion-v10/heroes/ia/aracnido-botas.png",
+    "fuenteSha256": "54b4257c51da3a3bda3e90a3109f6a1ef3864e8de22048dc64437f9b081de9e8",
+    "recorte": {
+      "left": 73,
+      "top": 42,
+      "width": 1205,
+      "height": 1066
+    },
+    "dimensiones": [
+      512,
+      453
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "aracnido"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-ilusionista",
+    "nombre": "Botas Ilusionista",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/ilusionista.png",
+    "fuente": "../../expansion-v10/heroes/ia/ilusionista-botas.png",
+    "fuenteSha256": "9bfdd675f73e3186451aff149a642285dc38f88e2134acd590ada75fd8563447",
+    "recorte": {
+      "left": 211,
+      "top": 67,
+      "width": 1120,
+      "height": 927
+    },
+    "dimensiones": [
+      512,
+      424
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "ilusionista"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-solar",
+    "nombre": "Botas Solares",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/solar.png",
+    "fuente": "../../expansion-v10/heroes/ia/solar-botas.png",
+    "fuenteSha256": "866e16982f3faeffa3fcfb81a5bc87cccc2276ccca2c244ff63800f5f47add4e",
+    "recorte": {
+      "left": 112,
+      "top": 77,
+      "width": 1179,
+      "height": 1025
+    },
+    "dimensiones": [
+      512,
+      445
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "solar"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-nocturno",
+    "nombre": "Botas Nocturnas",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/nocturno.png",
+    "fuente": "../../expansion-v10/heroes/ia/nocturno-botas.png",
+    "fuenteSha256": "2866e34ec937da5fba3afe49da7d5f4db195fe7e3d0bba8d1f3d785d4fc1ea72",
+    "recorte": {
+      "left": 114,
+      "top": 69,
+      "width": 1146,
+      "height": 1022
+    },
+    "dimensiones": [
+      512,
+      457
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "nocturno"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-bromista",
+    "nombre": "Botas Bromistas",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/bromista.png",
+    "fuente": "../../expansion-v10/heroes/ia/bromista-botas.png",
+    "fuenteSha256": "2250b94a701d85a1b5ff54b6488bb8b647f60f76dadf741f12d7bb9af0cb0173",
+    "recorte": {
+      "left": 159,
+      "top": 80,
+      "width": 1129,
+      "height": 976
+    },
+    "dimensiones": [
+      512,
+      443
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "bromista"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-esmeralda",
+    "nombre": "Botas Esmeralda",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/esmeralda.png",
+    "fuente": "../../expansion-v10/heroes/ia/esmeralda-botas.png",
+    "fuenteSha256": "2a8e6ecd6f05e1ca31a78a7d8aa63c6c3e2662dd53f431422841874bb59a9b6f",
+    "recorte": {
+      "left": 81,
+      "top": 63,
+      "width": 1220,
+      "height": 1033
+    },
+    "dimensiones": [
+      512,
+      434
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "esmeralda"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-sombra",
+    "nombre": "Botas Sombra",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/sombra.png",
+    "fuente": "../../expansion-v10/heroes/ia/sombra-botas.png",
+    "fuenteSha256": "f7dc3f577cce1f8dac9d57e705b50ca9fee096d61a6af4c8524f74f11c6b165c",
+    "recorte": {
+      "left": 50,
+      "top": 64,
+      "width": 1280,
+      "height": 1019
+    },
+    "dimensiones": [
+      512,
+      408
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "sombra"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-travieso",
+    "nombre": "Botas Traviesas",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/travieso.png",
+    "fuente": "../../expansion-v10/heroes/ia/travieso-botas.png",
+    "fuenteSha256": "132b45a6855531a96d07fc27515e34b4bb17c37a9694d9f056d69e9a6be71527",
+    "recorte": {
+      "left": 86,
+      "top": 75,
+      "width": 1214,
+      "height": 1035
+    },
+    "dimensiones": [
+      512,
+      437
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "travieso"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-garra",
+    "nombre": "Botas Garra",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/garra.png",
+    "fuente": "../../expansion-v10/heroes/ia/garra-botas.png",
+    "fuenteSha256": "573944420cf7bce62c6f5b8529feb9b56484a3eaffdc1de1bfa32b921c21bdfa",
+    "recorte": {
+      "left": 72,
+      "top": 45,
+      "width": 1239,
+      "height": 1062
+    },
+    "dimensiones": [
+      512,
+      439
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "garra"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-trueno",
+    "nombre": "Botas Trueno",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/trueno.png",
+    "fuente": "../../expansion-v10/heroes/ia/trueno-botas.png",
+    "fuenteSha256": "31335bb32d7692f61f92b065472bd5e30e22eef29d1dbf43c2be235c23c03af0",
+    "recorte": {
+      "left": 53,
+      "top": 56,
+      "width": 1279,
+      "height": 1056
+    },
+    "dimensiones": [
+      512,
+      423
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "trueno"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-relampago",
+    "nombre": "Botas Relámpago",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/relampago.png",
+    "fuente": "../../expansion-v10/heroes/ia/relampago-botas.png",
+    "fuenteSha256": "311c899112612c54a393249ebcafe5c17f92752265e58d6dc2f542e3963432dd",
+    "recorte": {
+      "left": 60,
+      "top": 26,
+      "width": 1264,
+      "height": 1100
+    },
+    "dimensiones": [
+      512,
+      446
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "relampago"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
+  },
+  {
+    "id": "b10-mistico",
+    "nombre": "Botas Místicas",
+    "batch": "B10",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/calzado/v1/mistico.png",
+    "fuente": "../../expansion-v10/heroes/ia/mistico-botas.png",
+    "fuenteSha256": "4a5d64f63c4d21d4d9db8fb1ba127d5515fcad03864af3f37c272e1065301651",
+    "recorte": {
+      "left": 213,
+      "top": 42,
+      "width": 1109,
+      "height": 951
+    },
+    "dimensiones": [
+      512,
+      439
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "mistico"
+    ],
+    "ancho": 88,
+    "x": -43,
+    "suelo": 24
   }
 ]

@@ -197,5 +197,145 @@
     "svg": true,
     "compatiblePelo": false,
     "soloPosterior": true
+  },
+  {
+    "id": "b06-ia-coloso",
+    "nombre": "Máscara Coloso",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-coloso.png",
+    "fuente": "../../expansion-v10/heroes/ia/coloso-cabeza.png",
+    "fuenteSha256": "8d552f364df461dd22d2fbc6f4927a36deecde253c3fac0d7039d05358ee4ff1",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      486.21,
+      64.87,
+      482.08,
+      321.39
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "coloso"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-ilusionista",
+    "nombre": "Corona Ilusionista",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-ilusionista.png",
+    "fuente": "../../expansion-v10/heroes/ia/ilusionista-cabeza.png",
+    "fuenteSha256": "aff5fb39b24cb1467eaf80d4f4715aaf8fafb1c94c47f3b028178dc7dbb223f6",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      490.15,
+      67.55,
+      471.76,
+      314.51
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "ilusionista"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-bromista",
+    "nombre": "Gorro Bromista",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-bromista.png",
+    "fuente": "../../expansion-v10/heroes/ia/bromista-cabeza.png",
+    "fuenteSha256": "2ab9520ba7d2edbbc313dc8df64a0293fcf7202ce399b3132faf3109fcb98c53",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      445.78,
+      65.68,
+      556.91,
+      371.27
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "bromista"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
+  },
+  {
+    "id": "b06-ia-mistico",
+    "nombre": "Diadema Mística",
+    "batch": "B06",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/gorros/v2/gorro-mistico.png",
+    "fuente": "../../expansion-v10/heroes/ia/mistico-cabeza.png",
+    "fuenteSha256": "de63f7a83b083af4afa7f8a632468c847b074f090b73e24f6217ce11fb1551cb",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      540.06,
+      135.34,
+      394.89,
+      263.26
+    ],
+    "splitY": null,
+    "rotation": 0,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "mistico"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false
   }
 ]

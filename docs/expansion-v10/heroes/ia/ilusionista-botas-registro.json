@@ -1,0 +1,13 @@
+{
+  "id": "ilusionista-botas",
+  "archivo": "ilusionista-botas.png",
+  "prompt": "ilusionista-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c704-c64f-75e0-9321-43e28b74a41b/exec-6bdc8d08-3dd0-4ea2-ad8b-474e489ef7e6.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:53:27.728Z",
+  "segundos": 67
+}

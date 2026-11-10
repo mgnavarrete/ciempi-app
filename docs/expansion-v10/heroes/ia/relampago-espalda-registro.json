@@ -1,0 +1,13 @@
+{
+  "id": "relampago-espalda",
+  "archivo": "relampago-espalda.png",
+  "prompt": "relampago-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-e7b1-7d83-937f-1dc170865bee/exec-1db57305-86c3-47a6-b669-254be46b0fc5.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:21.653Z",
+  "segundos": 114
+}

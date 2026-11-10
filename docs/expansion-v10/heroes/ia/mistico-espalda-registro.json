@@ -1,0 +1,13 @@
+{
+  "id": "mistico-espalda",
+  "archivo": "mistico-espalda.png",
+  "prompt": "mistico-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-f7aa-7880-9082-0316e5995d9c/exec-5d458f76-3922-4a2a-bdf5-8042f002a552.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:32.316Z",
+  "segundos": 55
+}

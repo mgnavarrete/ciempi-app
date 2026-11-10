@@ -1,0 +1,13 @@
+{
+  "id": "pantera-botas",
+  "archivo": "pantera-botas.png",
+  "prompt": "pantera-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-1225-7fd0-b726-08a6626b4dad/exec-237a9d95-f550-4dc2-9ae5-e5b07c4c34b2.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:43.423Z",
+  "segundos": 65
+}

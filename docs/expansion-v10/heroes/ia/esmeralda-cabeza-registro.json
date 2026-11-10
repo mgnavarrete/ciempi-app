@@ -1,0 +1,13 @@
+{
+  "id": "esmeralda-cabeza",
+  "archivo": "esmeralda-cabeza.png",
+  "prompt": "esmeralda-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-4edc-7b40-b53e-1338deb8c0e9/exec-2e699903-c42f-4c95-a139-e7f489df094f.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:55:07.231Z",
+  "segundos": 66
+}

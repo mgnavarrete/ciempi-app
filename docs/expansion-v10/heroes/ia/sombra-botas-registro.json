@@ -1,0 +1,13 @@
+{
+  "id": "sombra-botas",
+  "archivo": "sombra-botas.png",
+  "prompt": "sombra-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-2b56-7692-a12c-56a18b75093b/exec-1035bce9-807c-4eaa-9938-80eb6e5f86af.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:56:08.383Z",
+  "segundos": 70
+}

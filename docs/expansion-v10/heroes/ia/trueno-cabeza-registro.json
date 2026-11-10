@@ -1,0 +1,13 @@
+{
+  "id": "trueno-cabeza",
+  "archivo": "trueno-cabeza.png",
+  "prompt": "trueno-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-mascara-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-17fb-7041-8d2d-d67cb04e4994/exec-862ae6e3-5c68-4fa2-a1d7-8097c9f25a06.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:00.158Z",
+  "segundos": 86
+}

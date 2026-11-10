@@ -1,0 +1,13 @@
+{
+  "id": "pantera-cabeza",
+  "archivo": "pantera-cabeza.png",
+  "prompt": "pantera-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-mascara-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-e815-7963-947b-14142220a7ae/exec-4af3caf5-a320-4fcf-8193-3ade3ed1d98a.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:37.399Z",
+  "segundos": 70
+}

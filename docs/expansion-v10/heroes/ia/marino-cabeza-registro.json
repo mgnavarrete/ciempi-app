@@ -1,0 +1,13 @@
+{
+  "id": "marino-cabeza",
+  "archivo": "marino-cabeza.png",
+  "prompt": "marino-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-gorro-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c731-0f43-7d71-8ecc-710f360833a4/exec-e97f41cd-89b1-4cda-b3ce-bb372f753c23.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:44.578Z",
+  "segundos": 61
+}

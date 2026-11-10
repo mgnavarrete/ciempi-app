@@ -1,0 +1,13 @@
+{
+  "id": "bromista-espalda",
+  "archivo": "bromista-espalda.png",
+  "prompt": "bromista-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-41ef-7f60-b42d-629aecb0cb80/exec-1c97db5c-b318-44ae-9d15-47467c790c71.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:55:06.487Z",
+  "segundos": 68
+}

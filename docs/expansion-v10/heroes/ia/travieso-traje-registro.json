@@ -1,0 +1,13 @@
+{
+  "id": "travieso-traje",
+  "archivo": "travieso-traje.png",
+  "prompt": "travieso-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-4f42-7bd3-b817-90af85b80b69/exec-f847c0a2-4587-4964-80b7-0ed9b9f6a904.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:56:15.324Z",
+  "segundos": 68
+}

@@ -1,0 +1,13 @@
+{
+  "id": "travieso-cabeza",
+  "archivo": "travieso-cabeza.png",
+  "prompt": "travieso-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-mascara-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c718-e2a1-7553-8dfa-df8c237526de/exec-660cd174-6242-4873-a554-ca9cf8328d4c.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:15:36.757Z",
+  "segundos": 78
+}

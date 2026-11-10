@@ -187,5 +187,213 @@
       "pies": "b10-cometa",
       "espalda": "b09-cometa"
     }
+  },
+  {
+    "id": "b12-set-coloso",
+    "nombre": "Ciempi Coloso",
+    "historia": "Un héroe forzudo en verde intenso y morado oscuro: gorro con mechones negros, traje de músculos redondos con pantalón rasgado y botas grandes. La mochila de roca se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-coloso",
+      "textura": "b11-coloso",
+      "pies": "b10-coloso",
+      "espalda": "b09-coloso"
+    }
+  },
+  {
+    "id": "b12-set-aracnido",
+    "nombre": "Ciempi Arácnido",
+    "historia": "Un héroe trepador en rojo y azul eléctrico: antifaz con telaraña, traje con emblema propio de ocho patas curvas y botas rojas. La mochila telaraña se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-aracnido",
+      "textura": "b11-aracnido",
+      "pies": "b10-aracnido",
+      "espalda": "b09-aracnido"
+    }
+  },
+  {
+    "id": "b12-set-ilusionista",
+    "nombre": "Ciempi Ilusionista",
+    "historia": "Un mago elegante en verde esmeralda y dorado: casco con adornos curvos y gema, traje satinado con rombos dorados, botas de ribete dorado y capa de interior dorado.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-ilusionista",
+      "textura": "b11-ilusionista",
+      "pies": "b10-ilusionista",
+      "espalda": "b08-ia-ilusionista"
+    }
+  },
+  {
+    "id": "b12-set-solar",
+    "nombre": "Ciempi Solar",
+    "historia": "Un héroe luminoso en azul intenso, rojo y dorado: antifaz con sol de ocho rayos, traje elástico con soles pequeños, botas rojas y capa al viento.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-solar",
+      "textura": "b11-solar",
+      "pies": "b10-solar",
+      "espalda": "b08-ia-solar"
+    }
+  },
+  {
+    "id": "b12-set-nocturno",
+    "nombre": "Ciempi Nocturno",
+    "historia": "Un héroe de la noche en negro, gris y amarillo: máscara con orejas triangulares, traje grafito con emblema de alas y cinturón, botas negras y capa de cinco ondas.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-nocturno",
+      "textura": "b11-nocturno",
+      "pies": "b10-nocturno",
+      "espalda": "b08-ia-nocturno"
+    }
+  },
+  {
+    "id": "b12-set-bromista",
+    "nombre": "Ciempi Bromista",
+    "historia": "Un bromista elegante en morado, verde y blanco: gorro con mechones y pompones, traje de chaqueta con solapas y botones, botas con cordones. La mochila sorpresa se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-bromista",
+      "textura": "b11-bromista",
+      "pies": "b10-bromista",
+      "espalda": "b09-bromista"
+    }
+  },
+  {
+    "id": "b12-set-esmeralda",
+    "nombre": "Ciempi Esmeralda",
+    "historia": "Un héroe de energía en verde brillante, negro y blanco: antifaz con círculo luminoso, traje con cristal hexagonal y botas con líneas de energía. La mochila de energía se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-esmeralda",
+      "textura": "b11-esmeralda",
+      "pies": "b10-esmeralda",
+      "espalda": "b09-esmeralda"
+    }
+  },
+  {
+    "id": "b12-set-sombra",
+    "nombre": "Ciempi Araña Sombra",
+    "historia": "Un héroe sigiloso en negro y rojo eléctrico: máscara con marcos ovalados rojos, traje con telarañas y símbolo de rombo, botas de suela roja. La mochila sombra se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-sombra",
+      "textura": "b11-sombra",
+      "pies": "b10-sombra",
+      "espalda": "b09-sombra"
+    }
+  },
+  {
+    "id": "b12-set-travieso",
+    "nombre": "Ciempi Travieso",
+    "historia": "Un héroe travieso en rojo carmesí, negro y gris: máscara de tela con parches ovalados, traje con paneles y cinturón, botas de puntera roja. La mochila aventurera se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-travieso",
+      "textura": "b11-travieso",
+      "pies": "b10-travieso",
+      "espalda": "b09-travieso"
+    }
+  },
+  {
+    "id": "b12-set-garra",
+    "nombre": "Ciempi Garra Salvaje",
+    "historia": "Un héroe salvaje en amarillo intenso y azul oscuro: máscara con adornos en diagonal, traje con franjas y costuras, botas reforzadas. La mochila escudo se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-garra",
+      "textura": "b11-garra",
+      "pies": "b10-garra",
+      "espalda": "b09-garra"
+    }
+  },
+  {
+    "id": "b12-set-trueno",
+    "nombre": "Ciempi Trueno",
+    "historia": "Un guerrero de las tormentas en azul oscuro, plata y rojo: casco con alas y aberturas para los ojos, traje con discos plateados y rayos dorados, botas con rayos y capa roja con un martillo de juguete.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-trueno",
+      "textura": "b11-trueno",
+      "pies": "b10-trueno",
+      "espalda": "b08-ia-trueno"
+    }
+  },
+  {
+    "id": "b12-set-relampago",
+    "nombre": "Ciempi Relámpago",
+    "historia": "Un héroe veloz en rojo, amarillo y blanco: máscara completa con rayos a los lados, traje con zigzag, botas amarillas. La mochila de velocidad se vende aparte.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b07-ia-relampago",
+      "textura": "b11-relampago",
+      "pies": "b10-relampago",
+      "espalda": "b09-relampago"
+    }
+  },
+  {
+    "id": "b12-set-mistico",
+    "nombre": "Ciempi Místico",
+    "historia": "Un mago aventurero en azul profundo, rojo y dorado: diadema con gema, traje con círculos mágicos, botas de cuero y capa de cuello alto.",
+    "batch": "B12",
+    "version": "1",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "seleccion": {
+      "cabeza": "b06-ia-mistico",
+      "textura": "b11-mistico",
+      "pies": "b10-mistico",
+      "espalda": "b08-ia-mistico"
+    }
   }
 ]

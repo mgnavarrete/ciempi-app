@@ -273,6 +273,30 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 25
  },
  {
+  "id": "cabeza:b06-ia-coloso",
+  "nombre": "Máscara Coloso",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b06-ia-ilusionista",
+  "nombre": "Corona Ilusionista",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b06-ia-bromista",
+  "nombre": "Gorro Bromista",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b06-ia-mistico",
+  "nombre": "Diadema Mística",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
   "id": "cabeza:b07-ia-robot",
   "nombre": "Robot",
   "categoria": "cabeza",
@@ -305,6 +329,60 @@ export const PIEZAS: ItemCiempi[] = [
  {
   "id": "cabeza:b07-ia-cometa",
   "nombre": "Antifaz Capitán Ciempi",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-aracnido",
+  "nombre": "Máscara Arácnida",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-solar",
+  "nombre": "Antifaz Solar",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-nocturno",
+  "nombre": "Máscara Nocturna",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-esmeralda",
+  "nombre": "Antifaz Esmeralda",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-sombra",
+  "nombre": "Máscara Sombra",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-travieso",
+  "nombre": "Máscara Traviesa",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-garra",
+  "nombre": "Máscara Garra",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-trueno",
+  "nombre": "Casco Trueno",
+  "categoria": "cabeza",
+  "precio": 32
+ },
+ {
+  "id": "cabeza:b07-ia-relampago",
+  "nombre": "Máscara Relámpago",
   "categoria": "cabeza",
   "precio": 32
  },
@@ -513,6 +591,36 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 24
  },
  {
+  "id": "espalda:b08-ia-ilusionista",
+  "nombre": "Capa de Ilusiones",
+  "categoria": "espalda",
+  "precio": 28
+ },
+ {
+  "id": "espalda:b08-ia-solar",
+  "nombre": "Capa Solar",
+  "categoria": "espalda",
+  "precio": 28
+ },
+ {
+  "id": "espalda:b08-ia-nocturno",
+  "nombre": "Capa Nocturna",
+  "categoria": "espalda",
+  "precio": 28
+ },
+ {
+  "id": "espalda:b08-ia-trueno",
+  "nombre": "Capa Trueno",
+  "categoria": "espalda",
+  "precio": 28
+ },
+ {
+  "id": "espalda:b08-ia-mistico",
+  "nombre": "Capa Mística",
+  "categoria": "espalda",
+  "precio": 28
+ },
+ {
   "id": "espalda:b09-robot",
   "nombre": "Propulsor Lumen",
   "categoria": "espalda",
@@ -545,6 +653,54 @@ export const PIEZAS: ItemCiempi[] = [
  {
   "id": "espalda:b09-cometa",
   "nombre": "Escudo Capitán Ciempi",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-coloso",
+  "nombre": "Mochila de Fuerza",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-aracnido",
+  "nombre": "Mochila Telaraña",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-bromista",
+  "nombre": "Mochila Sorpresa",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-esmeralda",
+  "nombre": "Mochila de Energía",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-sombra",
+  "nombre": "Mochila Sombra",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-travieso",
+  "nombre": "Mochila Aventurera",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-garra",
+  "nombre": "Mochila Garra",
+  "categoria": "espalda",
+  "precio": 25
+ },
+ {
+  "id": "espalda:b09-relampago",
+  "nombre": "Mochila de Velocidad",
   "categoria": "espalda",
   "precio": 25
  },
@@ -591,6 +747,84 @@ export const PIEZAS: ItemCiempi[] = [
   "precio": 24
  },
  {
+  "id": "pies:b10-coloso",
+  "nombre": "Botas Coloso",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-aracnido",
+  "nombre": "Botas Arácnidas",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-ilusionista",
+  "nombre": "Botas Ilusionista",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-solar",
+  "nombre": "Botas Solares",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-nocturno",
+  "nombre": "Botas Nocturnas",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-bromista",
+  "nombre": "Botas Bromistas",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-esmeralda",
+  "nombre": "Botas Esmeralda",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-sombra",
+  "nombre": "Botas Sombra",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-travieso",
+  "nombre": "Botas Traviesas",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-garra",
+  "nombre": "Botas Garra",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-trueno",
+  "nombre": "Botas Trueno",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-relampago",
+  "nombre": "Botas Relámpago",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
+  "id": "pies:b10-mistico",
+  "nombre": "Botas Místicas",
+  "categoria": "pies",
+  "precio": 24
+ },
+ {
   "id": "textura:liso",
   "nombre": "Liso",
   "categoria": "textura",
@@ -629,6 +863,84 @@ export const PIEZAS: ItemCiempi[] = [
  {
   "id": "textura:b11-cometa",
   "nombre": "Traje Capitán Ciempi",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-coloso",
+  "nombre": "Traje Coloso",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-aracnido",
+  "nombre": "Traje Arácnido",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-ilusionista",
+  "nombre": "Traje Ilusionista",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-solar",
+  "nombre": "Traje Solar",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-nocturno",
+  "nombre": "Traje Nocturno",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-bromista",
+  "nombre": "Traje Bromista",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-esmeralda",
+  "nombre": "Traje Esmeralda",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-sombra",
+  "nombre": "Traje Araña Sombra",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-travieso",
+  "nombre": "Traje Travieso",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-garra",
+  "nombre": "Traje Garra Salvaje",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-trueno",
+  "nombre": "Traje Trueno",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-relampago",
+  "nombre": "Traje Relámpago",
+  "categoria": "textura",
+  "precio": 32
+ },
+ {
+  "id": "textura:b11-mistico",
+  "nombre": "Traje Místico",
   "categoria": "textura",
   "precio": 32
  }
@@ -894,6 +1206,211 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
    "cabeza:b07-ia-cometa",
    "textura:b11-cometa",
    "pies:b10-cometa"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-coloso",
+  "nombre": "Ciempi Coloso",
+  "pone": [
+   "cabeza:b06-ia-coloso",
+   "textura:b11-coloso",
+   "pies:b10-coloso"
+  ],
+  "piezas": [
+   "cabeza:b06-ia-coloso",
+   "textura:b11-coloso",
+   "pies:b10-coloso"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-aracnido",
+  "nombre": "Ciempi Arácnido",
+  "pone": [
+   "cabeza:b07-ia-aracnido",
+   "textura:b11-aracnido",
+   "pies:b10-aracnido"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-aracnido",
+   "textura:b11-aracnido",
+   "pies:b10-aracnido"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-ilusionista",
+  "nombre": "Ciempi Ilusionista",
+  "pone": [
+   "cabeza:b06-ia-ilusionista",
+   "textura:b11-ilusionista",
+   "pies:b10-ilusionista",
+   "espalda:b08-ia-ilusionista"
+  ],
+  "piezas": [
+   "cabeza:b06-ia-ilusionista",
+   "textura:b11-ilusionista",
+   "pies:b10-ilusionista",
+   "espalda:b08-ia-ilusionista"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-solar",
+  "nombre": "Ciempi Solar",
+  "pone": [
+   "cabeza:b07-ia-solar",
+   "textura:b11-solar",
+   "pies:b10-solar",
+   "espalda:b08-ia-solar"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-solar",
+   "textura:b11-solar",
+   "pies:b10-solar",
+   "espalda:b08-ia-solar"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-nocturno",
+  "nombre": "Ciempi Nocturno",
+  "pone": [
+   "cabeza:b07-ia-nocturno",
+   "textura:b11-nocturno",
+   "pies:b10-nocturno",
+   "espalda:b08-ia-nocturno"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-nocturno",
+   "textura:b11-nocturno",
+   "pies:b10-nocturno",
+   "espalda:b08-ia-nocturno"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-bromista",
+  "nombre": "Ciempi Bromista",
+  "pone": [
+   "cabeza:b06-ia-bromista",
+   "textura:b11-bromista",
+   "pies:b10-bromista"
+  ],
+  "piezas": [
+   "cabeza:b06-ia-bromista",
+   "textura:b11-bromista",
+   "pies:b10-bromista"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-esmeralda",
+  "nombre": "Ciempi Esmeralda",
+  "pone": [
+   "cabeza:b07-ia-esmeralda",
+   "textura:b11-esmeralda",
+   "pies:b10-esmeralda"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-esmeralda",
+   "textura:b11-esmeralda",
+   "pies:b10-esmeralda"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-sombra",
+  "nombre": "Ciempi Araña Sombra",
+  "pone": [
+   "cabeza:b07-ia-sombra",
+   "textura:b11-sombra",
+   "pies:b10-sombra"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-sombra",
+   "textura:b11-sombra",
+   "pies:b10-sombra"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-travieso",
+  "nombre": "Ciempi Travieso",
+  "pone": [
+   "cabeza:b07-ia-travieso",
+   "textura:b11-travieso",
+   "pies:b10-travieso"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-travieso",
+   "textura:b11-travieso",
+   "pies:b10-travieso"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-garra",
+  "nombre": "Ciempi Garra Salvaje",
+  "pone": [
+   "cabeza:b07-ia-garra",
+   "textura:b11-garra",
+   "pies:b10-garra"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-garra",
+   "textura:b11-garra",
+   "pies:b10-garra"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-trueno",
+  "nombre": "Ciempi Trueno",
+  "pone": [
+   "cabeza:b07-ia-trueno",
+   "textura:b11-trueno",
+   "pies:b10-trueno",
+   "espalda:b08-ia-trueno"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-trueno",
+   "textura:b11-trueno",
+   "pies:b10-trueno",
+   "espalda:b08-ia-trueno"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-relampago",
+  "nombre": "Ciempi Relámpago",
+  "pone": [
+   "cabeza:b07-ia-relampago",
+   "textura:b11-relampago",
+   "pies:b10-relampago"
+  ],
+  "piezas": [
+   "cabeza:b07-ia-relampago",
+   "textura:b11-relampago",
+   "pies:b10-relampago"
+  ],
+  "variantes": {}
+ },
+ {
+  "id": "conjunto:b12-set-mistico",
+  "nombre": "Ciempi Místico",
+  "pone": [
+   "cabeza:b06-ia-mistico",
+   "textura:b11-mistico",
+   "pies:b10-mistico",
+   "espalda:b08-ia-mistico"
+  ],
+  "piezas": [
+   "cabeza:b06-ia-mistico",
+   "textura:b11-mistico",
+   "pies:b10-mistico",
+   "espalda:b08-ia-mistico"
   ],
   "variantes": {}
  }

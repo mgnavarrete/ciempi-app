@@ -1,0 +1,13 @@
+{
+  "id": "esmeralda-botas",
+  "archivo": "esmeralda-botas.png",
+  "prompt": "esmeralda-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-c732-79f0-a680-2f9d88372959/exec-535e6503-7f8d-476a-aecb-acb5733f5eae.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:55:33.037Z",
+  "segundos": 61
+}

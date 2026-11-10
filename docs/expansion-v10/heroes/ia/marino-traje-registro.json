@@ -1,0 +1,13 @@
+{
+  "id": "marino-traje",
+  "archivo": "marino-traje.png",
+  "prompt": "marino-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c731-396e-7511-a57b-fa6b939ab71c/exec-2431d457-6c00-49b5-aa9a-664afe6fb146.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:51.221Z",
+  "segundos": 57
+}

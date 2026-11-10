@@ -1,0 +1,13 @@
+{
+  "id": "sombra-traje",
+  "archivo": "sombra-traje.png",
+  "prompt": "sombra-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c70a-a37c-7600-9af6-7c6ae0381684/exec-9edecfe8-68f5-4df7-8c72-71d1cfa59896.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:59:46.528Z",
+  "segundos": 61
+}

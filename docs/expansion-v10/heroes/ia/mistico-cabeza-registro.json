@@ -1,0 +1,13 @@
+{
+  "id": "mistico-cabeza",
+  "archivo": "mistico-cabeza.png",
+  "prompt": "mistico-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-gorro-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-6672-7f63-be33-6b44290d6a23/exec-b9d23ea6-2faa-4970-be29-7d701228cb75.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:09.246Z",
+  "segundos": 69
+}

@@ -223,5 +223,383 @@
     "mask": true,
     "fullFace": false,
     "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-aracnido",
+    "nombre": "Máscara Arácnida",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-aracnido.png",
+    "fuente": "../../expansion-v10/heroes/ia/aracnido-cabeza.png",
+    "fuenteSha256": "9c0f00eca03ba49411dd3bc680627cfa8a70f603546fb7374db779407dcc6a4f",
+    "dimensionesMaestro": [
+      1292,
+      1218
+    ],
+    "encuadre": [
+      596.13,
+      178.62,
+      290.89,
+      274.23
+    ],
+    "splitY": null,
+    "rotation": -10.6,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "aracnido"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-solar",
+    "nombre": "Antifaz Solar",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-solar.png",
+    "fuente": "../../expansion-v10/heroes/ia/solar-cabeza.png",
+    "fuenteSha256": "1f409f6dbc3b1beb58db837fd71803c2e7217d8662cfc2d28b9812819f931e91",
+    "dimensionesMaestro": [
+      1535,
+      1024
+    ],
+    "encuadre": [
+      613.6,
+      219.62,
+      267.1,
+      178.18
+    ],
+    "splitY": null,
+    "rotation": -7.28,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "solar"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-nocturno",
+    "nombre": "Máscara Nocturna",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-nocturno.png",
+    "fuente": "../../expansion-v10/heroes/ia/nocturno-cabeza.png",
+    "fuenteSha256": "b0b805c60777b63f131cc3c176e7e84b196bf93edb13b0fd323f5e94fbb38bdf",
+    "dimensionesMaestro": [
+      1535,
+      1024
+    ],
+    "encuadre": [
+      608.22,
+      208.88,
+      280.63,
+      187.21
+    ],
+    "splitY": null,
+    "rotation": -7.12,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "nocturno"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-esmeralda",
+    "nombre": "Antifaz Esmeralda",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-esmeralda.png",
+    "fuente": "../../expansion-v10/heroes/ia/esmeralda-cabeza.png",
+    "fuenteSha256": "8090398c5e27f2bcccc8ac674c71c542822d0474836a96a2be0bcb95eefc1f44",
+    "dimensionesMaestro": [
+      1535,
+      1024
+    ],
+    "encuadre": [
+      610.07,
+      228.74,
+      265.97,
+      177.43
+    ],
+    "splitY": null,
+    "rotation": -6.66,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "esmeralda"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-sombra",
+    "nombre": "Máscara Sombra",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-sombra.png",
+    "fuente": "../../expansion-v10/heroes/ia/sombra-cabeza.png",
+    "fuenteSha256": "7ba3ddb2f077185b1d45cee945eac8e71f328463d366fbcdb6a628227f1355c9",
+    "dimensionesMaestro": [
+      1312,
+      1199
+    ],
+    "encuadre": [
+      591.1,
+      177.05,
+      318.95,
+      291.48
+    ],
+    "splitY": null,
+    "rotation": -5.65,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "sombra"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-travieso",
+    "nombre": "Máscara Traviesa",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-travieso.png",
+    "fuente": "../../expansion-v10/heroes/ia/travieso-cabeza.png",
+    "fuenteSha256": "92839643ff30cd67cf83f3b72a7b98a982d77bb2fbf369da1f16e4cde3eca53a",
+    "dimensionesMaestro": [
+      1312,
+      1199
+    ],
+    "encuadre": [
+      560.67,
+      162.69,
+      342.8,
+      313.28
+    ],
+    "splitY": null,
+    "rotation": -6.31,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "travieso"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-garra",
+    "nombre": "Máscara Garra",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-garra.png",
+    "fuente": "../../expansion-v10/heroes/ia/garra-cabeza.png",
+    "fuenteSha256": "9476dfa126def9c118c7300d387bf629d3f30ddb0432b62034bdd748e2f172e2",
+    "dimensionesMaestro": [
+      1536,
+      1024
+    ],
+    "encuadre": [
+      608.86,
+      213.87,
+      276.71,
+      184.47
+    ],
+    "splitY": null,
+    "rotation": -6.47,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "garra"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-trueno",
+    "nombre": "Casco Trueno",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-trueno.png",
+    "fuente": "../../expansion-v10/heroes/ia/trueno-cabeza.png",
+    "fuenteSha256": "df092a7a44993c8b8314c523d26c032d6af5bd19264f686adceebc0348c0fa1a",
+    "dimensionesMaestro": [
+      1312,
+      1199
+    ],
+    "encuadre": [
+      587.02,
+      177.6,
+      310.11,
+      283.4
+    ],
+    "splitY": null,
+    "rotation": -9.28,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "trueno"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
+  },
+  {
+    "id": "b07-ia-relampago",
+    "nombre": "Máscara Relámpago",
+    "batch": "B07",
+    "version": "2",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "tipo": "raster-ia",
+    "archivo": "./recursos/mascaras/v2/antifaz-relampago.png",
+    "fuente": "../../expansion-v10/heroes/ia/relampago-cabeza.png",
+    "fuenteSha256": "1f732f2867a698d8f66395345b308073e5c49f5ceb0df1f48f3b459c30720365",
+    "dimensionesMaestro": [
+      1286,
+      1223
+    ],
+    "encuadre": [
+      573.43,
+      164.25,
+      324.55,
+      308.65
+    ],
+    "splitY": null,
+    "rotation": -10.05,
+    "anterior": null,
+    "novedad": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "relampago"
+    ],
+    "antenna": true,
+    "svg": true,
+    "compatiblePelo": false,
+    "centroRotacion": [
+      758.0,
+      331.0
+    ],
+    "mask": true,
+    "fullFace": false,
+    "ocultaRostro": false
   }
 ]

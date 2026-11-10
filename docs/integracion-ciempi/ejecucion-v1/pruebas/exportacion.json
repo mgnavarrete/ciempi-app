@@ -1,7 +1,7 @@
 {
   "files": [
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-jockey.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-jockey.png",
       "sha256": "f46450aa84201db20ad79fd207dcccdfbbc83de5463bfb9bf91886f48aca2ef2",
       "hue": null,
       "target": "f84e0705852c9c81.webp",
@@ -10,7 +10,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-dragon.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-dragon.png",
       "sha256": "9b8e6a186a2fa81ff11da700dff30e2d807753ea1f7882e1b519b27463227cf0",
       "hue": null,
       "target": "86e5a596d4c291fa.webp",
@@ -19,7 +19,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-mago.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-mago.png",
       "sha256": "47606d29c63b9e2e3350ca8cf78509bae1e3e8c90948780f7da6677f27ac9bbe",
       "hue": null,
       "target": "b42a6d463ab220b1.webp",
@@ -28,7 +28,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-aventura.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-aventura.png",
       "sha256": "e9c38dcdf63c6a1a18d8421b61f5d6b5b4b7734e76f239553e8106e9720648da",
       "hue": null,
       "target": "a1360514c982c45a.webp",
@@ -37,7 +37,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-pirata.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-pirata.png",
       "sha256": "0ab0cd1bf889f2f5081cbc697d4602b0de1c72cd3a6e351337fc73cfcd093aa1",
       "hue": null,
       "target": "bec187f9f5d5f90e.webp",
@@ -46,7 +46,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/corona.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/corona.png",
       "sha256": "49fc237ce9d9993e9457b709da981874e134413b6510434ce4105735eac7f058",
       "hue": null,
       "target": "bd5e54938421ed60.webp",
@@ -55,7 +55,43 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-robot.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-coloso.png",
+      "sha256": "b0c9dcd988266479071914e8e3c91176cb80a03d63e0c61ef58b3e48d97e78f6",
+      "hue": null,
+      "target": "aba5e74b3d11bdfe.webp",
+      "sourceBytes": 244511,
+      "bytes": 170680,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-ilusionista.png",
+      "sha256": "075cb608ba9fe55b5388e512aad5db758b36453ac3878cdfff7e4b247beb9d22",
+      "hue": null,
+      "target": "d92ee8e991cc81d9.webp",
+      "sourceBytes": 386698,
+      "bytes": 283942,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-bromista.png",
+      "sha256": "245de3b496a543cb5960f24b220b8c3136d6315f859c97cae1887c4ef2c85a28",
+      "hue": null,
+      "target": "8b2bb48f5d5e6932.webp",
+      "sourceBytes": 282079,
+      "bytes": 196814,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/gorros/v2/gorro-mistico.png",
+      "sha256": "bdae90b97611f8f2e96c607e2a953b8f47a65de69d92cfc8a540bc37ae80df2d",
+      "hue": null,
+      "target": "e5d80eebe1eaf59d.webp",
+      "sourceBytes": 238810,
+      "bytes": 175000,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-robot.png",
       "sha256": "a29cdabee63b676841653ee366e4ece237f6fa417c5be0e9c337a39d18fe054b",
       "hue": null,
       "target": "fa6c6ecf02381690.webp",
@@ -64,7 +100,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-gatita-aberturas.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-gatita-aberturas.png",
       "sha256": "8eb120d4888b0dccbe69f45001ba6d504e549b63f4a9f6c34a85d5e3e8600943",
       "hue": null,
       "target": "7dead25e1d22b075.webp",
@@ -73,7 +109,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-espiritu.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/mascara-espiritu.png",
       "sha256": "8a590ada89a134e0fa53eaad7407bb31bacce6858eed12917b6424521dff7c47",
       "hue": null,
       "target": "d75ae4b9302527d7.webp",
@@ -82,7 +118,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-dragon.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-dragon.png",
       "sha256": "65147c8562853129252ddd364eac47268aa2a0b7c0e55b9f077fd16133ca1254",
       "hue": null,
       "target": "ba1e4bd98da65ae4.webp",
@@ -91,7 +127,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-buho.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-buho.png",
       "sha256": "c33afaa87a376e4c949539ea0c4115729e0ff1458383838daf9007d66a8cba97",
       "hue": null,
       "target": "220aa3d78bab82dc.webp",
@@ -100,7 +136,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-cometa.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-cometa.png",
       "sha256": "675d654afdb77898c94f5f5a77e3b095c7db3cee80f8589d6cccf19cc06f89a8",
       "hue": null,
       "target": "4452098a90355c21.webp",
@@ -109,7 +145,88 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-aracnido.png",
+      "sha256": "8cbd85879cecec22e677e64d11984206eab9388c579398dd02e18df6eded2e2e",
+      "hue": null,
+      "target": "6f6c9817934ba70b.webp",
+      "sourceBytes": 699121,
+      "bytes": 519262,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-solar.png",
+      "sha256": "137bad2c0ee87a317a4d67d6a49fdb2fbc5f0a9da3339a65aaf85c2755dbaa08",
+      "hue": null,
+      "target": "db1814b707a766b6.webp",
+      "sourceBytes": 416416,
+      "bytes": 306446,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-nocturno.png",
+      "sha256": "0515e0d117025fda094395de89ec59c6db21aca41ef72a3ac4e9bcda4f5e33a7",
+      "hue": null,
+      "target": "18078b3b3b98e4d2.webp",
+      "sourceBytes": 380644,
+      "bytes": 267716,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-esmeralda.png",
+      "sha256": "2993c7f04000bed55e3c1021f2ddbe67983828a9f0941a9b083033f82b44771d",
+      "hue": null,
+      "target": "3baa73988c03e27c.webp",
+      "sourceBytes": 346208,
+      "bytes": 244680,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-sombra.png",
+      "sha256": "2d4483069bcaf754715249669635684cdb031d944830be0adc37c77a731291f0",
+      "hue": null,
+      "target": "5546a99ab8bba8f0.webp",
+      "sourceBytes": 405260,
+      "bytes": 289876,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-travieso.png",
+      "sha256": "a4d73d6551c0c6c5da0691a31efb7f01bc8614029528a028c2a041d2d4527475",
+      "hue": null,
+      "target": "b6aa0cead5b3871d.webp",
+      "sourceBytes": 476500,
+      "bytes": 341652,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-garra.png",
+      "sha256": "f54a16c9f0b40be31b018c60b07ea97e7086b93c379be659b45b8b0be3a512d7",
+      "hue": null,
+      "target": "815b9140cbdca8be.webp",
+      "sourceBytes": 437045,
+      "bytes": 320052,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-trueno.png",
+      "sha256": "ba7d877b914b0bc9ab1f991b19d5e96a235da98e138f8d8c7d125139387b1e43",
+      "hue": null,
+      "target": "0bfbf4e5650a403b.webp",
+      "sourceBytes": 623062,
+      "bytes": 419584,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-relampago.png",
+      "sha256": "85cf6b5cb0eb68cca6de638bf0157c2531a0fd165c4f0b1156574d2ba8199179",
+      "hue": null,
+      "target": "12de4aed692fa514.webp",
+      "sourceBytes": 670042,
+      "bytes": 497536,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
       "sha256": "6526655fd0f9e1ce98fae28b6bca981ad7dd7ca4ffaa319c4dca86ab9a130de4",
       "hue": null,
       "target": "a24cbcc1ef03651a.webp",
@@ -118,7 +235,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
       "sha256": "6526655fd0f9e1ce98fae28b6bca981ad7dd7ca4ffaa319c4dca86ab9a130de4",
       "hue": 245,
       "target": "15d1687bf05be4cf.webp",
@@ -127,7 +244,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
       "sha256": "6526655fd0f9e1ce98fae28b6bca981ad7dd7ca4ffaa319c4dca86ab9a130de4",
       "hue": 285,
       "target": "7f59e2dc9407dc2d.webp",
@@ -136,7 +253,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-heroica.png",
       "sha256": "6526655fd0f9e1ce98fae28b6bca981ad7dd7ca4ffaa319c4dca86ab9a130de4",
       "hue": 177,
       "target": "f926604fb9b76beb.webp",
@@ -145,7 +262,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-bosque.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-bosque.png",
       "sha256": "b62580c0eeb4102dd458b113932c6b916ce94046822e456821125f2bd086eb5f",
       "hue": null,
       "target": "bf9dd9028e71f2d1.webp",
@@ -154,7 +271,52 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/robot.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-ilusionista.png",
+      "sha256": "8c1e1353b59bbab97c433ca4356d136d0634755525859639d3c6deb5cf5d8e65",
+      "hue": null,
+      "target": "e74f974abe4cb5fc.webp",
+      "sourceBytes": 314646,
+      "bytes": 231284,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-solar.png",
+      "sha256": "91b4c7801e5147b37633af5cb759a24a3620d3f2152240f45f9eeeee3d4e2143",
+      "hue": null,
+      "target": "773bf7eff843d6c1.webp",
+      "sourceBytes": 266197,
+      "bytes": 194552,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-nocturno.png",
+      "sha256": "87aad9ad3752ced62fd23b02e3aad2ebef974da78b36d1b6ae38407d0cfd9d68",
+      "hue": null,
+      "target": "977df8c7f1c71782.webp",
+      "sourceBytes": 282272,
+      "bytes": 201098,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-trueno.png",
+      "sha256": "823d936bd729affc3145c2f856eaf21cccab6fda65f0b8c29cdc8e58958abd59",
+      "hue": null,
+      "target": "c1e4ba2e50b5335c.webp",
+      "sourceBytes": 278242,
+      "bytes": 202734,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/capas/v2/capa-mistico.png",
+      "sha256": "fdacdc74bfdef1b42816b9dd521dd976025b0082f077820b26b8833398a00823",
+      "hue": null,
+      "target": "ceba781ae63bd374.webp",
+      "sourceBytes": 332148,
+      "bytes": 245900,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/robot.png",
       "sha256": "32fa3631c30ab12e601007ce1b2fe7c7e4e1bfe4d0f2d2345804ec302aa4b1b7",
       "hue": null,
       "target": "c5136c08d9e46f8b.webp",
@@ -163,7 +325,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/aventura.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/aventura.png",
       "sha256": "4519d1db77e8316a066200cd0cfcea026c33534477d65709aaafc9e0877c21fa",
       "hue": null,
       "target": "230a6d000853d10b.webp",
@@ -172,7 +334,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/draco.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/draco.png",
       "sha256": "61465c5c5bbff85c96e1789cdd7016696731680c8595e93fdc42d64085bbee88",
       "hue": null,
       "target": "82011ff94805101e.webp",
@@ -181,7 +343,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/mago.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/mago.png",
       "sha256": "d0a1360875d4f0593675c867db280c387e53b955fbe010082470f80828b282a1",
       "hue": null,
       "target": "fc022365f50f9c01.webp",
@@ -190,7 +352,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/raton.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/raton.png",
       "sha256": "e31e8aa5158fb1d132060a8429eb00db2902b2f2a84629f55a295cc5f2232ded",
       "hue": null,
       "target": "e76d4253ef486259.webp",
@@ -199,7 +361,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/cometa.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/cometa.png",
       "sha256": "d14041dc9718b69a1ab8756db078d6c4dd19583f992a8875dd452ec1ca0b6305",
       "hue": null,
       "target": "1e12c50521e4de1b.webp",
@@ -208,7 +370,79 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/robot.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/coloso.png",
+      "sha256": "36e57d5ae348bca228fcf432c7e119b29e84c1791b9307e226f00f8749215396",
+      "hue": null,
+      "target": "d3932d49adaa707f.webp",
+      "sourceBytes": 549364,
+      "bytes": 383426,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/aracnido.png",
+      "sha256": "83c42f2cc57a4b867cb1ee196bc084640aad47370cbb804745d5cf36515512de",
+      "hue": null,
+      "target": "49735982d682def3.webp",
+      "sourceBytes": 784678,
+      "bytes": 563484,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/bromista.png",
+      "sha256": "33805de1c506b7381f37d476772215194c28f8ad058849a638a0877746a853ab",
+      "hue": null,
+      "target": "1536ac3713c76e5e.webp",
+      "sourceBytes": 668788,
+      "bytes": 503686,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/esmeralda.png",
+      "sha256": "3d8c44d877922913a7822ba46c45c7450dc65bc175fae5f78202faacb9e71870",
+      "hue": null,
+      "target": "a2c1c9e70258ad8c.webp",
+      "sourceBytes": 629853,
+      "bytes": 446592,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/sombra.png",
+      "sha256": "0e461e01f5eff24cdcd868277c7d152612542233996ca00c5186cfb3f0ee5809",
+      "hue": null,
+      "target": "e2511a5b3a01dbda.webp",
+      "sourceBytes": 651516,
+      "bytes": 475258,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/travieso.png",
+      "sha256": "eecfce6c7c7abf14d5d76b0530c893eaffe062a2c336d32ea6962cb399dc1202",
+      "hue": null,
+      "target": "82b332026774b9b6.webp",
+      "sourceBytes": 553314,
+      "bytes": 409446,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/garra.png",
+      "sha256": "e86ca0ae829b23905a6e26ce9fcaadd589084356eb00ae61fedcde0cc5466260",
+      "hue": null,
+      "target": "7631e754acafcded.webp",
+      "sourceBytes": 634762,
+      "bytes": 470906,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/relampago.png",
+      "sha256": "55ed89a2d67773997cde5386013432ee5318b623f3326631e2d3087e1cc17a6e",
+      "hue": null,
+      "target": "9918637462f02bb3.webp",
+      "sourceBytes": 366840,
+      "bytes": 274900,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/robot.png",
       "sha256": "c41f18a2a92e6b4dee5bd7d662f235c09946d2f1824553bcc2b6ffa15012259b",
       "hue": null,
       "target": "a5819f70c63af546.webp",
@@ -217,7 +451,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/aventura.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/aventura.png",
       "sha256": "1301d8b6b0bb1406d8e7580110fe3c0dbfd58b4dca832807e4629fdea3fd785a",
       "hue": null,
       "target": "3511e1b22a0d441c.webp",
@@ -226,7 +460,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/lluvia.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/lluvia.png",
       "sha256": "09b6e47e199cf0be456e3dd6d4dec8beac8787b63bf552aa361aedc6357cf9bb",
       "hue": null,
       "target": "12dd1166ea495f6e.webp",
@@ -235,7 +469,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/mago.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/mago.png",
       "sha256": "2601c43eb555d5bd5c881087717a062ea091f386cd355fdf81e710ff9d830a00",
       "hue": null,
       "target": "41e08091a008495c.webp",
@@ -244,7 +478,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/deportiva.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/deportiva.png",
       "sha256": "c074d28abc968812d1dd5e9bb303a319684e5cff5fc78dc858f8f8e33ddb70b2",
       "hue": null,
       "target": "e648c370b4bda4ac.webp",
@@ -253,7 +487,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/cometa.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/cometa.png",
       "sha256": "bad5f3419b5ef94cc48003b2dad6bc8fa64f2344ab340b04c30cde7c559aca4a",
       "hue": null,
       "target": "aac348b584fd7e20.webp",
@@ -262,7 +496,124 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/robot.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/coloso.png",
+      "sha256": "d5c361f78ca22f849573c477475751c9cb298b1a86faa73654234bb7d01b5ac8",
+      "hue": null,
+      "target": "b5d64ff3a6511667.webp",
+      "sourceBytes": 194781,
+      "bytes": 145530,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/aracnido.png",
+      "sha256": "660250ed2696ecee8eb515d7edd30bdd2822260916abffa0200aa59a0bed5905",
+      "hue": null,
+      "target": "1385b3724bd4d66b.webp",
+      "sourceBytes": 233802,
+      "bytes": 174726,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/ilusionista.png",
+      "sha256": "d68029d107664b005338519cc0f8dbf6bb82ad1f0ff9369c79c0c24853d517c9",
+      "hue": null,
+      "target": "30452d3d02d52b73.webp",
+      "sourceBytes": 204941,
+      "bytes": 152722,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/solar.png",
+      "sha256": "502d35648d3705a68ff4aeb10e56f4302cf12402eb5a3619c3ca3006c3ff23e6",
+      "hue": null,
+      "target": "f44ed8d35e8b0691.webp",
+      "sourceBytes": 208683,
+      "bytes": 155484,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/nocturno.png",
+      "sha256": "463fe1fcb35eb5398142f252e8b7f0e0e4fa86a9830570440ecd07849196219a",
+      "hue": null,
+      "target": "538b6a2d6ddff1e8.webp",
+      "sourceBytes": 206385,
+      "bytes": 151366,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/bromista.png",
+      "sha256": "f0c9071df29f4fe2a8ad0e27bd63fa787ebcb85de9346c8aca90d850c4d3fdbd",
+      "hue": null,
+      "target": "fb119bb88d2b7540.webp",
+      "sourceBytes": 223979,
+      "bytes": 167738,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/esmeralda.png",
+      "sha256": "1b360e1b6ef2481295bc1abd7c80b58275199b6cc1cd2fea18dac3374ac95634",
+      "hue": null,
+      "target": "b787ba7371da6453.webp",
+      "sourceBytes": 203409,
+      "bytes": 151738,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/sombra.png",
+      "sha256": "bc46f946e00bb7a37def9f9ed59ce67ad6254cb8178a43f99b873ff60834554b",
+      "hue": null,
+      "target": "91d81dc3efc794f0.webp",
+      "sourceBytes": 188723,
+      "bytes": 139968,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/travieso.png",
+      "sha256": "09589db8be665fe810da91575b77af9c35098c2efbd1a6750630725ea717fac9",
+      "hue": null,
+      "target": "0e68739828c5a583.webp",
+      "sourceBytes": 201505,
+      "bytes": 149486,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/garra.png",
+      "sha256": "b30914bd54676de1538f88dbb28d4753f079665d1f4d2f9fe2e8fb3f23b24cdd",
+      "hue": null,
+      "target": "b9c3a8dc15faa7dd.webp",
+      "sourceBytes": 219672,
+      "bytes": 159528,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/trueno.png",
+      "sha256": "49b6385ef0ec4b1c1b272d18f11d9bbb0a68d593cc37deae99a2e8edf8878686",
+      "hue": null,
+      "target": "ac326fa68803c542.webp",
+      "sourceBytes": 203030,
+      "bytes": 142632,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/relampago.png",
+      "sha256": "782233d30b574464cad2441ea652cc5a0dd87da88622c75c6f7425f85a45eedc",
+      "hue": null,
+      "target": "e08c56dd695c335b.webp",
+      "sourceBytes": 226122,
+      "bytes": 171016,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/mistico.png",
+      "sha256": "462895bdad027850f0ad0798c5b123b276f7b57d0dda89ad240631af238fcb2b",
+      "hue": null,
+      "target": "674eb02d2cb86877.webp",
+      "sourceBytes": 211359,
+      "bytes": 156924,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/robot.png",
       "sha256": "b8a16e4197743c93d83f3d3702f618007c95fe59fde143b9c648a79697165465",
       "hue": null,
       "target": "8eae7a189c5a4044.webp",
@@ -271,7 +622,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/draco.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/draco.png",
       "sha256": "a866e3466ec4cb0f4a6f906c0c087454050cf73a06552af85d8ebdd87ac13983",
       "hue": null,
       "target": "bc27bbc802393449.webp",
@@ -280,7 +631,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/mago.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/mago.png",
       "sha256": "308fd208f259c646935f4da2d4c09be657555b03408ecad4d55b4e278c602a28",
       "hue": null,
       "target": "5ee332554ef902b2.webp",
@@ -289,7 +640,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/pirata.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/pirata.png",
       "sha256": "f9e60e704dc040b9e0bae340cb382ccb1600054fdb5af89cbb9b0ece26f36ab2",
       "hue": null,
       "target": "0602b8c6280363c0.webp",
@@ -298,7 +649,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/araluz.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/araluz.png",
       "sha256": "ea5150e77b5c2a39daf7693660725e79435e9a8c04346334d372f05faaba121b",
       "hue": null,
       "target": "5f15509319086fb1.webp",
@@ -307,7 +658,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/cometa.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/cometa.png",
       "sha256": "939464f9fefd7950cfd02a3ec3e9bf98e1a30072ccdf90a052a4b5f305ae6b8f",
       "hue": null,
       "target": "b43941a00bc96319.webp",
@@ -316,7 +667,124 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/personajes/v1/araluz.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/coloso.png",
+      "sha256": "b50d36a37ea84ed5662de76a48bf46be66654e2e267db63d0aa1fead4c2d3799",
+      "hue": null,
+      "target": "1a0b99d6ac4fc603.webp",
+      "sourceBytes": 1271485,
+      "bytes": 988514,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/aracnido.png",
+      "sha256": "7b020992e6570102b5956c0219544576504ac882a12c4234df56423bd50fd698",
+      "hue": null,
+      "target": "5c8b65d5d9967948.webp",
+      "sourceBytes": 1482364,
+      "bytes": 1204842,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/ilusionista.png",
+      "sha256": "4f621a70d136d83866aa29e9c8a25fd54a8aba5b5a5c479fc06f821068413004",
+      "hue": null,
+      "target": "1c443ac12348224d.webp",
+      "sourceBytes": 1729523,
+      "bytes": 1337748,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/solar.png",
+      "sha256": "0a559eb22c2b10406888a4d659f102866ddd04af350233be83bbbd633587a8f0",
+      "hue": null,
+      "target": "ad82bd2a0acc4c33.webp",
+      "sourceBytes": 1284061,
+      "bytes": 1004138,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/nocturno.png",
+      "sha256": "e20cd7af219f9c42a5ad44576d8162357661cf0dc86783e0e119db7ab1e42a79",
+      "hue": null,
+      "target": "bff2c9fbad00909a.webp",
+      "sourceBytes": 1319102,
+      "bytes": 1016424,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/bromista.png",
+      "sha256": "281ecb11013ed7bda4767000e0f5ab40a5a75362a222d6ee3c2a61857e686796",
+      "hue": null,
+      "target": "f2242ee561c2553e.webp",
+      "sourceBytes": 1390987,
+      "bytes": 1068470,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/esmeralda.png",
+      "sha256": "204ab3d79f673351d07adbb25df1779a6867befbd54786fa94a9eeee54eff888",
+      "hue": null,
+      "target": "744747c0febefbf5.webp",
+      "sourceBytes": 1312553,
+      "bytes": 1005186,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/sombra.png",
+      "sha256": "bc87fc8b832e9040ed26d6158c820549046de1c2610ada17005fa98f48fdc917",
+      "hue": null,
+      "target": "ad531bdc959605fa.webp",
+      "sourceBytes": 1366874,
+      "bytes": 1079990,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/travieso.png",
+      "sha256": "c3bbef15586c4418e784e9e4efba5acc976d736bb407f056070bf40f0a68e91c",
+      "hue": null,
+      "target": "f35104d74c8f3fbe.webp",
+      "sourceBytes": 1411272,
+      "bytes": 1089988,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/garra.png",
+      "sha256": "9220fd4f9e22a286fd745900b5a666e20ea92b33d7d20885b5829d8b24ac6ab3",
+      "hue": null,
+      "target": "118a17a2f4fb471a.webp",
+      "sourceBytes": 1338340,
+      "bytes": 1051474,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/trueno.png",
+      "sha256": "081aaf241e34578aa60c9af6c3cff9097436cd4d7ef2c48231db2a414c0d498b",
+      "hue": null,
+      "target": "17c305b23c5eaab6.webp",
+      "sourceBytes": 1274467,
+      "bytes": 991598,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/relampago.png",
+      "sha256": "dde5899e0c17915fcefe557a34186df7e11463212d5ff5f94b9c90ed8f50c29b",
+      "hue": null,
+      "target": "8dc6321b54b33a17.webp",
+      "sourceBytes": 1504022,
+      "bytes": 1176998,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/mistico.png",
+      "sha256": "b3ae7d463f84d08e87d2cb7e492eda49bf2e0f4f96326d5a0d456c134b8b4225",
+      "hue": null,
+      "target": "6f5b947b5c279ce5.webp",
+      "sourceBytes": 1465929,
+      "bytes": 1171602,
+      "visiblePixelsIdentical": true
+    },
+    {
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/personajes/v1/araluz.png",
       "sha256": "8b7bcec7c3406bcbb5bbe924a26ba1563293f594b1c7c6dbb1cb930e31c4a457",
       "hue": null,
       "target": "c376499080711c05.webp",
@@ -325,7 +793,7 @@
       "visiblePixelsIdentical": true
     },
     {
-      "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/personajes/v1/raton.png",
+      "source": "/mnt/d/Proyectos/ciempi-app/.claude/worktrees/v30-heroes/docs/rediseno-ciempi/laboratorio/recursos/personajes/v1/raton.png",
       "sha256": "de621d06ce6f2df4b06c63b94bb221628cd24f97cb69252e61824655237b24ec",
       "hue": null,
       "target": "3b20b3b04ea04138.webp",
@@ -334,5 +802,5 @@
       "visiblePixelsIdentical": true
     }
   ],
-  "totalBytes": 18486000
+  "totalBytes": 43328336
 }

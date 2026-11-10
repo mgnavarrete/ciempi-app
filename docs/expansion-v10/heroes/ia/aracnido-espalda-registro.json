@@ -1,0 +1,13 @@
+{
+  "id": "aracnido-espalda",
+  "archivo": "aracnido-espalda.png",
+  "prompt": "aracnido-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c703-d79b-71d3-b9a7-6d2a7edb908e/exec-b673a2ee-915d-4169-8d06-cebe64a2919a.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:52:39.948Z",
+  "segundos": 80
+}

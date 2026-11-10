@@ -226,5 +226,512 @@
       4
     ],
     "coloresFijos": true
+  },
+  {
+    "id": "b11-coloso",
+    "nombre": "Traje Coloso",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/coloso.png",
+    "fuente": "../../expansion-v10/heroes/ia/coloso-traje.png",
+    "fuenteSha256": "10ec0cca2a94e505a2658e1a3b3b56e5d6e8c44e7d0e7e6b5a0529de28f0118a",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "coloso"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-aracnido",
+    "nombre": "Traje Arácnido",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/aracnido.png",
+    "fuente": "../../expansion-v10/heroes/ia/aracnido-traje.png",
+    "fuenteSha256": "37b0369d4525072d029bbfed08733fc9f5eb355b2c6c1b527b5e27c95a745f45",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "aracnido"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-ilusionista",
+    "nombre": "Traje Ilusionista",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/ilusionista.png",
+    "fuente": "../../expansion-v10/heroes/ia/ilusionista-traje.png",
+    "fuenteSha256": "a49ab9b9cb284293452621b467218c3c8ad61cef9f9b6e0712766472f842d305",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "ilusionista"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-solar",
+    "nombre": "Traje Solar",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/solar.png",
+    "fuente": "../../expansion-v10/heroes/ia/solar-traje.png",
+    "fuenteSha256": "9129d4b6a8c19380522de19986c9ea9bc6fcd2fc93686a48812acdbcd3b69fe6",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "solar"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-nocturno",
+    "nombre": "Traje Nocturno",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/nocturno.png",
+    "fuente": "../../expansion-v10/heroes/ia/nocturno-traje.png",
+    "fuenteSha256": "0c7a5d478e6c41864d5154d554dae27c1b799e3680e4e37ea6901c42036d94e2",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "nocturno"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-bromista",
+    "nombre": "Traje Bromista",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/bromista.png",
+    "fuente": "../../expansion-v10/heroes/ia/bromista-traje.png",
+    "fuenteSha256": "d3df46c6ffed90427d78e54dc0072f68bdfe2cf62d76387931e1b1b33f0c5e41",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "bromista"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-esmeralda",
+    "nombre": "Traje Esmeralda",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/esmeralda.png",
+    "fuente": "../../expansion-v10/heroes/ia/esmeralda-traje.png",
+    "fuenteSha256": "0d6533b36ceefc8bc818908ef3aa7c8c94358d93f2f3bbb43b2a8c8c6dc549e4",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "esmeralda"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-sombra",
+    "nombre": "Traje Araña Sombra",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/sombra.png",
+    "fuente": "../../expansion-v10/heroes/ia/sombra-traje.png",
+    "fuenteSha256": "314ba9d3acec119e66d09cc461992e55dda49b10b9eeb0917d7d092b5fd43e65",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "sombra"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-travieso",
+    "nombre": "Traje Travieso",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/travieso.png",
+    "fuente": "../../expansion-v10/heroes/ia/travieso-traje.png",
+    "fuenteSha256": "6720bd3856b13478b07758cf2a7ca4bc6c7b922583a15daf831bc5be25d2a316",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "travieso"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-garra",
+    "nombre": "Traje Garra Salvaje",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/garra.png",
+    "fuente": "../../expansion-v10/heroes/ia/garra-traje.png",
+    "fuenteSha256": "995cf4d81fe8a72035648e7a1affce83f4483c2a7fac584cc3093afe73413fbd",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "garra"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-trueno",
+    "nombre": "Traje Trueno",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/trueno.png",
+    "fuente": "../../expansion-v10/heroes/ia/trueno-traje.png",
+    "fuenteSha256": "ec0abdc63d087d775cfb8030b948ecf7a0616fb7cb057ec5d9d302d4a7387a0c",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "trueno"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-relampago",
+    "nombre": "Traje Relámpago",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/relampago.png",
+    "fuente": "../../expansion-v10/heroes/ia/relampago-traje.png",
+    "fuenteSha256": "bcf4f4f8dba79c682c4a6b36ae43be50f2f39fe2bc3b78f410833d7556222cc0",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "relampago"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
+  },
+  {
+    "id": "b11-mistico",
+    "nombre": "Traje Místico",
+    "batch": "B11",
+    "version": "1",
+    "tipo": "atlas-raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/superficies/v1/mistico.png",
+    "fuente": "../../expansion-v10/heroes/ia/mistico-traje.png",
+    "fuenteSha256": "37775b79aa7321f987d65cd880f92cc4097e5a3d9984f3edbe5fe7303bee6ce1",
+    "recorte": {
+      "left": 0,
+      "top": 0,
+      "width": 1536,
+      "height": 1024
+    },
+    "dimensiones": [
+      1536,
+      1024
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "mistico"
+    ],
+    "paneles": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "coloresFijos": true
   }
 ]

@@ -1,0 +1,13 @@
+{
+  "id": "bromista-traje",
+  "archivo": "bromista-traje.png",
+  "prompt": "bromista-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-fac6-7503-9dc0-41fd1e764226/exec-b1cb602d-16c3-4e46-a37b-e201cdda4fb4.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:36.456Z",
+  "segundos": 56
+}

@@ -1,0 +1,13 @@
+{
+  "id": "garra-cabeza",
+  "archivo": "garra-cabeza.png",
+  "prompt": "garra-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-ec4a-7b52-9d88-c5b7ab8b46d5/exec-b3b67568-3408-4c12-a6ae-ac8868283a67.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:57:13.191Z",
+  "segundos": 86
+}

@@ -214,5 +214,301 @@
       205,
       199.12760416666666
     ]
+  },
+  {
+    "id": "b09-coloso",
+    "nombre": "Mochila de Fuerza",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/coloso.png",
+    "fuente": "../../expansion-v10/heroes/ia/coloso-espalda.png",
+    "fuenteSha256": "8133bc70ef9ca12f70fa6bd8f93397f6d8cedc016e091577d6578f7d2933bb27",
+    "recorte": {
+      "left": 91,
+      "top": 69,
+      "width": 1106,
+      "height": 1099
+    },
+    "dimensiones": [
+      768,
+      763
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "coloso"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      203.66536458333334
+    ]
+  },
+  {
+    "id": "b09-aracnido",
+    "nombre": "Mochila Telaraña",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/aracnido.png",
+    "fuente": "../../expansion-v10/heroes/ia/aracnido-espalda.png",
+    "fuenteSha256": "b9520edf17ffdea3f7e5da07c8336c9437fe07ac449703b65e4a08d8367f2170",
+    "recorte": {
+      "left": 177,
+      "top": 55,
+      "width": 915,
+      "height": 1119
+    },
+    "dimensiones": [
+      768,
+      939
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "aracnido"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      250.64453125
+    ]
+  },
+  {
+    "id": "b09-bromista",
+    "nombre": "Mochila Sorpresa",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/bromista.png",
+    "fuente": "../../expansion-v10/heroes/ia/bromista-espalda.png",
+    "fuenteSha256": "19953faa0dec167b9c246b8703c67490c148dd0ed197dd01015e57ce2e06e374",
+    "recorte": {
+      "left": 206,
+      "top": 18,
+      "width": 824,
+      "height": 1221
+    },
+    "dimensiones": [
+      768,
+      1138
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "bromista"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      303.7630208333333
+    ]
+  },
+  {
+    "id": "b09-esmeralda",
+    "nombre": "Mochila de Energía",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/esmeralda.png",
+    "fuente": "../../expansion-v10/heroes/ia/esmeralda-espalda.png",
+    "fuenteSha256": "53af19c4bea91f725b0b005277be1b339abf4bbecba3fe55efc85a1f5d3ce8e9",
+    "recorte": {
+      "left": 130,
+      "top": 142,
+      "width": 980,
+      "height": 986
+    },
+    "dimensiones": [
+      768,
+      773
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "esmeralda"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      206.33463541666666
+    ]
+  },
+  {
+    "id": "b09-sombra",
+    "nombre": "Mochila Sombra",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/sombra.png",
+    "fuente": "../../expansion-v10/heroes/ia/sombra-espalda.png",
+    "fuenteSha256": "fdb8302f07bf24b6f8ff7509581d129237d84071491540e0acc7d91d9740418c",
+    "recorte": {
+      "left": 160,
+      "top": 70,
+      "width": 946,
+      "height": 1129
+    },
+    "dimensiones": [
+      768,
+      917
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "sombra"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      244.77213541666666
+    ]
+  },
+  {
+    "id": "b09-travieso",
+    "nombre": "Mochila Aventurera",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/travieso.png",
+    "fuente": "../../expansion-v10/heroes/ia/travieso-espalda.png",
+    "fuenteSha256": "454b6c9dd45dc34cb9d6d0655883e464e48c282b39ec69329f996d156319d56c",
+    "recorte": {
+      "left": 126,
+      "top": 53,
+      "width": 1023,
+      "height": 1108
+    },
+    "dimensiones": [
+      768,
+      832
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "travieso"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      222.08333333333334
+    ]
+  },
+  {
+    "id": "b09-garra",
+    "nombre": "Mochila Garra",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/garra.png",
+    "fuente": "../../expansion-v10/heroes/ia/garra-espalda.png",
+    "fuenteSha256": "6f16ed8e24677d812ed74d5a24225134b215d0e4ab0389b4e062be771cf405bc",
+    "recorte": {
+      "left": 148,
+      "top": 65,
+      "width": 1013,
+      "height": 1105
+    },
+    "dimensiones": [
+      768,
+      838
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "garra"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      223.68489583333334
+    ]
+  },
+  {
+    "id": "b09-relampago",
+    "nombre": "Mochila de Velocidad",
+    "batch": "B09",
+    "version": "1",
+    "tipo": "raster-ia",
+    "estado": "En revisión artística — Pendiente de aprobación del usuario",
+    "aprobadoParaLaboratorio": false,
+    "aprobadoParaProduccion": false,
+    "archivo": "./recursos/mochilas/v1/relampago.png",
+    "fuente": "../../expansion-v10/heroes/ia/relampago-espalda.png",
+    "fuenteSha256": "c23ad729a38964e65d2b85812824363e06430f7ca36e0aee95d29236ca140d7a",
+    "recorte": {
+      "left": 197,
+      "top": 144,
+      "width": 1128,
+      "height": 755
+    },
+    "dimensiones": [
+      768,
+      514
+    ],
+    "anterior": null,
+    "novedad": true,
+    "svg": true,
+    "collections": [
+      "ciempi-original",
+      "heroes",
+      "relampago"
+    ],
+    "encuadre": [
+      370,
+      250,
+      205,
+      137.20052083333334
+    ]
   }
 ]

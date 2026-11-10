@@ -1,0 +1,13 @@
+{
+  "id": "coloso-espalda",
+  "archivo": "coloso-espalda.png",
+  "prompt": "coloso-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c703-d78c-7aa1-800e-ddfb6166bece/exec-869b91b6-b2a8-4b4d-89a7-c7f39a1cc5a8.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:52:35.383Z",
+  "segundos": 75
+}

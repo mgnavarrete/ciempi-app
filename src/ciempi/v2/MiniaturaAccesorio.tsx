@@ -19,6 +19,19 @@ const MOCHILA_V4: Record<string, string> = {
   'b09-raton': 'mochila-raton.webp',
   'b09-robot': 'mochila-robot.webp',
   'b09-cometa': 'mochila-cometa.webp',
+  'b09-coloso': 'mochila-coloso.webp',
+  'b09-aracnido': 'mochila-aracnido.webp',
+  'b09-bromista': 'mochila-bromista.webp',
+  'b09-esmeralda': 'mochila-esmeralda.webp',
+  'b09-sombra': 'mochila-sombra.webp',
+  'b09-travieso': 'mochila-travieso.webp',
+  'b09-garra': 'mochila-garra.webp',
+  'b09-relampago': 'mochila-relampago.webp',
+  'b09-marino': 'mochila-marino.webp',
+  'b09-kpopvioleta': 'mochila-kpopvioleta.webp',
+  'b09-kpoprosa': 'mochila-kpoprosa.webp',
+  'b09-kpopazul': 'mochila-kpopazul.webp',
+  'b09-sombrio': 'mochila-sombrio.webp',
 }
 const SIN = new Set(['cabeza-nada', 'pelo-nada', 'cara-nada', 'detalle-nada', 'cuello-nada', 'espalda-nada', 'pies-zapatillas'])
 

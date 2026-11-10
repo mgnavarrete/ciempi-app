@@ -1,0 +1,13 @@
+{
+  "id": "solar-espalda",
+  "archivo": "solar-espalda.png",
+  "prompt": "solar-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-0fb8-7ee1-a32b-52a7c218ae04/exec-445c862c-8a27-4d59-89a3-288a9e0f7f77.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:53:43.760Z",
+  "segundos": 64
+}

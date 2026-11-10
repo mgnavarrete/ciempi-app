@@ -1,0 +1,13 @@
+{
+  "id": "bromista-botas",
+  "archivo": "bromista-botas.png",
+  "prompt": "bromista-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-08e5-7941-b3a6-ae61f21a8e06/exec-633615a7-e115-451c-8802-92901b3ba474.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:58.112Z",
+  "segundos": 74
+}

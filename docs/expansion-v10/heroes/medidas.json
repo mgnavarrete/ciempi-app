@@ -1,0 +1,185 @@
+{
+ "botas": {
+  "coloso": {
+   "px": [
+    512,
+    408
+   ],
+   "suela": 404
+  },
+  "ilusionista": {
+   "px": [
+    512,
+    424
+   ],
+   "suela": 420
+  },
+  "solar": {
+   "px": [
+    512,
+    445
+   ],
+   "suela": 442
+  },
+  "nocturno": {
+   "px": [
+    512,
+    457
+   ],
+   "suela": 453
+  },
+  "bromista": {
+   "px": [
+    512,
+    443
+   ],
+   "suela": 439
+  },
+  "esmeralda": {
+   "px": [
+    512,
+    434
+   ],
+   "suela": 430
+  },
+  "travieso": {
+   "px": [
+    512,
+    437
+   ],
+   "suela": 434
+  },
+  "garra": {
+   "px": [
+    512,
+    439
+   ],
+   "suela": 435
+  },
+  "aracnido": {
+   "px": [
+    512,
+    453
+   ],
+   "suela": 450
+  },
+  "sombra": {
+   "px": [
+    512,
+    408
+   ],
+   "suela": 405
+  },
+  "trueno": {
+   "px": [
+    512,
+    423
+   ],
+   "suela": 420
+  },
+  "relampago": {
+   "px": [
+    512,
+    446
+   ],
+   "suela": 443
+  },
+  "mistico": {
+   "px": [
+    512,
+    439
+   ],
+   "suela": 436
+  }
+ },
+ "mochilas": {
+  "coloso": {
+   "archivo": "mochila-coloso.webp",
+   "px": [
+    384,
+    382
+   ],
+   "baseInferior": [
+    185.5,
+    378.5
+   ]
+  },
+  "bromista": {
+   "archivo": "mochila-bromista.webp",
+   "px": [
+    384,
+    568
+   ],
+   "baseInferior": [
+    182.0,
+    564.5
+   ]
+  },
+  "esmeralda": {
+   "archivo": "mochila-esmeralda.webp",
+   "px": [
+    384,
+    386
+   ],
+   "baseInferior": [
+    185.0,
+    383.5
+   ]
+  },
+  "travieso": {
+   "archivo": "mochila-travieso.webp",
+   "px": [
+    384,
+    415
+   ],
+   "baseInferior": [
+    185.0,
+    412.0
+   ]
+  },
+  "garra": {
+   "archivo": "mochila-garra.webp",
+   "px": [
+    384,
+    419
+   ],
+   "baseInferior": [
+    179.0,
+    415.5
+   ]
+  },
+  "aracnido": {
+   "archivo": "mochila-aracnido.webp",
+   "px": [
+    384,
+    470
+   ],
+   "baseInferior": [
+    191.5,
+    466.5
+   ]
+  },
+  "sombra": {
+   "archivo": "mochila-sombra.webp",
+   "px": [
+    384,
+    460
+   ],
+   "baseInferior": [
+    182.5,
+    456.0
+   ]
+  },
+  "relampago": {
+   "archivo": "mochila-relampago.webp",
+   "px": [
+    384,
+    258
+   ],
+   "baseInferior": [
+    190.5,
+    254.5
+   ]
+  }
+ }
+}

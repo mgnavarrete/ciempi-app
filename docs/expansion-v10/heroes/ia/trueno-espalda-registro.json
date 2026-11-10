@@ -1,0 +1,13 @@
+{
+  "id": "trueno-espalda",
+  "archivo": "trueno-espalda.png",
+  "prompt": "trueno-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-17ca-7b73-8d40-cddeaa0af095/exec-35f6c8a5-b3ae-4967-8508-487808c8d5bc.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:39:35.700Z",
+  "segundos": 61
+}

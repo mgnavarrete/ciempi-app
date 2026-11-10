@@ -1,0 +1,13 @@
+{
+  "id": "coloso-traje",
+  "archivo": "coloso-traje.png",
+  "prompt": "coloso-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c703-d4f7-7b50-9c96-52f5fa9abe05/exec-6a59eef5-6ae8-417e-a2ee-e7ac92603f59.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:52:18.404Z",
+  "segundos": 58
+}

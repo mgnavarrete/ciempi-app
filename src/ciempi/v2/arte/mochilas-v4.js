@@ -7,7 +7,7 @@ const NS = 'http://www.w3.org/2000/svg'
 const OSCURO = '#243e5b'
 const RECURSOS = '/ciempi-v2/mochilas-v4/'
 const r2 = (n) => Math.round(n * 100) / 100
-const medidas = {"aventura": {"archivo": "mochila-aventura.webp", "px": [384, 371], "baseInferior": [219.5, 368.0]}, "draco": {"archivo": "mochila-draco.webp", "px": [384, 359], "baseInferior": [203.0, 356.5]}, "mago": {"archivo": "mochila-mago.webp", "px": [384, 256], "baseInferior": [238.0, 254.0]}, "raton": {"archivo": "mochila-raton.webp", "px": [384, 389], "baseInferior": [185.0, 386.5]}, "robot": {"archivo": "mochila-robot.webp", "px": [384, 377], "baseInferior": [270.5, 375.5]}, "cometa": {"archivo": "mochila-cometa.webp", "px": [384, 373], "baseInferior": [189.0, 370.0]}}
+const medidas = {"aventura": {"archivo": "mochila-aventura.webp", "px": [384, 371], "baseInferior": [219.5, 368.0]}, "draco": {"archivo": "mochila-draco.webp", "px": [384, 359], "baseInferior": [203.0, 356.5]}, "mago": {"archivo": "mochila-mago.webp", "px": [384, 256], "baseInferior": [238.0, 254.0]}, "raton": {"archivo": "mochila-raton.webp", "px": [384, 389], "baseInferior": [185.0, 386.5]}, "robot": {"archivo": "mochila-robot.webp", "px": [384, 377], "baseInferior": [270.5, 375.5]}, "cometa": {"archivo": "mochila-cometa.webp", "px": [384, 373], "baseInferior": [189.0, 370.0]}, "coloso": {"archivo": "mochila-coloso.webp", "px": [384, 382], "baseInferior": [185.5, 378.5]}, "bromista": {"archivo": "mochila-bromista.webp", "px": [384, 568], "baseInferior": [182.0, 564.5]}, "esmeralda": {"archivo": "mochila-esmeralda.webp", "px": [384, 386], "baseInferior": [185.0, 383.5]}, "travieso": {"archivo": "mochila-travieso.webp", "px": [384, 415], "baseInferior": [185.0, 412.0]}, "garra": {"archivo": "mochila-garra.webp", "px": [384, 419], "baseInferior": [179.0, 415.5]}, "aracnido": {"archivo": "mochila-aracnido.webp", "px": [384, 470], "baseInferior": [191.5, 466.5]}, "sombra": {"archivo": "mochila-sombra.webp", "px": [384, 460], "baseInferior": [182.5, 456.0]}, "relampago": {"archivo": "mochila-relampago.webp", "px": [384, 258], "baseInferior": [190.5, 254.5]}}
 const bolsa = (k, extra) => ({ archivo: medidas[k].archivo, px: medidas[k].px, base: medidas[k].baseInferior, ...extra })
 const CORREAS = [{ desde: [0.36, 0.02], silueta: -81 }, { desde: [0.36, 0.3], silueta: -61 }]
 const V4_MOCHILAS = {
@@ -17,6 +17,14 @@ const V4_MOCHILAS = {
   'b09-raton': bolsa('raton', { alto: 178, centro: [-78, -66], giro: -10, correas: CORREAS, correa: { color: '#c97a33' } }),
   'b09-robot': bolsa('robot', { alto: 163, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#e2a52f' } }),
   'b09-cometa': bolsa('cometa', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#c93b35' } }),
+  'b09-coloso': bolsa('coloso', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#23252d' } }),
+  'b09-bromista': bolsa('bromista', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#4fae3f' } }),
+  'b09-esmeralda': bolsa('esmeralda', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#23252d' } }),
+  'b09-travieso': bolsa('travieso', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#5a5f6b' } }),
+  'b09-garra': bolsa('garra', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#23252d' } }),
+  'b09-aracnido': bolsa('aracnido', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#2a6fdb' } }),
+  'b09-sombra': bolsa('sombra', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#23252d' } }),
+  'b09-relampago': bolsa('relampago', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#c42a26' } }),
 }
 
 

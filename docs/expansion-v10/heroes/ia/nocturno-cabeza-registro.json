@@ -1,0 +1,13 @@
+{
+  "id": "nocturno-cabeza",
+  "archivo": "nocturno-cabeza.png",
+  "prompt": "nocturno-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-antifaz-dragon.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-1906-75e1-b8fb-450f57b85cbf/exec-2c528bf9-e405-4e95-9415-8367f4b36b18.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:53:58.348Z",
+  "segundos": 76
+}

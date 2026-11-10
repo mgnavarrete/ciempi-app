@@ -1,0 +1,13 @@
+{
+  "id": "solar-traje",
+  "archivo": "solar-traje.png",
+  "prompt": "solar-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c718-e2a4-73a0-a9d5-5fbdde6bf8e4/exec-2982863c-224f-4308-9c91-2e42c36a4944.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:15:12.708Z",
+  "segundos": 54
+}

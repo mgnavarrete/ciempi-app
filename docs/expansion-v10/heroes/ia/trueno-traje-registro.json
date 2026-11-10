@@ -1,0 +1,13 @@
+{
+  "id": "trueno-traje",
+  "archivo": "trueno-traje.png",
+  "prompt": "trueno-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-1818-7ad1-9d92-e70c244be474/exec-4d0300db-1a95-48df-8073-21ab785d562e.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:39:27.822Z",
+  "segundos": 53
+}

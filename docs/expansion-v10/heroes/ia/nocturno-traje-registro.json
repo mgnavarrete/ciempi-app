@@ -1,0 +1,13 @@
+{
+  "id": "nocturno-traje",
+  "archivo": "nocturno-traje.png",
+  "prompt": "nocturno-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-8c67-7c73-a4d0-35bec1effab9/exec-5e82319c-c559-430c-b6ba-22fa6ae8534d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:14.617Z",
+  "segundos": 63
+}

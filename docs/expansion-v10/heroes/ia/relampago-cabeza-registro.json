@@ -1,0 +1,13 @@
+{
+  "id": "relampago-cabeza",
+  "archivo": "relampago-cabeza.png",
+  "prompt": "relampago-cabeza-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-mascara-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-17ce-7fd1-87f3-255922b0ae21/exec-39b6ab58-c0c6-4545-ab58-3ccc23feacb5.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:07.808Z",
+  "segundos": 93
+}

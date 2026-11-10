@@ -1,0 +1,13 @@
+{
+  "id": "esmeralda-espalda",
+  "archivo": "esmeralda-espalda.png",
+  "prompt": "esmeralda-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-d6c1-7282-beae-9cdf301a3325/exec-ebf696fb-0885-4665-9af9-3583b3e4b357.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:56:07.384Z",
+  "segundos": 91
+}

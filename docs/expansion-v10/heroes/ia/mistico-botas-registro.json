@@ -1,0 +1,13 @@
+{
+  "id": "mistico-botas",
+  "archivo": "mistico-botas.png",
+  "prompt": "mistico-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-8419-7330-8d33-a68935734b73/exec-abff1c8d-d63c-4565-bfdb-6f08ea4451ef.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:41:19.534Z",
+  "segundos": 72
+}

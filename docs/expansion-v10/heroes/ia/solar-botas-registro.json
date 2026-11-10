@@ -1,0 +1,13 @@
+{
+  "id": "solar-botas",
+  "archivo": "solar-botas.png",
+  "prompt": "solar-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-05c6-7e41-9503-69e1d1156e35/exec-ae34404d-9555-409c-bf85-84454b65da5b.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:01.654Z",
+  "segundos": 84
+}

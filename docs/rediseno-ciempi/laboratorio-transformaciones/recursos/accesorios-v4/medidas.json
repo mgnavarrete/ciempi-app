@@ -112,5 +112,157 @@
    1208,
    1133
   ]
+ },
+ "coloso": {
+  "archivo": "mochila-coloso.webp",
+  "px": [
+   768,
+   763
+  ],
+  "baseInferior": [
+   371,
+   757
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/coloso-espalda.png",
+  "fuenteSha256": "8133bc70ef9ca12f",
+  "recorte": [
+   90,
+   68,
+   1198,
+   1169
+  ]
+ },
+ "bromista": {
+  "archivo": "mochila-bromista.webp",
+  "px": [
+   768,
+   1136
+  ],
+  "baseInferior": [
+   364,
+   1129
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/bromista-espalda.png",
+  "fuenteSha256": "19953faa0dec167b",
+  "recorte": [
+   205,
+   17,
+   1031,
+   1239
+  ]
+ },
+ "esmeralda": {
+  "archivo": "mochila-esmeralda.webp",
+  "px": [
+   768,
+   773
+  ],
+  "baseInferior": [
+   370,
+   767
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/esmeralda-espalda.png",
+  "fuenteSha256": "53af19c4bea91f72",
+  "recorte": [
+   129,
+   141,
+   1110,
+   1129
+  ]
+ },
+ "travieso": {
+  "archivo": "mochila-travieso.webp",
+  "px": [
+   768,
+   830
+  ],
+  "baseInferior": [
+   370,
+   824
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/travieso-espalda.png",
+  "fuenteSha256": "454b6c9dd45dc34c",
+  "recorte": [
+   123,
+   52,
+   1150,
+   1162
+  ]
+ },
+ "garra": {
+  "archivo": "mochila-garra.webp",
+  "px": [
+   768,
+   838
+  ],
+  "baseInferior": [
+   358,
+   831
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/garra-espalda.png",
+  "fuenteSha256": "6f16ed8e24677d81",
+  "recorte": [
+   147,
+   65,
+   1161,
+   1172
+  ]
+ },
+ "aracnido": {
+  "archivo": "mochila-aracnido.webp",
+  "px": [
+   768,
+   941
+  ],
+  "baseInferior": [
+   383,
+   933
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/aracnido-espalda.png",
+  "fuenteSha256": "b9520edf17ffdea3",
+  "recorte": [
+   176,
+   53,
+   1093,
+   1176
+  ]
+ },
+ "sombra": {
+  "archivo": "mochila-sombra.webp",
+  "px": [
+   768,
+   919
+  ],
+  "baseInferior": [
+   365,
+   912
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/sombra-espalda.png",
+  "fuenteSha256": "fdb8302f07bf24b6",
+  "recorte": [
+   160,
+   69,
+   1105,
+   1200
+  ]
+ },
+ "relampago": {
+  "archivo": "mochila-relampago.webp",
+  "px": [
+   768,
+   515
+  ],
+  "baseInferior": [
+   381,
+   509
+  ],
+  "fuente": "docs/expansion-v10/heroes/ia/relampago-espalda.png",
+  "fuenteSha256": "c23ad729a38964e6",
+  "recorte": [
+   196,
+   143,
+   1326,
+   901
+  ]
  }
 }

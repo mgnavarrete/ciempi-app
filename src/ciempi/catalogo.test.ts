@@ -50,12 +50,18 @@ describe('tienda de Ciempi', () => {
       ['espalda:b09-robot', 25], ['espalda:b09-aventura', 20], ['espalda:b09-draco', 20], ['espalda:b09-mago', 20], ['espalda:b09-raton', 20],
       // 2.8.2: escudo de Capitán Cometa, al precio del propulsor Robot.
       ['espalda:b09-cometa', 25],
+      // 2.9.0: mochilas de los Héroes de Ciempi, al precio del escudo.
+      ['espalda:b09-coloso', 25], ['espalda:b09-aracnido', 25], ['espalda:b09-bromista', 25], ['espalda:b09-esmeralda', 25], ['espalda:b09-sombra', 25], ['espalda:b09-travieso', 25], ['espalda:b09-garra', 25], ['espalda:b09-relampago', 25],
     ])
     // 2.8.2: Capitán Cometa, con los precios del Robot (32 + 32 + 24 = 88 → 71) y sin el escudo.
     expect([item('cabeza:b07-ia-cometa').precio, item('textura:b11-cometa').precio, item('pies:b10-cometa').precio]).toEqual([32, 32, 24])
     expect(CONJUNTOS.find((c) => c.id === 'conjunto:b12-set-cometa')?.pone).toEqual(['cabeza:b07-ia-cometa', 'textura:b11-cometa', 'pies:b10-cometa'])
     expect(precioDe(item('conjunto:b12-set-cometa'), [])).toBe(71)
     expect(CONJUNTOS.every((c) => c.pone.every((id) => !id.startsWith('espalda:b09')))).toBe(true)
+    // 2.9.0: Héroes de Ciempi. Sin capa: 32 + 32 + 24 = 88 → 71; con capa (28): 116 → 93.
+    expect(precioDe(item('conjunto:b12-set-coloso'), [])).toBe(71)
+    expect(precioDe(item('conjunto:b12-set-solar'), [])).toBe(93)
+    expect(CONJUNTOS.find((c) => c.id === 'conjunto:b12-set-nocturno')?.pone).toEqual(['cabeza:b07-ia-nocturno', 'textura:b11-nocturno', 'pies:b10-nocturno', 'espalda:b08-ia-nocturno'])
   })
 
   it('un conjunto cuesta 20 % menos que sus piezas (redondeando hacia arriba) y no cobra lo que ya tiene', () => {

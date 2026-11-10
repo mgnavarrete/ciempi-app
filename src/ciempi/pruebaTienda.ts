@@ -95,6 +95,15 @@ export const TAPAN_LA_CARA: readonly string[] = [
   'cabeza:b12-araluz',
   'cabeza:b12-raton',
   'cabeza:b07-ia-cometa',
+  'cabeza:b07-ia-aracnido',
+  'cabeza:b07-ia-solar',
+  'cabeza:b07-ia-nocturno',
+  'cabeza:b07-ia-esmeralda',
+  'cabeza:b07-ia-sombra',
+  'cabeza:b07-ia-travieso',
+  'cabeza:b07-ia-garra',
+  'cabeza:b07-ia-trueno',
+  'cabeza:b07-ia-relampago',
 ]
 
 /**

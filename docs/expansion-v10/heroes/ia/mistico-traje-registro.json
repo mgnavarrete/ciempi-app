@@ -1,0 +1,13 @@
+{
+  "id": "mistico-traje",
+  "archivo": "mistico-traje.png",
+  "prompt": "mistico-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c730-6809-7363-9e18-429000a7071e/exec-7f27972a-0d60-45f1-ac6a-8a77d9b7559a.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:40:59.853Z",
+  "segundos": 59
+}

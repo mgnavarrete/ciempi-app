@@ -1,0 +1,13 @@
+{
+  "id": "garra-traje",
+  "archivo": "garra-traje.png",
+  "prompt": "garra-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c708-39fd-7bf1-a4d2-6378d2c4c08b/exec-76d54d53-e5b8-4e6e-879e-c2a1cc8f7cd0.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:57:09.153Z",
+  "segundos": 62
+}

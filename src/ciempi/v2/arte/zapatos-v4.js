@@ -24,6 +24,19 @@ const V4_CALZADO = {
   'b10-mago': { px: [512, 275], suela: 270, ancho: 86, boca: { izq: [42, 28], der: [205, 40], labio: [120, 56], arriba: 4 } },
   'b10-deportiva': { px: [512, 325], suela: 318, ancho: 92, boca: { izq: [100, 55], der: [222, 52], labio: [160, 76], arriba: 28 } },
   'b10-cometa': { px: [512, 428], suela: 423, ancho: 80, boca: { izq: [56, 52], der: [295, 52], labio: [170, 82], arriba: 5 } },
+  'b10-coloso': { px: [512, 408], suela: 404, ancho: 84, boca: { izq: [55, 48], der: [275, 48], labio: [165, 77], arriba: 4 } },
+  'b10-aracnido': { px: [512, 453], suela: 450, ancho: 80, boca: { izq: [55, 42], der: [280, 42], labio: [168, 70], arriba: 5 } },
+  'b10-ilusionista': { px: [512, 424], suela: 420, ancho: 80, boca: { izq: [48, 57], der: [318, 57], labio: [182, 90], arriba: 4 } },
+  'b10-solar': { px: [512, 445], suela: 442, ancho: 80, boca: { izq: [48, 54], der: [285, 54], labio: [168, 88], arriba: 4 } },
+  'b10-nocturno': { px: [512, 457], suela: 453, ancho: 80, boca: { izq: [45, 49], der: [295, 49], labio: [170, 80], arriba: 5 } },
+  'b10-bromista': { px: [512, 443], suela: 439, ancho: 80, boca: { izq: [42, 50], der: [280, 50], labio: [160, 78], arriba: 5 } },
+  'b10-esmeralda': { px: [512, 434], suela: 430, ancho: 80, boca: { izq: [55, 53], der: [285, 53], labio: [170, 78], arriba: 8 } },
+  'b10-sombra': { px: [512, 408], suela: 405, ancho: 80, boca: { izq: [55, 40], der: [290, 40], labio: [170, 65], arriba: 5 } },
+  'b10-travieso': { px: [512, 437], suela: 434, ancho: 80, boca: { izq: [60, 50], der: [280, 50], labio: [170, 80], arriba: 5 } },
+  'b10-garra': { px: [512, 439], suela: 435, ancho: 80, boca: { izq: [55, 52], der: [290, 52], labio: [172, 85], arriba: 5 } },
+  'b10-trueno': { px: [512, 423], suela: 420, ancho: 80, boca: { izq: [55, 44], der: [285, 44], labio: [170, 70], arriba: 5 } },
+  'b10-relampago': { px: [512, 446], suela: 443, ancho: 80, boca: { izq: [60, 46], der: [290, 46], labio: [175, 72], arriba: 5 } },
+  'b10-mistico': { px: [512, 439], suela: 436, ancho: 80, boca: { izq: [62, 50], der: [292, 50], labio: [177, 80], arriba: 5 } },
 }
 for (const z of Object.values(V4_CALZADO)) { z.boca.x0 = z.boca.izq[0]; z.boca.x1 = z.boca.der[0] }
 

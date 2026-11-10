@@ -1,0 +1,13 @@
+{
+  "id": "travieso-botas",
+  "archivo": "travieso-botas.png",
+  "prompt": "travieso-botas-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-bota-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-b3d0-7351-9d1d-deb7a759538d/exec-ecf9f5a9-6661-4e4b-b33f-c107e924a114.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:56:49.912Z",
+  "segundos": 77
+}

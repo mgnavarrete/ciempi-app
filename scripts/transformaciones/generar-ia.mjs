@@ -35,7 +35,18 @@ if (!fs.existsSync(png)) {
 }
 // Fuente original de image_gen: la mencionada en el registro o la nueva en ~/.codex/generated_images.
 let fuente = (log.match(/\/home\/[^\s'"`]+generated_images\/[^\s'"`]+\.png/) || [null])[0]
-if (!fuente) fuente = listarGeneradas().filter((f) => !antes.has(f)).pop() || null
+// Si image_gen falló (p. ej. bloqueo de moderación) no hay imagen propia: no adoptar la más reciente
+// de ~/.codex/generated_images, que con generaciones en paralelo puede ser de otra pieza.
+if (/hit your usage limit/.test(log)) {
+  console.error(`[${id}] límite de uso de Codex: ${(log.match(/try again at ([^.\n]+)/) || ['', '¿?'])[1]}`)
+  process.exit(3)
+}
+const fallo = /image generation failed|moderation_blocked|rejected by the safety system/.test(log)
+if (fallo && !fs.existsSync(png)) {
+  console.error(`[${id}] image_gen falló${/moderation_blocked/.test(log) ? ' (bloqueo de moderación)' : ''}. Registro en ${tmp}/codex.log`)
+  process.exit(1)
+}
+if (!fuente && !process.env.IA_PARALELO) fuente = listarGeneradas().filter((f) => !antes.has(f)).pop() || null
 if (!fs.existsSync(png) && fuente && fs.existsSync(fuente)) png = fuente
 if (!fs.existsSync(png)) {
   console.error(`[${id}] sin imagen. Registro en ${tmp}/codex.log`)

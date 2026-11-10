@@ -1,0 +1,13 @@
+{
+  "id": "relampago-traje",
+  "archivo": "relampago-traje.png",
+  "prompt": "relampago-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c72f-1880-7761-bc09-37cd6863d35c/exec-88583e31-01bb-450f-a3d6-48df803765f5.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T20:39:38.647Z",
+  "segundos": 64
+}

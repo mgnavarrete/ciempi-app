@@ -1,0 +1,13 @@
+{
+  "id": "sombra-espalda",
+  "archivo": "sombra-espalda.png",
+  "prompt": "sombra-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-4072-7d12-b588-9dc123204262/exec-837fd715-7e50-4f0e-a380-f91c792fc378.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:56:19.797Z",
+  "segundos": 76
+}

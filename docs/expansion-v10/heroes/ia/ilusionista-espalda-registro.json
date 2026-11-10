@@ -1,0 +1,13 @@
+{
+  "id": "ilusionista-espalda",
+  "archivo": "ilusionista-espalda.png",
+  "prompt": "ilusionista-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c704-e45c-7ae3-b7ef-374a1ae8e22d/exec-13e759a8-209d-4c57-b2dc-fc98ba77f81d.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:53:25.154Z",
+  "segundos": 56
+}

@@ -1,0 +1,13 @@
+{
+  "id": "esmeralda-traje",
+  "archivo": "esmeralda-traje.png",
+  "prompt": "esmeralda-traje-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-atlas-robot.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c706-8184-7a91-ba68-996e57404a66/exec-9c764c8b-f6c9-4cd7-8b5f-987da6ab6459.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:55:03.466Z",
+  "segundos": 49
+}

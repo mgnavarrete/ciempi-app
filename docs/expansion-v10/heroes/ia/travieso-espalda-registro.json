@@ -1,0 +1,13 @@
+{
+  "id": "travieso-espalda",
+  "archivo": "travieso-espalda.png",
+  "prompt": "travieso-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-propulsor-robot-sin-correas.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c707-de53-7a40-a241-ab1ac2e0d24a/exec-eaf43417-db5a-432f-99bc-2018a36c897c.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:58:22.258Z",
+  "segundos": 158
+}

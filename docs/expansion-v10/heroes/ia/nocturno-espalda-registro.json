@@ -1,0 +1,13 @@
+{
+  "id": "nocturno-espalda",
+  "archivo": "nocturno-espalda.png",
+  "prompt": "nocturno-espalda-prompt.txt",
+  "referencias": [
+    "docs/expansion-v10/heroes/ia/referencias/ciempi-sin-gorro.png",
+    "docs/expansion-v10/heroes/ia/referencias/formato-capa-heroica.png"
+  ],
+  "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c705-ca4e-77c2-a12c-16f2b8b02ebd/exec-510a3052-d322-4b21-a369-f3257ba1b129.png",
+  "herramienta": "Codex CLI 0.166 exec + image_gen",
+  "fecha": "2026-11-10T19:54:32.464Z",
+  "segundos": 65
+}
