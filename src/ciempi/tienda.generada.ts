@@ -304,7 +304,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "cabeza:b07-ia-cometa",
-  "nombre": "Antifaz cometa",
+  "nombre": "Antifaz Capitán Ciempi",
   "categoria": "cabeza",
   "precio": 32
  },
@@ -544,7 +544,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "espalda:b09-cometa",
-  "nombre": "Escudo cometa",
+  "nombre": "Escudo Capitán Ciempi",
   "categoria": "espalda",
   "precio": 25
  },
@@ -586,7 +586,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "pies:b10-cometa",
-  "nombre": "Botas cometa",
+  "nombre": "Botas Capitán Ciempi",
   "categoria": "pies",
   "precio": 24
  },
@@ -628,7 +628,7 @@ export const PIEZAS: ItemCiempi[] = [
  },
  {
   "id": "textura:b11-cometa",
-  "nombre": "Traje cometa",
+  "nombre": "Traje Capitán Ciempi",
   "categoria": "textura",
   "precio": 32
  }
@@ -884,7 +884,7 @@ export const CONJUNTOS: { id: string; nombre: string; pone: string[]; piezas: st
  },
  {
   "id": "conjunto:b12-set-cometa",
-  "nombre": "Capitán Cometa",
+  "nombre": "Capitán Ciempi",
   "pone": [
    "cabeza:b07-ia-cometa",
    "textura:b11-cometa",

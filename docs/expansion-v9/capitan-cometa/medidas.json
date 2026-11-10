@@ -2,18 +2,18 @@
  "botas": {
   "px": [
    512,
-   451
+   428
   ]
  },
  "escudo-v4": {
   "archivo": "mochila-cometa.webp",
   "px": [
    384,
-   366
+   373
   ],
   "baseInferior": [
-   191.0,
-   362.5
+   189.0,
+   370.0
   ]
  }
 }

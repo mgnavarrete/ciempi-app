@@ -1,4 +1,4 @@
-// Lámina del conjunto Capitán Cometa (2.8.2) en el juego: el camino real de
+// Lámina del conjunto Capitán Ciempi (2.8.3; ids «cometa») en el juego: el camino real de
 // composición (Vestuario → useEscena → rig), en Ciempi y en las criaturas, con
 // el escudo en la espalda, al crecer y al caminar, y las tarjetas de la tienda.
 // Al lado, el conjunto Robot aprobado como referencia de formato.
@@ -74,7 +74,7 @@ function Lamina({ titulo }: { titulo: string }) {
     <div id="lamina" style={{ padding: 12, width: 'max-content' }}>
       <h1 style={{ font: '700 20px system-ui', margin: '0 0 8px', color: '#243e5b' }}>{titulo}</h1>
       <table style={{ borderCollapse: 'separate', borderSpacing: 6 }}>
-        <thead><tr>{['Robot + propulsor (referencia)', 'Capitán Cometa (conjunto)', 'Conjunto + escudo', 'Casco (zoom)', 'Escudo (zoom)'].map((h) => <th key={h} style={th}>{h}</th>)}</tr></thead>
+        <thead><tr>{['Robot + propulsor (referencia)', 'Capitán Ciempi (conjunto)', 'Conjunto + escudo', 'Casco (zoom)', 'Escudo (zoom)'].map((h) => <th key={h} style={th}>{h}</th>)}</tr></thead>
         <tbody>
           <tr>
             <td><Celda a={vestir(ROBOT, { espalda: 'espalda:b09-robot' })} ancho={300} /></td>
@@ -117,7 +117,7 @@ function Lamina({ titulo }: { titulo: string }) {
   )
 }
 
-const titulo = new URLSearchParams(location.search).get('titulo') ?? 'Capitán Cometa'
+const titulo = new URLSearchParams(location.search).get('titulo') ?? 'Capitán Ciempi'
 Object.assign(window, {
   lamina: {
     listo: () => document.querySelectorAll('[data-celda]').length > 0 && !document.querySelector('[data-celda]:not([data-listo])'),

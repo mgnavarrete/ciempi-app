@@ -7,7 +7,7 @@ const NS = 'http://www.w3.org/2000/svg'
 const OSCURO = '#243e5b'
 const RECURSOS = '/ciempi-v2/mochilas-v4/'
 const r2 = (n) => Math.round(n * 100) / 100
-const medidas = {"aventura": {"archivo": "mochila-aventura.webp", "px": [384, 371], "baseInferior": [219.5, 368.0]}, "draco": {"archivo": "mochila-draco.webp", "px": [384, 359], "baseInferior": [203.0, 356.5]}, "mago": {"archivo": "mochila-mago.webp", "px": [384, 256], "baseInferior": [238.0, 254.0]}, "raton": {"archivo": "mochila-raton.webp", "px": [384, 389], "baseInferior": [185.0, 386.5]}, "robot": {"archivo": "mochila-robot.webp", "px": [384, 377], "baseInferior": [270.5, 375.5]}, "cometa": {"archivo": "mochila-cometa.webp", "px": [384, 366], "baseInferior": [191.0, 362.5]}}
+const medidas = {"aventura": {"archivo": "mochila-aventura.webp", "px": [384, 371], "baseInferior": [219.5, 368.0]}, "draco": {"archivo": "mochila-draco.webp", "px": [384, 359], "baseInferior": [203.0, 356.5]}, "mago": {"archivo": "mochila-mago.webp", "px": [384, 256], "baseInferior": [238.0, 254.0]}, "raton": {"archivo": "mochila-raton.webp", "px": [384, 389], "baseInferior": [185.0, 386.5]}, "robot": {"archivo": "mochila-robot.webp", "px": [384, 377], "baseInferior": [270.5, 375.5]}, "cometa": {"archivo": "mochila-cometa.webp", "px": [384, 373], "baseInferior": [189.0, 370.0]}}
 const bolsa = (k, extra) => ({ archivo: medidas[k].archivo, px: medidas[k].px, base: medidas[k].baseInferior, ...extra })
 const CORREAS = [{ desde: [0.36, 0.02], silueta: -81 }, { desde: [0.36, 0.3], silueta: -61 }]
 const V4_MOCHILAS = {
@@ -16,7 +16,7 @@ const V4_MOCHILAS = {
   'b09-mago': bolsa('mago', { alto: 144, centro: [-82, -56], giro: -8, correas: [{ desde: [0.4, 0.1], silueta: -81 }, { desde: [0.4, 0.32], silueta: -61 }], correa: { color: '#e2b23a' }, borde: { color: '#f2c23a', interior: 4.5, exterior: 9 } }),
   'b09-raton': bolsa('raton', { alto: 178, centro: [-78, -66], giro: -10, correas: CORREAS, correa: { color: '#c97a33' } }),
   'b09-robot': bolsa('robot', { alto: 163, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#e2a52f' } }),
-  'b09-cometa': bolsa('cometa', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#1f6f7a' } }),
+  'b09-cometa': bolsa('cometa', { alto: 160, centro: [-80, -62], giro: -10, correas: CORREAS, correa: { color: '#c93b35' } }),
 }
 
 

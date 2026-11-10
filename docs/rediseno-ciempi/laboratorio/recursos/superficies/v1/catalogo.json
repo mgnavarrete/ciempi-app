@@ -191,7 +191,7 @@
   },
   {
     "id": "b11-cometa",
-    "nombre": "Traje Capitán Cometa",
+    "nombre": "Traje Capitán Ciempi",
     "batch": "B11",
     "version": "1",
     "tipo": "atlas-raster-ia",
@@ -199,8 +199,8 @@
     "aprobadoParaLaboratorio": false,
     "aprobadoParaProduccion": false,
     "archivo": "./recursos/superficies/v1/cometa.png",
-    "fuente": "../../expansion-v9/capitan-cometa/ia/cometa-traje.png",
-    "fuenteSha256": "8f1195d9cb26cbe780a68419597bcf6da387af3e795e7db84af6e0f0f803febd",
+    "fuente": "../../expansion-v9/capitan-cometa/ia/capitan-traje.png",
+    "fuenteSha256": "90816d391b48a44327971b4523e61a0cb56a0dd18f2880f1ee0da2f501c2c2e5",
     "recorte": {
       "left": 0,
       "top": 0,

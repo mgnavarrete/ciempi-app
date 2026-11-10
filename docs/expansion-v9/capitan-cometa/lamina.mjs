@@ -14,7 +14,7 @@ import { createRequire } from 'node:module'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
-const [raizArg, salida, outDir, titulo = 'Capitán Cometa'] = process.argv.slice(2)
+const [raizArg, salida, outDir, titulo = 'Capitán Ciempi'] = process.argv.slice(2)
 const raiz = resolve(raizArg)
 const { chromium } = createRequire(import.meta.url)('playwright')
 const CHROMIUM = process.env.CHROMIUM || join(process.env.HOME, '.cache/ms-playwright/chromium-1248/chrome-linux64/chrome')

@@ -98,19 +98,19 @@
   "archivo": "mochila-cometa.webp",
   "px": [
    768,
-   732
+   746
   ],
   "baseInferior": [
-   382,
-   725
+   378,
+   740
   ],
-  "fuente": "docs/expansion-v9/capitan-cometa/ia/cometa-escudo-sin-correas.png",
-  "fuenteSha256": "e7f05e5f0e8ccfd3",
+  "fuente": "docs/expansion-v9/capitan-cometa/ia/capitan-escudo.png",
+  "fuenteSha256": "9b011f1871c4b646",
   "recorte": [
-   99,
-   109,
-   1105,
-   1068
+   104,
+   61,
+   1208,
+   1133
   ]
  }
 }

@@ -1,66 +1,54 @@
 [
   {
-    "id": "cometa-antifaz",
-    "archivo": "cometa-antifaz.png",
-    "prompt": "prompts/cometa-antifaz-prompt.txt",
+    "id": "capitan-antifaz",
+    "archivo": "capitan-antifaz.png",
+    "prompt": "prompts/capitan-antifaz.txt",
     "referencias": [
       "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
       "docs/expansion-v9/capitan-cometa/ia/referencias/formato-antifaz-dragon.png"
     ],
-    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfd3-78d3-8c17-728196c875c9/exec-e1905804-a791-44b5-84f7-d2639d370dba.png",
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6c5-a17f-74f0-8a10-54902de3ec34/exec-f28a749c-88a2-459a-a0de-8b123007c851.png",
     "herramienta": "Codex CLI 0.166 exec + image_gen",
-    "fecha": "2026-11-10T18:30:58.396Z",
-    "segundos": 95
+    "fecha": "2026-11-10T18:44:18.874Z",
+    "segundos": 56
   },
   {
-    "id": "cometa-botas",
-    "archivo": "cometa-botas.png",
-    "prompt": "prompts/cometa-botas-prompt.txt",
+    "id": "capitan-botas",
+    "archivo": "capitan-botas.png",
+    "prompt": "prompts/capitan-botas.txt",
     "referencias": [
       "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
       "docs/expansion-v9/capitan-cometa/ia/referencias/formato-bota-robot.png"
     ],
-    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfcf-78c2-ac9d-312952a8e152/exec-5a978f37-6c5c-4649-acba-9174e823e043.png",
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6c5-a181-7ac2-b81e-7baa62b3eeb3/exec-3ccae085-c1f4-4374-8a7c-edd94bb523f3.png",
     "herramienta": "Codex CLI 0.166 exec + image_gen",
-    "fecha": "2026-11-10T18:30:46.920Z",
-    "segundos": 84
+    "fecha": "2026-11-10T18:44:39.678Z",
+    "segundos": 77
   },
   {
-    "id": "cometa-escudo",
-    "archivo": "cometa-escudo.png",
-    "prompt": "prompts/cometa-escudo-prompt.txt",
+    "id": "capitan-escudo",
+    "archivo": "capitan-escudo.png",
+    "prompt": "prompts/capitan-escudo.txt",
     "referencias": [
       "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
-      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-propulsor-robot.png"
+      "docs/expansion-v9/capitan-cometa/ia/referencias/formato-propulsor-robot-sin-correas.png"
     ],
-    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cfd1-7881-af46-58a926b4500f/exec-080204bf-8343-4d8a-ae33-bfe6a4f5f531.png",
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6c5-a181-7293-a643-c03b3a349f5d/exec-e5f289f1-d5f1-4236-8de6-f429052a5ebf.png",
     "herramienta": "Codex CLI 0.166 exec + image_gen",
-    "fecha": "2026-11-10T18:30:37.239Z",
-    "segundos": 74
+    "fecha": "2026-11-10T18:44:49.327Z",
+    "segundos": 86
   },
   {
-    "id": "cometa-escudo-sin-correas",
-    "archivo": "cometa-escudo-sin-correas.png",
-    "prompt": "prompts/cometa-escudo-sin-correas-prompt.txt",
-    "referencias": [
-      "docs/expansion-v9/capitan-cometa/ia/cometa-escudo.png"
-    ],
-    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6ba-b39e-7ca1-b18f-e49597b77e99/exec-750f1609-fc9c-4285-a56d-29856b612ba3.png",
-    "herramienta": "Codex CLI 0.166 exec + image_gen",
-    "fecha": "2026-11-10T18:32:31.528Z",
-    "segundos": 65
-  },
-  {
-    "id": "cometa-traje",
-    "archivo": "cometa-traje.png",
-    "prompt": "prompts/cometa-traje-prompt.txt",
+    "id": "capitan-traje",
+    "archivo": "capitan-traje.png",
+    "prompt": "prompts/capitan-traje.txt",
     "referencias": [
       "docs/expansion-v9/capitan-cometa/ia/referencias/ciempi-sin-gorro.png",
       "docs/expansion-v9/capitan-cometa/ia/referencias/formato-atlas-robot.png"
     ],
-    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6b8-cff3-7363-9cd5-8b5641414194/exec-391dba31-7746-4220-8e46-4beffa0c10e8.png",
+    "fuenteOriginal": "/home/menta/.codex/generated_images/01a1c6c5-a19a-7453-8d2e-65ee9f038fc2/exec-ab1abc19-0ff5-4b71-91b1-1fb5b3d5e1d2.png",
     "herramienta": "Codex CLI 0.166 exec + image_gen",
-    "fecha": "2026-11-10T18:30:28.152Z",
-    "segundos": 65
+    "fecha": "2026-11-10T18:44:23.905Z",
+    "segundos": 61
   }
 ]

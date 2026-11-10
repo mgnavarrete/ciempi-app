@@ -101,11 +101,11 @@
     },
     {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mascaras/v2/antifaz-cometa.png",
-      "sha256": "ec6dcd7fe96f29250e5646f2a3470ae99796e7f6e30907df125e2368a4d1c126",
+      "sha256": "675d654afdb77898c94f5f5a77e3b095c7db3cee80f8589d6cccf19cc06f89a8",
       "hue": null,
-      "target": "26152379bcda744d.webp",
-      "sourceBytes": 471910,
-      "bytes": 351962,
+      "target": "4452098a90355c21.webp",
+      "sourceBytes": 409277,
+      "bytes": 302790,
       "visiblePixelsIdentical": true
     },
     {
@@ -200,11 +200,11 @@
     },
     {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/mochilas/v1/cometa.png",
-      "sha256": "a9d0f270de1870bf170abffcd0e77b6489009d8388a17386cf2519d76fce4609",
+      "sha256": "d14041dc9718b69a1ab8756db078d6c4dd19583f992a8875dd452ec1ca0b6305",
       "hue": null,
-      "target": "896e9cd0636cfde4.webp",
-      "sourceBytes": 557341,
-      "bytes": 407716,
+      "target": "1e12c50521e4de1b.webp",
+      "sourceBytes": 538745,
+      "bytes": 389564,
       "visiblePixelsIdentical": true
     },
     {
@@ -254,11 +254,11 @@
     },
     {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/calzado/v1/cometa.png",
-      "sha256": "fa47aac69eed3c5aef5bd2d30df58e8de5b248acb1efd14f505eaa47ce8ed157",
+      "sha256": "bad5f3419b5ef94cc48003b2dad6bc8fa64f2344ab340b04c30cde7c559aca4a",
       "hue": null,
-      "target": "e02eed7e321af92b.webp",
-      "sourceBytes": 218691,
-      "bytes": 159744,
+      "target": "aac348b584fd7e20.webp",
+      "sourceBytes": 205136,
+      "bytes": 152032,
       "visiblePixelsIdentical": true
     },
     {
@@ -308,11 +308,11 @@
     },
     {
       "source": "/mnt/d/Proyectos/ciempi-app/docs/rediseno-ciempi/laboratorio/recursos/superficies/v1/cometa.png",
-      "sha256": "df91b2b8ef39fb73ad829afa544fe41dfc8160b996bc923bbe88ba609492f2ac",
+      "sha256": "939464f9fefd7950cfd02a3ec3e9bf98e1a30072ccdf90a052a4b5f305ae6b8f",
       "hue": null,
-      "target": "e863f2abf4f0ac75.webp",
-      "sourceBytes": 1738140,
-      "bytes": 1320470,
+      "target": "b43941a00bc96319.webp",
+      "sourceBytes": 1708684,
+      "bytes": 1269428,
       "visiblePixelsIdentical": true
     },
     {
@@ -334,5 +334,5 @@
       "visiblePixelsIdentical": true
     }
   ],
-  "totalBytes": 18612078
+  "totalBytes": 18486000
 }

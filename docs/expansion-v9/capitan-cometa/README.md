@@ -1,21 +1,24 @@
-# Capitán Cometa (2.8.2)
+# Capitán Ciempi (2.8.3; antes Capitán Cometa, 2.8.2)
 
-Conjunto de superhéroe original con la misma estructura que el Robot:
+Conjunto de superhéroe propio con la misma estructura que el Robot. En 2.8.3, a pedido de la usuaria,
+se rediseñó en azul oscuro, blanco y rojo con estrella blanca y nombre «Capitán Ciempi»; los ids
+`cometa` de 2.8.2 se conservan para no perder compras. El estado anterior (cometa, petróleo y
+dorado) queda como evidencia en `ia/v1-cometa/` y `lamina-v1-cometa.png`.
 
 | Pieza | Id | Precio |
 |---|---|---|
-| Antifaz con visera y cometa (B07, deja ver ojos y boca) | `cabeza:b07-ia-cometa` | 32 |
-| Traje petróleo y dorado, franjas diagonales y cometa (B11, atlas 3×2) | `textura:b11-cometa` | 32 |
-| Botas doradas con ribete petróleo (B10, construcción v4.2) | `pies:b10-cometa` | 24 |
-| Escudo hexagonal con cometa en la espalda (B09, construcción v4.2), se vende aparte | `espalda:b09-cometa` | 25 |
+| Antifaz Capitán Ciempi: visera con estrella blanca, ribete rojo (B07, deja ver ojos y boca) | `cabeza:b07-ia-cometa` | 32 |
+| Traje Capitán Ciempi: azul oscuro con franjas diagonales rojas y blancas y estrella pequeña (B11, atlas 3×2) | `textura:b11-cometa` | 32 |
+| Botas Capitán Ciempi: rojas con ribete blanco y suela azul (B10, construcción v4.2) | `pies:b10-cometa` | 24 |
+| Escudo Capitán Ciempi: hexagonal, azul oscuro, estrella blanca y borde de segmentos rojos y blancos (B09, v4.2), se vende aparte | `espalda:b09-cometa` | 25 |
 | Conjunto (antifaz + traje + botas, sin escudo) | `conjunto:b12-set-cometa` | 71 |
 
 ## Cómo se hizo (pipeline existente, sin edición manual del catálogo de producción)
 
 1. `ia/`: maestros IA reales con `scripts/transformaciones/generar-ia.mjs` (Codex image_gen). Prompts
    en `ia/prompts/`, registro en `ia/generaciones.json`, referencias de formato y estilo (piezas
-   Robot y antifaz Draco aprobados, Ciempi sin gorro) en `ia/referencias/`. El escudo sin correas
-   se generó a partir del escudo, como las mochilas V4.
+   Robot y antifaz Draco aprobados, Ciempi sin gorro) en `ia/referencias/`. En 2.8.3 el escudo se
+   generó directamente sin correas (referencia: propulsor Robot v4.2 sin correas).
 2. `python3 docs/expansion-v9/capitan-cometa/procesar.py`: recorta y escala cada pieza como sus
    procesadores originales (preparar.mjs de B06-B08 y B09-B12, procesar-mochilas-v4.py), calcula
    el encuadre del antifaz alineando sus aberturas con los ojos de la base, y agrega las entradas
@@ -37,6 +40,7 @@ de la tienda, junto al Robot de referencia):
     NODE_PATH=/home/menta/.npm/_npx/705bc6b22212b352/node_modules \
       node docs/expansion-v9/capitan-cometa/lamina.mjs . docs/expansion-v9/capitan-cometa/lamina.png <tmp>
 
-Revisión de originalidad: escudo hexagonal (no redondo), sin estrella, sin anillos concéntricos,
-sin rojo ni blanco, sin letras ni alas; el emblema es un cometa (esfera redonda con estelas).
+Límites de diseño propio en 2.8.3: escudo hexagonal (no redondo) con borde de seis segmentos
+alternos, sin anillos concéntricos; sin letra «A» ni alas en la cabeza; traje liso sin malla ni
+escamas; contorno #243e5b y volumen 2D.
 Pendiente: aprobación artística de la usuaria (estado «En revisión artística» en el laboratorio).

@@ -181,7 +181,7 @@
   },
   {
     "id": "b09-cometa",
-    "nombre": "Escudo Capitán Cometa",
+    "nombre": "Escudo Capitán Ciempi",
     "batch": "B09",
     "version": "1",
     "tipo": "raster-ia",
@@ -189,17 +189,17 @@
     "aprobadoParaLaboratorio": false,
     "aprobadoParaProduccion": false,
     "archivo": "./recursos/mochilas/v1/cometa.png",
-    "fuente": "../../expansion-v9/capitan-cometa/ia/cometa-escudo.png",
-    "fuenteSha256": "c64620d6b887d6260779b07980782f8796c9463dfd975aae8fe5dfb4b9c796bd",
+    "fuente": "../../expansion-v9/capitan-cometa/ia/capitan-escudo.png",
+    "fuenteSha256": "9b011f1871c4b646707920d9a95c69ebc9102759c35290dff7cf2f25f761fb0b",
     "recorte": {
-      "left": 102,
-      "top": 13,
-      "width": 1235,
-      "height": 1054
+      "left": 105,
+      "top": 62,
+      "width": 1102,
+      "height": 1071
     },
     "dimensiones": [
       768,
-      655
+      746
     ],
     "anterior": "espalda-cometa",
     "novedad": true,
@@ -212,7 +212,7 @@
       370,
       250,
       205,
-      174.83723958333334
+      199.12760416666666
     ]
   }
 ]

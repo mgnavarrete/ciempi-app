@@ -185,7 +185,7 @@
   },
   {
     "id": "b07-ia-cometa",
-    "nombre": "Antifaz Capitán Cometa",
+    "nombre": "Antifaz Capitán Ciempi",
     "batch": "B07",
     "version": "2",
     "estado": "En revisión artística — Pendiente de aprobación del usuario",
@@ -193,20 +193,20 @@
     "aprobadoParaProduccion": false,
     "tipo": "raster-ia",
     "archivo": "./recursos/mascaras/v2/antifaz-cometa.png",
-    "fuente": "../../expansion-v9/capitan-cometa/ia/cometa-antifaz.png",
-    "fuenteSha256": "182385adfd697c47fb29af45757f9ab01374cb43bb76d75e4942c01a6aef2245",
+    "fuente": "../../expansion-v9/capitan-cometa/ia/capitan-antifaz.png",
+    "fuenteSha256": "0bfca1376cb92b246880dd5a043fbe74f69b69ab7f587489a4370e526e41b735",
     "dimensionesMaestro": [
       1535,
       1024
     ],
     "encuadre": [
-      610.69,
-      220.54,
-      271.63,
-      181.21
+      610.26,
+      217.85,
+      273.93,
+      182.74
     ],
     "splitY": null,
-    "rotation": -7.98,
+    "rotation": -7.89,
     "centroRotacion": [
       758.0,
       331.0
